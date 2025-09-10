@@ -1,0 +1,130 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Noto Sans TC", sans-serif;
+  background-color: #f8fafc;
+}
+/* 外容器 */
+.custom-container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* header */
+.custom-header {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #3b82f6;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.custom-header .custom-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.custom-header .custom-subtitle {
+  font-size: 1.25rem;
+  color: #4b5563;
+}
+
+/* 檢測統計摘要樣式 */
+.stat-card {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid;
+}
+
+/* 藍色 */
+.stat-blue {
+  background-color: #eff6ff;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+.stat-blue h3 {
+  color: #1d4ed8;
+}
+.stat-blue span,
+.stat-blue p {
+  color: #2563eb;
+}
+/* 綠色 */
+.stat-green {
+  background-color: #ecfdf5;
+  border-color: #10b981;
+  color: #065f46;
+}
+.stat-green h3 {
+  color: #047857;
+}
+.stat-green span,
+.stat-green p {
+  color: #059669;
+}
+
+/* 紫色 */
+.stat-purple {
+  background-color: #f5f3ff;
+  border-color: #8b5cf6;
+  color: #4c1d95;
+}
+.stat-purple h3 {
+  color: #6d28d9;
+}
+.stat-purple span,
+.stat-purple p {
+  color: #7c3aed;
+}
+
+/* 統計資訊文字顏色 */
+.text-blue {
+  color: #1e40af;
+}
+.text-green {
+  color: #065f46;
+}
+.text-purple {
+  color: #4c1d95;
+}
+
+/* 警示清單樣式 */
+.alert-box {
+  background-color: #fff8e1;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* 四個等級樣式 */
+.risk-box {
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+/* 四個等級顏色條 */
+.risk-red {
+  background: #fee2e2;
+  border-left: 4px solid #ef4444;
+}
+.risk-yellow {
+  background: #fef9c3;
+  border-left: 4px solid #eab308;
+}
+.risk-blue {
+  background: #dbeafe;
+  border-left: 4px solid #3b82f6;
+}
+.risk-green {
+  background: #dcfce7;
+  border-left: 4px solid #22c55e;
+}

@@ -1,0 +1,2351 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI動態骨架防跌群體儀表板 - 建豐健康科技</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-white">
+    <div class="container custom-container py-5 px-4">
+      <!-- 統計資訊 -->
+      <header class="custom-header mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="custom-title mb-1">AI動態骨架防跌群體儀表板</h1>
+            <h2 class="custom-subtitle mb-0">建豐健康科技</h2>
+          </div>
+          <div class="text-end">
+            <p class="text-secondary mb-1">
+              檢測日期：<span class="fw-semibold">2025/07/14</span>
+            </p>
+            <p class="text-secondary mb-0">
+              報告生成：<span class="fw-semibold">2025/07/15</span>
+            </p>
+          </div>
+        </div>
+      </header>
+      <!-- 檢測摘要 -->
+      <div class="mb-4 bg-white p-4 rounded shadow">
+        <h2 class="h5 fw-bold text-dark mb-3 d-flex align-items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="me-2 text-primary"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
+          </svg>
+          檢測統計摘要
+        </h2>
+
+        <!-- 統計資訊 -->
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="stat-card stat-blue">
+              <h6 class="fw-semibold mb-2">總計參與人數</h6>
+              <div class="d-flex align-items-end">
+                <span class="display-6 fw-bold text-blue">126</span>
+                <span class="ms-2 mb-1 text-blue">人</span>
+              </div>
+              <p class="small mt-2 text-blue">自2025年1月起累計</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="stat-card stat-green">
+              <h6 class="fw-semibold mb-2">本次檢測人數</h6>
+              <div class="d-flex align-items-end">
+                <span class="display-6 fw-bold text-green">36</span>
+                <span class="ms-2 mb-1 text-green">人</span>
+              </div>
+              <p class="small mt-2 text-green">2025/07/14 檢測</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="stat-card stat-purple">
+              <h6 class="fw-semibold mb-2">檢測據點數</h6>
+              <div class="d-flex align-items-end">
+                <span class="display-6 fw-bold text-purple">3</span>
+                <span class="ms-2 mb-1 text-purple">處</span>
+              </div>
+              <p class="small mt-2 text-purple">臺北市信義區、中山區</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 表格 -->
+        <div class="mt-4">
+          <h6 class="fw-semibold text-secondary mb-3">歷次檢測平均成績表</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th>檢測日期</th>
+                  <th>參與人數</th>
+                  <th>平均坐站秒數</th>
+                  <th>平均平衡得分</th>
+                  <th>平均步行速度</th>
+                  <th>平均跌倒風險</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2025/07/14</td>
+                  <td>36人</td>
+                  <td>10.8秒</td>
+                  <td>3.4分</td>
+                  <td>95 cm/s</td>
+                  <td>18%</td>
+                </tr>
+                <tr>
+                  <td>2025/06/12</td>
+                  <td>32人</td>
+                  <td>11.0秒</td>
+                  <td>3.3分</td>
+                  <td>92 cm/s</td>
+                  <td>22%</td>
+                </tr>
+                <tr>
+                  <td>2025/05/13</td>
+                  <td>30人</td>
+                  <td>11.5秒</td>
+                  <td>3.1分</td>
+                  <td>88 cm/s</td>
+                  <td>25%</td>
+                </tr>
+                <tr>
+                  <td>2025/04/15</td>
+                  <td>28人</td>
+                  <td>11.8秒</td>
+                  <td>3.2分</td>
+                  <td>90 cm/s</td>
+                  <td>28%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- 風險分級統計區塊 -->
+      <div class="mb-4">
+        <h5 class="fw-bold text-dark mb-3 d-flex align-items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="me-2 text-primary"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            />
+          </svg>
+          風險分級統計
+        </h5>
+
+        <!-- 警示清單 -->
+        <div class="alert-box mb-4 p-3">
+          <div class="d-flex align-items-center mb-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="me-2 text-warning"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <h6 class="fw-bold text-warning mb-0">警示清單</h6>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <p class="fw-semibold text-warning mb-1">
+                功能衰退警示 (較前次檢測衰退超過10%)
+              </p>
+              <ul class="ms-4 text-secondary">
+                <li>步行速度衰退：8人</li>
+                <li>起坐秒數增加：6人</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <p class="fw-semibold text-warning mb-1">高風險族群</p>
+              <ul class="ms-4 text-secondary">
+                <li>A級失能者：6人</li>
+                <li>B級衰弱者：8人</li>
+                <li>C級衰弱前期者：12人</li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-2 text-end">
+            <button
+              onclick="document.getElementById('detailModal').style.display='block'"
+              class="btn btn-warning btn-sm d-inline-flex align-items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="me-1"
+                width="16"
+                height="16"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              查看詳細名單
+            </button>
+          </div>
+        </div>
+
+        <!-- 四個等級 -->
+        <div class="row g-3">
+          <div class="col-md-3">
+            <div class="risk-box risk-red p-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="fw-bold text-danger mb-0">A 級</h6>
+                  <p class="small text-danger mb-0">失能者 (SPPB=0-3分)</p>
+                </div>
+                <div class="fs-3 fw-bold text-danger">6</div>
+              </div>
+              <div class="mt-2 progress rounded-pill">
+                <div class="progress-bar bg-danger" style="width: 17%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="risk-box risk-yellow p-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="fw-bold text-warning mb-0">B 級</h6>
+                  <p class="small text-warning mb-0">衰弱者 (SPPB=4-6分)</p>
+                </div>
+                <div class="fs-3 fw-bold text-warning">8</div>
+              </div>
+              <div class="mt-2 progress rounded-pill">
+                <div class="progress-bar bg-warning" style="width: 22%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="risk-box risk-blue p-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="fw-bold text-primary mb-0">C 級</h6>
+                  <p class="small text-primary mb-0">衰弱前期者 (SPPB=7-9分)</p>
+                </div>
+                <div class="fs-3 fw-bold text-primary">12</div>
+              </div>
+              <div class="mt-2 progress rounded-pill">
+                <div class="progress-bar bg-primary" style="width: 33%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="risk-box risk-green p-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="fw-bold text-success mb-0">D 級</h6>
+                  <p class="small text-success mb-0">健康者 (SPPB=10-12分)</p>
+                </div>
+                <div class="fs-3 fw-bold text-success">10</div>
+              </div>
+              <div class="mt-2 progress rounded-pill">
+                <div class="progress-bar bg-success" style="width: 28%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 群體變化趨勢 -->
+      <div class="mb-8">
+        <h5 class="fw-bold mb-3 d-flex align-items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            class="me-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            style="stroke: #3b82f6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            />
+          </svg>
+          群體變化趨勢
+        </h5>
+
+        <div class="container my-4">
+          <div class="row g-4">
+            <!-- 坐站平均秒數 -->
+            <div class="col-12 col-md-6">
+              <div class="card shadow-sm h-100">
+                <div class="card-body">
+                  <h5 class="fw-semibold text-dark mb-4">坐站平均秒數</h5>
+                  <div class="w-100" style="height: 300px">
+                    <svg
+                      class="w-100 h-100"
+                      viewBox="0 0 400 300"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <!-- Y軸線 -->
+                      <line
+                        x1="50"
+                        y1="30"
+                        x2="50"
+                        y2="250"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                      />
+                      <line
+                        x1="50"
+                        y1="250"
+                        x2="350"
+                        y2="250"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                      />
+                      <!-- 虛線 -->
+                      <line
+                        x1="50"
+                        y1="230"
+                        x2="350"
+                        y2="230"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="210"
+                        x2="350"
+                        y2="210"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="190"
+                        x2="350"
+                        y2="190"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="170"
+                        x2="350"
+                        y2="170"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="150"
+                        x2="350"
+                        y2="150"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="130"
+                        x2="350"
+                        y2="130"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="110"
+                        x2="350"
+                        y2="110"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="90"
+                        x2="350"
+                        y2="90"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="70"
+                        x2="350"
+                        y2="70"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="50"
+                        x2="350"
+                        y2="50"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="30"
+                        x2="350"
+                        y2="30"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <!-- Y軸文字 -->
+                      <text
+                        x="45"
+                        y="250"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        10.0
+                      </text>
+                      <text
+                        x="45"
+                        y="210"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        10.5
+                      </text>
+                      <text
+                        x="45"
+                        y="170"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        11.0
+                      </text>
+                      <text
+                        x="45"
+                        y="130"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        11.5
+                      </text>
+                      <text
+                        x="45"
+                        y="90"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        12.0
+                      </text>
+                      <text
+                        x="45"
+                        y="50"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        12.5
+                      </text>
+                      <!-- Y軸名稱 -->
+                      <text
+                        x="25"
+                        y="140"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#6b7280"
+                        transform="rotate(-90, 25, 140)"
+                      >
+                        秒數
+                      </text>
+                      <!-- X軸文字 -->
+                      <text
+                        x="50"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        02/17
+                      </text>
+                      <text
+                        x="100"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        03/16
+                      </text>
+                      <text
+                        x="150"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        04/15
+                      </text>
+                      <text
+                        x="200"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        05/13
+                      </text>
+                      <text
+                        x="250"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        06/12
+                      </text>
+                      <text
+                        x="300"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        07/14
+                      </text>
+                      <!-- 折線圖 -->
+                      <path
+                        d="M50,60 L100,75 L150,90 L200,105 L250,135 L300,145"
+                        fill="none"
+                        stroke="#10b981"
+                        stroke-width="3"
+                      />
+                      <circle cx="50" cy="60" r="5" fill="#10b981" />
+                      <circle cx="100" cy="75" r="5" fill="#10b981" />
+                      <circle cx="150" cy="90" r="5" fill="#10b981" />
+                      <circle cx="200" cy="105" r="5" fill="#10b981" />
+                      <circle cx="250" cy="135" r="5" fill="#10b981" />
+                      <circle cx="300" cy="145" r="5" fill="#10b981" />
+                      <text
+                        x="50"
+                        y="45"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#10b981"
+                        font-weight="bold"
+                      >
+                        12.5s
+                      </text>
+                      <text
+                        x="100"
+                        y="60"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#10b981"
+                        font-weight="bold"
+                      >
+                        12.2s
+                      </text>
+                      <text
+                        x="150"
+                        y="75"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#10b981"
+                        font-weight="bold"
+                      >
+                        11.8s
+                      </text>
+                      <text
+                        x="200"
+                        y="90"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#10b981"
+                        font-weight="bold"
+                      >
+                        11.5s
+                      </text>
+                      <text
+                        x="250"
+                        y="120"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#10b981"
+                        font-weight="bold"
+                      >
+                        11.0s
+                      </text>
+                      <text
+                        x="300"
+                        y="130"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#10b981"
+                        font-weight="bold"
+                      >
+                        10.8s
+                      </text>
+                      <!-- 漸層 -->
+                      <linearGradient
+                        id="greenGradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="0%"
+                        y2="100%"
+                      >
+                        <stop
+                          offset="0%"
+                          stop-color="#10b981"
+                          stop-opacity="0.3"
+                        />
+                        <stop
+                          offset="100%"
+                          stop-color="#10b981"
+                          stop-opacity="0.05"
+                        />
+                      </linearGradient>
+                      <path
+                        d="M50,60 L100,75 L150,90 L200,105 L250,135 L300,145 L300,250 L50,250 Z"
+                        fill="url(#greenGradient)"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 平衡測驗得分 -->
+            <div class="col-12 col-md-6">
+              <div class="card shadow-sm h-100">
+                <div class="card-body">
+                  <h5 class="fw-semibold text-dark mb-4">平衡測驗得分</h5>
+                  <div class="w-100" style="height: 300px">
+                    <svg
+                      class="w-100 h-100"
+                      viewBox="0 0 400 300"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <!-- Y軸 -->
+                      <line
+                        x1="50"
+                        y1="30"
+                        x2="50"
+                        y2="250"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="250"
+                        x2="350"
+                        y2="250"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="230"
+                        x2="350"
+                        y2="230"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="210"
+                        x2="350"
+                        y2="210"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="190"
+                        x2="350"
+                        y2="190"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="170"
+                        x2="350"
+                        y2="170"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="150"
+                        x2="350"
+                        y2="150"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="130"
+                        x2="350"
+                        y2="130"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="110"
+                        x2="350"
+                        y2="110"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="90"
+                        x2="350"
+                        y2="90"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="70"
+                        x2="350"
+                        y2="70"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="50"
+                        x2="350"
+                        y2="50"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+                      <line
+                        x1="50"
+                        y1="30"
+                        x2="350"
+                        y2="30"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      ></line>
+
+                      <!-- Y軸文字 -->
+                      <text
+                        x="45"
+                        y="250"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        2.5
+                      </text>
+                      <text
+                        x="45"
+                        y="210"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        2.7
+                      </text>
+                      <text
+                        x="45"
+                        y="170"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        3.0
+                      </text>
+                      <text
+                        x="45"
+                        y="130"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        3.2
+                      </text>
+                      <text
+                        x="45"
+                        y="90"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        3.5
+                      </text>
+                      <text
+                        x="45"
+                        y="50"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        3.7
+                      </text>
+                      <text
+                        x="25"
+                        y="140"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#6b7280"
+                        transform="rotate(-90, 25, 140)"
+                      >
+                        得分
+                      </text>
+
+                      <!-- X軸文字 -->
+                      <text
+                        x="50"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        02/17
+                      </text>
+                      <text
+                        x="100"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        03/16
+                      </text>
+                      <text
+                        x="150"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        04/15
+                      </text>
+                      <text
+                        x="200"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        05/13
+                      </text>
+                      <text
+                        x="250"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        06/12
+                      </text>
+                      <text
+                        x="300"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        07/14
+                      </text>
+
+                      <!-- 折線 -->
+                      <path
+                        d="M50,210 L100,195 L150,180 L200,185 L250,175 L300,165"
+                        fill="none"
+                        stroke="#3b82f6"
+                        stroke-width="3"
+                      ></path>
+
+                      <!-- 點 -->
+                      <circle cx="50" cy="210" r="5" fill="#3b82f6"></circle>
+                      <circle cx="100" cy="195" r="5" fill="#3b82f6"></circle>
+                      <circle cx="150" cy="180" r="5" fill="#3b82f6"></circle>
+                      <circle cx="200" cy="185" r="5" fill="#3b82f6"></circle>
+                      <circle cx="250" cy="175" r="5" fill="#3b82f6"></circle>
+                      <circle cx="300" cy="165" r="5" fill="#3b82f6"></circle>
+
+                      <!-- 點文字 -->
+                      <text
+                        x="50"
+                        y="195"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#3b82f6"
+                        font-weight="bold"
+                      >
+                        2.8分
+                      </text>
+                      <text
+                        x="100"
+                        y="180"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#3b82f6"
+                        font-weight="bold"
+                      >
+                        3.0分
+                      </text>
+                      <text
+                        x="150"
+                        y="165"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#3b82f6"
+                        font-weight="bold"
+                      >
+                        3.2分
+                      </text>
+                      <text
+                        x="200"
+                        y="170"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#3b82f6"
+                        font-weight="bold"
+                      >
+                        3.1分
+                      </text>
+                      <text
+                        x="250"
+                        y="160"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#3b82f6"
+                        font-weight="bold"
+                      >
+                        3.3分
+                      </text>
+                      <text
+                        x="300"
+                        y="150"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#3b82f6"
+                        font-weight="bold"
+                      >
+                        3.4分
+                      </text>
+
+                      <!-- 漸層 -->
+                      <linearGradient
+                        id="blueGradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="0%"
+                        y2="100%"
+                      >
+                        <stop
+                          offset="0%"
+                          stop-color="#3b82f6"
+                          stop-opacity="0.3"
+                        ></stop>
+                        <stop
+                          offset="100%"
+                          stop-color="#3b82f6"
+                          stop-opacity="0.05"
+                        ></stop>
+                      </linearGradient>
+                      <path
+                        d="M50,210 L100,195 L150,180 L200,185 L250,175 L300,165 L300,250 L50,250 Z"
+                        fill="url(#blueGradient)"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 步行速度趨勢 -->
+            <div class="col-12 col-md-6">
+              <div class="card shadow-sm h-100">
+                <div class="card-body">
+                  <h5 class="fw-semibold text-dark mb-4">步行速度趨勢</h5>
+                  <div class="w-100" style="height: 300px">
+                    <svg
+                      class="w-100 h-100"
+                      viewBox="0 0 400 300"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <!-- Y軸 -->
+                      <line
+                        x1="50"
+                        y1="30"
+                        x2="50"
+                        y2="250"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                      />
+                      <line
+                        x1="50"
+                        y1="250"
+                        x2="350"
+                        y2="250"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                      />
+                      <line
+                        x1="50"
+                        y1="230"
+                        x2="350"
+                        y2="230"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="210"
+                        x2="350"
+                        y2="210"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="190"
+                        x2="350"
+                        y2="190"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="170"
+                        x2="350"
+                        y2="170"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="150"
+                        x2="350"
+                        y2="150"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="130"
+                        x2="350"
+                        y2="130"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="110"
+                        x2="350"
+                        y2="110"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="90"
+                        x2="350"
+                        y2="90"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="70"
+                        x2="350"
+                        y2="70"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="50"
+                        x2="350"
+                        y2="50"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="30"
+                        x2="350"
+                        y2="30"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+
+                      <!-- Y軸文字 -->
+                      <text
+                        x="45"
+                        y="250"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        75
+                      </text>
+                      <text
+                        x="45"
+                        y="210"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        80
+                      </text>
+                      <text
+                        x="45"
+                        y="170"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        85
+                      </text>
+                      <text
+                        x="45"
+                        y="130"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        90
+                      </text>
+                      <text
+                        x="45"
+                        y="90"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        95
+                      </text>
+                      <text
+                        x="45"
+                        y="50"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        100
+                      </text>
+                      <text
+                        x="25"
+                        y="140"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#6b7280"
+                        transform="rotate(-90, 25, 140)"
+                      >
+                        cm/s
+                      </text>
+
+                      <!-- X軸文字 -->
+                      <text
+                        x="50"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        02/17
+                      </text>
+                      <text
+                        x="100"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        03/16
+                      </text>
+                      <text
+                        x="150"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        04/15
+                      </text>
+                      <text
+                        x="200"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        05/13
+                      </text>
+                      <text
+                        x="250"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        06/12
+                      </text>
+                      <text
+                        x="300"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        07/14
+                      </text>
+
+                      <!-- 折線 -->
+                      <path
+                        d="M50,210 L100,190 L150,170 L200,175 L250,160 L300,145"
+                        fill="none"
+                        stroke="#f59e0b"
+                        stroke-width="3"
+                      ></path>
+
+                      <!-- 點 -->
+                      <circle cx="50" cy="210" r="5" fill="#f59e0b" />
+                      <circle cx="100" cy="190" r="5" fill="#f59e0b" />
+                      <circle cx="150" cy="170" r="5" fill="#f59e0b" />
+                      <circle cx="200" cy="175" r="5" fill="#f59e0b" />
+                      <circle cx="250" cy="160" r="5" fill="#f59e0b" />
+                      <circle cx="300" cy="145" r="5" fill="#f59e0b" />
+
+                      <!-- 點文字 -->
+                      <text
+                        x="50"
+                        y="195"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#f59e0b"
+                        font-weight="bold"
+                      >
+                        80
+                      </text>
+                      <text
+                        x="100"
+                        y="175"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#f59e0b"
+                        font-weight="bold"
+                      >
+                        85
+                      </text>
+                      <text
+                        x="150"
+                        y="155"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#f59e0b"
+                        font-weight="bold"
+                      >
+                        90
+                      </text>
+                      <text
+                        x="200"
+                        y="160"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#f59e0b"
+                        font-weight="bold"
+                      >
+                        88
+                      </text>
+                      <text
+                        x="250"
+                        y="145"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#f59e0b"
+                        font-weight="bold"
+                      >
+                        92
+                      </text>
+                      <text
+                        x="300"
+                        y="130"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#f59e0b"
+                        font-weight="bold"
+                      >
+                        95
+                      </text>
+
+                      <!-- 漸層 -->
+                      <linearGradient
+                        id="yellowGradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="0%"
+                        y2="100%"
+                      >
+                        <stop
+                          offset="0%"
+                          stop-color="#f59e0b"
+                          stop-opacity="0.3"
+                        />
+                        <stop
+                          offset="100%"
+                          stop-color="#f59e0b"
+                          stop-opacity="0.05"
+                        />
+                      </linearGradient>
+                      <path
+                        d="M50,210 L100,190 L150,170 L200,175 L250,160 L300,145 L300,250 L50,250 Z"
+                        fill="url(#yellowGradient)"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 平均AI跌倒風險機率 -->
+            <div class="col-12 col-md-6">
+              <div class="card shadow-sm h-100">
+                <div class="card-body">
+                  <h5 class="fw-semibold text-dark mb-4">平均AI跌倒風險機率</h5>
+                  <div class="w-100" style="height: 300px">
+                    <svg
+                      class="w-100 h-100"
+                      viewBox="0 0 400 300"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <!-- Y軸 -->
+                      <line
+                        x1="50"
+                        y1="30"
+                        x2="50"
+                        y2="250"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                      />
+                      <line
+                        x1="50"
+                        y1="250"
+                        x2="350"
+                        y2="250"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                      />
+                      <line
+                        x1="50"
+                        y1="230"
+                        x2="350"
+                        y2="230"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="210"
+                        x2="350"
+                        y2="210"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="190"
+                        x2="350"
+                        y2="190"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="170"
+                        x2="350"
+                        y2="170"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="150"
+                        x2="350"
+                        y2="150"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="130"
+                        x2="350"
+                        y2="130"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="110"
+                        x2="350"
+                        y2="110"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="90"
+                        x2="350"
+                        y2="90"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="70"
+                        x2="350"
+                        y2="70"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="50"
+                        x2="350"
+                        y2="50"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+                      <line
+                        x1="50"
+                        y1="30"
+                        x2="350"
+                        y2="30"
+                        stroke="#e5e7eb"
+                        stroke-width="1"
+                        stroke-dasharray="2,2"
+                      />
+
+                      <!-- Y軸文字 -->
+                      <text
+                        x="45"
+                        y="250"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        15%
+                      </text>
+                      <text
+                        x="45"
+                        y="210"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        18%
+                      </text>
+                      <text
+                        x="45"
+                        y="170"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        22%
+                      </text>
+                      <text
+                        x="45"
+                        y="130"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        25%
+                      </text>
+                      <text
+                        x="45"
+                        y="90"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        28%
+                      </text>
+                      <text
+                        x="45"
+                        y="50"
+                        text-anchor="end"
+                        font-size="10"
+                        fill="#6b7280"
+                      >
+                        32%
+                      </text>
+                      <text
+                        x="25"
+                        y="140"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#6b7280"
+                        transform="rotate(-90, 25, 140)"
+                      >
+                        風險%
+                      </text>
+
+                      <!-- X軸文字 -->
+                      <text
+                        x="50"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        02/17
+                      </text>
+                      <text
+                        x="100"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        03/16
+                      </text>
+                      <text
+                        x="150"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        04/15
+                      </text>
+                      <text
+                        x="200"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        05/13
+                      </text>
+                      <text
+                        x="250"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        06/12
+                      </text>
+                      <text
+                        x="300"
+                        y="270"
+                        text-anchor="middle"
+                        font-size="11"
+                        fill="#6b7280"
+                      >
+                        07/14
+                      </text>
+
+                      <!-- 折線 -->
+                      <path
+                        d="M50,90 L100,105 L150,120 L200,135 L250,150 L300,180"
+                        fill="none"
+                        stroke="#ef4444"
+                        stroke-width="3"
+                      ></path>
+
+                      <!-- 點 -->
+                      <circle cx="50" cy="90" r="5" fill="#ef4444" />
+                      <circle cx="100" cy="105" r="5" fill="#ef4444" />
+                      <circle cx="150" cy="120" r="5" fill="#ef4444" />
+                      <circle cx="200" cy="135" r="5" fill="#ef4444" />
+                      <circle cx="250" cy="150" r="5" fill="#ef4444" />
+                      <circle cx="300" cy="180" r="5" fill="#ef4444" />
+
+                      <!-- 點文字 -->
+                      <text
+                        x="50"
+                        y="75"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#ef4444"
+                        font-weight="bold"
+                      >
+                        32%
+                      </text>
+                      <text
+                        x="100"
+                        y="90"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#ef4444"
+                        font-weight="bold"
+                      >
+                        30%
+                      </text>
+                      <text
+                        x="150"
+                        y="105"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#ef4444"
+                        font-weight="bold"
+                      >
+                        28%
+                      </text>
+                      <text
+                        x="200"
+                        y="120"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#ef4444"
+                        font-weight="bold"
+                      >
+                        25%
+                      </text>
+                      <text
+                        x="250"
+                        y="135"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#ef4444"
+                        font-weight="bold"
+                      >
+                        22%
+                      </text>
+                      <text
+                        x="300"
+                        y="165"
+                        text-anchor="middle"
+                        font-size="12"
+                        fill="#ef4444"
+                        font-weight="bold"
+                      >
+                        18%
+                      </text>
+
+                      <!-- 漸層 -->
+                      <linearGradient
+                        id="redGradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="0%"
+                        y2="100%"
+                      >
+                        <stop
+                          offset="0%"
+                          stop-color="#ef4444"
+                          stop-opacity="0.3"
+                        />
+                        <stop
+                          offset="100%"
+                          stop-color="#ef4444"
+                          stop-opacity="0.05"
+                        />
+                      </linearGradient>
+                      <path
+                        d="M50,90 L100,105 L150,120 L200,135 L250,150 L300,180 L300,250 L50,250 Z"
+                        fill="url(#redGradient)"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 參與者狀態 -->
+      <div class="mb-4">
+        <h5 class="fw-bold text-dark mb-3 d-flex align-items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="me-2 text-primary"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+          參與者狀態
+        </h5>
+
+        <div class="row g-3">
+          <!-- 王大明 A -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-danger h-100"
+              data-person="王大明"
+              data-age="85"
+              data-gender="男"
+              data-level="A"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#E2E8F0" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 70 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M30 30 Q40 20 50 25 Q60 20 70 30"
+                    fill="none"
+                    stroke="#A1A1AA"
+                    stroke-width="3"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-danger text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  A級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">王大明</h4>
+                <p class="small text-muted mb-0">85歲 | 男</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 李秀英 A -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-danger h-100"
+              data-person="李秀英"
+              data-age="78"
+              data-gender="女"
+              data-level="A"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#FEE2E2" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 60 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M30 25 Q40 35 50 25 Q60 35 70 25"
+                    fill="none"
+                    stroke="#A1A1AA"
+                    stroke-width="3"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-danger text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  A級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">李秀英</h4>
+                <p class="small text-muted mb-0">78歲 | 女</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 張文忠 A -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-danger h-100"
+              data-person="張文忠"
+              data-age="82"
+              data-gender="男"
+              data-level="A"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#E2E8F0" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 70 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M30 25 Q40 15 50 20 Q60 15 70 25"
+                    fill="none"
+                    stroke="#A1A1AA"
+                    stroke-width="3"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-danger text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  A級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">張文忠</h4>
+                <p class="small text-muted mb-0">82歲 | 男</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 林小華 B -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-warning h-100"
+              data-person="林小華"
+              data-age="75"
+              data-gender="女"
+              data-level="B"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#FEF3C7" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 68 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-warning text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  B級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">林小華</h4>
+                <p class="small text-muted mb-0">75歲 | 女</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 陳美玲 B -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-warning h-100"
+              data-person="陳美玲"
+              data-age="80"
+              data-gender="女"
+              data-level="B"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#FEF3C7" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 66 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-warning text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  B級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">陳美玲</h4>
+                <p class="small text-muted mb-0">80歲 | 女</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 吳志明 C -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-primary h-100"
+              data-person="吳志明"
+              data-age="83"
+              data-gender="男"
+              data-level="C"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#DBEAFE" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 70 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-primary text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  C級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">吳志明</h4>
+                <p class="small text-muted mb-0">83歲 | 男</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 陳志明 C -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-primary h-100"
+              data-person="陳志明"
+              data-age="79"
+              data-gender="男"
+              data-level="C"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#DBEAFE" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 68 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-primary text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  C級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">陳志明</h4>
+                <p class="small text-muted mb-0">79歲 | 男</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 林淑芬 D -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
+              data-person="林淑芬"
+              data-age="77"
+              data-gender="女"
+              data-level="D"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 67 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  D級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">林淑芬</h4>
+                <p class="small text-muted mb-0">77歲 | 女</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 黃明德 D -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
+              data-person="黃明德"
+              data-age="81"
+              data-gender="男"
+              data-level="D"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 70 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  D級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">黃明德</h4>
+                <p class="small text-muted mb-0">81歲 | 男</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 張美麗 D -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
+              data-person="張美麗"
+              data-age="76"
+              data-gender="女"
+              data-level="D"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 67 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  D級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">張美麗</h4>
+                <p class="small text-muted mb-0">76歲 | 女</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 黃建國 D -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
+              data-person="黃建國"
+              data-age="84"
+              data-gender="男"
+              data-level="D"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 70 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  D級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">黃建國</h4>
+                <p class="small text-muted mb-0">84歲 | 男</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 蔡明哲 D -->
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div
+              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
+              data-person="蔡明哲"
+              data-age="79"
+              data-gender="男"
+              data-level="D"
+            >
+              <div class="position-relative">
+                <svg
+                  class="w-100"
+                  height="130"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
+                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
+                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
+                  <path
+                    d="M40 65 Q50 68 60 65"
+                    fill="none"
+                    stroke="#4B5563"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <div
+                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
+                >
+                  D級
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <h4 class="fw-semibold text-dark mb-1">蔡明哲</h4>
+                <p class="small text-muted mb-0">79歲 | 男</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 text-end">
+          <button
+            id="viewAllBtn"
+            class="btn btn-primary btn-sm d-inline-flex align-items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="me-1"
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+              />
+            </svg>
+            查看全部參與者
+          </button>
+        </div>
+      </div>
+      <!-- 地圖區塊 -->
+      <div class="mb-4">
+        <h5 class="fw-bold text-dark mb-3 d-flex align-items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="me-2 text-primary"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+          檢測據點分布
+        </h5>
+
+        <!-- 地圖 -->
+        <div class="bg-white p-4 rounded shadow" style="height: 400px">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.452424857936!2d121.56568161500196!3d25.033964983963736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abc123456789%3A0xabcdef1234567890!2z5YyX5Lqs5ZyL5q61!5e0!3m2!1szh-TW!2stw!4v1694270400000!5m2!1szh-TW!2stw"
+            width="100%"
+            height="100%"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script src="main.js"></script>
