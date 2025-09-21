@@ -1,0 +1,658 @@
+{
+  "Location": "信義區",
+  "assessments": [
+    {
+      "Date": 1722950913000,
+      "ChairSecond": 18.1,
+      "GaitSpeed": 74.6,
+      "BalanceScore": 9.6,
+      "RiskRate": 23.8,
+      "Count": 13,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 6,
+            "Name": "6號姓名",
+            "Gender": 1,
+            "Age": 72,
+            "Risk": 70.7
+          },
+          {
+            "Number": 2,
+            "Name": "2號姓名",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 70.1
+          },
+          {
+            "Number": 10,
+            "Name": "10號姓名",
+            "Gender": 0,
+            "Age": 46,
+            "Risk": 93.1
+          },
+          {
+            "Number": 8,
+            "Name": "8號姓名",
+            "Gender": 1,
+            "Age": 54,
+            "Risk": 65.3
+          }
+        ],
+        "B": [
+          {
+            "Number": 3,
+            "Name": "3號姓名",
+            "Gender": 1,
+            "Age": 45,
+            "Risk": 54.9
+          }
+        ],
+        "C": [
+          {
+            "Number": 13,
+            "Name": "13號姓名",
+            "Gender": 1,
+            "Age": 44,
+            "Risk": 29.1
+          },
+          {
+            "Number": 12,
+            "Name": "12號姓名",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 20.9
+          },
+          {
+            "Number": 4,
+            "Name": "4號姓名",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 26.3
+          }
+        ],
+        "D": [
+          {
+            "Number": 5,
+            "Name": "5號姓名",
+            "Gender": 0,
+            "Age": 54,
+            "Risk": 1.3
+          },
+          {
+            "Number": 1,
+            "Name": "1號姓名",
+            "Gender": 1,
+            "Age": 46,
+            "Risk": 5.5
+          },
+          {
+            "Number": 9,
+            "Name": "9號姓名",
+            "Gender": 1,
+            "Age": 92,
+            "Risk": 2.4
+          },
+          {
+            "Number": 11,
+            "Name": "11號姓名",
+            "Gender": 0,
+            "Age": 52,
+            "Risk": 7.0
+          },
+          {
+            "Number": 7,
+            "Name": "7號姓名",
+            "Gender": 1,
+            "Age": 80,
+            "Risk": 7.3
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 3, "ChairSecond": 4 }
+    },
+    {
+      "Date": 1757835967000,
+      "ChairSecond": 17.4,
+      "GaitSpeed": 91.4,
+      "BalanceScore": 8.2,
+      "RiskRate": 63.2,
+      "Count": 17,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 15,
+            "Name": "15號姓名",
+            "Gender": 0,
+            "Age": 48,
+            "Risk": 75.5
+          }
+        ],
+        "B": [
+          {
+            "Number": 14,
+            "Name": "14號姓名",
+            "Gender": 1,
+            "Age": 62,
+            "Risk": 41.5
+          }
+        ],
+        "C": [
+          {
+            "Number": 17,
+            "Name": "17號姓名",
+            "Gender": 1,
+            "Age": 94,
+            "Risk": 30.4
+          },
+          {
+            "Number": 12,
+            "Name": "12號姓名",
+            "Gender": 1,
+            "Age": 42,
+            "Risk": 24.9
+          },
+          {
+            "Number": 5,
+            "Name": "5號姓名",
+            "Gender": 0,
+            "Age": 98,
+            "Risk": 25.2
+          },
+          {
+            "Number": 7,
+            "Name": "7號姓名",
+            "Gender": 1,
+            "Age": 53,
+            "Risk": 21.6
+          },
+          {
+            "Number": 16,
+            "Name": "16號姓名",
+            "Gender": 0,
+            "Age": 86,
+            "Risk": 31.8
+          },
+          {
+            "Number": 10,
+            "Name": "10號姓名",
+            "Gender": 0,
+            "Age": 96,
+            "Risk": 21.6
+          },
+          {
+            "Number": 9,
+            "Name": "9號姓名",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 20.8
+          },
+          {
+            "Number": 8,
+            "Name": "8號姓名",
+            "Gender": 1,
+            "Age": 71,
+            "Risk": 31.5
+          },
+          {
+            "Number": 11,
+            "Name": "11號姓名",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 26.9
+          }
+        ],
+        "D": [
+          {
+            "Number": 2,
+            "Name": "2號姓名",
+            "Gender": 0,
+            "Age": 50,
+            "Risk": 4.9
+          },
+          {
+            "Number": 13,
+            "Name": "13號姓名",
+            "Gender": 1,
+            "Age": 41,
+            "Risk": 3.6
+          },
+          {
+            "Number": 4,
+            "Name": "4號姓名",
+            "Gender": 0,
+            "Age": 80,
+            "Risk": 8.0
+          },
+          {
+            "Number": 6,
+            "Name": "6號姓名",
+            "Gender": 1,
+            "Age": 54,
+            "Risk": 2.1
+          },
+          {
+            "Number": 3,
+            "Name": "3號姓名",
+            "Gender": 1,
+            "Age": 49,
+            "Risk": 14.0
+          },
+          {
+            "Number": 1,
+            "Name": "1號姓名",
+            "Gender": 1,
+            "Age": 56,
+            "Risk": 9.5
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 1, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1693025465000,
+      "ChairSecond": 14.7,
+      "GaitSpeed": 59.8,
+      "BalanceScore": 3.0,
+      "RiskRate": 65.3,
+      "Count": 26,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 5,
+            "Name": "5號姓名",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 29.3
+          },
+          {
+            "Number": 18,
+            "Name": "18號姓名",
+            "Gender": 0,
+            "Age": 61,
+            "Risk": 28.9
+          },
+          {
+            "Number": 20,
+            "Name": "20號姓名",
+            "Gender": 0,
+            "Age": 67,
+            "Risk": 27.4
+          },
+          {
+            "Number": 15,
+            "Name": "15號姓名",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 33.8
+          }
+        ],
+        "D": [
+          {
+            "Number": 26,
+            "Name": "26號姓名",
+            "Gender": 1,
+            "Age": 40,
+            "Risk": 10.7
+          },
+          {
+            "Number": 1,
+            "Name": "1號姓名",
+            "Gender": 0,
+            "Age": 79,
+            "Risk": 11.2
+          },
+          {
+            "Number": 21,
+            "Name": "21號姓名",
+            "Gender": 0,
+            "Age": 60,
+            "Risk": 19.0
+          },
+          {
+            "Number": 22,
+            "Name": "22號姓名",
+            "Gender": 1,
+            "Age": 41,
+            "Risk": 16.7
+          },
+          {
+            "Number": 23,
+            "Name": "23號姓名",
+            "Gender": 1,
+            "Age": 89,
+            "Risk": 5.7
+          },
+          {
+            "Number": 14,
+            "Name": "14號姓名",
+            "Gender": 1,
+            "Age": 65,
+            "Risk": 13.6
+          },
+          {
+            "Number": 2,
+            "Name": "2號姓名",
+            "Gender": 0,
+            "Age": 56,
+            "Risk": 10.4
+          },
+          {
+            "Number": 19,
+            "Name": "19號姓名",
+            "Gender": 0,
+            "Age": 45,
+            "Risk": 13.5
+          },
+          {
+            "Number": 4,
+            "Name": "4號姓名",
+            "Gender": 1,
+            "Age": 88,
+            "Risk": 16.9
+          },
+          {
+            "Number": 16,
+            "Name": "16號姓名",
+            "Gender": 0,
+            "Age": 51,
+            "Risk": 18.2
+          },
+          {
+            "Number": 10,
+            "Name": "10號姓名",
+            "Gender": 0,
+            "Age": 58,
+            "Risk": 19.0
+          },
+          {
+            "Number": 8,
+            "Name": "8號姓名",
+            "Gender": 1,
+            "Age": 61,
+            "Risk": 16.8
+          },
+          {
+            "Number": 25,
+            "Name": "25號姓名",
+            "Gender": 0,
+            "Age": 86,
+            "Risk": 3.5
+          },
+          {
+            "Number": 12,
+            "Name": "12號姓名",
+            "Gender": 1,
+            "Age": 73,
+            "Risk": 17.0
+          },
+          {
+            "Number": 11,
+            "Name": "11號姓名",
+            "Gender": 0,
+            "Age": 54,
+            "Risk": 1.8
+          },
+          {
+            "Number": 7,
+            "Name": "7號姓名",
+            "Gender": 0,
+            "Age": 43,
+            "Risk": 18.0
+          },
+          {
+            "Number": 9,
+            "Name": "9號姓名",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 13.4
+          },
+          {
+            "Number": 24,
+            "Name": "24號姓名",
+            "Gender": 1,
+            "Age": 53,
+            "Risk": 11.0
+          },
+          {
+            "Number": 6,
+            "Name": "6號姓名",
+            "Gender": 1,
+            "Age": 73,
+            "Risk": 16.7
+          },
+          {
+            "Number": 17,
+            "Name": "17號姓名",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 2.1
+          },
+          {
+            "Number": 3,
+            "Name": "3號姓名",
+            "Gender": 0,
+            "Age": 79,
+            "Risk": 4.3
+          },
+          {
+            "Number": 13,
+            "Name": "13號姓名",
+            "Gender": 1,
+            "Age": 53,
+            "Risk": 11.5
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 3, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1715283081000,
+      "ChairSecond": 17.5,
+      "GaitSpeed": 74.3,
+      "BalanceScore": 0.9,
+      "RiskRate": 9.5,
+      "Count": 27,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 12,
+            "Name": "12號姓名",
+            "Gender": 0,
+            "Age": 65,
+            "Risk": 77.1
+          },
+          {
+            "Number": 6,
+            "Name": "6號姓名",
+            "Gender": 1,
+            "Age": 88,
+            "Risk": 90.7
+          },
+          {
+            "Number": 3,
+            "Name": "3號姓名",
+            "Gender": 0,
+            "Age": 46,
+            "Risk": 87.5
+          },
+          {
+            "Number": 25,
+            "Name": "25號姓名",
+            "Gender": 1,
+            "Age": 62,
+            "Risk": 95.4
+          },
+          {
+            "Number": 7,
+            "Name": "7號姓名",
+            "Gender": 1,
+            "Age": 41,
+            "Risk": 85.2
+          },
+          {
+            "Number": 4,
+            "Name": "4號姓名",
+            "Gender": 1,
+            "Age": 59,
+            "Risk": 60.8
+          },
+          {
+            "Number": 5,
+            "Name": "5號姓名",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 82.1
+          },
+          {
+            "Number": 11,
+            "Name": "11號姓名",
+            "Gender": 1,
+            "Age": 78,
+            "Risk": 99.3
+          }
+        ],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 14,
+            "Name": "14號姓名",
+            "Gender": 1,
+            "Age": 93,
+            "Risk": 12.6
+          },
+          {
+            "Number": 9,
+            "Name": "9號姓名",
+            "Gender": 0,
+            "Age": 62,
+            "Risk": 4.6
+          },
+          {
+            "Number": 1,
+            "Name": "1號姓名",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 18.9
+          },
+          {
+            "Number": 26,
+            "Name": "26號姓名",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 8.1
+          },
+          {
+            "Number": 21,
+            "Name": "21號姓名",
+            "Gender": 1,
+            "Age": 59,
+            "Risk": 3.6
+          },
+          {
+            "Number": 24,
+            "Name": "24號姓名",
+            "Gender": 1,
+            "Age": 47,
+            "Risk": 8.8
+          },
+          {
+            "Number": 10,
+            "Name": "10號姓名",
+            "Gender": 1,
+            "Age": 40,
+            "Risk": 5.1
+          },
+          {
+            "Number": 2,
+            "Name": "2號姓名",
+            "Gender": 0,
+            "Age": 89,
+            "Risk": 14.3
+          },
+          {
+            "Number": 18,
+            "Name": "18號姓名",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 1.3
+          },
+          {
+            "Number": 19,
+            "Name": "19號姓名",
+            "Gender": 1,
+            "Age": 83,
+            "Risk": 13.7
+          },
+          {
+            "Number": 27,
+            "Name": "27號姓名",
+            "Gender": 0,
+            "Age": 86,
+            "Risk": 11.3
+          },
+          {
+            "Number": 23,
+            "Name": "23號姓名",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 7.7
+          },
+          {
+            "Number": 15,
+            "Name": "15號姓名",
+            "Gender": 0,
+            "Age": 50,
+            "Risk": 1.0
+          },
+          {
+            "Number": 17,
+            "Name": "17號姓名",
+            "Gender": 1,
+            "Age": 43,
+            "Risk": 0.7
+          },
+          {
+            "Number": 8,
+            "Name": "8號姓名",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 17.5
+          },
+          {
+            "Number": 20,
+            "Name": "20號姓名",
+            "Gender": 1,
+            "Age": 53,
+            "Risk": 1.7
+          },
+          {
+            "Number": 22,
+            "Name": "22號姓名",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 1.7
+          },
+          {
+            "Number": 16,
+            "Name": "16號姓名",
+            "Gender": 0,
+            "Age": 78,
+            "Risk": 8.8
+          },
+          {
+            "Number": 13,
+            "Name": "13號姓名",
+            "Gender": 1,
+            "Age": 81,
+            "Risk": 12.5
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 1, "ChairSecond": 5 }
+    }
+  ]
+}

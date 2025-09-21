@@ -33,6 +33,20 @@
             </p>
           </div>
         </div>
+        <div class="dropdown mt-3">
+          <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          ></button>
+          <ul
+            class="dropdown-menu"
+            id="dropdownMenu"
+            aria-labelledby="dropdownMenuButton"
+          ></ul>
+        </div>
       </header>
       <!-- 檢測摘要 -->
       <div class="mb-4 bg-white p-4 rounded shadow">
@@ -73,10 +87,13 @@
             <div class="stat-card stat-green">
               <h6 class="fw-semibold mb-2">本次檢測人數</h6>
               <div class="d-flex align-items-end">
-                <span class="display-6 fw-bold text-green">36</span>
+                <span
+                  id="latestCount"
+                  class="display-6 fw-bold text-green"
+                ></span>
                 <span class="ms-2 mb-1 text-green">人</span>
               </div>
-              <p class="small mt-2 text-green">2025/07/14 檢測</p>
+              <p id="latestDate" class="small mt-2 text-green"></p>
             </div>
           </div>
 
@@ -84,10 +101,13 @@
             <div class="stat-card stat-purple">
               <h6 class="fw-semibold mb-2">檢測據點數</h6>
               <div class="d-flex align-items-end">
-                <span class="display-6 fw-bold text-purple">3</span>
+                <span
+                  id="locationCount"
+                  class="display-6 fw-bold text-purple"
+                ></span>
                 <span class="ms-2 mb-1 text-purple">處</span>
               </div>
-              <p class="small mt-2 text-purple">臺北市信義區、中山區</p>
+              <p id="locationList" class="small mt-2 text-purple"></p>
             </div>
           </div>
         </div>
@@ -99,6 +119,7 @@
             <table class="table table-bordered align-middle">
               <thead class="bg-light">
                 <tr>
+                  <th style="width: 50px">選取</th>
                   <th>檢測日期</th>
                   <th>參與人數</th>
                   <th>平均坐站秒數</th>
@@ -107,40 +128,8 @@
                   <th>平均跌倒風險</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>2025/07/14</td>
-                  <td>36人</td>
-                  <td>10.8秒</td>
-                  <td>3.4分</td>
-                  <td>95 cm/s</td>
-                  <td>18%</td>
-                </tr>
-                <tr>
-                  <td>2025/06/12</td>
-                  <td>32人</td>
-                  <td>11.0秒</td>
-                  <td>3.3分</td>
-                  <td>92 cm/s</td>
-                  <td>22%</td>
-                </tr>
-                <tr>
-                  <td>2025/05/13</td>
-                  <td>30人</td>
-                  <td>11.5秒</td>
-                  <td>3.1分</td>
-                  <td>88 cm/s</td>
-                  <td>25%</td>
-                </tr>
-                <tr>
-                  <td>2025/04/15</td>
-                  <td>28人</td>
-                  <td>11.8秒</td>
-                  <td>3.2分</td>
-                  <td>90 cm/s</td>
-                  <td>28%</td>
-                </tr>
-              </tbody>
+
+              <tbody id="assessmentTableBody"></tbody>
             </table>
           </div>
         </div>
@@ -193,17 +182,17 @@
               <p class="fw-semibold text-warning mb-1">
                 功能衰退警示 (較前次檢測衰退超過10%)
               </p>
-              <ul class="ms-4 text-secondary">
-                <li>步行速度衰退：8人</li>
-                <li>起坐秒數增加：6人</li>
+              <ul id="degenerateList" class="ms-4 text-secondary">
+                <li>步行速度衰退：<span></span> 人</li>
+                <li>起坐秒數增加：<span></span>人</li>
               </ul>
             </div>
             <div class="col-md-6">
               <p class="fw-semibold text-warning mb-1">高風險族群</p>
-              <ul class="ms-4 text-secondary">
-                <li>A級失能者：6人</li>
-                <li>B級衰弱者：8人</li>
-                <li>C級衰弱前期者：12人</li>
+              <ul id="levelList" class="ms-4 text-secondary">
+                <li>A級失能者：<span></span> 人</li>
+                <li>B級衰弱者：<span></span>人</li>
+                <li>C級衰弱前期者：<span></span>人</li>
               </ul>
             </div>
           </div>
@@ -241,62 +230,82 @@
 
         <!-- 四個等級 -->
         <div class="row g-3">
-          <div class="col-md-3">
-            <div class="risk-box risk-red p-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold text-danger mb-0">A 級</h6>
-                  <p class="small text-danger mb-0">失能者 (SPPB=0-3分)</p>
+          <div class="row g-3 mt-4">
+            <div class="col-md-3">
+              <div class="risk-box risk-red p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="fw-bold text-danger mb-0">A 級</h6>
+                    <p class="small text-danger mb-0">失能者 (SPPB=0-3分)</p>
+                  </div>
+                  <div class="fs-3 fw-bold text-danger" id="riskA">0</div>
                 </div>
-                <div class="fs-3 fw-bold text-danger">6</div>
-              </div>
-              <div class="mt-2 progress rounded-pill">
-                <div class="progress-bar bg-danger" style="width: 17%"></div>
+                <div class="mt-2 progress rounded-pill">
+                  <div
+                    class="progress-bar bg-danger"
+                    id="progressA"
+                    style="width: 0%"
+                  ></div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-md-3">
-            <div class="risk-box risk-yellow p-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold text-warning mb-0">B 級</h6>
-                  <p class="small text-warning mb-0">衰弱者 (SPPB=4-6分)</p>
+            <div class="col-md-3">
+              <div class="risk-box risk-yellow p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="fw-bold text-warning mb-0">B 級</h6>
+                    <p class="small text-warning mb-0">衰弱者 (SPPB=4-6分)</p>
+                  </div>
+                  <div class="fs-3 fw-bold text-warning" id="riskB">0</div>
                 </div>
-                <div class="fs-3 fw-bold text-warning">8</div>
-              </div>
-              <div class="mt-2 progress rounded-pill">
-                <div class="progress-bar bg-warning" style="width: 22%"></div>
+                <div class="mt-2 progress rounded-pill">
+                  <div
+                    class="progress-bar bg-warning"
+                    id="progressB"
+                    style="width: 0%"
+                  ></div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-md-3">
-            <div class="risk-box risk-blue p-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold text-primary mb-0">C 級</h6>
-                  <p class="small text-primary mb-0">衰弱前期者 (SPPB=7-9分)</p>
+            <div class="col-md-3">
+              <div class="risk-box risk-blue p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="fw-bold text-primary mb-0">C 級</h6>
+                    <p class="small text-primary mb-0">
+                      衰弱前期者 (SPPB=7-9分)
+                    </p>
+                  </div>
+                  <div class="fs-3 fw-bold text-primary" id="riskC">0</div>
                 </div>
-                <div class="fs-3 fw-bold text-primary">12</div>
-              </div>
-              <div class="mt-2 progress rounded-pill">
-                <div class="progress-bar bg-primary" style="width: 33%"></div>
+                <div class="mt-2 progress rounded-pill">
+                  <div
+                    class="progress-bar bg-primary"
+                    id="progressC"
+                    style="width: 0%"
+                  ></div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-md-3">
-            <div class="risk-box risk-green p-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold text-success mb-0">D 級</h6>
-                  <p class="small text-success mb-0">健康者 (SPPB=10-12分)</p>
+            <div class="col-md-3">
+              <div class="risk-box risk-green p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="fw-bold text-success mb-0">D 級</h6>
+                    <p class="small text-success mb-0">健康者 (SPPB=10-12分)</p>
+                  </div>
+                  <div class="fs-3 fw-bold text-success" id="riskD">0</div>
                 </div>
-                <div class="fs-3 fw-bold text-success">10</div>
-              </div>
-              <div class="mt-2 progress rounded-pill">
-                <div class="progress-bar bg-success" style="width: 28%"></div>
+                <div class="mt-2 progress rounded-pill">
+                  <div
+                    class="progress-bar bg-success"
+                    id="progressD"
+                    style="width: 0%"
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
@@ -1772,511 +1781,82 @@
           </svg>
           參與者狀態
         </h5>
-
-        <div class="row g-3">
-          <!-- 王大明 A -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-danger h-100"
-              data-person="王大明"
-              data-age="85"
-              data-gender="男"
-              data-level="A"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#E2E8F0" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 70 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                  <path
-                    d="M30 30 Q40 20 50 25 Q60 20 70 30"
-                    fill="none"
-                    stroke="#A1A1AA"
-                    stroke-width="3"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-danger text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  A級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">王大明</h4>
-                <p class="small text-muted mb-0">85歲 | 男</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 李秀英 A -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-danger h-100"
-              data-person="李秀英"
-              data-age="78"
-              data-gender="女"
-              data-level="A"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#FEE2E2" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 60 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                  <path
-                    d="M30 25 Q40 35 50 25 Q60 35 70 25"
-                    fill="none"
-                    stroke="#A1A1AA"
-                    stroke-width="3"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-danger text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  A級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">李秀英</h4>
-                <p class="small text-muted mb-0">78歲 | 女</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 張文忠 A -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-danger h-100"
-              data-person="張文忠"
-              data-age="82"
-              data-gender="男"
-              data-level="A"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#E2E8F0" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 70 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                  <path
-                    d="M30 25 Q40 15 50 20 Q60 15 70 25"
-                    fill="none"
-                    stroke="#A1A1AA"
-                    stroke-width="3"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-danger text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  A級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">張文忠</h4>
-                <p class="small text-muted mb-0">82歲 | 男</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 林小華 B -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-warning h-100"
-              data-person="林小華"
-              data-age="75"
-              data-gender="女"
-              data-level="B"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#FEF3C7" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 68 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-warning text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  B級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">林小華</h4>
-                <p class="small text-muted mb-0">75歲 | 女</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 陳美玲 B -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-warning h-100"
-              data-person="陳美玲"
-              data-age="80"
-              data-gender="女"
-              data-level="B"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#FEF3C7" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 66 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-warning text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  B級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">陳美玲</h4>
-                <p class="small text-muted mb-0">80歲 | 女</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 吳志明 C -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-primary h-100"
-              data-person="吳志明"
-              data-age="83"
-              data-gender="男"
-              data-level="C"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#DBEAFE" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 70 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-primary text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  C級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">吳志明</h4>
-                <p class="small text-muted mb-0">83歲 | 男</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 陳志明 C -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-primary h-100"
-              data-person="陳志明"
-              data-age="79"
-              data-gender="男"
-              data-level="C"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#DBEAFE" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 68 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-primary text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  C級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">陳志明</h4>
-                <p class="small text-muted mb-0">79歲 | 男</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 林淑芬 D -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
-              data-person="林淑芬"
-              data-age="77"
-              data-gender="女"
-              data-level="D"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 67 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  D級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">林淑芬</h4>
-                <p class="small text-muted mb-0">77歲 | 女</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 黃明德 D -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
-              data-person="黃明德"
-              data-age="81"
-              data-gender="男"
-              data-level="D"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 70 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  D級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">黃明德</h4>
-                <p class="small text-muted mb-0">81歲 | 男</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 張美麗 D -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
-              data-person="張美麗"
-              data-age="76"
-              data-gender="女"
-              data-level="D"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 67 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  D級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">張美麗</h4>
-                <p class="small text-muted mb-0">76歲 | 女</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 黃建國 D -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
-              data-person="黃建國"
-              data-age="84"
-              data-gender="男"
-              data-level="D"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 70 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  D級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">黃建國</h4>
-                <p class="small text-muted mb-0">84歲 | 男</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 蔡明哲 D -->
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div
-              class="person-card bg-white rounded shadow-sm border border-2 border-success h-100"
-              data-person="蔡明哲"
-              data-age="79"
-              data-gender="男"
-              data-level="D"
-            >
-              <div class="position-relative">
-                <svg
-                  class="w-100"
-                  height="130"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="30" fill="#DCFCE7" />
-                  <circle cx="40" cy="45" r="5" fill="#4B5563" />
-                  <circle cx="60" cy="45" r="5" fill="#4B5563" />
-                  <path
-                    d="M40 65 Q50 68 60 65"
-                    fill="none"
-                    stroke="#4B5563"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <div
-                  class="position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-0 rounded-start"
-                >
-                  D級
-                </div>
-              </div>
-              <div class="p-2 text-center">
-                <h4 class="fw-semibold text-dark mb-1">蔡明哲</h4>
-                <p class="small text-muted mb-0">79歲 | 男</p>
-              </div>
-            </div>
-          </div>
+        <!-- 篩選按鈕 -->
+        <div class="d-none d-md-flex gap-2 mb-3">
+          <button
+            type="button"
+            class="btn btn-secondary flex-fill"
+            data-risk="all"
+          >
+            全部
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger flex-fill"
+            data-risk="high"
+          >
+            危險
+          </button>
+          <button
+            type="button"
+            class="btn btn-warning flex-fill"
+            data-risk="slightlyHigh"
+          >
+            高
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary flex-fill"
+            data-risk="medium"
+          >
+            中
+          </button>
+          <button
+            type="button"
+            class="btn btn-info flex-fill"
+            data-risk="slightlyLow"
+          >
+            稍低
+          </button>
+          <button
+            type="button"
+            class="btn btn-success flex-fill"
+            data-risk="low"
+          >
+            低
+          </button>
         </div>
+
+        <!-- 篩選區：手機版下拉 -->
+        <div class="dropdown d-md-none mb-3">
+          <button
+            class="btn btn-outline-secondary dropdown-toggle w-100"
+            type="button"
+            data-bs-toggle="dropdown"
+          >
+            請選擇風險
+          </button>
+          <ul class="dropdown-menu w-100">
+            <li><a class="dropdown-item" href="#" data-risk="all">全部</a></li>
+            <li><a class="dropdown-item" href="#" data-risk="high">危險</a></li>
+            <li>
+              <a class="dropdown-item" href="#" data-risk="slightlyHigh">高</a>
+            </li>
+            <li><a class="dropdown-item" href="#" data-risk="medium">中</a></li>
+            <li>
+              <a class="dropdown-item" href="#" data-risk="slightlyLow">稍低</a>
+            </li>
+            <li><a class="dropdown-item" href="#" data-risk="low">低</a></li>
+          </ul>
+        </div>
+        <!-- 人員區塊 -->
+        <div class="row g-3" id="personContainer"></div>
 
         <div class="mt-3 text-end">
           <button
             id="viewAllBtn"
             class="btn btn-primary btn-sm d-inline-flex align-items-center"
+            style="display: none"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -2333,19 +1913,16 @@
         </h5>
 
         <!-- 地圖 -->
-        <div class="bg-white p-4 rounded shadow" style="height: 400px">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.452424857936!2d121.56568161500196!3d25.033964983963736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abc123456789%3A0xabcdef1234567890!2z5YyX5Lqs5ZyL5q61!5e0!3m2!1szh-TW!2stw!4v1694270400000!5m2!1szh-TW!2stw"
-            width="100%"
-            height="100%"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
+        <div id="map"></div>
       </div>
     </div>
   </body>
 </html>
 <script src="main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACfOxn7DJ9gdcb-XBx-R2X5pbHWeskzUg&callback=initMap"
+  async
+  defer
+></script>

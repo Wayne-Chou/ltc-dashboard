@@ -1,0 +1,34 @@
+[
+  {
+    "No": 1,
+    "Name": "信義區",
+    "LatLngCoordinate": {
+      "Latitude": 25.039560141660036,
+      "Longitude": 121.5702780613829
+    }
+  },
+  {
+    "No": 2,
+    "Name": "中山區",
+    "LatLngCoordinate": {
+      "Latitude": 25.082167385245075,
+      "Longitude": 121.54534424529102
+    }
+  },
+  {
+    "No": 3,
+    "Name": "北投區",
+    "LatLngCoordinate": {
+      "Latitude": 25.117037142380003,
+      "Longitude": 121.51639784451312
+    }
+  },
+  {
+    "No": 4,
+    "Name": "大安區",
+    "LatLngCoordinate": {
+      "Latitude": 25.032201528784285,
+      "Longitude": 121.52933677876953
+    }
+  }
+]
