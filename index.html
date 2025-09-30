@@ -13,6 +13,11 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
+    <!-- 日期套件 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="bg-white">
@@ -25,11 +30,8 @@
             <h2 class="custom-subtitle mb-0">建豐健康科技</h2>
           </div>
           <div class="text-end">
-            <p class="text-secondary mb-1">
-              檢測日期：<span class="fw-semibold">2025/07/14</span>
-            </p>
             <p class="text-secondary mb-0">
-              報告生成：<span class="fw-semibold">2025/07/15</span>
+              更新日期：<span class="fw-semibold">2025/07/15</span>
             </p>
           </div>
         </div>
@@ -69,17 +71,45 @@
           </svg>
           檢測統計摘要
         </h2>
-
+        <div class="my-3">
+          <div class="input-group">
+            <input
+              type="text"
+              id="dateRange"
+              class="form-control"
+              placeholder="請選擇日期範圍"
+            />
+            <button class="btn btn-outline-secondary" id="clearBtn">
+              清除
+            </button>
+          </div>
+        </div>
+        <!-- 新增日期提示 alert -->
+        <div
+          id="dateAlertBox"
+          class="alert alert-warning alert-dismissible fade show d-none"
+          role="alert"
+        >
+          <strong>提示：</strong> 只能查找半年內的資料。
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
         <!-- 統計資訊 -->
         <div class="row g-4">
           <div class="col-md-4">
             <div class="stat-card stat-blue">
               <h6 class="fw-semibold mb-2">總計參與人數</h6>
               <div class="d-flex align-items-end">
-                <span class="display-6 fw-bold text-blue">126</span>
+                <span id="totalCount" class="display-6 fw-bold text-blue"
+                  >0</span
+                >
                 <span class="ms-2 mb-1 text-blue">人</span>
               </div>
-              <p class="small mt-2 text-blue">自2025年1月起累計</p>
+              <p id="startDateText" class="small mt-2 text-blue">尚無資料</p>
             </div>
           </div>
 
@@ -115,7 +145,19 @@
         <!-- 表格 -->
         <div class="mt-4">
           <h6 class="fw-semibold text-secondary mb-3">歷次檢測平均成績表</h6>
+
           <div class="table-responsive">
+            <div class="d-flex gap-2 mb-2">
+              <button id="checkAllBtn" class="btn btn-outline-primary btn-sm">
+                全選
+              </button>
+              <button
+                id="uncheckAllBtn"
+                class="btn btn-outline-secondary btn-sm"
+              >
+                取消全選
+              </button>
+            </div>
             <table class="table table-bordered align-middle">
               <thead class="bg-light">
                 <tr>
@@ -131,7 +173,24 @@
 
               <tbody id="assessmentTableBody"></tbody>
             </table>
+            <div
+              id="tablePaginationContainer"
+              class="d-flex justify-content-between align-items-center mt-2 w-100"
+            ></div>
           </div>
+        </div>
+        <div
+          id="alertBox"
+          class="alert alert-warning alert-dismissible fade show d-none"
+          role="alert"
+        >
+          <strong>提示：</strong> 至少需要勾選 1 筆檢測資料。
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
         </div>
       </div>
       <!-- 風險分級統計區塊 -->
@@ -198,7 +257,6 @@
           </div>
           <div class="mt-2 text-end">
             <button
-              onclick="document.getElementById('detailModal').style.display='block'"
               class="btn btn-warning btn-sm d-inline-flex align-items-center"
             >
               <svg
@@ -342,1417 +400,40 @@
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-4">坐站平均秒數</h5>
                   <div class="w-100" style="height: 300px">
-                    <svg
-                      class="w-100 h-100"
-                      viewBox="0 0 400 300"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <!-- Y軸線 -->
-                      <line
-                        x1="50"
-                        y1="30"
-                        x2="50"
-                        y2="250"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                      />
-                      <line
-                        x1="50"
-                        y1="250"
-                        x2="350"
-                        y2="250"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                      />
-                      <!-- 虛線 -->
-                      <line
-                        x1="50"
-                        y1="230"
-                        x2="350"
-                        y2="230"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="210"
-                        x2="350"
-                        y2="210"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="190"
-                        x2="350"
-                        y2="190"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="170"
-                        x2="350"
-                        y2="170"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="150"
-                        x2="350"
-                        y2="150"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="130"
-                        x2="350"
-                        y2="130"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="110"
-                        x2="350"
-                        y2="110"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="90"
-                        x2="350"
-                        y2="90"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="70"
-                        x2="350"
-                        y2="70"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="50"
-                        x2="350"
-                        y2="50"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="30"
-                        x2="350"
-                        y2="30"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <!-- Y軸文字 -->
-                      <text
-                        x="45"
-                        y="250"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        10.0
-                      </text>
-                      <text
-                        x="45"
-                        y="210"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        10.5
-                      </text>
-                      <text
-                        x="45"
-                        y="170"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        11.0
-                      </text>
-                      <text
-                        x="45"
-                        y="130"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        11.5
-                      </text>
-                      <text
-                        x="45"
-                        y="90"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        12.0
-                      </text>
-                      <text
-                        x="45"
-                        y="50"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        12.5
-                      </text>
-                      <!-- Y軸名稱 -->
-                      <text
-                        x="25"
-                        y="140"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#6b7280"
-                        transform="rotate(-90, 25, 140)"
-                      >
-                        秒數
-                      </text>
-                      <!-- X軸文字 -->
-                      <text
-                        x="50"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        02/17
-                      </text>
-                      <text
-                        x="100"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        03/16
-                      </text>
-                      <text
-                        x="150"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        04/15
-                      </text>
-                      <text
-                        x="200"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        05/13
-                      </text>
-                      <text
-                        x="250"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        06/12
-                      </text>
-                      <text
-                        x="300"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        07/14
-                      </text>
-                      <!-- 折線圖 -->
-                      <path
-                        d="M50,60 L100,75 L150,90 L200,105 L250,135 L300,145"
-                        fill="none"
-                        stroke="#10b981"
-                        stroke-width="3"
-                      />
-                      <circle cx="50" cy="60" r="5" fill="#10b981" />
-                      <circle cx="100" cy="75" r="5" fill="#10b981" />
-                      <circle cx="150" cy="90" r="5" fill="#10b981" />
-                      <circle cx="200" cy="105" r="5" fill="#10b981" />
-                      <circle cx="250" cy="135" r="5" fill="#10b981" />
-                      <circle cx="300" cy="145" r="5" fill="#10b981" />
-                      <text
-                        x="50"
-                        y="45"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#10b981"
-                        font-weight="bold"
-                      >
-                        12.5s
-                      </text>
-                      <text
-                        x="100"
-                        y="60"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#10b981"
-                        font-weight="bold"
-                      >
-                        12.2s
-                      </text>
-                      <text
-                        x="150"
-                        y="75"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#10b981"
-                        font-weight="bold"
-                      >
-                        11.8s
-                      </text>
-                      <text
-                        x="200"
-                        y="90"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#10b981"
-                        font-weight="bold"
-                      >
-                        11.5s
-                      </text>
-                      <text
-                        x="250"
-                        y="120"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#10b981"
-                        font-weight="bold"
-                      >
-                        11.0s
-                      </text>
-                      <text
-                        x="300"
-                        y="130"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#10b981"
-                        font-weight="bold"
-                      >
-                        10.8s
-                      </text>
-                      <!-- 漸層 -->
-                      <linearGradient
-                        id="greenGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="0%"
-                        y2="100%"
-                      >
-                        <stop
-                          offset="0%"
-                          stop-color="#10b981"
-                          stop-opacity="0.3"
-                        />
-                        <stop
-                          offset="100%"
-                          stop-color="#10b981"
-                          stop-opacity="0.05"
-                        />
-                      </linearGradient>
-                      <path
-                        d="M50,60 L100,75 L150,90 L200,105 L250,135 L300,145 L300,250 L50,250 Z"
-                        fill="url(#greenGradient)"
-                      />
-                    </svg>
+                    <svg id="sitStandChart" class="w-100 h-100"></svg>
                   </div>
                 </div>
               </div>
             </div>
-
             <!-- 平衡測驗得分 -->
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-4">平衡測驗得分</h5>
                   <div class="w-100" style="height: 300px">
-                    <svg
-                      class="w-100 h-100"
-                      viewBox="0 0 400 300"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <!-- Y軸 -->
-                      <line
-                        x1="50"
-                        y1="30"
-                        x2="50"
-                        y2="250"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="250"
-                        x2="350"
-                        y2="250"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="230"
-                        x2="350"
-                        y2="230"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="210"
-                        x2="350"
-                        y2="210"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="190"
-                        x2="350"
-                        y2="190"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="170"
-                        x2="350"
-                        y2="170"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="150"
-                        x2="350"
-                        y2="150"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="130"
-                        x2="350"
-                        y2="130"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="110"
-                        x2="350"
-                        y2="110"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="90"
-                        x2="350"
-                        y2="90"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="70"
-                        x2="350"
-                        y2="70"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="50"
-                        x2="350"
-                        y2="50"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-                      <line
-                        x1="50"
-                        y1="30"
-                        x2="350"
-                        y2="30"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      ></line>
-
-                      <!-- Y軸文字 -->
-                      <text
-                        x="45"
-                        y="250"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        2.5
-                      </text>
-                      <text
-                        x="45"
-                        y="210"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        2.7
-                      </text>
-                      <text
-                        x="45"
-                        y="170"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        3.0
-                      </text>
-                      <text
-                        x="45"
-                        y="130"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        3.2
-                      </text>
-                      <text
-                        x="45"
-                        y="90"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        3.5
-                      </text>
-                      <text
-                        x="45"
-                        y="50"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        3.7
-                      </text>
-                      <text
-                        x="25"
-                        y="140"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#6b7280"
-                        transform="rotate(-90, 25, 140)"
-                      >
-                        得分
-                      </text>
-
-                      <!-- X軸文字 -->
-                      <text
-                        x="50"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        02/17
-                      </text>
-                      <text
-                        x="100"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        03/16
-                      </text>
-                      <text
-                        x="150"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        04/15
-                      </text>
-                      <text
-                        x="200"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        05/13
-                      </text>
-                      <text
-                        x="250"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        06/12
-                      </text>
-                      <text
-                        x="300"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        07/14
-                      </text>
-
-                      <!-- 折線 -->
-                      <path
-                        d="M50,210 L100,195 L150,180 L200,185 L250,175 L300,165"
-                        fill="none"
-                        stroke="#3b82f6"
-                        stroke-width="3"
-                      ></path>
-
-                      <!-- 點 -->
-                      <circle cx="50" cy="210" r="5" fill="#3b82f6"></circle>
-                      <circle cx="100" cy="195" r="5" fill="#3b82f6"></circle>
-                      <circle cx="150" cy="180" r="5" fill="#3b82f6"></circle>
-                      <circle cx="200" cy="185" r="5" fill="#3b82f6"></circle>
-                      <circle cx="250" cy="175" r="5" fill="#3b82f6"></circle>
-                      <circle cx="300" cy="165" r="5" fill="#3b82f6"></circle>
-
-                      <!-- 點文字 -->
-                      <text
-                        x="50"
-                        y="195"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#3b82f6"
-                        font-weight="bold"
-                      >
-                        2.8分
-                      </text>
-                      <text
-                        x="100"
-                        y="180"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#3b82f6"
-                        font-weight="bold"
-                      >
-                        3.0分
-                      </text>
-                      <text
-                        x="150"
-                        y="165"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#3b82f6"
-                        font-weight="bold"
-                      >
-                        3.2分
-                      </text>
-                      <text
-                        x="200"
-                        y="170"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#3b82f6"
-                        font-weight="bold"
-                      >
-                        3.1分
-                      </text>
-                      <text
-                        x="250"
-                        y="160"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#3b82f6"
-                        font-weight="bold"
-                      >
-                        3.3分
-                      </text>
-                      <text
-                        x="300"
-                        y="150"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#3b82f6"
-                        font-weight="bold"
-                      >
-                        3.4分
-                      </text>
-
-                      <!-- 漸層 -->
-                      <linearGradient
-                        id="blueGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="0%"
-                        y2="100%"
-                      >
-                        <stop
-                          offset="0%"
-                          stop-color="#3b82f6"
-                          stop-opacity="0.3"
-                        ></stop>
-                        <stop
-                          offset="100%"
-                          stop-color="#3b82f6"
-                          stop-opacity="0.05"
-                        ></stop>
-                      </linearGradient>
-                      <path
-                        d="M50,210 L100,195 L150,180 L200,185 L250,175 L300,165 L300,250 L50,250 Z"
-                        fill="url(#blueGradient)"
-                      ></path>
-                    </svg>
+                    <svg id="balanceChart" class="w-100 h-100"></svg>
                   </div>
                 </div>
               </div>
             </div>
-
             <!-- 步行速度趨勢 -->
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-4">步行速度趨勢</h5>
                   <div class="w-100" style="height: 300px">
-                    <svg
-                      class="w-100 h-100"
-                      viewBox="0 0 400 300"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <!-- Y軸 -->
-                      <line
-                        x1="50"
-                        y1="30"
-                        x2="50"
-                        y2="250"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                      />
-                      <line
-                        x1="50"
-                        y1="250"
-                        x2="350"
-                        y2="250"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                      />
-                      <line
-                        x1="50"
-                        y1="230"
-                        x2="350"
-                        y2="230"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="210"
-                        x2="350"
-                        y2="210"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="190"
-                        x2="350"
-                        y2="190"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="170"
-                        x2="350"
-                        y2="170"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="150"
-                        x2="350"
-                        y2="150"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="130"
-                        x2="350"
-                        y2="130"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="110"
-                        x2="350"
-                        y2="110"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="90"
-                        x2="350"
-                        y2="90"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="70"
-                        x2="350"
-                        y2="70"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="50"
-                        x2="350"
-                        y2="50"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="30"
-                        x2="350"
-                        y2="30"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-
-                      <!-- Y軸文字 -->
-                      <text
-                        x="45"
-                        y="250"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        75
-                      </text>
-                      <text
-                        x="45"
-                        y="210"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        80
-                      </text>
-                      <text
-                        x="45"
-                        y="170"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        85
-                      </text>
-                      <text
-                        x="45"
-                        y="130"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        90
-                      </text>
-                      <text
-                        x="45"
-                        y="90"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        95
-                      </text>
-                      <text
-                        x="45"
-                        y="50"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        100
-                      </text>
-                      <text
-                        x="25"
-                        y="140"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#6b7280"
-                        transform="rotate(-90, 25, 140)"
-                      >
-                        cm/s
-                      </text>
-
-                      <!-- X軸文字 -->
-                      <text
-                        x="50"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        02/17
-                      </text>
-                      <text
-                        x="100"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        03/16
-                      </text>
-                      <text
-                        x="150"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        04/15
-                      </text>
-                      <text
-                        x="200"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        05/13
-                      </text>
-                      <text
-                        x="250"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        06/12
-                      </text>
-                      <text
-                        x="300"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        07/14
-                      </text>
-
-                      <!-- 折線 -->
-                      <path
-                        d="M50,210 L100,190 L150,170 L200,175 L250,160 L300,145"
-                        fill="none"
-                        stroke="#f59e0b"
-                        stroke-width="3"
-                      ></path>
-
-                      <!-- 點 -->
-                      <circle cx="50" cy="210" r="5" fill="#f59e0b" />
-                      <circle cx="100" cy="190" r="5" fill="#f59e0b" />
-                      <circle cx="150" cy="170" r="5" fill="#f59e0b" />
-                      <circle cx="200" cy="175" r="5" fill="#f59e0b" />
-                      <circle cx="250" cy="160" r="5" fill="#f59e0b" />
-                      <circle cx="300" cy="145" r="5" fill="#f59e0b" />
-
-                      <!-- 點文字 -->
-                      <text
-                        x="50"
-                        y="195"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#f59e0b"
-                        font-weight="bold"
-                      >
-                        80
-                      </text>
-                      <text
-                        x="100"
-                        y="175"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#f59e0b"
-                        font-weight="bold"
-                      >
-                        85
-                      </text>
-                      <text
-                        x="150"
-                        y="155"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#f59e0b"
-                        font-weight="bold"
-                      >
-                        90
-                      </text>
-                      <text
-                        x="200"
-                        y="160"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#f59e0b"
-                        font-weight="bold"
-                      >
-                        88
-                      </text>
-                      <text
-                        x="250"
-                        y="145"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#f59e0b"
-                        font-weight="bold"
-                      >
-                        92
-                      </text>
-                      <text
-                        x="300"
-                        y="130"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#f59e0b"
-                        font-weight="bold"
-                      >
-                        95
-                      </text>
-
-                      <!-- 漸層 -->
-                      <linearGradient
-                        id="yellowGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="0%"
-                        y2="100%"
-                      >
-                        <stop
-                          offset="0%"
-                          stop-color="#f59e0b"
-                          stop-opacity="0.3"
-                        />
-                        <stop
-                          offset="100%"
-                          stop-color="#f59e0b"
-                          stop-opacity="0.05"
-                        />
-                      </linearGradient>
-                      <path
-                        d="M50,210 L100,190 L150,170 L200,175 L250,160 L300,145 L300,250 L50,250 Z"
-                        fill="url(#yellowGradient)"
-                      />
-                    </svg>
+                    <svg id="gaitChart" class="w-100 h-100"></svg>
                   </div>
                 </div>
               </div>
             </div>
-
             <!-- 平均AI跌倒風險機率 -->
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-4">平均AI跌倒風險機率</h5>
                   <div class="w-100" style="height: 300px">
-                    <svg
-                      class="w-100 h-100"
-                      viewBox="0 0 400 300"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <!-- Y軸 -->
-                      <line
-                        x1="50"
-                        y1="30"
-                        x2="50"
-                        y2="250"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                      />
-                      <line
-                        x1="50"
-                        y1="250"
-                        x2="350"
-                        y2="250"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                      />
-                      <line
-                        x1="50"
-                        y1="230"
-                        x2="350"
-                        y2="230"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="210"
-                        x2="350"
-                        y2="210"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="190"
-                        x2="350"
-                        y2="190"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="170"
-                        x2="350"
-                        y2="170"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="150"
-                        x2="350"
-                        y2="150"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="130"
-                        x2="350"
-                        y2="130"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="110"
-                        x2="350"
-                        y2="110"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="90"
-                        x2="350"
-                        y2="90"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="70"
-                        x2="350"
-                        y2="70"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="50"
-                        x2="350"
-                        y2="50"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-                      <line
-                        x1="50"
-                        y1="30"
-                        x2="350"
-                        y2="30"
-                        stroke="#e5e7eb"
-                        stroke-width="1"
-                        stroke-dasharray="2,2"
-                      />
-
-                      <!-- Y軸文字 -->
-                      <text
-                        x="45"
-                        y="250"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        15%
-                      </text>
-                      <text
-                        x="45"
-                        y="210"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        18%
-                      </text>
-                      <text
-                        x="45"
-                        y="170"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        22%
-                      </text>
-                      <text
-                        x="45"
-                        y="130"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        25%
-                      </text>
-                      <text
-                        x="45"
-                        y="90"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        28%
-                      </text>
-                      <text
-                        x="45"
-                        y="50"
-                        text-anchor="end"
-                        font-size="10"
-                        fill="#6b7280"
-                      >
-                        32%
-                      </text>
-                      <text
-                        x="25"
-                        y="140"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#6b7280"
-                        transform="rotate(-90, 25, 140)"
-                      >
-                        風險%
-                      </text>
-
-                      <!-- X軸文字 -->
-                      <text
-                        x="50"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        02/17
-                      </text>
-                      <text
-                        x="100"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        03/16
-                      </text>
-                      <text
-                        x="150"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        04/15
-                      </text>
-                      <text
-                        x="200"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        05/13
-                      </text>
-                      <text
-                        x="250"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        06/12
-                      </text>
-                      <text
-                        x="300"
-                        y="270"
-                        text-anchor="middle"
-                        font-size="11"
-                        fill="#6b7280"
-                      >
-                        07/14
-                      </text>
-
-                      <!-- 折線 -->
-                      <path
-                        d="M50,90 L100,105 L150,120 L200,135 L250,150 L300,180"
-                        fill="none"
-                        stroke="#ef4444"
-                        stroke-width="3"
-                      ></path>
-
-                      <!-- 點 -->
-                      <circle cx="50" cy="90" r="5" fill="#ef4444" />
-                      <circle cx="100" cy="105" r="5" fill="#ef4444" />
-                      <circle cx="150" cy="120" r="5" fill="#ef4444" />
-                      <circle cx="200" cy="135" r="5" fill="#ef4444" />
-                      <circle cx="250" cy="150" r="5" fill="#ef4444" />
-                      <circle cx="300" cy="180" r="5" fill="#ef4444" />
-
-                      <!-- 點文字 -->
-                      <text
-                        x="50"
-                        y="75"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#ef4444"
-                        font-weight="bold"
-                      >
-                        32%
-                      </text>
-                      <text
-                        x="100"
-                        y="90"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#ef4444"
-                        font-weight="bold"
-                      >
-                        30%
-                      </text>
-                      <text
-                        x="150"
-                        y="105"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#ef4444"
-                        font-weight="bold"
-                      >
-                        28%
-                      </text>
-                      <text
-                        x="200"
-                        y="120"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#ef4444"
-                        font-weight="bold"
-                      >
-                        25%
-                      </text>
-                      <text
-                        x="250"
-                        y="135"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#ef4444"
-                        font-weight="bold"
-                      >
-                        22%
-                      </text>
-                      <text
-                        x="300"
-                        y="165"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#ef4444"
-                        font-weight="bold"
-                      >
-                        18%
-                      </text>
-
-                      <!-- 漸層 -->
-                      <linearGradient
-                        id="redGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="0%"
-                        y2="100%"
-                      >
-                        <stop
-                          offset="0%"
-                          stop-color="#ef4444"
-                          stop-opacity="0.3"
-                        />
-                        <stop
-                          offset="100%"
-                          stop-color="#ef4444"
-                          stop-opacity="0.05"
-                        />
-                      </linearGradient>
-                      <path
-                        d="M50,90 L100,105 L150,120 L200,135 L250,150 L300,180 L300,250 L50,250 Z"
-                        fill="url(#redGradient)"
-                      />
-                    </svg>
+                    <svg id="riskChart" class="w-100 h-100"></svg>
                   </div>
                 </div>
               </div>
@@ -1782,7 +463,7 @@
           參與者狀態
         </h5>
         <!-- 篩選按鈕 -->
-        <div class="d-none d-md-flex gap-2 mb-3">
+        <div class="d-none d-md-flex gap-2 mb-3 filterBtnsDesktop">
           <button
             type="button"
             class="btn btn-secondary flex-fill"
@@ -1828,7 +509,7 @@
         </div>
 
         <!-- 篩選區：手機版下拉 -->
-        <div class="dropdown d-md-none mb-3">
+        <div class="dropdown d-md-none mb-3 filterDropdownMobile">
           <button
             class="btn btn-outline-secondary dropdown-toggle w-100"
             type="button"
@@ -1855,8 +536,7 @@
         <div class="mt-3 text-end">
           <button
             id="viewAllBtn"
-            class="btn btn-primary btn-sm d-inline-flex align-items-center"
-            style="display: none"
+            class="btn btn-primary btn-sm d-inline-flex align-items-center viewAllBtn"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -1918,7 +598,11 @@
     </div>
   </body>
 </html>
+<!-- 日期套件 -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
 <script src="main.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script

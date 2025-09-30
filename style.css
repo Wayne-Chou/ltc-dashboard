@@ -12,6 +12,14 @@ body {
   font-family: "Noto Sans TC", sans-serif;
   background-color: #f8fafc;
 }
+
+#locationList {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 /* 外容器 */
 .custom-container {
   max-width: 1280px;
@@ -47,6 +55,24 @@ body {
   padding: 1rem;
   border-radius: 0.5rem;
   border-left: 4px solid;
+}
+/* 表格 */
+.bg-light th {
+  text-wrap: nowrap;
+}
+
+/* 曲線圖 */
+@media (max-width: 1024px) {
+  .card-body > div {
+    overflow-x: auto;
+  }
+  .card-body svg {
+    min-width: 600px !important;
+  }
+}
+
+.hidden-by-filter {
+  display: none !important;
 }
 
 /* 藍色 */

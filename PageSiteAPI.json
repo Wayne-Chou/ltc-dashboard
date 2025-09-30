@@ -30,5 +30,29 @@
       "Latitude": 25.032201528784285,
       "Longitude": 121.52933677876953
     }
+  },
+  {
+    "No": 5,
+    "Name": "比漾廣場 新北永和",
+    "LatLngCoordinate": {
+      "Latitude": 25.009101041487742,
+      "Longitude": 121.50739163131956
+    }
+  },
+  {
+    "No": 6,
+    "Name": "蘆洲功學社音樂廳",
+    "LatLngCoordinate": {
+      "Latitude": 25.081787405999062,
+      "Longitude": 121.47067755408847
+    }
+  },
+  {
+    "No": 7,
+    "Name": "大溝溪生態治水園區",
+    "LatLngCoordinate": {
+      "Latitude": 25.089930102568278,
+      "Longitude": 121.59807175282482
+    }
   }
 ]
