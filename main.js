@@ -1,4 +1,88 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // 語系
+  const LANG = {
+    zh: {
+      alertNoData: "查無資料",
+      viewAll: "查看全部",
+      prevPage: "上一頁",
+      nextPage: "下一頁",
+      page: "第",
+      total: "頁 / 共",
+      sitStand: "坐站平均秒數",
+      balanceScore: "平衡分數",
+      gaitSpeed: "步行速度",
+      fallRisk: "跌倒風險 (%)",
+      countWarning: "尚無資料",
+      noRecord: "尚無檢測紀錄",
+      noMatchedPerson: "目前沒有符合條件的人員",
+      startDateText: "自 {year} 年 {month} 月起累計",
+      latestDateText: "{date} 檢測",
+      generatingPDF: "產生中...",
+      downloadPDF: "下載",
+    },
+    en: {
+      alertNoData: "No data",
+      viewAll: "View all",
+      prevPage: "Previous",
+      nextPage: "Next",
+      page: "Page",
+      total: "of",
+      sitStand: "Sit-Stand Avg (s)",
+      balanceScore: "Balance Score",
+      gaitSpeed: "Gait Speed",
+      fallRisk: "Fall Risk (%)",
+      countWarning: "No data",
+      noRecord: "No test records",
+      noMatchedPerson: "No matching participants found",
+      startDateText: "Accumulated since {year}/{month}",
+      latestDateText: "Measured on {date}",
+      generatingPDF: "Generating...",
+      downloadPDF: "Download",
+    },
+    ja: {
+      alertNoData: "データなし",
+      viewAll: "すべて表示",
+      prevPage: "前ページ",
+      nextPage: "次ページ",
+      page: "第",
+      total: "ページ / 全",
+      sitStand: "座立平均秒数",
+      balanceScore: "バランススコア",
+      gaitSpeed: "歩行速度",
+      fallRisk: "転倒リスク (%)",
+      countWarning: "データなし",
+      noRecord: "検査記録なし",
+      noMatchedPerson: "条件に一致する参加者がいません",
+      startDateText: "{year}年{month}月から累計",
+      latestDateText: "{date} 測定",
+      generatingPDF: "生成中...",
+      downloadPDF: "ダウンロード",
+    },
+    ko: {
+      alertNoData: "데이터 없음",
+      viewAll: "모두보기",
+      prevPage: "이전",
+      nextPage: "다음",
+      page: "페이지",
+      total: " / 총",
+      sitStand: "좌/서 평균 초",
+      balanceScore: "균형 점수",
+      gaitSpeed: "보행 속도",
+      fallRisk: "낙상 위험 (%)",
+      countWarning: "데이터 없음",
+      noRecord: "검사 기록 없음",
+      noMatchedPerson: "조건에 맞는 인원이 없습니다",
+      startDateText: "{year}년 {month}월부터 누적",
+      latestDateText: "{date} 측정",
+      generatingPDF: "생성 중...",
+      downloadPDF: "다운로드",
+    },
+  };
+
+  function t(key) {
+    return LANG[window.currentLang][key] || key;
+  }
+
   const dropdownButton = document.getElementById("dropdownMenuButton");
   const dropdownMenu = document.getElementById("dropdownMenu");
   // 檢測數據資料
@@ -17,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const progressD = document.getElementById("progressD");
 
   const personContainer = document.getElementById("personContainer");
-  const viewAllBtn = document.getElementById("viewAllBtn");
+
   // 檢測日期
   const latestCountEl = document.getElementById("latestCount");
   const latestDateEl = document.getElementById("latestDate");
@@ -25,7 +109,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentAssessments = [];
 
   // 地區名 JSON 檔案
-
   const locationFileMap = {
     信義區: "PageAPI-0.json",
     中山區: "PageAPI-1.json",
@@ -34,6 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     比漾廣場新北永和: "PageAPI-4.json",
     蘆洲功學社音樂廳: "PageAPI-5.json",
     大溝溪生態治水園區: "PageAPI-6.json",
+    新加坡: "PageAPI-Singapore.json",
   };
 
   // VIVIFRAIL 陣列
@@ -106,12 +190,167 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
           </div>
           <div class="p-2 text-center">
-            <h4 class="fw-semibold text-dark mb-1">${person.Name}</h4>
+            <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(
+              person.Name
+            )}</h4>
             <p class="small text-muted mb-0">${person.Age}歲 | ${genderText}</p>
           </div>
         </div>
       </div>`;
   }
+
+  // 姓名（顯示圓點）
+  function maskName(name) {
+    if (!name) return "匿名";
+    const len = name.length;
+
+    // 中文姓名
+    if (len === 2) {
+      return `${name[0]}<span class="dot"></span>`;
+    } else if (len === 3) {
+      return `${name[0]}<span class="dot"></span>${name[2]}`;
+    } else if (len >= 4) {
+      return `${name[0]}<span class="dot"></span><span class="dot"></span>${
+        name[len - 1]
+      }`;
+    } else {
+      return name;
+    }
+  }
+  // 詳細名單彈窗
+  const viewDetailsBtn = document.getElementById("viewDetailsBtn");
+  if (viewDetailsBtn) {
+    viewDetailsBtn.addEventListener("click", () => {
+      let selected = [];
+
+      if (checkAllAcrossPages) {
+        // 全選跨頁直接使用整筆資料
+        selected = [...currentAssessments];
+      } else {
+        // 只抓目前頁面勾選
+        const checkedIndexes = Array.from(
+          document.querySelectorAll(".row-check")
+        )
+          .filter((c) => c.checked)
+          .map((c) => parseInt(c.dataset.index));
+
+        selected = checkedIndexes.map((i) => currentAssessments[i]);
+      }
+
+      if (!selected || selected.length === 0) {
+        document.getElementById("degenerateGaitSpeed").textContent =
+          t("alertNoData");
+        document.getElementById("degenerateChair").textContent = "";
+        ["vivifrailA", "vivifrailB", "vivifrailC"].forEach((id) => {
+          document.getElementById(
+            id
+          ).innerHTML = `<li class="list-group-item">${t("alertNoData")}</li>`;
+        });
+      } else {
+        let totalGaitSpeed = 0;
+        let totalChairSecond = 0;
+        selected.forEach((item) => {
+          if (item.Degenerate) {
+            totalGaitSpeed += item.Degenerate.GaitSpeed || 0;
+            totalChairSecond += item.Degenerate.ChairSecond || 0;
+          }
+        });
+        document.getElementById(
+          "degenerateGaitSpeed"
+        ).textContent = `步行速度衰退：${totalGaitSpeed} 人`;
+        document.getElementById(
+          "degenerateChair"
+        ).textContent = `起坐秒數增加：${totalChairSecond} 人`;
+
+        // 顯示 VIVIFRAIL 名單
+        const levels = ["A", "B", "C"];
+        levels.forEach((level) => {
+          const ul = document.getElementById("vivifrail" + level);
+          ul.innerHTML = "";
+          let names = [];
+          selected.forEach((item) => {
+            if (item.VIVIFRAIL && item.VIVIFRAIL[level]) {
+              item.VIVIFRAIL[level].forEach((person) => {
+                names.push(
+                  `${person.Name} (${person.Age}歲, ${
+                    person.Gender === 1 ? "男" : "女"
+                  })`
+                );
+              });
+            }
+          });
+          if (names.length === 0) {
+            ul.innerHTML = `<li class="list-group-item">${t(
+              "alertNoData"
+            )}</li>`;
+          } else {
+            names.forEach((n) => {
+              const li = document.createElement("li");
+              li.className = "list-group-item";
+              li.textContent = n;
+              ul.appendChild(li);
+            });
+          }
+        });
+      }
+
+      // 彈窗顯示
+      const modal = new bootstrap.Modal(
+        document.getElementById("detailsModal")
+      );
+      modal.show();
+    });
+  }
+
+  // 查看全部彈窗
+  viewAllBtn.addEventListener("click", () => {
+    const allParticipants = flattenData(mergeAllVIVIFRAIL(currentAssessments));
+
+    renderCards(allParticipants, null, {
+      container: modalPersonContainer,
+      isModal: true, // 移除12限制
+    });
+
+    const modal = new bootstrap.Modal(
+      document.getElementById("participantsModal")
+    );
+    modal.show();
+  });
+
+  // 查看全部彈窗桌機按鈕
+  const modalFilterBtnsDesktop = document.querySelectorAll(
+    "#modalFilterBtnsDesktop button"
+  );
+  modalFilterBtnsDesktop.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const risk = btn.dataset.risk;
+      const allParticipants = flattenData(
+        mergeAllVIVIFRAIL(currentAssessments)
+      );
+      renderCards(allParticipants, risk, {
+        container: modalPersonContainer,
+        isModal: true,
+      });
+    });
+  });
+
+  // 查看全部彈窗手機下拉
+  const modalFilterDropdownMobile = document.querySelectorAll(
+    "#modalFilterDropdownMobile .dropdown-item"
+  );
+  modalFilterDropdownMobile.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      const risk = item.dataset.risk;
+      const allParticipants = flattenData(
+        mergeAllVIVIFRAIL(currentAssessments)
+      );
+      renderCards(allParticipants, risk, {
+        container: modalPersonContainer,
+        isModal: true,
+      });
+    });
+  });
 
   // 地區的 JSON
 
@@ -139,7 +378,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <tr>
           <td colspan="7" class="text-center">
             <div class="alert alert-warning text-center m-0" role="alert">
-               查無資料
+                ${t("alertNoData")}
             </div>
           </td>
         </tr>
@@ -147,14 +386,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         personContainer.innerHTML = `
         <div class="col-12">
           <div class="alert alert-warning text-center" role="alert">
-             查無資料
+              ${t("alertNoData")}
           </div>
         </div>
       `;
         updateTotalCountAndStartDate([]);
         // 清空其他顯示區域
         latestCountEl.textContent = "0";
-        latestDateEl.textContent = "尚無檢測紀錄";
+        latestDateEl.textContent = t("alertNoData");
         riskA.textContent = 0;
         riskB.textContent = 0;
         riskC.textContent = 0;
@@ -186,15 +425,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       document
         .getElementById("viewAllBtn")
         ?.classList.remove("hidden-by-filter");
-
+      removeNoDataOverlay();
       renderAssessmentTable(currentAssessments);
       updateOnLocationChange();
       updateLatestCountDate(currentAssessments);
       updateTotalCountAndStartDate(currentAssessments);
-      drawSitStandChart(currentAssessments);
-      drawBalanceChart(currentAssessments);
-      drawGaitChart(currentAssessments);
-      drawRiskChart(currentAssessments);
+
+      drawSitStandChartChartJS(currentAssessments);
+      drawBalanceChartChartJS(currentAssessments);
+
+      drawRiskChartChartJS(currentAssessments);
+      drawGaitChartChartJS(currentAssessments);
     } catch (err) {
       console.error("讀取 JSON 失敗:", err);
     }
@@ -237,6 +478,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 表格 function
   let currentPage = 1;
   const pageSize = 10;
+  let checkAllAcrossPages = false; // 紀錄是否全選
   function renderAssessmentTable(assessments) {
     const assessmentTableBody = document.getElementById("assessmentTableBody");
     const paginationContainer = document.getElementById(
@@ -251,6 +493,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 排序最新到最舊
     const sorted = [...assessments].sort((a, b) => b.Date - a.Date);
+
+    // 整筆資料最新的一筆
+    const latest = sorted[0];
+    const latestIndex = assessments.indexOf(latest);
+
     const totalPages = Math.ceil(sorted.length / pageSize);
     if (currentPage > totalPages) currentPage = totalPages;
     if (currentPage < 1) currentPage = 1;
@@ -268,10 +515,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         .toString()
         .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
 
+      const isChecked =
+        checkAllAcrossPages || assessments.indexOf(item) === latestIndex;
+
       tr.innerHTML = `
       <td><input type="checkbox" class="row-check" data-index="${assessments.indexOf(
         item
-      )}" ${index === 0 ? "checked" : ""}></td>
+      )}" ${isChecked ? "checked" : ""}></td>
       <td>${formattedDate}</td>
       <td>${item.Count}人</td>
       <td>${item.ChairSecond.toFixed(1)}秒</td>
@@ -282,9 +532,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       assessmentTableBody.appendChild(tr);
     });
 
-    // 預設最新一筆
-    renderRisk([pageData[0]]);
-    updateDegenerateAndLevels([pageData[0]]);
+    // 預設最新一筆或全選時
+    if (!checkAllAcrossPages) {
+      renderRisk([latest]);
+      updateDegenerateAndLevels([latest]);
+    } else {
+      renderRisk(assessments);
+      updateDegenerateAndLevels(assessments);
+    }
 
     // checkbox 勾選事件
     const checkboxes = document.querySelectorAll(".row-check");
@@ -296,13 +551,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (checkedIndexes.length === 0) {
           showAlert();
-          checkboxes[0].checked = true;
-          renderRisk([pageData[0]]);
-          updateDegenerateAndLevels([pageData[0]]);
+
+          // 取消所有勾選時，保留整筆資料最新一筆
+          const latestCheckbox = Array.from(checkboxes).find(
+            (c) => parseInt(c.dataset.index) === latestIndex
+          );
+          if (latestCheckbox) latestCheckbox.checked = true;
+
+          renderRisk([latest]);
+          updateDegenerateAndLevels([latest]);
         } else {
           const selected = checkedIndexes.map((i) => assessments[i]);
           renderRisk(selected);
           updateDegenerateAndLevels(selected);
+
+          // 紀錄是否跨頁全選
+          checkAllAcrossPages = selected.length === assessments.length;
         }
       });
     });
@@ -312,7 +576,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (totalPages > 1) {
       const prevBtn = document.createElement("button");
       prevBtn.className = "btn btn-sm btn-outline-primary";
-      prevBtn.textContent = "上一頁";
+      prevBtn.textContent = t("prevPage");
       prevBtn.disabled = currentPage === 1;
       prevBtn.onclick = () => {
         currentPage--;
@@ -321,16 +585,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const nextBtn = document.createElement("button");
       nextBtn.className = "btn btn-sm btn-outline-primary";
-      nextBtn.textContent = "下一頁";
+      nextBtn.textContent = t("nextPage");
       nextBtn.disabled = currentPage === totalPages;
       nextBtn.onclick = () => {
         currentPage++;
         renderAssessmentTable(assessments);
       };
-
       const pageInfo = document.createElement("span");
       pageInfo.className = "small text-center flex-grow-1";
-      pageInfo.textContent = `第 ${currentPage} 頁 / 共 ${totalPages} 頁`;
+      pageInfo.textContent = `${t("page")} ${currentPage} ${t(
+        "total"
+      )} ${totalPages}`;
 
       paginationContainer.appendChild(prevBtn);
       paginationContainer.appendChild(pageInfo);
@@ -347,33 +612,82 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 3000);
   }
 
-  // 重新更新畫面
-  function triggerCheckboxUpdate() {
-    const selected = Array.from(
-      document.querySelectorAll(".row-check:checked")
-    ).map((cb) => currentAssessments[parseInt(cb.dataset.index)]);
-
-    renderRisk(selected);
-    updateDegenerateAndLevels(selected);
-  }
-
   // 「全選」按鈕
   document.getElementById("checkAllBtn").addEventListener("click", () => {
+    checkAllAcrossPages = true;
+
     const checkboxes = document.querySelectorAll(".row-check");
     checkboxes.forEach((cb) => (cb.checked = true));
-    triggerCheckboxUpdate();
+
+    renderRisk(currentAssessments);
+    updateDegenerateAndLevels(currentAssessments);
   });
 
   // 「取消全選」按鈕
   document.getElementById("uncheckAllBtn").addEventListener("click", () => {
+    checkAllAcrossPages = false;
+
     const checkboxes = document.querySelectorAll(".row-check");
-    const checked = Array.from(checkboxes).filter((cb) => cb.checked);
-
-    // 取消全部後，保留第一筆
     checkboxes.forEach((cb) => (cb.checked = false));
-    if (checked[0]) checked[0].checked = true;
 
-    triggerCheckboxUpdate();
+    if (currentAssessments.length > 0) {
+      const latest = [...currentAssessments].sort((a, b) => b.Date - a.Date)[0];
+      const latestIndex = currentAssessments.indexOf(latest);
+
+      checkboxes.forEach((cb) => {
+        if (parseInt(cb.dataset.index) === latestIndex) {
+          cb.checked = true;
+        }
+      });
+
+      renderRisk([latest]);
+      updateDegenerateAndLevels([latest]);
+    }
+  });
+
+  // 顯示提示訊息
+  function showAlert() {
+    const alertBox = document.getElementById("alertBox");
+    alertBox.classList.remove("d-none");
+    setTimeout(() => {
+      alertBox.classList.add("d-none");
+    }, 3000);
+  }
+
+  // 「全選」按鈕
+  document.getElementById("checkAllBtn").addEventListener("click", () => {
+    checkAllAcrossPages = true; // 設定跨頁全選
+
+    // 把目前畫面上的 checkbox 都勾選
+    const checkboxes = document.querySelectorAll(".row-check");
+    checkboxes.forEach((cb) => (cb.checked = true));
+
+    renderRisk(currentAssessments);
+    updateDegenerateAndLevels(currentAssessments);
+  });
+
+  // 「取消全選」按鈕
+  document.getElementById("uncheckAllBtn").addEventListener("click", () => {
+    checkAllAcrossPages = false; // 取消跨頁全選
+
+    // 先取消所有 checkbox
+    const checkboxes = document.querySelectorAll(".row-check");
+    checkboxes.forEach((cb) => (cb.checked = false));
+
+    // 保留整筆資料最新一筆
+    if (currentAssessments.length > 0) {
+      // 找出日期最新的一筆
+      const latest = [...currentAssessments].sort((a, b) => b.Date - a.Date)[0];
+
+      checkboxes.forEach((cb) => {
+        if (parseInt(cb.dataset.index) === currentAssessments.indexOf(latest)) {
+          cb.checked = true;
+        }
+      });
+
+      renderRisk([latest]);
+      updateDegenerateAndLevels([latest]);
+    }
   });
 
   // 風險等級 function
@@ -428,7 +742,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
         .toString()
         .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
-      latestDateEl.textContent = `${formattedDate} 檢測`;
+      latestDateEl.textContent = t("latestDateText").replace(
+        "{date}",
+        formattedDate
+      );
     }
   }
 
@@ -509,7 +826,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const startDateTextEl = document.getElementById("startDateText");
     if (!assessments || assessments.length === 0) {
       if (totalCountEl) totalCountEl.textContent = "0";
-      if (startDateTextEl) startDateTextEl.textContent = "尚無資料";
+      if (startDateTextEl) startDateTextEl.textContent = t("countWarning");
       return;
     }
 
@@ -526,13 +843,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (totalCountEl) totalCountEl.textContent = totalCount;
     if (startDateTextEl)
-      startDateTextEl.textContent = `自 ${startYear} 年 ${startMonth} 月起累計`;
+      startDateTextEl.textContent = t("startDateText")
+        .replace("{year}", startYear)
+        .replace("{month}", startMonth);
   }
 
   // 人員卡片 (最多 12 個，按 A->B->C->D 排序)
+  function renderCards(allVIVIFRAIL, filterRisk = null, options = {}) {
+    const container = options.container || personContainer;
+    const isModal = options.isModal || false;
 
-  function renderCards(allVIVIFRAIL, filterRisk = null) {
-    personContainer.innerHTML = "";
+    container.innerHTML = "";
 
     let persons = allVIVIFRAIL;
     if (filterRisk && filterRisk !== "all") {
@@ -542,23 +863,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     const levelOrder = { A: 1, B: 2, C: 3, D: 4 };
     persons.sort((a, b) => levelOrder[a.Level] - levelOrder[b.Level]);
 
-    const showAllBtn = persons.length > 12;
-    updateViewAllBtn(showAllBtn);
-
-    persons = persons.slice(0, 12);
+    // 只有非彈窗限制 12 個
+    if (!isModal) {
+      const showAllBtn = persons.length > 12;
+      updateViewAllBtn(showAllBtn);
+      persons = persons.slice(0, 12);
+    }
 
     if (persons.length === 0) {
-      personContainer.innerHTML = `
-        <div class="col-12">
-          <div class="alert alert-secondary text-center" role="alert">
-            目前沒有符合條件的人員
-          </div>
-        </div>`;
+      container.innerHTML = `
+      <div class="col-12">
+        <div class="alert alert-secondary text-center" role="alert">
+          ${t("noMatchedPerson")}
+        </div>
+      </div>`;
       return;
     }
 
-    personContainer.innerHTML = persons.map(createPersonCard).join("");
-    updateRiskButtonsCounts(allVIVIFRAIL);
+    container.innerHTML = persons.map(createPersonCard).join("");
+    if (!isModal) updateRiskButtonsCounts(allVIVIFRAIL);
   }
 
   // 更新桌機風險按鈕括號
@@ -648,7 +971,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // 日期套件js
-  const dateAlertBox = document.getElementById("dateAlertBox");
 
   const fp = flatpickr("#dateRange", {
     mode: "range",
@@ -659,23 +981,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         let start = selectedDates[0];
         let end = selectedDates[1];
 
-        const diffTime = Math.abs(end - start);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        // 限定查找 3 個月內
-        if (diffDays > 92) {
-          dateAlertBox.classList.remove("d-none");
-          dateAlertBox.innerHTML = `
-          <strong>提示：</strong> 只能查找三個月內的資料。
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-          setTimeout(() => {
-            instance.clear();
-          }, 100);
-        } else {
-          // 三個月內資料
-          filterByDate(start, end);
-        }
+        filterByDate(start, end);
       }
     },
   });
@@ -697,7 +1003,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     <tr>
       <td colspan="7" class="text-center">
         <div class="alert alert-warning text-center m-0" role="alert">
-           查無資料
+           ${t("alertNoData")}
         </div>
       </td>
     </tr>
@@ -705,7 +1011,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       personContainer.innerHTML = `
       <div class="col-12">
         <div class="alert alert-warning text-center" role="alert">
-           查無資料
+          ${t("alertNoData")}
         </div>
       </div>
     `;
@@ -729,22 +1035,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       const mergedVIVIFRAIL = mergeAllVIVIFRAIL(filtered);
       renderCards(flattenData(mergedVIVIFRAIL));
       updateLatestCountDate(filtered);
-      drawSitStandChart(filtered);
-      drawBalanceChart(filtered);
-      drawGaitChart(filtered);
-      drawRiskChart(filtered);
+
+      drawSitStandChartChartJS(filtered);
+      drawBalanceChartChartJS(filtered);
+      drawGaitChartChartJS(filtered);
+      drawRiskChartChartJS(filtered);
     }
   }
 
   // 清除按鈕
   document.getElementById("clearBtn").addEventListener("click", () => {
     fp.clear();
-    dateAlertBox.classList.add("d-none");
+
     //清除後顯示全部資料
     if (currentAssessments.length > 0) {
       renderAssessmentTable(currentAssessments);
       updateOnLocationChange();
       updateLatestCountDate(currentAssessments);
+      removeNoDataOverlay();
       const filterBtnsDesktop = document.querySelector(".filterBtnsDesktop");
       const filterDropdownMobile = document.querySelector(
         ".filterDropdownMobile"
@@ -754,722 +1062,463 @@ document.addEventListener("DOMContentLoaded", async () => {
       filterBtnsDesktop.classList.remove("hidden-by-filter");
       filterDropdownMobile.classList.remove("hidden-by-filter");
       viewAllBtn.classList.remove("hidden-by-filter");
-      drawSitStandChart(currentAssessments);
-      drawBalanceChart(currentAssessments);
-      drawGaitChart(currentAssessments);
-      drawRiskChart(currentAssessments);
+
+      drawSitStandChartChartJS(currentAssessments);
+      drawBalanceChartChartJS(currentAssessments);
+      drawGaitChartChartJS(currentAssessments);
+      drawRiskChartChartJS(currentAssessments);
     }
   });
-  // 曲線圖坐站平均秒數
-  function drawSitStandChart(assessments) {
-    const svg = document.getElementById("sitStandChart");
-    if (!svg) return;
 
-    // 先清空
-    svg.innerHTML = "";
+  // 新曲線圖坐站平均秒數
+  function drawSitStandChartChartJS(assessments) {
+    const ctx = document.getElementById("sitStandChartCanvas");
+    if (!ctx) return;
 
-    if (!assessments || assessments.length === 0) return;
-
-    const svgWidth = svg.clientWidth;
-    const svgHeight = svg.clientHeight;
-    const padding = { top: 30, right: 20, bottom: 30, left: 50 };
-
-    const chartWidth = svgWidth - padding.left - padding.right;
-    const chartHeight = svgHeight - padding.top - padding.bottom;
-
-    // 整理資料 (依 Date 排序，由舊到新)
-    let sorted = [...assessments].sort((a, b) => a.Date - b.Date);
-
-    // 只取最新 6 筆
-    if (sorted.length > 6) {
-      sorted = sorted.slice(-6);
+    if (!assessments || assessments.length === 0) {
+      ctx.getContext("2d").clearRect(0, 0, ctx.width, ctx.height);
+      return;
     }
 
-    const maxY = Math.max(...sorted.map((d) => d.ChairSecond)) + 0.5;
-    const minY = Math.min(...sorted.map((d) => d.ChairSecond)) - 0.5;
-
-    // 計算點座標
-    const points = sorted.map((d, i) => {
-      const x =
-        sorted.length === 1
-          ? padding.left + chartWidth / 2
-          : padding.left + (i / (sorted.length - 1)) * chartWidth;
-      const y =
-        padding.top + ((maxY - d.ChairSecond) / (maxY - minY)) * chartHeight;
-      return { x, y, value: d.ChairSecond, date: new Date(d.Date) };
-    });
-
-    // SVG 定義漸層
-    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-    const linearGradient = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "linearGradient"
-    );
-    linearGradient.setAttribute("id", "lineGradient");
-    linearGradient.setAttribute("x1", "0");
-    linearGradient.setAttribute("y1", "0");
-    linearGradient.setAttribute("x2", "0");
-    linearGradient.setAttribute("y2", "1");
-
-    const stop1 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "stop"
-    );
-    stop1.setAttribute("offset", "0%");
-    stop1.setAttribute("stop-color", "#10b981");
-    stop1.setAttribute("stop-opacity", "0.4");
-
-    const stop2 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "stop"
-    );
-    stop2.setAttribute("offset", "100%");
-    stop2.setAttribute("stop-color", "#10b981");
-    stop2.setAttribute("stop-opacity", "0");
-
-    linearGradient.appendChild(stop1);
-    linearGradient.appendChild(stop2);
-    defs.appendChild(linearGradient);
-    svg.appendChild(defs);
-
-    // === 折線與漸層填充（多筆資料才畫折線）===
-    if (sorted.length > 1) {
-      const pathD = points
-        .map((p, i) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`))
-        .join(" ");
-      const path = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
-      path.setAttribute("d", pathD);
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "#10b981");
-      path.setAttribute("stroke-width", "3");
-      path.setAttribute("stroke-dasharray", "5,5");
-      svg.appendChild(path);
-
-      // 線下漸層填充
-      const fillPathD =
-        pathD +
-        ` L${points[points.length - 1].x},${svgHeight - padding.bottom} L${
-          points[0].x
-        },${svgHeight - padding.bottom} Z`;
-      const fillPath = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
-      fillPath.setAttribute("d", fillPathD);
-      fillPath.setAttribute("fill", "url(#lineGradient)");
-      fillPath.setAttribute("stroke", "none");
-      svg.appendChild(fillPath);
-    }
-
-    // === 畫圓點 + 數值文字 ===
-    points.forEach((p) => {
-      const circle = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "circle"
-      );
-      circle.setAttribute("cx", p.x);
-      circle.setAttribute("cy", p.y);
-      circle.setAttribute("r", 5);
-      circle.setAttribute("fill", "#10b981");
-      svg.appendChild(circle);
-
-      const text = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      text.setAttribute("x", p.x);
-      text.setAttribute("y", p.y - 10);
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("font-size", "12");
-      text.setAttribute("fill", "#10b981");
-      text.textContent = p.value.toFixed(1) + "s";
-      svg.appendChild(text);
-    });
-
-    // === X 軸文字 ===
-    points.forEach((p) => {
-      const xText = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      xText.setAttribute("x", p.x);
-      xText.setAttribute("y", svgHeight - 5);
-      xText.setAttribute("text-anchor", "middle");
-      xText.setAttribute("font-size", "11");
-      xText.setAttribute("fill", "#6b7280");
-      xText.textContent = `${p.date.getMonth() + 1}/${p.date.getDate()}`;
-      svg.appendChild(xText);
-    });
-
-    // === Y 軸數字 + 虛線網格 ===
-    const yStep = (maxY - minY) / 5;
-    for (let i = 0; i <= 5; i++) {
-      const yValue = minY + i * yStep;
-      const y = padding.top + ((maxY - yValue) / (maxY - minY)) * chartHeight;
-
-      // Y 軸文字
-      const text = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      text.setAttribute("x", padding.left - 10);
-      text.setAttribute("y", y + 5);
-      text.setAttribute("text-anchor", "end");
-      text.setAttribute("font-size", "11");
-      text.setAttribute("fill", "#6b7280");
-      text.textContent = yValue.toFixed(1);
-      svg.appendChild(text);
-
-      // 虛線格線
-      const line = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "line"
-      );
-      line.setAttribute("x1", padding.left);
-      line.setAttribute("x2", svgWidth - padding.right);
-      line.setAttribute("y1", y);
-      line.setAttribute("y2", y);
-      line.setAttribute("stroke", "#d1d5db");
-      line.setAttribute("stroke-dasharray", "2,2");
-      svg.appendChild(line);
-    }
-  }
-
-  // 曲線圖平衡測驗得分
-  function drawBalanceChart(assessments) {
-    const svg = document.getElementById("balanceChart");
-    if (!svg) return;
-
-    svg.innerHTML = "";
-    if (!assessments || assessments.length === 0) return;
-
-    const svgWidth = svg.clientWidth;
-    const svgHeight = svg.clientHeight;
-    const padding = { top: 30, right: 20, bottom: 30, left: 50 };
-
-    const chartWidth = svgWidth - padding.left - padding.right;
-    const chartHeight = svgHeight - padding.top - padding.bottom;
-
-    // 依 Date 排序
+    // 依日期排序
     const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
 
-    // 僅取最後 6 筆
-    const displayData = sorted.slice(-6);
-
-    const maxY = Math.max(...displayData.map((d) => d.BalanceScore)) + 0.5;
-    const minY = Math.min(...displayData.map((d) => d.BalanceScore)) - 0.5;
-
-    // 計算點座標
-    const points = displayData.map((d, i) => {
-      const x =
-        displayData.length === 1
-          ? padding.left + chartWidth / 2
-          : padding.left + (i / (displayData.length - 1)) * chartWidth;
-      const y =
-        padding.top + ((maxY - d.BalanceScore) / (maxY - minY)) * chartHeight;
-      return { x, y, value: d.BalanceScore, date: new Date(d.Date) };
+    // 完整資料
+    const labels = sorted.map((d) => {
+      const date = new Date(d.Date);
+      return `${date.getMonth() + 1}/${date.getDate()}`;
     });
+    const dataValues = sorted.map((d) => d.ChairSecond);
 
-    // === SVG 定義漸層 (藍色系) ===
-    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-    const linearGradient = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "linearGradient"
-    );
-    linearGradient.setAttribute("id", "balanceGradient");
-    linearGradient.setAttribute("x1", "0");
-    linearGradient.setAttribute("y1", "0");
-    linearGradient.setAttribute("x2", "0");
-    linearGradient.setAttribute("y2", "1");
-
-    const stop1 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "stop"
-    );
-    stop1.setAttribute("offset", "0%");
-    stop1.setAttribute("stop-color", "#3b82f6");
-    stop1.setAttribute("stop-opacity", "0.4");
-
-    const stop2 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "stop"
-    );
-    stop2.setAttribute("offset", "100%");
-    stop2.setAttribute("stop-color", "#3b82f6");
-    stop2.setAttribute("stop-opacity", "0");
-
-    linearGradient.appendChild(stop1);
-    linearGradient.appendChild(stop2);
-    defs.appendChild(linearGradient);
-    svg.appendChild(defs);
-
-    // === 折線與漸層填充 ===
-    if (points.length > 1) {
-      const pathD = points
-        .map((p, i) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`))
-        .join(" ");
-      const path = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
-      path.setAttribute("d", pathD);
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "#3b82f6");
-      path.setAttribute("stroke-width", "3");
-      path.setAttribute("stroke-dasharray", "5,5");
-      svg.appendChild(path);
-
-      const fillPathD =
-        pathD +
-        ` L${points[points.length - 1].x},${svgHeight - padding.bottom} L${
-          points[0].x
-        },${svgHeight - padding.bottom} Z`;
-      const fillPath = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
-      fillPath.setAttribute("d", fillPathD);
-      fillPath.setAttribute("fill", "url(#balanceGradient)");
-      svg.appendChild(fillPath);
+    // 如果之前已有圖表，先銷毀
+    if (window.sitStandChartInstance) {
+      window.sitStandChartInstance.destroy();
     }
 
-    // === 圓點 + 數值文字 ===
-    points.forEach((p) => {
-      const circle = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "circle"
-      );
-      circle.setAttribute("cx", p.x);
-      circle.setAttribute("cy", p.y);
-      circle.setAttribute("r", 5);
-      circle.setAttribute("fill", "#3b82f6");
-      svg.appendChild(circle);
+    // 建立圖表
+    window.sitStandChartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels, // 全部資料
+        datasets: [
+          {
+            label: t("sitStand"),
+            data: dataValues,
+            borderColor: "#10b981",
+            backgroundColor: "rgba(16,185,129,0.3)",
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0,
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: "nearest",
+          intersect: false,
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const value = context.parsed.y;
+                const dateObj = sorted[context.dataIndex]
+                  ? new Date(sorted[context.dataIndex].Date)
+                  : null;
+                const fullDate = dateObj
+                  ? `${dateObj.getFullYear()}/${
+                      dateObj.getMonth() + 1
+                    }/${dateObj.getDate()}`
+                  : labels[context.dataIndex];
 
-      const text = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      text.setAttribute("x", p.x);
-      text.setAttribute("y", p.y - 10);
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("font-size", "12");
-      text.setAttribute("fill", "#3b82f6");
-      text.textContent = p.value.toFixed(1);
-      svg.appendChild(text);
+                return `${fullDate}：${value.toFixed(1)} 秒`;
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            title: { display: true, text: "日期" },
+            ticks: {
+              autoSkip: true,
+              maxTicksLimit: 7, // 最多顯示 7 個刻度
+            },
+          },
+          y: {
+            title: { display: true, text: t("sitStand") },
+            beginAtZero: false,
+          },
+        },
+      },
     });
-
-    // === X 軸文字 ===
-    points.forEach((p) => {
-      const xText = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      xText.setAttribute("x", p.x);
-      xText.setAttribute("y", svgHeight - 5);
-      xText.setAttribute("text-anchor", "middle");
-      xText.setAttribute("font-size", "11");
-      xText.setAttribute("fill", "#6b7280");
-      xText.textContent = `${p.date.getMonth() + 1}/${p.date.getDate()}`;
-      svg.appendChild(xText);
-    });
-
-    // === Y 軸數字 + 虛線網格 ===
-    const yStep = (maxY - minY) / 5;
-    for (let i = 0; i <= 5; i++) {
-      const yValue = minY + i * yStep;
-      const y = padding.top + ((maxY - yValue) / (maxY - minY)) * chartHeight;
-
-      const text = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      text.setAttribute("x", padding.left - 10);
-      text.setAttribute("y", y + 5);
-      text.setAttribute("text-anchor", "end");
-      text.setAttribute("font-size", "11");
-      text.setAttribute("fill", "#6b7280");
-      text.textContent = yValue.toFixed(1);
-      svg.appendChild(text);
-
-      const line = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "line"
-      );
-      line.setAttribute("x1", padding.left);
-      line.setAttribute("x2", svgWidth - padding.right);
-      line.setAttribute("y1", y);
-      line.setAttribute("y2", y);
-      line.setAttribute("stroke", "#d1d5db");
-      line.setAttribute("stroke-dasharray", "2,2");
-      svg.appendChild(line);
-    }
   }
 
-  // 曲線圖步行速度趨勢
-  function drawGaitChart(assessments) {
-    const svg = document.getElementById("gaitChart");
-    if (!svg) return;
+  // 新曲線圖平衡測驗得分
+  function drawBalanceChartChartJS(assessments) {
+    const ctx = document.getElementById("balanceChartCanvas");
+    if (!ctx) return;
 
-    svg.innerHTML = "";
-    if (!assessments || assessments.length === 0) return;
+    if (!assessments || assessments.length === 0) {
+      ctx.getContext("2d").clearRect(0, 0, ctx.width, ctx.height);
+      return;
+    }
 
-    const svgWidth = svg.clientWidth;
-    const svgHeight = svg.clientHeight;
-    const padding = { top: 30, right: 20, bottom: 30, left: 50 };
-
-    const chartWidth = svgWidth - padding.left - padding.right;
-    const chartHeight = svgHeight - padding.top - padding.bottom;
-
-    // 整理資料 (依 Date 排序)
+    // 依日期排序
     const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
 
-    // 只取最後 6 筆
-    const displayData = sorted.slice(-6);
-
-    const maxY = Math.max(...displayData.map((d) => d.GaitSpeed)) + 0.5;
-    const minY = Math.min(...displayData.map((d) => d.GaitSpeed)) - 0.5;
-
-    // 計算點座標
-    const points = displayData.map((d, i) => {
-      const x =
-        displayData.length === 1
-          ? padding.left + chartWidth / 2
-          : padding.left + (i / (displayData.length - 1)) * chartWidth;
-      const y =
-        padding.top + ((maxY - d.GaitSpeed) / (maxY - minY)) * chartHeight;
-      return { x, y, value: d.GaitSpeed, date: new Date(d.Date) };
+    const labels = sorted.map((d) => {
+      const date = new Date(d.Date);
+      return `${date.getMonth() + 1}/${date.getDate()}`;
     });
 
-    // SVG 定義漸層 (黃色系)
-    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-    const linearGradient = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "linearGradient"
-    );
-    linearGradient.setAttribute("id", "gaitGradient");
-    linearGradient.setAttribute("x1", "0");
-    linearGradient.setAttribute("y1", "0");
-    linearGradient.setAttribute("x2", "0");
-    linearGradient.setAttribute("y2", "1");
+    const dataValues = sorted.map((d) => d.BalanceScore);
 
-    const stop1 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "stop"
-    );
-    stop1.setAttribute("offset", "0%");
-    stop1.setAttribute("stop-color", "#f59e0b");
-    stop1.setAttribute("stop-opacity", "0.4");
-
-    const stop2 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "stop"
-    );
-    stop2.setAttribute("offset", "100%");
-    stop2.setAttribute("stop-color", "#f59e0b");
-    stop2.setAttribute("stop-opacity", "0");
-
-    linearGradient.appendChild(stop1);
-    linearGradient.appendChild(stop2);
-    defs.appendChild(linearGradient);
-    svg.appendChild(defs);
-
-    // === 折線與漸層填充 ===
-    if (points.length > 1) {
-      const pathD = points
-        .map((p, i) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`))
-        .join(" ");
-      const path = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
-      path.setAttribute("d", pathD);
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "#f59e0b");
-      path.setAttribute("stroke-width", "3");
-      path.setAttribute("stroke-dasharray", "5,5");
-      svg.appendChild(path);
-
-      const fillPathD =
-        pathD +
-        ` L${points[points.length - 1].x},${svgHeight - padding.bottom} L${
-          points[0].x
-        },${svgHeight - padding.bottom} Z`;
-      const fillPath = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
-      fillPath.setAttribute("d", fillPathD);
-      fillPath.setAttribute("fill", "url(#gaitGradient)");
-      svg.appendChild(fillPath);
+    // 如果之前已有圖表，先銷毀
+    if (window.balanceChartInstance) {
+      window.balanceChartInstance.destroy();
     }
 
-    // === 圓點 + 數值文字 ===
-    points.forEach((p) => {
-      const circle = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "circle"
-      );
-      circle.setAttribute("cx", p.x);
-      circle.setAttribute("cy", p.y);
-      circle.setAttribute("r", 5);
-      circle.setAttribute("fill", "#f59e0b");
-      svg.appendChild(circle);
+    window.balanceChartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels, // 全部資料
+        datasets: [
+          {
+            label: t("balanceScore"),
+            data: dataValues,
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59,130,246,0.3)",
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0,
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: "nearest",
+          intersect: false,
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const value = context.parsed.y;
+                const dateObj = sorted[context.dataIndex]
+                  ? new Date(sorted[context.dataIndex].Date)
+                  : null;
+                const fullDate = dateObj
+                  ? `${dateObj.getFullYear()}/${
+                      dateObj.getMonth() + 1
+                    }/${dateObj.getDate()}`
+                  : labels[context.dataIndex];
 
-      const text = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      text.setAttribute("x", p.x);
-      text.setAttribute("y", p.y - 10);
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("font-size", "12");
-      text.setAttribute("fill", "#f59e0b");
-      text.textContent = p.value.toFixed(1);
-      svg.appendChild(text);
+                return `${fullDate}：${value.toFixed(1)} 秒`;
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            title: { display: true, text: "日期" },
+            ticks: {
+              autoSkip: true,
+              maxTicksLimit: 7, // 最多顯示 7 個刻度
+            },
+          },
+          y: {
+            title: { display: true, text: t("balanceScore") },
+            beginAtZero: false,
+          },
+        },
+      },
     });
-
-    // === X 軸文字 ===
-    points.forEach((p) => {
-      const xText = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      xText.setAttribute("x", p.x);
-      xText.setAttribute("y", svgHeight - 5);
-      xText.setAttribute("text-anchor", "middle");
-      xText.setAttribute("font-size", "11");
-      xText.setAttribute("fill", "#6b7280");
-      xText.textContent = `${p.date.getMonth() + 1}/${p.date.getDate()}`;
-      svg.appendChild(xText);
-    });
-
-    // === Y 軸數字 + 虛線網格 ===
-    const yStep = (maxY - minY) / 5;
-    for (let i = 0; i <= 5; i++) {
-      const yValue = minY + i * yStep;
-      const y = padding.top + ((maxY - yValue) / (maxY - minY)) * chartHeight;
-
-      const text = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      text.setAttribute("x", padding.left - 10);
-      text.setAttribute("y", y + 5);
-      text.setAttribute("text-anchor", "end");
-      text.setAttribute("font-size", "11");
-      text.setAttribute("fill", "#6b7280");
-      text.textContent = yValue.toFixed(1);
-      svg.appendChild(text);
-
-      const line = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "line"
-      );
-      line.setAttribute("x1", padding.left);
-      line.setAttribute("x2", svgWidth - padding.right);
-      line.setAttribute("y1", y);
-      line.setAttribute("y2", y);
-      line.setAttribute("stroke", "#d1d5db");
-      line.setAttribute("stroke-dasharray", "2,2");
-      svg.appendChild(line);
-    }
   }
+  // 新曲線圖步行速度趨勢
+  function drawGaitChartChartJS(assessments) {
+    const ctx = document.getElementById("gaitChartCanvas");
+    if (!ctx) return;
 
-  // 曲線圖平均AI跌倒風險機率
-  function drawRiskChart(assessments) {
-    const svg = document.getElementById("riskChart");
-    if (!svg) return;
+    if (!assessments || assessments.length === 0) {
+      ctx.getContext("2d").clearRect(0, 0, ctx.width, ctx.height);
+      return;
+    }
 
-    svg.innerHTML = "";
-    if (!assessments || assessments.length === 0) return;
-
-    const svgWidth = svg.clientWidth;
-    const svgHeight = svg.clientHeight;
-    const padding = { top: 30, right: 20, bottom: 30, left: 50 };
-
-    const chartWidth = svgWidth - padding.left - padding.right;
-    const chartHeight = svgHeight - padding.top - padding.bottom;
-
-    // 依 Date 排序
+    // 依日期排序
     const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
 
-    // 只取最後 6 筆資料
-    const limited = sorted.slice(-6);
-
-    const maxY = Math.max(...limited.map((d) => d.RiskRate)) + 5;
-    const minY = Math.min(...limited.map((d) => d.RiskRate)) - 5;
-
-    const points = limited.map((d, i) => {
-      const x =
-        limited.length === 1
-          ? padding.left + chartWidth / 2
-          : padding.left + (i / (limited.length - 1)) * chartWidth;
-      const y =
-        padding.top + ((maxY - d.RiskRate) / (maxY - minY)) * chartHeight;
-      return { x, y, value: d.RiskRate, date: new Date(d.Date) };
+    const labels = sorted.map((d) => {
+      const date = new Date(d.Date);
+      return `${date.getMonth() + 1}/${date.getDate()}`;
     });
+    const dataValues = sorted.map((d) => d.GaitSpeed);
 
-    // === SVG 漸層 (紅色系) ===
-    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-    const linearGradient = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "linearGradient"
-    );
-    linearGradient.setAttribute("id", "riskGradient");
-    linearGradient.setAttribute("x1", "0");
-    linearGradient.setAttribute("y1", "0");
-    linearGradient.setAttribute("x2", "0");
-    linearGradient.setAttribute("y2", "1");
-
-    const stop1 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "stop"
-    );
-    stop1.setAttribute("offset", "0%");
-    stop1.setAttribute("stop-color", "#ef4444");
-    stop1.setAttribute("stop-opacity", "0.4");
-
-    const stop2 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "stop"
-    );
-    stop2.setAttribute("offset", "100%");
-    stop2.setAttribute("stop-color", "#ef4444");
-    stop2.setAttribute("stop-opacity", "0");
-
-    linearGradient.appendChild(stop1);
-    linearGradient.appendChild(stop2);
-    defs.appendChild(linearGradient);
-    svg.appendChild(defs);
-
-    // === 折線與漸層填充 ===
-    if (limited.length > 1) {
-      const pathD = points
-        .map((p, i) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`))
-        .join(" ");
-      const path = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
-      path.setAttribute("d", pathD);
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "#ef4444");
-      path.setAttribute("stroke-width", "3");
-      path.setAttribute("stroke-dasharray", "5,5");
-      svg.appendChild(path);
-
-      const fillPathD =
-        pathD +
-        ` L${points[points.length - 1].x},${svgHeight - padding.bottom} L${
-          points[0].x
-        },${svgHeight - padding.bottom} Z`;
-      const fillPath = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
-      );
-      fillPath.setAttribute("d", fillPathD);
-      fillPath.setAttribute("fill", "url(#riskGradient)");
-      svg.appendChild(fillPath);
+    if (window.gaitChartInstance) {
+      window.gaitChartInstance.destroy();
     }
 
-    // === 圓點 + 數值 ===
-    points.forEach((p) => {
-      const circle = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "circle"
-      );
-      circle.setAttribute("cx", p.x);
-      circle.setAttribute("cy", p.y);
-      circle.setAttribute("r", 5);
-      circle.setAttribute("fill", "#ef4444");
-      svg.appendChild(circle);
+    window.gaitChartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [
+          {
+            label: t("gaitSpeed"),
+            data: dataValues,
+            borderColor: "#f59e0b",
+            backgroundColor: "rgba(245,158,11,0.3)",
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0, // 圓點隱藏
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: "nearest",
+          intersect: false,
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const value = context.parsed.y;
+                const dateObj = sorted[context.dataIndex]
+                  ? new Date(sorted[context.dataIndex].Date)
+                  : null;
+                const fullDate = dateObj
+                  ? `${dateObj.getFullYear()}/${
+                      dateObj.getMonth() + 1
+                    }/${dateObj.getDate()}`
+                  : labels[context.dataIndex];
 
-      const text = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      text.setAttribute("x", p.x);
-      text.setAttribute("y", p.y - 10);
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("font-size", "12");
-      text.setAttribute("fill", "#ef4444");
-      text.textContent = p.value.toFixed(1) + "%";
-      svg.appendChild(text);
+                return `${fullDate}：${value.toFixed(1)} 秒`;
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            title: { display: true, text: "日期" },
+            ticks: { autoSkip: true, maxTicksLimit: 7 },
+          },
+          y: {
+            title: { display: true, text: t("gaitSpeed") },
+            beginAtZero: false,
+          },
+        },
+      },
     });
-
-    // === X 軸日期 ===
-    points.forEach((p) => {
-      const xText = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      xText.setAttribute("x", p.x);
-      xText.setAttribute("y", svgHeight - 5);
-      xText.setAttribute("text-anchor", "middle");
-      xText.setAttribute("font-size", "11");
-      xText.setAttribute("fill", "#6b7280");
-      xText.textContent = `${p.date.getMonth() + 1}/${p.date.getDate()}`;
-      svg.appendChild(xText);
-    });
-
-    // === Y 軸數字 + 虛線網格 ===
-    const yStep = (maxY - minY) / 5;
-    for (let i = 0; i <= 5; i++) {
-      const yValue = minY + i * yStep;
-      const y = padding.top + ((maxY - yValue) / (maxY - minY)) * chartHeight;
-
-      const text = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text"
-      );
-      text.setAttribute("x", padding.left - 10);
-      text.setAttribute("y", y + 5);
-      text.setAttribute("text-anchor", "end");
-      text.setAttribute("font-size", "11");
-      text.setAttribute("fill", "#6b7280");
-      text.textContent = yValue.toFixed(1);
-      svg.appendChild(text);
-
-      const line = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "line"
-      );
-      line.setAttribute("x1", padding.left);
-      line.setAttribute("x2", svgWidth - padding.right);
-      line.setAttribute("y1", y);
-      line.setAttribute("y2", y);
-      line.setAttribute("stroke", "#d1d5db");
-      line.setAttribute("stroke-dasharray", "2,2");
-      svg.appendChild(line);
-    }
   }
 
+  // 新曲線圖平均AI跌倒風險機率
+  function drawRiskChartChartJS(assessments) {
+    const ctx = document.getElementById("riskChartCanvas");
+    if (!ctx) return;
+
+    if (!assessments || assessments.length === 0) {
+      ctx.getContext("2d").clearRect(0, 0, ctx.width, ctx.height);
+      return;
+    }
+
+    // 依日期排序
+    const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
+
+    const labels = sorted.map((d) => {
+      const date = new Date(d.Date);
+      return `${date.getMonth() + 1}/${date.getDate()}`;
+    });
+
+    const dataValues = sorted.map((d) => d.RiskRate);
+
+    // 如果之前已有圖表，先銷毀
+    if (window.riskChartInstance) {
+      window.riskChartInstance.destroy();
+    }
+
+    window.riskChartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels, // 全部資料
+        datasets: [
+          {
+            label: t("fallRisk"),
+            data: dataValues,
+            borderColor: "#ef4444",
+            backgroundColor: "rgba(239,68,68,0.3)",
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0,
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: "nearest",
+          intersect: false,
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const value = context.parsed.y;
+                const dateObj = sorted[context.dataIndex]
+                  ? new Date(sorted[context.dataIndex].Date)
+                  : null;
+                const fullDate = dateObj
+                  ? `${dateObj.getFullYear()}/${
+                      dateObj.getMonth() + 1
+                    }/${dateObj.getDate()}`
+                  : labels[context.dataIndex];
+
+                return `${fullDate}：${value.toFixed(1)} 秒`;
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            title: { display: true, text: "日期" },
+            ticks: {
+              autoSkip: true,
+              maxTicksLimit: 7, // 最多顯示 7 個刻度
+            },
+          },
+          y: {
+            title: { display: true, text: t("fallRisk") },
+            beginAtZero: false,
+          },
+        },
+      },
+    });
+  }
   // 曲線圖查無資料
   function drawNoDataChart() {
-    const charts = ["sitStandChart", "balanceChart", "gaitChart", "riskChart"];
+    const charts = [
+      "sitStandChartCanvas",
+      "balanceChartCanvas",
+      "gaitChartCanvas",
+      "riskChartCanvas",
+    ];
 
     charts.forEach((id) => {
-      const svgEl = document.getElementById(id);
-      if (!svgEl) return;
+      const canvas = document.getElementById(id);
+      if (!canvas) return;
 
-      // 清空原本的圖表
-      svgEl.innerHTML = "";
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-      // 文字提示
-      const xmlns = "http://www.w3.org/2000/svg";
-      const text = document.createElementNS(xmlns, "text");
-      text.setAttribute("x", "50%");
-      text.setAttribute("y", "50%");
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("dominant-baseline", "middle");
-      text.setAttribute("fill", "#888");
-      text.setAttribute("font-size", "18");
-      text.textContent = "查無資料";
+      // 清空畫布
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      svgEl.appendChild(text);
+      ctx.fillStyle = "#888";
+      ctx.font = "18px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      // 顯示文字
+      ctx.fillText(t("alertNoData"), canvas.width / 2, canvas.height / 2);
+
+      // 加上遮罩防止滑鼠觸碰折線圖顯示問題
+      if (!canvas.parentElement.querySelector(".no-data-overlay")) {
+        const overlay = document.createElement("div");
+        overlay.classList.add("no-data-overlay");
+        Object.assign(overlay.style, {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "transparent",
+          pointerEvents: "auto",
+          zIndex: 10,
+        });
+
+        canvas.parentElement.style.position = "relative";
+        canvas.parentElement.appendChild(overlay);
+      }
+    });
+  }
+  // 移除遮罩
+  function removeNoDataOverlay() {
+    document
+      .querySelectorAll(".no-data-overlay")
+      .forEach((overlay) => overlay.remove());
+  }
+
+  // 下載功能
+  const btn = document.getElementById("downloadBtn");
+
+  if (btn) {
+    btn.addEventListener("click", async () => {
+      const page = document.body;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="bi bi-hourglass-split me-1"></i> ${t(
+        "generatingPDF"
+      )}`;
+
+      try {
+        const canvas = await html2canvas(page, {
+          scale: 2,
+          useCORS: true,
+          scrollY: 0,
+          windowWidth: document.documentElement.scrollWidth,
+          windowHeight: document.documentElement.scrollHeight,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        // 取得圖片的實際尺寸比例
+        const imgWidth = pageWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        let finalWidth = imgWidth;
+        let finalHeight = imgHeight;
+        if (imgHeight > pageHeight) {
+          const ratio = pageHeight / imgHeight;
+          finalWidth = imgWidth * ratio;
+          finalHeight = pageHeight;
+        }
+
+        const x = (pageWidth - finalWidth) / 2;
+        const y = 0;
+
+        pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
+
+        const fileName = `Dashboard_${new Date().toLocaleDateString(
+          "zh-TW"
+        )}.pdf`;
+        pdf.save(fileName);
+      } catch (error) {
+        console.error("PDF 產生失敗：", error);
+        alert("產生 PDF 時發生錯誤，請稍後再試。");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="bi bi-download me-1"></i> ${t(
+          "downloadPDF"
+        )}`;
+      }
     });
   }
 });

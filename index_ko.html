@@ -22,6 +22,41 @@
   </head>
   <body class="bg-white">
     <div class="container custom-container pb-5 px-4">
+      <!-- 統計資訊 -->
+      <header class="custom-header mt-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="custom-title h3 h2-md h1-lg mb-1">
+              AI 동적 골격 낙상 예방 그룹 대시보드
+            </h1>
+            <h2 class="custom-subtitle h5 h4-md h3-lg mb-0">
+              Jianfeng 건강 기술
+            </h2>
+          </div>
+          <div class="text-end">
+            <p class="text-secondary mb-0">
+              업데이트 날짜：<span class="fw-semibold">2025/07/15</span>
+            </p>
+          </div>
+        </div>
+        <div class="dropdown mt-3 d-flex justify-content-between">
+          <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          ></button>
+          <ul
+            class="dropdown-menu"
+            id="dropdownMenu"
+            aria-labelledby="dropdownMenuButton"
+          ></ul>
+          <button id="downloadBtn" class="btn btn-primary">
+            <i class="bi bi-download me-1"></i> 다운로드
+          </button>
+        </div>
+      </header>
       <nav
         class="navbar navbar-expand-lg bg-white shadow-sm sticky-top border-bottom"
       >
@@ -44,27 +79,27 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#summary"
-                  >檢測統計摘要</a
+                  >테스트 통계 요약</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#risk"
-                  >風險分級統計</a
+                  >위험 등급 통계</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#trend"
-                  >群體變化趨勢</a
+                  >그룹 변화 추세</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#status"
-                  >參與者狀態</a
+                  >참가자 상태</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#location"
-                  >檢測據點分布</a
+                  >테스트 위치 분포</a
                 >
               </li>
             </ul>
@@ -78,7 +113,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                語系
+                언어 계열
               </button>
               <ul
                 class="dropdown-menu dropdown-menu-end shadow-sm"
@@ -121,42 +156,8 @@
           </div>
         </div>
       </nav>
-
-      <!-- 統計資訊 -->
-      <header class="custom-header mt-4 mb-4">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h1 class="custom-title h3 h2-md h1-lg mb-1">
-              AI 동적 골격 낙상 예방 그룹 대시보드
-            </h1>
-            <h2 class="custom-subtitle h5 h4-md h3-lg mb-0">建豐健康科技</h2>
-          </div>
-          <div class="text-end">
-            <p class="text-secondary mb-0">
-              更新日期：<span class="fw-semibold">2025/07/15</span>
-            </p>
-          </div>
-        </div>
-        <div class="dropdown mt-3 d-flex justify-content-between">
-          <button
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          ></button>
-          <ul
-            class="dropdown-menu"
-            id="dropdownMenu"
-            aria-labelledby="dropdownMenuButton"
-          ></ul>
-          <button id="downloadBtn" class="btn btn-primary">
-            <i class="bi bi-download me-1"></i> 下載
-          </button>
-        </div>
-      </header>
       <!-- 檢測摘要 -->
-      <div class="mb-4 bg-white p-4 rounded shadow">
+      <div class="mb-4 mt-4 bg-white p-4 rounded shadow">
         <h5
           id="summary"
           class="fw-bold text-dark mb-3 d-flex align-items-center"
@@ -177,7 +178,7 @@
               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
             />
           </svg>
-          檢測統計摘要
+          테스트 통계 요약
         </h5>
         <div class="my-3">
           <div class="input-group">
@@ -185,51 +186,40 @@
               type="text"
               id="dateRange"
               class="form-control"
-              placeholder="請選擇日期範圍"
+              placeholder="날짜 범위를 선택해 주세요"
             />
             <button class="btn btn-outline-secondary" id="clearBtn">
-              清除
+              분명한
             </button>
           </div>
         </div>
-        <!-- 新增日期提示 alert -->
-        <div
-          id="dateAlertBox"
-          class="alert alert-warning alert-dismissible fade show d-none"
-          role="alert"
-        >
-          <strong>提示：</strong> 只能查找半年內的資料。
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
+
         <!-- 統計資訊 -->
         <div class="row g-4">
           <div class="col-md-4">
             <div class="stat-card stat-blue">
-              <h6 class="fw-semibold mb-2">總計參與人數</h6>
+              <h6 class="fw-semibold mb-2">총 참가자 수</h6>
               <div class="d-flex align-items-end">
                 <span id="totalCount" class="display-6 fw-bold text-blue"
                   >0</span
                 >
-                <span class="ms-2 mb-1 text-blue">人</span>
+                <span class="ms-2 mb-1 text-blue">사람들</span>
               </div>
-              <p id="startDateText" class="small mt-2 text-blue">尚無資料</p>
+              <p id="startDateText" class="small mt-2 text-blue">
+                아직 데이터가 없습니다
+              </p>
             </div>
           </div>
 
           <div class="col-md-4">
             <div class="stat-card stat-green">
-              <h6 class="fw-semibold mb-2">本次檢測人數</h6>
+              <h6 class="fw-semibold mb-2">이번에 검사한 인원</h6>
               <div class="d-flex align-items-end">
                 <span
                   id="latestCount"
                   class="display-6 fw-bold text-green"
                 ></span>
-                <span class="ms-2 mb-1 text-green">人</span>
+                <span class="ms-2 mb-1 text-green">사람들</span>
               </div>
               <p id="latestDate" class="small mt-2 text-green"></p>
             </div>
@@ -237,13 +227,13 @@
 
           <div class="col-md-4">
             <div class="stat-card stat-purple">
-              <h6 class="fw-semibold mb-2">檢測據點數</h6>
+              <h6 class="fw-semibold mb-2">테스트 장소 수</h6>
               <div class="d-flex align-items-end">
                 <span
                   id="locationCount"
                   class="display-6 fw-bold text-purple"
                 ></span>
-                <span class="ms-2 mb-1 text-purple">處</span>
+                <span class="ms-2 mb-1 text-purple">부서</span>
               </div>
               <p id="locationList" class="small mt-2 text-purple"></p>
             </div>
@@ -252,30 +242,32 @@
 
         <!-- 表格 -->
         <div class="mt-4">
-          <h6 class="fw-semibold text-secondary mb-3">歷次檢測平均成績表</h6>
+          <h6 class="fw-semibold text-secondary mb-3">
+            모든 시간의 평균 시험 점수
+          </h6>
 
           <div class="table-responsive">
             <div class="d-flex gap-2 mb-2">
               <button id="checkAllBtn" class="btn btn-outline-primary btn-sm">
-                全選
+                모두 선택
               </button>
               <button
                 id="uncheckAllBtn"
                 class="btn btn-outline-secondary btn-sm"
               >
-                取消全選
+                모두 선택 해제
               </button>
             </div>
             <table class="table table-bordered align-middle">
               <thead class="bg-light">
                 <tr>
-                  <th style="width: 50px">選取</th>
-                  <th>檢測日期</th>
-                  <th>參與人數</th>
-                  <th>平均坐站秒數</th>
-                  <th>平均平衡得分</th>
-                  <th>平均步行速度</th>
-                  <th>平均跌倒風險</th>
+                  <th style="width: 50px">선택하다</th>
+                  <th>테스트 날짜</th>
+                  <th>참가자 수</th>
+                  <th>앉고 서 있는 데 걸리는 평균 시간(초)</th>
+                  <th>평균 잔액 점수</th>
+                  <th>평균 보행 속도</th>
+                  <th>평균 낙상 위험</th>
                 </tr>
               </thead>
 
@@ -292,7 +284,7 @@
           class="alert alert-warning alert-dismissible fade show d-none"
           role="alert"
         >
-          <strong>提示：</strong> 至少需要勾選 1 筆檢測資料。
+          <strong>힌트：</strong> 최소 1개의 테스트 레코드를 선택해야 합니다.。
           <button
             type="button"
             class="btn-close"
@@ -320,7 +312,7 @@
               d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
             />
           </svg>
-          風險分級統計
+          위험 등급 통계
         </h5>
 
         <!-- 警示清單 -->
@@ -342,29 +334,30 @@
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
               />
             </svg>
-            <h6 class="fw-bold text-warning mb-0">警示清單</h6>
+            <h6 class="fw-bold text-warning mb-0">경고 목록</h6>
           </div>
           <div class="row g-3">
             <div class="col-md-6">
               <p class="fw-semibold text-warning mb-1">
-                功能衰退警示 (較前次檢測衰退超過10%)
+                기능 저하 경고 (이전 테스트 대비 10% 이상 저하)
               </p>
               <ul id="degenerateList" class="ms-4 text-secondary">
-                <li>步行速度衰退：<span></span> 人</li>
-                <li>起坐秒數增加：<span></span>人</li>
+                <li>보행 속도 감소：<span></span> 사람들</li>
+                <li>윗몸 일으키기 시간 증가：<span></span>사람들</li>
               </ul>
             </div>
             <div class="col-md-6">
               <p class="fw-semibold text-warning mb-1">高風險族群</p>
               <ul id="levelList" class="ms-4 text-secondary">
-                <li>A級失能者：<span></span> 人</li>
-                <li>B級衰弱者：<span></span>人</li>
-                <li>C級衰弱前期者：<span></span>人</li>
+                <li>A급 장애인：<span></span> 사람들</li>
+                <li>B 레벨 약화：<span></span>사람들</li>
+                <li>C레벨 초기 약점：<span></span>사람들</li>
               </ul>
             </div>
           </div>
           <div class="mt-2 text-end">
             <button
+              id="viewDetailsBtn"
               class="btn btn-warning btn-sm d-inline-flex align-items-center"
             >
               <svg
@@ -389,8 +382,83 @@
                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                 />
               </svg>
-              查看詳細名單
+              자세한 목록 보기
             </button>
+          </div>
+        </div>
+        <!-- 詳細名單彈窗 -->
+        <div
+          class="modal fade"
+          id="detailsModal"
+          tabindex="-1"
+          aria-labelledby="detailsModalLabel"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+          >
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">상세 목록</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div id="degenerateSection" class="mb-3">
+                  <h6>기능 저하 경고 (이전 평가보다 10% 이상 저하)</h6>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item" id="degenerateGaitSpeed">
+                      보행 속도 저하: 0명
+                    </li>
+                    <li class="list-group-item" id="degenerateChair">
+                      일어서기 시간 증가: 0명
+                    </li>
+                  </ul>
+                </div>
+                <div id="vivifrailSection">
+                  <h6>고위험 그룹</h6>
+                  <div class="row">
+                    <div class="col-12 col-md-4 mb-2">
+                      <div class="card">
+                        <div class="card-header">A급 장애자</div>
+                        <ul class="list-group list-group-flush" id="vivifrailA">
+                          <li class="list-group-item">데이터 없음</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-2">
+                      <div class="card">
+                        <div class="card-header">B급 허약자</div>
+                        <ul class="list-group list-group-flush" id="vivifrailB">
+                          <li class="list-group-item">데이터 없음</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-2">
+                      <div class="card">
+                        <div class="card-header">C급 전허약자</div>
+                        <ul class="list-group list-group-flush" id="vivifrailC">
+                          <li class="list-group-item">데이터 없음</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-sm"
+                  data-bs-dismiss="modal"
+                >
+                  닫기
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -401,8 +469,8 @@
               <div class="risk-box risk-red p-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 class="fw-bold text-danger mb-0">A 級</h6>
-                    <p class="small text-danger mb-0">失能者 (SPPB=0-3分)</p>
+                    <h6 class="fw-bold text-danger mb-0">레벨 A</h6>
+                    <p class="small text-danger mb-0">장애인(SPPB=0-3점)</p>
                   </div>
                   <div class="fs-3 fw-bold text-danger" id="riskA">0</div>
                 </div>
@@ -420,8 +488,8 @@
               <div class="risk-box risk-yellow p-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 class="fw-bold text-warning mb-0">B 級</h6>
-                    <p class="small text-warning mb-0">衰弱者 (SPPB=4-6分)</p>
+                    <h6 class="fw-bold text-warning mb-0">B 레벨</h6>
+                    <p class="small text-warning mb-0">허약함(SPPB=4-6점)</p>
                   </div>
                   <div class="fs-3 fw-bold text-warning" id="riskB">0</div>
                 </div>
@@ -439,10 +507,8 @@
               <div class="risk-box risk-blue p-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 class="fw-bold text-primary mb-0">C 級</h6>
-                    <p class="small text-primary mb-0">
-                      衰弱前期者 (SPPB=7-9分)
-                    </p>
+                    <h6 class="fw-bold text-primary mb-0">C 레벨</h6>
+                    <p class="small text-primary mb-0">전노쇠성(SPPB=7-9점)</p>
                   </div>
                   <div class="fs-3 fw-bold text-primary" id="riskC">0</div>
                 </div>
@@ -460,8 +526,10 @@
               <div class="risk-box risk-green p-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 class="fw-bold text-success mb-0">D 級</h6>
-                    <p class="small text-success mb-0">健康者 (SPPB=10-12分)</p>
+                    <h6 class="fw-bold text-success mb-0">D-레벨</h6>
+                    <p class="small text-success mb-0">
+                      건강한 사람(SPPB=10-12점)
+                    </p>
                   </div>
                   <div class="fs-3 fw-bold text-success" id="riskD">0</div>
                 </div>
@@ -497,7 +565,7 @@
               d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
             />
           </svg>
-          群體變化趨勢
+          그룹 변화 추세
         </h5>
 
         <div class="container my-4">
@@ -506,9 +574,15 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-4">坐站平均秒數</h5>
-                  <div class="w-100" style="height: 300px">
-                    <svg id="sitStandChart" class="w-100 h-100"></svg>
+                  <h5 class="fw-semibold text-dark mb-2">
+                    평균 앉기-서기 시간 추이
+                  </h5>
+                  <div class="text-muted small mb-2">12 이하 권장</div>
+                  <div
+                    class="chart-container"
+                    style="position: relative; height: 300px; width: 100%"
+                  >
+                    <canvas id="sitStandChartCanvas"></canvas>
                   </div>
                 </div>
               </div>
@@ -517,9 +591,17 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-4">平衡測驗得分</h5>
-                  <div class="w-100" style="height: 300px">
-                    <svg id="balanceChart" class="w-100 h-100"></svg>
+                  <h5 class="fw-semibold text-dark mb-2">
+                    평균 보행 속도 추세
+                  </h5>
+                  <div class="text-muted small mb-2">
+                    100초 이상인 것이 좋습니다
+                  </div>
+                  <div
+                    class="chart-container"
+                    style="height: 300px; width: 100%"
+                  >
+                    <canvas id="balanceChartCanvas"></canvas>
                   </div>
                 </div>
               </div>
@@ -528,9 +610,15 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-4">步行速度趨勢</h5>
-                  <div class="w-100" style="height: 300px">
-                    <svg id="gaitChart" class="w-100 h-100"></svg>
+                  <h5 class="fw-semibold text-dark mb-2">
+                    평균 균형 테스트 점수
+                  </h5>
+                  <div class="text-muted small mb-2">추천점수 : 3점 이상</div>
+                  <div
+                    class="chart-container"
+                    style="height: 300px; width: 100%"
+                  >
+                    <canvas id="gaitChartCanvas"></canvas>
                   </div>
                 </div>
               </div>
@@ -539,9 +627,14 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-4">平均AI跌倒風險機率</h5>
-                  <div class="w-100" style="height: 300px">
-                    <svg id="riskChart" class="w-100 h-100"></svg>
+                  <h5 class="fw-semibold text-dark mb-2">
+                    평균 AI 낙상 위험 확률
+                  </h5>
+                  <div
+                    class="chart-container"
+                    style="height: 300px; width: 100%"
+                  >
+                    <canvas id="riskChartCanvas"></canvas>
                   </div>
                 </div>
               </div>
@@ -571,7 +664,7 @@
               d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
             />
           </svg>
-          參與者狀態
+          참가자 상태
         </h5>
         <!-- 篩選按鈕 -->
         <div class="d-none d-md-flex gap-2 mb-3 filterBtnsDesktop">
@@ -580,42 +673,42 @@
             class="btn btn-secondary flex-fill"
             data-risk="all"
           >
-            全部
+            모두
           </button>
           <button
             type="button"
             class="btn btn-danger flex-fill"
             data-risk="high"
           >
-            危險
+            위험
           </button>
           <button
             type="button"
             class="btn btn-warning flex-fill"
             data-risk="slightlyHigh"
           >
-            高
+            높은
           </button>
           <button
             type="button"
             class="btn btn-primary flex-fill"
             data-risk="medium"
           >
-            中
+            가운데
           </button>
           <button
             type="button"
             class="btn btn-info flex-fill"
             data-risk="slightlyLow"
           >
-            稍低
+            약간 낮음
           </button>
           <button
             type="button"
             class="btn btn-success flex-fill"
             data-risk="low"
           >
-            低
+            낮은
           </button>
         </div>
 
@@ -626,19 +719,25 @@
             type="button"
             data-bs-toggle="dropdown"
           >
-            請選擇風險
+            위험을 선택해주세요
           </button>
           <ul class="dropdown-menu w-100">
-            <li><a class="dropdown-item" href="#" data-risk="all">全部</a></li>
-            <li><a class="dropdown-item" href="#" data-risk="high">危險</a></li>
+            <li><a class="dropdown-item" href="#" data-risk="all">모두</a></li>
+            <li><a class="dropdown-item" href="#" data-risk="high">위험</a></li>
             <li>
-              <a class="dropdown-item" href="#" data-risk="slightlyHigh">高</a>
+              <a class="dropdown-item" href="#" data-risk="slightlyHigh"
+                >높은</a
+              >
             </li>
-            <li><a class="dropdown-item" href="#" data-risk="medium">中</a></li>
             <li>
-              <a class="dropdown-item" href="#" data-risk="slightlyLow">稍低</a>
+              <a class="dropdown-item" href="#" data-risk="medium">가운데</a>
             </li>
-            <li><a class="dropdown-item" href="#" data-risk="low">低</a></li>
+            <li>
+              <a class="dropdown-item" href="#" data-risk="slightlyLow"
+                >약간 낮음</a
+              >
+            </li>
+            <li><a class="dropdown-item" href="#" data-risk="low">낮은</a></li>
           </ul>
         </div>
         <!-- 人員區塊 -->
@@ -671,8 +770,119 @@
                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
               />
             </svg>
-            查看全部參與者
+            모든 참가자 보기
           </button>
+        </div>
+        <!-- 查看全部彈窗 -->
+        <div class="modal fade" id="participantsModal" tabindex="-1">
+          <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header flex-column">
+                <h5 class="modal-title w-100">참가자 상태</h5>
+
+                <!-- 分類按鈕：桌機版 -->
+                <div
+                  class="d-none d-md-flex gap-2 mt-2 w-100"
+                  id="modalFilterBtnsDesktop"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-secondary flex-fill"
+                    data-risk="all"
+                  >
+                    모두
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger flex-fill"
+                    data-risk="high"
+                  >
+                    위험
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-warning flex-fill"
+                    data-risk="slightlyHigh"
+                  >
+                    높은
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary flex-fill"
+                    data-risk="medium"
+                  >
+                    가운데
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-info flex-fill"
+                    data-risk="slightlyLow"
+                  >
+                    약간 낮음
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-success flex-fill"
+                    data-risk="low"
+                  >
+                    낮은
+                  </button>
+                </div>
+
+                <!-- 分類下拉：手機版 -->
+                <div
+                  class="dropdown d-md-none mt-2 w-100"
+                  id="modalFilterDropdownMobile"
+                >
+                  <button
+                    class="btn btn-outline-secondary dropdown-toggle w-100"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    リスクを選択してください
+                  </button>
+                  <ul class="dropdown-menu w-100">
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="all">모두</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="high"
+                        >위험</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="slightlyHigh"
+                        >높은</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="medium"
+                        >가운데</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="slightlyLow"
+                        >약간 낮음</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="low">낮은</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn-close mt-2"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+
+              <div class="modal-body">
+                <div class="row g-3" id="modalPersonContainer"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <!-- 地圖區塊 -->
@@ -703,7 +913,7 @@
               d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
             />
           </svg>
-          檢測據點分布
+          테스트 위치 분포
         </h5>
 
         <!-- 地圖 -->
@@ -716,11 +926,16 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
 <script src="main.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+<!-- pdf下載 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACfOxn7DJ9gdcb-XBx-R2X5pbHWeskzUg&callback=initMap"
   async
   defer
 ></script>
+<script>
+  window.currentLang = "ko";
+</script>

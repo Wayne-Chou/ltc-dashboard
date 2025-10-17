@@ -3,6 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+.sticky-top {
+  z-index: 20 !important;
+}
+
 /* 地圖 */
 #map {
   height: 600px;
@@ -56,16 +60,6 @@ body {
 /* 表格 */
 .bg-light th {
   text-wrap: nowrap;
-}
-
-/* 曲線圖 */
-@media (max-width: 1024px) {
-  .card-body > div {
-    overflow-x: auto;
-  }
-  .card-body svg {
-    min-width: 600px !important;
-  }
 }
 
 .hidden-by-filter {
@@ -154,4 +148,14 @@ body {
 .risk-green {
   background: #dcfce7;
   border-left: 4px solid #22c55e;
+}
+
+.masked-name .dot {
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 50%;
+  background-color: #6b7280;
+  vertical-align: middle;
+  margin: 0 0.1em;
 }

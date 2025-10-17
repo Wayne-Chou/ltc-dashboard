@@ -54,5 +54,13 @@
       "Latitude": 25.089930102568278,
       "Longitude": 121.59807175282482
     }
+  },
+  {
+    "No": 8,
+    "Name": "新加坡",
+    "LatLngCoordinate": {
+      "Latitude": 1.352083,
+      "Longitude": 103.819836
+    }
   }
 ]

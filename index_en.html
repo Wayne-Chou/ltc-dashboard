@@ -25,6 +25,39 @@
   </head>
   <body class="bg-white">
     <div class="container custom-container pb-5 px-4">
+      <!-- 統計資訊 -->
+      <header class="custom-header mt-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="custom-title h3 h2-md h1-lg mb-1">
+              AI Dynamic Skeleton Fall-Prevention Group Dashboard
+            </h1>
+            <h2 class="custom-subtitle h5 h4-md h3-lg mb-0">FongAI.,Ltd.</h2>
+          </div>
+          <div class="text-end">
+            <p class="text-secondary mb-0">
+              Updated:<span class="fw-semibold">2025/07/15</span>
+            </p>
+          </div>
+        </div>
+        <div class="dropdown mt-3 d-flex justify-content-between">
+          <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          ></button>
+          <ul
+            class="dropdown-menu"
+            id="dropdownMenu"
+            aria-labelledby="dropdownMenuButton"
+          ></ul>
+          <button id="downloadBtn" class="btn btn-primary">
+            <i class="bi bi-download me-1"></i> download
+          </button>
+        </div>
+      </header>
       <nav
         class="navbar navbar-expand-lg bg-white shadow-sm sticky-top border-bottom"
       >
@@ -47,27 +80,27 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#summary"
-                  >檢測統計摘要</a
+                  >Summary of test statistics</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#risk"
-                  >風險分級統計</a
+                  >Risk grading statistics</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#trend"
-                  >群體變化趨勢</a
+                  >Group change trends</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#status"
-                  >參與者狀態</a
+                  >Participant Status</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-bold text-dark" href="#location"
-                  >檢測據點分布</a
+                  >Distribution of testing locations</a
                 >
               </li>
             </ul>
@@ -81,7 +114,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                語系
+                Language
               </button>
               <ul
                 class="dropdown-menu dropdown-menu-end shadow-sm"
@@ -124,42 +157,8 @@
           </div>
         </div>
       </nav>
-
-      <!-- 統計資訊 -->
-      <header class="custom-header mt-4 mb-4">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h1 class="custom-title h3 h2-md h1-lg mb-1">
-              AI Dynamic Skeleton Fall-Prevention Group Dashboard
-            </h1>
-            <h2 class="custom-subtitle h5 h4-md h3-lg mb-0">建豐健康科技</h2>
-          </div>
-          <div class="text-end">
-            <p class="text-secondary mb-0">
-              更新日期：<span class="fw-semibold">2025/07/15</span>
-            </p>
-          </div>
-        </div>
-        <div class="dropdown mt-3 d-flex justify-content-between">
-          <button
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          ></button>
-          <ul
-            class="dropdown-menu"
-            id="dropdownMenu"
-            aria-labelledby="dropdownMenuButton"
-          ></ul>
-          <button id="downloadBtn" class="btn btn-primary">
-            <i class="bi bi-download me-1"></i> 下載
-          </button>
-        </div>
-      </header>
       <!-- 檢測摘要 -->
-      <div class="mb-4 bg-white p-4 rounded shadow">
+      <div class="mb-4 mt-4 bg-white p-4 rounded shadow">
         <h5
           id="summary"
           class="fw-bold text-dark mb-3 d-flex align-items-center"
@@ -180,7 +179,7 @@
               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
             />
           </svg>
-          檢測統計摘要
+          Summary of test statistics
         </h5>
         <div class="my-3">
           <div class="input-group">
@@ -188,51 +187,40 @@
               type="text"
               id="dateRange"
               class="form-control"
-              placeholder="請選擇日期範圍"
+              placeholder="Please select a date range"
             />
             <button class="btn btn-outline-secondary" id="clearBtn">
-              清除
+              Clear
             </button>
           </div>
         </div>
-        <!-- 新增日期提示 alert -->
-        <div
-          id="dateAlertBox"
-          class="alert alert-warning alert-dismissible fade show d-none"
-          role="alert"
-        >
-          <strong>提示：</strong> 只能查找半年內的資料。
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
+
         <!-- 統計資訊 -->
         <div class="row g-4">
           <div class="col-md-4">
             <div class="stat-card stat-blue">
-              <h6 class="fw-semibold mb-2">總計參與人數</h6>
+              <h6 class="fw-semibold mb-2">Total number of participants</h6>
               <div class="d-flex align-items-end">
                 <span id="totalCount" class="display-6 fw-bold text-blue"
                   >0</span
                 >
-                <span class="ms-2 mb-1 text-blue">人</span>
+                <span class="ms-2 mb-1 text-blue">people</span>
               </div>
-              <p id="startDateText" class="small mt-2 text-blue">尚無資料</p>
+              <p id="startDateText" class="small mt-2 text-blue">No data yet</p>
             </div>
           </div>
 
           <div class="col-md-4">
             <div class="stat-card stat-green">
-              <h6 class="fw-semibold mb-2">本次檢測人數</h6>
+              <h6 class="fw-semibold mb-2">
+                Number of people tested this time
+              </h6>
               <div class="d-flex align-items-end">
                 <span
                   id="latestCount"
                   class="display-6 fw-bold text-green"
                 ></span>
-                <span class="ms-2 mb-1 text-green">人</span>
+                <span class="ms-2 mb-1 text-green">people</span>
               </div>
               <p id="latestDate" class="small mt-2 text-green"></p>
             </div>
@@ -240,13 +228,13 @@
 
           <div class="col-md-4">
             <div class="stat-card stat-purple">
-              <h6 class="fw-semibold mb-2">檢測據點數</h6>
+              <h6 class="fw-semibold mb-2">Number of testing locations</h6>
               <div class="d-flex align-items-end">
                 <span
                   id="locationCount"
                   class="display-6 fw-bold text-purple"
                 ></span>
-                <span class="ms-2 mb-1 text-purple">處</span>
+                <span class="ms-2 mb-1 text-purple">Department</span>
               </div>
               <p id="locationList" class="small mt-2 text-purple"></p>
             </div>
@@ -255,30 +243,32 @@
 
         <!-- 表格 -->
         <div class="mt-4">
-          <h6 class="fw-semibold text-secondary mb-3">歷次檢測平均成績表</h6>
+          <h6 class="fw-semibold text-secondary mb-3">
+            Average test scores of all times
+          </h6>
 
           <div class="table-responsive">
             <div class="d-flex gap-2 mb-2">
               <button id="checkAllBtn" class="btn btn-outline-primary btn-sm">
-                全選
+                Select All
               </button>
               <button
                 id="uncheckAllBtn"
                 class="btn btn-outline-secondary btn-sm"
               >
-                取消全選
+                Deselect All
               </button>
             </div>
             <table class="table table-bordered align-middle">
               <thead class="bg-light">
                 <tr>
-                  <th style="width: 50px">選取</th>
-                  <th>檢測日期</th>
-                  <th>參與人數</th>
-                  <th>平均坐站秒數</th>
-                  <th>平均平衡得分</th>
-                  <th>平均步行速度</th>
-                  <th>平均跌倒風險</th>
+                  <th style="width: 50px">Select</th>
+                  <th>Testing date</th>
+                  <th>Number of participants</th>
+                  <th>Average seconds to sit and stand</th>
+                  <th>Average Balance Score</th>
+                  <th>Average walking speed</th>
+                  <th>Average fall risk</th>
                 </tr>
               </thead>
 
@@ -295,7 +285,7 @@
           class="alert alert-warning alert-dismissible fade show d-none"
           role="alert"
         >
-          <strong>提示：</strong> 至少需要勾選 1 筆檢測資料。
+          <strong>hint：</strong> At least 1 test record must be selected。
           <button
             type="button"
             class="btn-close"
@@ -323,7 +313,7 @@
               d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
             />
           </svg>
-          風險分級統計
+          Risk grading statistics
         </h5>
 
         <!-- 警示清單 -->
@@ -345,29 +335,31 @@
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
               />
             </svg>
-            <h6 class="fw-bold text-warning mb-0">警示清單</h6>
+            <h6 class="fw-bold text-warning mb-0">Warning List</h6>
           </div>
           <div class="row g-3">
             <div class="col-md-6">
               <p class="fw-semibold text-warning mb-1">
-                功能衰退警示 (較前次檢測衰退超過10%)
+                Functional decline warning (degradation of more than 10%
+                compared to the previous test)
               </p>
               <ul id="degenerateList" class="ms-4 text-secondary">
-                <li>步行速度衰退：<span></span> 人</li>
-                <li>起坐秒數增加：<span></span>人</li>
+                <li>Decline in walking speed：<span></span> people</li>
+                <li>Increased sit-up time：<span></span>people</li>
               </ul>
             </div>
             <div class="col-md-6">
-              <p class="fw-semibold text-warning mb-1">高風險族群</p>
+              <p class="fw-semibold text-warning mb-1">High-risk groups</p>
               <ul id="levelList" class="ms-4 text-secondary">
-                <li>A級失能者：<span></span> 人</li>
-                <li>B級衰弱者：<span></span>人</li>
-                <li>C級衰弱前期者：<span></span>人</li>
+                <li>Class A disabled persons：<span></span> people</li>
+                <li>B-level debilitated：<span></span>people</li>
+                <li>C-level early stage of weakness：<span></span>people</li>
               </ul>
             </div>
           </div>
           <div class="mt-2 text-end">
             <button
+              id="viewDetailsBtn"
               class="btn btn-warning btn-sm d-inline-flex align-items-center"
             >
               <svg
@@ -392,8 +384,86 @@
                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                 />
               </svg>
-              查看詳細名單
+              View detailed list
             </button>
+          </div>
+        </div>
+        <!-- 詳細名單彈窗 -->
+        <div
+          class="modal fade"
+          id="detailsModal"
+          tabindex="-1"
+          aria-labelledby="detailsModalLabel"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+          >
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Detail List</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div id="degenerateSection" class="mb-3">
+                  <h6>
+                    Functional Decline Alert (Decline >10% since last
+                    assessment)
+                  </h6>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item" id="degenerateGaitSpeed">
+                      Gait speed decline: 0 people
+                    </li>
+                    <li class="list-group-item" id="degenerateChair">
+                      Chair rise time increase: 0 people
+                    </li>
+                  </ul>
+                </div>
+                <div id="vivifrailSection">
+                  <h6>High Risk Group</h6>
+                  <div class="row">
+                    <div class="col-12 col-md-4 mb-2">
+                      <div class="card">
+                        <div class="card-header">Level A Disabled</div>
+                        <ul class="list-group list-group-flush" id="vivifrailA">
+                          <li class="list-group-item">No data</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-2">
+                      <div class="card">
+                        <div class="card-header">Level B Frail</div>
+                        <ul class="list-group list-group-flush" id="vivifrailB">
+                          <li class="list-group-item">No data</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-2">
+                      <div class="card">
+                        <div class="card-header">Level C Pre-frail</div>
+                        <ul class="list-group list-group-flush" id="vivifrailC">
+                          <li class="list-group-item">No data</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-sm"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -404,8 +474,10 @@
               <div class="risk-box risk-red p-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 class="fw-bold text-danger mb-0">A 級</h6>
-                    <p class="small text-danger mb-0">失能者 (SPPB=0-3分)</p>
+                    <h6 class="fw-bold text-danger mb-0">Level A</h6>
+                    <p class="small text-danger mb-0">
+                      Disabled (SPPB=0-3 points)
+                    </p>
                   </div>
                   <div class="fs-3 fw-bold text-danger" id="riskA">0</div>
                 </div>
@@ -423,8 +495,10 @@
               <div class="risk-box risk-yellow p-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 class="fw-bold text-warning mb-0">B 級</h6>
-                    <p class="small text-warning mb-0">衰弱者 (SPPB=4-6分)</p>
+                    <h6 class="fw-bold text-warning mb-0">B-level</h6>
+                    <p class="small text-warning mb-0">
+                      Frail (SPPB=4-6 points)
+                    </p>
                   </div>
                   <div class="fs-3 fw-bold text-warning" id="riskB">0</div>
                 </div>
@@ -442,9 +516,9 @@
               <div class="risk-box risk-blue p-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 class="fw-bold text-primary mb-0">C 級</h6>
+                    <h6 class="fw-bold text-primary mb-0">C-level</h6>
                     <p class="small text-primary mb-0">
-                      衰弱前期者 (SPPB=7-9分)
+                      Pre-frailty (SPPB=7-9 points)
                     </p>
                   </div>
                   <div class="fs-3 fw-bold text-primary" id="riskC">0</div>
@@ -463,8 +537,10 @@
               <div class="risk-box risk-green p-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 class="fw-bold text-success mb-0">D 級</h6>
-                    <p class="small text-success mb-0">健康者 (SPPB=10-12分)</p>
+                    <h6 class="fw-bold text-success mb-0">D-level</h6>
+                    <p class="small text-success mb-0">
+                      Healthy people (SPPB=10-12 points)
+                    </p>
                   </div>
                   <div class="fs-3 fw-bold text-success" id="riskD">0</div>
                 </div>
@@ -500,7 +576,7 @@
               d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
             />
           </svg>
-          群體變化趨勢
+          Group change trends
         </h5>
 
         <div class="container my-4">
@@ -509,9 +585,17 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-4">坐站平均秒數</h5>
-                  <div class="w-100" style="height: 300px">
-                    <svg id="sitStandChart" class="w-100 h-100"></svg>
+                  <h5 class="fw-semibold text-dark mb-2">
+                    Average sit-stand seconds trend
+                  </h5>
+                  <div class="text-muted small mb-2">
+                    Recommended less than 12
+                  </div>
+                  <div
+                    class="chart-container"
+                    style="position: relative; height: 300px; width: 100%"
+                  >
+                    <canvas id="sitStandChartCanvas"></canvas>
                   </div>
                 </div>
               </div>
@@ -520,9 +604,17 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-4">平衡測驗得分</h5>
-                  <div class="w-100" style="height: 300px">
-                    <svg id="balanceChart" class="w-100 h-100"></svg>
+                  <h5 class="fw-semibold text-dark mb-2">
+                    Average walking speed trend
+                  </h5>
+                  <div class="text-muted small mb-2">
+                    It is recommended to be greater than or equal to 100 seconds
+                  </div>
+                  <div
+                    class="chart-container"
+                    style="height: 300px; width: 100%"
+                  >
+                    <canvas id="balanceChartCanvas"></canvas>
                   </div>
                 </div>
               </div>
@@ -531,9 +623,17 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-4">步行速度趨勢</h5>
-                  <div class="w-100" style="height: 300px">
-                    <svg id="gaitChart" class="w-100 h-100"></svg>
+                  <h5 class="fw-semibold text-dark mb-2">
+                    Average balance test score
+                  </h5>
+                  <div class="text-muted small mb-2">
+                    Recommended score: more than 3
+                  </div>
+                  <div
+                    class="chart-container"
+                    style="height: 300px; width: 100%"
+                  >
+                    <canvas id="gaitChartCanvas"></canvas>
                   </div>
                 </div>
               </div>
@@ -542,9 +642,14 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-4">平均AI跌倒風險機率</h5>
-                  <div class="w-100" style="height: 300px">
-                    <svg id="riskChart" class="w-100 h-100"></svg>
+                  <h5 class="fw-semibold text-dark mb-2">
+                    Average AI fall risk probability
+                  </h5>
+                  <div
+                    class="chart-container"
+                    style="height: 300px; width: 100%"
+                  >
+                    <canvas id="riskChartCanvas"></canvas>
                   </div>
                 </div>
               </div>
@@ -574,7 +679,7 @@
               d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
             />
           </svg>
-          參與者狀態
+          Participant Status
         </h5>
         <!-- 篩選按鈕 -->
         <div class="d-none d-md-flex gap-2 mb-3 filterBtnsDesktop">
@@ -583,42 +688,42 @@
             class="btn btn-secondary flex-fill"
             data-risk="all"
           >
-            全部
+            all
           </button>
           <button
             type="button"
             class="btn btn-danger flex-fill"
             data-risk="high"
           >
-            危險
+            Danger
           </button>
           <button
             type="button"
             class="btn btn-warning flex-fill"
             data-risk="slightlyHigh"
           >
-            高
+            high
           </button>
           <button
             type="button"
             class="btn btn-primary flex-fill"
             data-risk="medium"
           >
-            中
+            middle
           </button>
           <button
             type="button"
             class="btn btn-info flex-fill"
             data-risk="slightlyLow"
           >
-            稍低
+            Slightly lower
           </button>
           <button
             type="button"
             class="btn btn-success flex-fill"
             data-risk="low"
           >
-            低
+            Low
           </button>
         </div>
 
@@ -629,19 +734,27 @@
             type="button"
             data-bs-toggle="dropdown"
           >
-            請選擇風險
+            Please select risk
           </button>
           <ul class="dropdown-menu w-100">
-            <li><a class="dropdown-item" href="#" data-risk="all">全部</a></li>
-            <li><a class="dropdown-item" href="#" data-risk="high">危險</a></li>
+            <li><a class="dropdown-item" href="#" data-risk="all">all</a></li>
             <li>
-              <a class="dropdown-item" href="#" data-risk="slightlyHigh">高</a>
+              <a class="dropdown-item" href="#" data-risk="high">Danger</a>
             </li>
-            <li><a class="dropdown-item" href="#" data-risk="medium">中</a></li>
             <li>
-              <a class="dropdown-item" href="#" data-risk="slightlyLow">稍低</a>
+              <a class="dropdown-item" href="#" data-risk="slightlyHigh"
+                >high</a
+              >
             </li>
-            <li><a class="dropdown-item" href="#" data-risk="low">低</a></li>
+            <li>
+              <a class="dropdown-item" href="#" data-risk="medium">middle</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" data-risk="slightlyLow"
+                >Slightly lower</a
+              >
+            </li>
+            <li><a class="dropdown-item" href="#" data-risk="low">Low</a></li>
           </ul>
         </div>
         <!-- 人員區塊 -->
@@ -674,8 +787,119 @@
                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
               />
             </svg>
-            查看全部參與者
+            View All Participants
           </button>
+        </div>
+        <!-- 查看全部彈窗 -->
+        <div class="modal fade" id="participantsModal" tabindex="-1">
+          <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header flex-column">
+                <h5 class="modal-title w-100">Participant Status</h5>
+
+                <!-- 分類按鈕：桌機版 -->
+                <div
+                  class="d-none d-md-flex gap-2 mt-2 w-100"
+                  id="modalFilterBtnsDesktop"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-secondary flex-fill"
+                    data-risk="all"
+                  >
+                    all
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger flex-fill"
+                    data-risk="high"
+                  >
+                    Danger
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-warning flex-fill"
+                    data-risk="slightlyHigh"
+                  >
+                    high
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary flex-fill"
+                    data-risk="medium"
+                  >
+                    middle
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-info flex-fill"
+                    data-risk="slightlyLow"
+                  >
+                    Slightly lower
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-success flex-fill"
+                    data-risk="low"
+                  >
+                    Low
+                  </button>
+                </div>
+
+                <!-- 分類下拉：手機版 -->
+                <div
+                  class="dropdown d-md-none mt-2 w-100"
+                  id="modalFilterDropdownMobile"
+                >
+                  <button
+                    class="btn btn-outline-secondary dropdown-toggle w-100"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    Please select risk
+                  </button>
+                  <ul class="dropdown-menu w-100">
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="all">all</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="high"
+                        >Danger</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="slightlyHigh"
+                        >high</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="medium"
+                        >middle</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="slightlyLow"
+                        >Slightly lower</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-risk="low">Low</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn-close mt-2"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+
+              <div class="modal-body">
+                <div class="row g-3" id="modalPersonContainer"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <!-- 地圖區塊 -->
@@ -706,7 +930,7 @@
               d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
             />
           </svg>
-          檢測據點分布
+          Distribution of testing locations
         </h5>
 
         <!-- 地圖 -->
@@ -719,11 +943,17 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
 <script src="main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+<!-- pdf下載 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACfOxn7DJ9gdcb-XBx-R2X5pbHWeskzUg&callback=initMap"
   async
   defer
 ></script>
+<script>
+  window.currentLang = "en";
+</script>
