@@ -110,13 +110,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 地區名 JSON 檔案
   const locationFileMap = {
-    信義區: "PageAPI-0.json",
-    中山區: "PageAPI-1.json",
-    北投區: "PageAPI-2.json",
-    大安區: "PageAPI-3.json",
-    比漾廣場新北永和: "PageAPI-4.json",
-    蘆洲功學社音樂廳: "PageAPI-5.json",
-    大溝溪生態治水園區: "PageAPI-6.json",
     新加坡: "PageAPI-Singapore.json",
   };
 
