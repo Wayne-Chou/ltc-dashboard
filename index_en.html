@@ -53,58 +53,7 @@
             id="dropdownMenu"
             aria-labelledby="dropdownMenuButton"
           ></ul>
-          <button id="downloadBtn" class="btn btn-primary">
-            <i class="bi bi-download me-1"></i> download
-          </button>
-        </div>
-      </header>
-      <nav
-        class="navbar navbar-expand-lg bg-white shadow-sm sticky-top border-bottom"
-      >
-        <div class="container-fluid">
-          <!-- 手機版漢堡選單 -->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#mainNavbar"
-            aria-controls="mainNavbar"
-            aria-expanded="false"
-            aria-label="切換導航"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <!-- 收合區塊 -->
-          <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#summary"
-                  >Summary of test statistics</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#risk"
-                  >Risk grading statistics</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#trend"
-                  >Group change trends</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#status"
-                  >Participant Status</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#location"
-                  >Distribution of testing locations</a
-                >
-              </li>
-            </ul>
-
+          <div class="d-flex gap-2 align-items-center">
             <!-- 語系切換 -->
             <div class="dropdown">
               <button
@@ -154,6 +103,58 @@
                 </li>
               </ul>
             </div>
+            <button id="downloadBtn" class="btn btn-primary">
+              <i class="bi bi-download me-1"></i> 下載
+            </button>
+          </div>
+        </div>
+      </header>
+      <nav
+        class="navbar navbar-expand-lg bg-white shadow-sm sticky-top border-bottom"
+      >
+        <div class="container-fluid">
+          <!-- 手機版漢堡選單 -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar"
+            aria-expanded="false"
+            aria-label="切換導航"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- 收合區塊 -->
+          <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link fw-bold text-dark" href="#summary"
+                  >Summary of test statistics</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-bold text-dark" href="#risk"
+                  >Risk grading statistics</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-bold text-dark" href="#trend"
+                  >Group change trends</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-bold text-dark" href="#status"
+                  >Participant Status</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-bold text-dark" href="#location"
+                  >Distribution of testing locations</a
+                >
+              </li>
+            </ul>
           </div>
         </div>
       </nav>
@@ -279,19 +280,6 @@
               class="d-flex justify-content-between align-items-center mt-2 w-100"
             ></div>
           </div>
-        </div>
-        <div
-          id="alertBox"
-          class="alert alert-warning alert-dismissible fade show d-none"
-          role="alert"
-        >
-          <strong>hint：</strong> At least 1 test record must be selected。
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
         </div>
       </div>
       <!-- 風險分級統計區塊 -->
@@ -608,7 +596,7 @@
                     Average walking speed trend
                   </h5>
                   <div class="text-muted small mb-2">
-                    It is recommended to be greater than or equal to 100 seconds
+                    Recommended score: more than 3
                   </div>
                   <div
                     class="chart-container"
@@ -627,7 +615,7 @@
                     Average balance test score
                   </h5>
                   <div class="text-muted small mb-2">
-                    Recommended score: more than 3
+                    It is recommended to be greater than or equal to 100 seconds
                   </div>
                   <div
                     class="chart-container"

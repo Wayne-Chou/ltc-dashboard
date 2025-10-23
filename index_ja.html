@@ -53,9 +53,60 @@
             id="dropdownMenu"
             aria-labelledby="dropdownMenuButton"
           ></ul>
-          <button id="downloadBtn" class="btn btn-primary">
-            <i class="bi bi-download me-1"></i> ダウンロード
-          </button>
+          <div class="d-flex gap-2 align-items-center">
+            <!-- 語系切換 -->
+            <div class="dropdown">
+              <button
+                class="btn btn-outline-primary fw-bold"
+                type="button"
+                id="languageMenu"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                日本語
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow-sm"
+                aria-labelledby="languageMenu"
+              >
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="location.href='index.html'"
+                  >
+                    繁體中文
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="location.href='index_en.html'"
+                  >
+                    ENGLISH
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="location.href='index_ja.html'"
+                  >
+                    日本語
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="location.href='index_ko.html'"
+                  >
+                    한국어
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <button id="downloadBtn" class="btn btn-primary">
+              <i class="bi bi-download me-1"></i> 下載
+            </button>
+          </div>
         </div>
       </header>
       <nav
@@ -105,55 +156,7 @@
               </li>
             </ul>
 
-            <!-- 語系切換 -->
-            <div class="dropdown">
-              <button
-                class="btn btn-outline-primary fw-bold"
-                type="button"
-                id="languageMenu"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                言語族
-              </button>
-              <ul
-                class="dropdown-menu dropdown-menu-end shadow-sm"
-                aria-labelledby="languageMenu"
-              >
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="location.href='index.html'"
-                  >
-                    繁體中文
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="location.href='index_en.html'"
-                  >
-                    ENGLISH
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="location.href='index_ja.html'"
-                  >
-                    日本語
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="location.href='index_ko.html'"
-                  >
-                    한국어
-                  </button>
-                </li>
-              </ul>
-            </div>
+           
           </div>
         </div>
       </nav>
@@ -276,19 +279,7 @@
             ></div>
           </div>
         </div>
-        <div
-          id="alertBox"
-          class="alert alert-warning alert-dismissible fade show d-none"
-          role="alert"
-        >
-          <strong>ヒント：</strong> 少なくとも 1 つのテスト レコードを選択する必要があります。
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
+        
       </div>
       <!-- 風險分級統計區塊 -->
       <div class="mb-4">
@@ -552,7 +543,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均歩行速度の傾向</h5>
-                  <div class="text-muted small mb-2">100秒以上が推奨されますs</div>
+                  <div class="text-muted small mb-2">推奨スコア：3以上</div>
                  <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -568,7 +559,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">バランステストの平均スコア</h5>
-                  <div class="text-muted small mb-2">推奨スコア：3以上</div>
+                  <div class="text-muted small mb-2">100秒以上が推奨されますs</div>
                    <div
                     class="chart-container"
                     style="height: 300px; width: 100%"

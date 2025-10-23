@@ -44,19 +44,72 @@
             id="dropdownMenuButton"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-          ></button>
+          >
+            總表
+          </button>
           <ul
             class="dropdown-menu"
             id="dropdownMenu"
             aria-labelledby="dropdownMenuButton"
           ></ul>
-          <button id="downloadBtn" class="btn btn-primary">
-            <i class="bi bi-download me-1"></i> 下載
-          </button>
+          <div class="d-flex gap-2 align-items-center">
+            <!-- 語系切換 -->
+            <div class="dropdown">
+              <button
+                class="btn btn-outline-primary fw-bold"
+                type="button"
+                id="languageMenu"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Language
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow-sm"
+                aria-labelledby="languageMenu"
+              >
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="location.href='index.html'"
+                  >
+                    繁體中文
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="location.href='index_en.html'"
+                  >
+                    ENGLISH
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="location.href='index_ja.html'"
+                  >
+                    日本語
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="location.href='index_ko.html'"
+                  >
+                    한국어
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <button id="downloadBtn" class="btn btn-primary">
+              <i class="bi bi-download me-1"></i> 下載
+            </button>
+          </div>
         </div>
       </header>
       <nav
-        class="navbar navbar-expand-lg bg-white shadow-sm sticky-top border-bottom"
+        class="navbar navbar-expand-lg bg-white shadow-sm sticky-top border-bottom hide-on-all"
       >
         <div class="container-fluid">
           <!-- 手機版漢堡選單 -->
@@ -101,56 +154,6 @@
                 >
               </li>
             </ul>
-
-            <!-- 語系切換 -->
-            <div class="dropdown">
-              <button
-                class="btn btn-outline-primary fw-bold"
-                type="button"
-                id="languageMenu"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                語系
-              </button>
-              <ul
-                class="dropdown-menu dropdown-menu-end shadow-sm"
-                aria-labelledby="languageMenu"
-              >
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="location.href='index.html'"
-                  >
-                    繁體中文
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="location.href='index_en.html'"
-                  >
-                    ENGLISH
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="location.href='index_ja.html'"
-                  >
-                    日本語
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="location.href='index_ko.html'"
-                  >
-                    한국어
-                  </button>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </nav>
@@ -178,7 +181,7 @@
           </svg>
           檢測統計摘要
         </h5>
-        <div class="my-3">
+        <div class="my-3 hide-on-all">
           <div class="input-group">
             <input
               type="text"
@@ -194,7 +197,7 @@
 
         <!-- 統計資訊 -->
         <div class="row g-4">
-          <div class="col-md-4">
+          <div class="col-md-4 main-col">
             <div class="stat-card stat-blue">
               <h6 class="fw-semibold mb-2">總計參與人數</h6>
               <div class="d-flex align-items-end">
@@ -207,21 +210,21 @@
             </div>
           </div>
 
-          <div class="col-md-4">
+          <div class="col-md-4 main-col">
             <div class="stat-card stat-green">
-              <h6 class="fw-semibold mb-2">本次檢測人數</h6>
+              <h6 class="fw-semibold mb-2">檢測人次</h6>
               <div class="d-flex align-items-end">
                 <span
                   id="latestCount"
                   class="display-6 fw-bold text-green"
                 ></span>
-                <span class="ms-2 mb-1 text-green">人</span>
+                <span class="ms-2 mb-1 text-green">人次</span>
               </div>
               <p id="latestDate" class="small mt-2 text-green"></p>
             </div>
           </div>
 
-          <div class="col-md-4">
+          <div class="col-md-4 sechide">
             <div class="stat-card stat-purple">
               <h6 class="fw-semibold mb-2">檢測據點數</h6>
               <div class="d-flex align-items-end">
@@ -237,7 +240,7 @@
         </div>
 
         <!-- 表格 -->
-        <div class="mt-4">
+        <div class="mt-4 hide-on-all">
           <h6 class="fw-semibold text-secondary mb-3">歷次檢測平均成績表</h6>
 
           <div class="table-responsive">
@@ -273,22 +276,9 @@
             ></div>
           </div>
         </div>
-        <div
-          id="alertBox"
-          class="alert alert-warning alert-dismissible fade show d-none"
-          role="alert"
-        >
-          <strong>提示：</strong> 至少需要勾選 1 筆檢測資料。
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
       </div>
       <!-- 風險分級統計區塊 -->
-      <div class="mb-4">
+      <div class="mb-4 hide-on-all">
         <h5 id="risk" class="fw-bold text-dark mb-3 d-flex align-items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -310,7 +300,7 @@
         </h5>
 
         <!-- 警示清單 -->
-        <div class="alert-box mb-4 p-3">
+        <div class="alert-box mb-4 p-3 hide-on-all">
           <div class="d-flex align-items-center mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -459,7 +449,7 @@
           </div>
         </div>
         <!-- 四個等級 -->
-        <div class="row g-3">
+        <div class="row g-3 hide-on-all">
           <div class="row g-3 mt-4">
             <div class="col-md-3">
               <div class="risk-box risk-red p-3">
@@ -542,7 +532,7 @@
         </div>
       </div>
       <!-- 群體變化趨勢 -->
-      <div class="mb-8">
+      <div class="mb-8 hide-on-all">
         <h5 id="trend" class="fw-bold mb-3 d-flex align-items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -586,7 +576,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均步行速度趨勢</h5>
-                  <div class="text-muted small mb-2">建議大於等於100秒</div>
+                  <div class="text-muted small mb-2">建議大於3分</div>
                   <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -601,7 +591,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均平衡測驗得分</h5>
-                  <div class="text-muted small mb-2">建議大於3分</div>
+                  <div class="text-muted small mb-2">建議大於等於100秒</div>
                   <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -629,7 +619,7 @@
         </div>
       </div>
       <!-- 參與者狀態 -->
-      <div class="mb-4">
+      <div class="mb-4 hide-on-all">
         <h5
           id="status"
           class="fw-bold text-dark mb-3 d-flex align-items-center"
@@ -866,7 +856,7 @@
         </div>
       </div>
       <!-- 地圖區塊 -->
-      <div class="mb-4">
+      <div class="mb-4 sechide">
         <h5
           id="location"
           class="fw-bold text-dark mb-3 d-flex align-items-center"

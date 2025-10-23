@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const dropdownButton = document.getElementById("dropdownMenuButton");
+  if (dropdownButton) dropdownButton.textContent = "總表";
   const dropdownMenu = document.getElementById("dropdownMenu");
   // 檢測數據資料
   const locationCount = document.getElementById("locationCount");
@@ -111,6 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 地區名 JSON 檔案
   const locationFileMap = {
     新加坡: "PageAPI-Singapore.json",
+    信義區: "PageAPI-0.json",
   };
 
   // VIVIFRAIL 陣列
@@ -344,11 +346,54 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
   });
+  // 區塊顯示隱藏
+  function updateHideOnAll(location) {
+    const showOnlyOnRegion = document.querySelectorAll(".hide-on-all");
+    const mainCols = document.querySelectorAll(".main-col");
+    const sechide = document.querySelectorAll(".sechide");
+    if (location === "總表") {
+      showOnlyOnRegion.forEach((el) => (el.style.display = "none"));
+      mainCols.forEach((el) => {
+        el.classList.remove("col-md-6");
+        el.classList.add("col-md-4");
+      });
+      sechide.forEach((el) => (el.style.display = "block"));
+    } else {
+      showOnlyOnRegion.forEach((el) => (el.style.display = "block"));
+      mainCols.forEach((el) => {
+        el.classList.remove("col-md-4");
+        el.classList.add("col-md-6");
+      });
+      sechide.forEach((el) => (el.style.display = "none"));
+    }
+  }
 
   // 地區的 JSON
 
   async function loadLocationData(location) {
+    updateHideOnAll(location);
     try {
+      if (location === "總表") {
+        let allAssessments = [];
+        for (const loc of Object.keys(locationFileMap)) {
+          const response = await fetch(locationFileMap[loc]);
+          const data = await response.json();
+          allAssessments = allAssessments.concat(data.assessments);
+        }
+        currentAssessments = allAssessments;
+
+        dropdownButton.textContent = "總表";
+
+        updateLatestCountDate(currentAssessments);
+        updateTotalCountAndStartDate(currentAssessments);
+        renderAssessmentTable(currentAssessments);
+        drawSitStandChartChartJS(currentAssessments);
+        drawBalanceChartChartJS(currentAssessments);
+        drawRiskChartChartJS(currentAssessments);
+        drawGaitChartChartJS(currentAssessments);
+
+        return;
+      }
       const fileName = locationFileMap[location];
       if (!fileName) {
         console.error("找不到對應 JSON:", location);
@@ -359,8 +404,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = await response.json();
 
       // 下拉按鈕文字
-      dropdownButton.textContent = data.Location;
 
+      dropdownButton.textContent = data.Location;
       currentAssessments = data.assessments;
       // 人數與日期
       const latestCountEl = document.getElementById("latestCount");
@@ -443,6 +488,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     locationList.textContent = locations.join("、");
 
     dropdownMenu.innerHTML = "";
+    const liAll = document.createElement("li");
+    const aAll = document.createElement("a");
+    aAll.classList.add("dropdown-item");
+    aAll.href = "#";
+    aAll.textContent = "總表";
+    aAll.addEventListener("click", () => {
+      dropdownButton.textContent = "總表";
+      loadLocationData("總表");
+    });
+    liAll.appendChild(aAll);
+    dropdownMenu.appendChild(liAll);
 
     locations.forEach((loc, index) => {
       const li = document.createElement("li");
@@ -453,26 +509,27 @@ document.addEventListener("DOMContentLoaded", async () => {
       a.setAttribute("data-location-name", loc);
 
       a.addEventListener("click", () => {
+        dropdownButton.textContent = loc;
         loadLocationData(loc);
       });
 
       li.appendChild(a);
       dropdownMenu.appendChild(li);
-
-      // 預設第一筆
-      if (index === 0) {
-        loadLocationData(loc);
-      }
     });
+    loadLocationData("總表");
   } catch (error) {
     console.error("失敗:", error);
   }
 
   // 表格 function
+
   let currentPage = 1;
   const pageSize = 10;
-  let checkAllAcrossPages = false; // 紀錄是否全選
+  let checkAllAcrossPages = true; // 紀錄是否全選
+  let selected = []; //紀錄跨頁勾選
+
   function renderAssessmentTable(assessments) {
+    window.lastRenderedAssessments = assessments;
     const assessmentTableBody = document.getElementById("assessmentTableBody");
     const paginationContainer = document.getElementById(
       "tablePaginationContainer"
@@ -484,12 +541,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // 排序最新到最舊
+    // 排序：最新到最舊
     const sorted = [...assessments].sort((a, b) => b.Date - a.Date);
-
-    // 整筆資料最新的一筆
-    const latest = sorted[0];
-    const latestIndex = assessments.indexOf(latest);
 
     const totalPages = Math.ceil(sorted.length / pageSize);
     if (currentPage > totalPages) currentPage = totalPages;
@@ -498,23 +551,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     const start = (currentPage - 1) * pageSize;
     const end = start + pageSize;
     const pageData = sorted.slice(start, end);
-
-    // 表格
-    pageData.forEach((item, index) => {
+    if (checkAllAcrossPages && selected.length === 0) {
+      selected = assessments.map((_, i) => i);
+    }
+    // 表格內容生成
+    pageData.forEach((item) => {
       const tr = document.createElement("tr");
-
       const date = new Date(item.Date);
       const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
         .toString()
         .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
 
-      const isChecked =
-        checkAllAcrossPages || assessments.indexOf(item) === latestIndex;
+      // 跨頁索引
+      const globalIndex = assessments.indexOf(item);
+      // 是否全勾,或是跨頁勾選
+      const isChecked = checkAllAcrossPages || selected.includes(globalIndex);
 
       tr.innerHTML = `
       <td><input type="checkbox" class="row-check" data-index="${assessments.indexOf(
         item
-      )}" ${isChecked ? "checked" : ""}></td>
+      )}"
+      ${isChecked ? "checked" : ""}></td>
       <td>${formattedDate}</td>
       <td>${item.Count}人</td>
       <td>${item.ChairSecond.toFixed(1)}秒</td>
@@ -524,43 +581,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
       assessmentTableBody.appendChild(tr);
     });
+    const selectedAssessments = assessments.filter((_, i) =>
+      selected.includes(i)
+    );
 
-    // 預設最新一筆或全選時
-    if (!checkAllAcrossPages) {
-      renderRisk([latest]);
-      updateDegenerateAndLevels([latest]);
-    } else {
-      renderRisk(assessments);
-      updateDegenerateAndLevels(assessments);
-    }
-
+    renderRisk(selectedAssessments);
+    updateDegenerateAndLevels(selectedAssessments);
+    updateLatestCountDate(selectedAssessments);
+    updateTotalCountAndStartDate(selectedAssessments);
     // checkbox 勾選事件
     const checkboxes = document.querySelectorAll(".row-check");
     checkboxes.forEach((cb) => {
       cb.addEventListener("change", () => {
-        const checkedIndexes = Array.from(checkboxes)
-          .filter((c) => c.checked)
-          .map((c) => parseInt(c.dataset.index));
+        const idx = parseInt(cb.dataset.index);
 
-        if (checkedIndexes.length === 0) {
-          showAlert();
-
-          // 取消所有勾選時，保留整筆資料最新一筆
-          const latestCheckbox = Array.from(checkboxes).find(
-            (c) => parseInt(c.dataset.index) === latestIndex
-          );
-          if (latestCheckbox) latestCheckbox.checked = true;
-
-          renderRisk([latest]);
-          updateDegenerateAndLevels([latest]);
+        if (cb.checked) {
+          if (!selected.includes(idx)) selected.push(idx);
         } else {
-          const selected = checkedIndexes.map((i) => assessments[i]);
-          renderRisk(selected);
-          updateDegenerateAndLevels(selected);
-
-          // 紀錄是否跨頁全選
-          checkAllAcrossPages = selected.length === assessments.length;
+          selected = selected.filter((i) => i !== idx);
         }
+
+        const selectedAssessments = assessments.filter((_, i) =>
+          selected.includes(i)
+        );
+        renderRisk(selectedAssessments);
+        updateDegenerateAndLevels(selectedAssessments);
+        updateLatestCountDate(selectedAssessments);
+        updateTotalCountAndStartDate(selectedAssessments);
+        checkAllAcrossPages = selected.length === assessments.length;
+
+        // 勾選狀態變化同步更新圖表
+        updateChartsBasedOnSelection(assessments);
+        removeNoDataOverlay();
       });
     });
 
@@ -584,6 +636,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentPage++;
         renderAssessmentTable(assessments);
       };
+
       const pageInfo = document.createElement("span");
       pageInfo.className = "small text-center flex-grow-1";
       pageInfo.textContent = `${t("page")} ${currentPage} ${t(
@@ -595,99 +648,66 @@ document.addEventListener("DOMContentLoaded", async () => {
       paginationContainer.appendChild(nextBtn);
     }
   }
+  // 每次勾選也同步更新圖表
+  function updateChartsBasedOnSelection(assessments) {
+    const selectedAssessments = assessments.filter((_, i) =>
+      selected.includes(i)
+    );
 
-  // 顯示提示訊息
-  function showAlert() {
-    const alertBox = document.getElementById("alertBox");
-    alertBox.classList.remove("d-none");
-    setTimeout(() => {
-      alertBox.classList.add("d-none");
-    }, 3000);
-  }
-
-  // 「全選」按鈕
-  document.getElementById("checkAllBtn").addEventListener("click", () => {
-    checkAllAcrossPages = true;
-
-    const checkboxes = document.querySelectorAll(".row-check");
-    checkboxes.forEach((cb) => (cb.checked = true));
-
-    renderRisk(currentAssessments);
-    updateDegenerateAndLevels(currentAssessments);
-  });
-
-  // 「取消全選」按鈕
-  document.getElementById("uncheckAllBtn").addEventListener("click", () => {
-    checkAllAcrossPages = false;
-
-    const checkboxes = document.querySelectorAll(".row-check");
-    checkboxes.forEach((cb) => (cb.checked = false));
-
-    if (currentAssessments.length > 0) {
-      const latest = [...currentAssessments].sort((a, b) => b.Date - a.Date)[0];
-      const latestIndex = currentAssessments.indexOf(latest);
-
-      checkboxes.forEach((cb) => {
-        if (parseInt(cb.dataset.index) === latestIndex) {
-          cb.checked = true;
-        }
-      });
-
-      renderRisk([latest]);
-      updateDegenerateAndLevels([latest]);
+    if (selectedAssessments.length === 0) {
+      drawNoDataChart(); // 沒有選擇就顯示查無資料
+    } else {
+      drawSitStandChartChartJS(selectedAssessments);
+      drawBalanceChartChartJS(selectedAssessments);
+      drawGaitChartChartJS(selectedAssessments);
+      drawRiskChartChartJS(selectedAssessments);
     }
-  });
-
-  // 顯示提示訊息
-  function showAlert() {
-    const alertBox = document.getElementById("alertBox");
-    alertBox.classList.remove("d-none");
-    setTimeout(() => {
-      alertBox.classList.add("d-none");
-    }, 3000);
   }
 
   // 「全選」按鈕
   document.getElementById("checkAllBtn").addEventListener("click", () => {
     checkAllAcrossPages = true; // 設定跨頁全選
 
-    // 把目前畫面上的 checkbox 都勾選
+    // （畫面上目前顯示的資料）
+    const renderData = window.lastRenderedAssessments || [];
+
+    //  將目前 render 出來的所有項目加進 selected
+    selected = renderData.map((_, i) => i);
+
+    // 同步畫面上的 checkbox（只處理目前這頁顯示的）
     const checkboxes = document.querySelectorAll(".row-check");
     checkboxes.forEach((cb) => (cb.checked = true));
 
-    renderRisk(currentAssessments);
-    updateDegenerateAndLevels(currentAssessments);
+    //
+    renderRisk(renderData);
+    updateDegenerateAndLevels(renderData);
+    updateLatestCountDate(renderData);
+    updateTotalCountAndStartDate(renderData);
+    drawSitStandChartChartJS(renderData);
+    drawBalanceChartChartJS(renderData);
+    drawGaitChartChartJS(renderData);
+    drawRiskChartChartJS(renderData);
+    removeNoDataOverlay();
   });
 
   // 「取消全選」按鈕
   document.getElementById("uncheckAllBtn").addEventListener("click", () => {
     checkAllAcrossPages = false; // 取消跨頁全選
-
+    selected = [];
     // 先取消所有 checkbox
     const checkboxes = document.querySelectorAll(".row-check");
     checkboxes.forEach((cb) => (cb.checked = false));
 
-    // 保留整筆資料最新一筆
-    if (currentAssessments.length > 0) {
-      // 找出日期最新的一筆
-      const latest = [...currentAssessments].sort((a, b) => b.Date - a.Date)[0];
-
-      checkboxes.forEach((cb) => {
-        if (parseInt(cb.dataset.index) === currentAssessments.indexOf(latest)) {
-          cb.checked = true;
-        }
-      });
-
-      renderRisk([latest]);
-      updateDegenerateAndLevels([latest]);
-    }
+    renderRisk([]);
+    updateDegenerateAndLevels([]);
+    updateLatestCountDate([]);
+    updateTotalCountAndStartDate([]);
+    drawNoDataChart();
   });
 
   // 風險等級 function
 
-  function renderRisk(selectedAssessments) {
-    if (!selectedAssessments || selectedAssessments.length === 0) return;
-
+  function renderRisk(selectedAssessments = []) {
     let totalCount = 0;
     let countA = 0,
       countB = 0,
@@ -723,21 +743,50 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   // 更新最新檢測數與日期
   function updateLatestCountDate(assessments) {
-    if (!assessments || assessments.length === 0) return;
+    if (!latestCountEl || !latestDateEl) return;
 
-    // 依 Date 排序，找最新一筆
-    const latest = [...assessments].sort((a, b) => b.Date - a.Date)[0];
+    //  如果沒有資料
+    if (!assessments || assessments.length === 0) {
+      latestCountEl.textContent = "0";
+      latestDateEl.textContent = t("alertNoData");
+      return;
+    }
 
-    if (latestCountEl) latestCountEl.textContent = latest.Count;
+    //  計算總人數
+    const totalCount = assessments.reduce(
+      (sum, item) => sum + (item.Count || 0),
+      0
+    );
+    latestCountEl.textContent = `${totalCount}`;
 
-    if (latestDateEl) {
-      const date = new Date(latest.Date);
-      const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
+    //  日期排序 (由舊到新)
+    const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
+
+    //  取得最舊與最新日期
+    const oldestDate = new Date(sorted[0].Date);
+    const latestDate = new Date(sorted[sorted.length - 1].Date);
+
+    const formatDate = (date) =>
+      `${date.getFullYear()}/${(date.getMonth() + 1)
         .toString()
         .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
+
+    const formattedOldest = formatDate(oldestDate);
+    const formattedLatest = formatDate(latestDate);
+
+    // 顯示日期範圍
+    if (sorted.length === 1) {
+      // 只有一筆日期
       latestDateEl.textContent = t("latestDateText").replace(
         "{date}",
-        formattedDate
+        formattedLatest
+      );
+    } else {
+      // 多個日期最舊~最新
+      const dateRange = `${formattedOldest} ~ ${formattedLatest}`;
+      latestDateEl.textContent = t("latestDateText").replace(
+        "{date}",
+        dateRange
       );
     }
   }
@@ -767,9 +816,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 更新步行速度衰退 / 起坐秒數增加 & 各級人數
 
-  function updateDegenerateAndLevels(assessments) {
-    if (!assessments || assessments.length === 0) return;
-
+  function updateDegenerateAndLevels(assessments = []) {
     // 合併 Degenerate
     let totalGaitSpeed = 0;
     let totalChairSecond = 0;
@@ -817,19 +864,38 @@ document.addEventListener("DOMContentLoaded", async () => {
   function updateTotalCountAndStartDate(assessments) {
     const totalCountEl = document.getElementById("totalCount");
     const startDateTextEl = document.getElementById("startDateText");
+
     if (!assessments || assessments.length === 0) {
       if (totalCountEl) totalCountEl.textContent = "0";
       if (startDateTextEl) startDateTextEl.textContent = t("countWarning");
       return;
     }
 
-    //  人數加總 Count
-    const totalCount = assessments.reduce(
-      (sum, item) => sum + (item.Count || 0),
-      0
-    );
+    //  收集所有 VIVIFRAIL 的 Name,重複的只算一次
+    const allNames = [];
 
-    // 找最舊日期
+    assessments.forEach((item, index) => {
+      if (item.VIVIFRAIL) {
+        Object.entries(item.VIVIFRAIL).forEach(([groupKey, group]) => {
+          // console.log(`　 群組 ${groupKey} 含 ${group.length} 筆`);
+          group.forEach((person) => {
+            if (person.Name) {
+              allNames.push(person.Name);
+              // console.log(`　　加入姓名：${person.Name}`);
+            }
+          });
+        });
+      }
+    });
+    // 用 Set 去重後計算總人數
+    const uniqueNames = [...new Set(allNames)];
+    const totalCount = uniqueNames.length;
+    // console.log("所有名字：", allNames);
+    // console.log("去掉重覆後的唯一名字：", uniqueNames);
+    // console.log(`唯一人數：${totalCount}`);
+
+    //  找最舊日期
+
     const minDate = new Date(Math.min(...assessments.map((item) => item.Date)));
     const startYear = minDate.getFullYear();
     const startMonth = (minDate.getMonth() + 1).toString().padStart(2, "0");
@@ -990,6 +1056,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const filterDropdownMobile = document.querySelector(
       ".filterDropdownMobile"
     );
+
+    const checkAllBtn = document.getElementById("checkAllBtn");
+    const uncheckAllBtn = document.getElementById("uncheckAllBtn");
+    const paginationContainer = document.getElementById(
+      "tablePaginationContainer"
+    );
     const viewAllBtn = document.getElementById("viewAllBtn");
     if (filtered.length === 0) {
       assessmentTableBody.innerHTML = `
@@ -1021,14 +1093,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       filterBtnsDesktop.classList.add("hidden-by-filter");
       filterDropdownMobile.classList.add("hidden-by-filter");
       viewAllBtn.classList.add("hidden-by-filter");
+      if (checkAllBtn) checkAllBtn.classList.add("hidden-by-filter");
+      if (uncheckAllBtn) uncheckAllBtn.classList.add("hidden-by-filter");
+      if (paginationContainer)
+        paginationContainer.classList.add("hidden-by-filter");
       drawNoDataChart();
+      updateLatestCountDate([]);
+      updateTotalCountAndStartDate([]);
     } else {
       renderAssessmentTable(filtered);
       updateDegenerateAndLevels(filtered);
       const mergedVIVIFRAIL = mergeAllVIVIFRAIL(filtered);
       renderCards(flattenData(mergedVIVIFRAIL));
       updateLatestCountDate(filtered);
-
+      updateTotalCountAndStartDate(filtered);
       drawSitStandChartChartJS(filtered);
       drawBalanceChartChartJS(filtered);
       drawGaitChartChartJS(filtered);
@@ -1039,7 +1117,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 清除按鈕
   document.getElementById("clearBtn").addEventListener("click", () => {
     fp.clear();
-
+    const checkAllBtn = document.getElementById("checkAllBtn");
+    const uncheckAllBtn = document.getElementById("uncheckAllBtn");
+    const paginationContainer = document.getElementById(
+      "tablePaginationContainer"
+    );
     //清除後顯示全部資料
     if (currentAssessments.length > 0) {
       renderAssessmentTable(currentAssessments);
@@ -1055,7 +1137,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       filterBtnsDesktop.classList.remove("hidden-by-filter");
       filterDropdownMobile.classList.remove("hidden-by-filter");
       viewAllBtn.classList.remove("hidden-by-filter");
-
+      if (checkAllBtn) checkAllBtn.classList.remove("hidden-by-filter");
+      if (uncheckAllBtn) uncheckAllBtn.classList.remove("hidden-by-filter");
+      if (paginationContainer)
+        paginationContainer.classList.remove("hidden-by-filter");
       drawSitStandChartChartJS(currentAssessments);
       drawBalanceChartChartJS(currentAssessments);
       drawGaitChartChartJS(currentAssessments);
@@ -1077,12 +1162,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
 
     // 完整資料
-    const labels = sorted.map((d) => {
+    let labels = sorted.map((d) => {
       const date = new Date(d.Date);
       return `${date.getMonth() + 1}/${date.getDate()}`;
     });
-    const dataValues = sorted.map((d) => d.ChairSecond);
-
+    let dataValues = sorted.map((d) => d.ChairSecond);
+    if (labels.length === 1) {
+      labels = ["", ...labels, ""];
+      dataValues = [null, ...dataValues, null];
+    }
     // 如果之前已有圖表，先銷毀
     if (window.sitStandChartInstance) {
       window.sitStandChartInstance.destroy();
@@ -1135,6 +1223,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         scales: {
           x: {
+            offset: true,
             title: { display: true, text: "日期" },
             ticks: {
               autoSkip: true,
@@ -1163,13 +1252,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 依日期排序
     const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
 
-    const labels = sorted.map((d) => {
+    let labels = sorted.map((d) => {
       const date = new Date(d.Date);
       return `${date.getMonth() + 1}/${date.getDate()}`;
     });
 
-    const dataValues = sorted.map((d) => d.BalanceScore);
-
+    let dataValues = sorted.map((d) => d.BalanceScore);
+    if (labels.length === 1) {
+      labels = ["", ...labels, ""];
+      dataValues = [null, ...dataValues, null];
+    }
     // 如果之前已有圖表，先銷毀
     if (window.balanceChartInstance) {
       window.balanceChartInstance.destroy();
@@ -1221,6 +1313,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         scales: {
           x: {
+            offset: true,
             title: { display: true, text: "日期" },
             ticks: {
               autoSkip: true,
@@ -1248,12 +1341,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 依日期排序
     const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
 
-    const labels = sorted.map((d) => {
+    let labels = sorted.map((d) => {
       const date = new Date(d.Date);
       return `${date.getMonth() + 1}/${date.getDate()}`;
     });
-    const dataValues = sorted.map((d) => d.GaitSpeed);
-
+    let dataValues = sorted.map((d) => d.GaitSpeed);
+    if (labels.length === 1) {
+      labels = ["", ...labels, ""];
+      dataValues = [null, ...dataValues, null];
+    }
     if (window.gaitChartInstance) {
       window.gaitChartInstance.destroy();
     }
@@ -1304,6 +1400,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         scales: {
           x: {
+            offset: true,
             title: { display: true, text: "日期" },
             ticks: { autoSkip: true, maxTicksLimit: 7 },
           },
@@ -1329,13 +1426,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 依日期排序
     const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
 
-    const labels = sorted.map((d) => {
+    let labels = sorted.map((d) => {
       const date = new Date(d.Date);
       return `${date.getMonth() + 1}/${date.getDate()}`;
     });
 
-    const dataValues = sorted.map((d) => d.RiskRate);
-
+    let dataValues = sorted.map((d) => d.RiskRate);
+    if (labels.length === 1) {
+      labels = ["", ...labels, ""];
+      dataValues = [null, ...dataValues, null];
+    }
     // 如果之前已有圖表，先銷毀
     if (window.riskChartInstance) {
       window.riskChartInstance.destroy();
@@ -1387,6 +1487,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         scales: {
           x: {
+            offset: true,
             title: { display: true, text: "日期" },
             ticks: {
               autoSkip: true,
