@@ -112,7 +112,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 地區名 JSON 檔案
   const locationFileMap = {
     新加坡: "PageAPI-Singapore.json",
-    信義區: "PageAPI-0.json",
   };
 
   // VIVIFRAIL 陣列

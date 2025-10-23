@@ -1,14 +1,5 @@
 [
   {
-    "No": 1,
-    "Name": "信義區",
-    "LatLngCoordinate": {
-      "Latitude": 25.039560141660036,
-      "Longitude": 121.5702780613829
-    }
-  },
-
-  {
     "No": 8,
     "Name": "新加坡",
     "LatLngCoordinate": {
