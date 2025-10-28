@@ -132,11 +132,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 依照 Risk 數值判斷分類
 
   function getRiskCategory(risk) {
-    if (risk > 60) return "high";
-    if (risk > 35) return "slightlyHigh";
-    if (risk > 20) return "medium";
-    if (risk > 5) return "slightlyLow";
-    return "low";
+    if (risk > 50) return "high"; // 危險
+    if (risk > 30) return "slightlyHigh"; // 稍高
+    if (risk > 17.5) return "medium"; // 中
+    if (risk > 5) return "slightlyLow"; // 稍低
+    return "low"; // 低
   }
 
   // 建立人員卡片
@@ -1029,7 +1029,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // 日期套件js
-
+  // const fp = flatpickr("#startDate", {
+  //   locale: "zh_tw",
+  //   dateFormat: "Y-m-d",
+  //   plugins: [new rangePlugin({ input: "#endDate" })],
+  //   onChange: function (selectedDates) {
+  //     if (selectedDates.length === 2) {
+  //       let start = selectedDates[0];
+  //       let end = selectedDates[1];
+  //       filterByDate(start, end);
+  //     }
+  //   },
+  // });
   const fp = flatpickr("#dateRange", {
     mode: "range",
     dateFormat: "Y-m-d",
