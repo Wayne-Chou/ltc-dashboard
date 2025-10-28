@@ -19,6 +19,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       latestDateText: "{date} 檢測",
       generatingPDF: "產生中...",
       downloadPDF: "下載",
+      male: "男",
+      female: "女",
+      yearsOld: "歲",
+      people: "人",
+      seconds: "秒",
+      points: "分",
     },
     en: {
       alertNoData: "No data",
@@ -38,6 +44,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       latestDateText: "Measured on {date}",
       generatingPDF: "Generating...",
       downloadPDF: "Download",
+      male: "Male",
+      female: "Female",
+      yearsOld: "years old",
+      people: "people",
+      seconds: "s",
+      points: "pts",
     },
     ja: {
       alertNoData: "データなし",
@@ -57,6 +69,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       latestDateText: "{date} 測定",
       generatingPDF: "生成中...",
       downloadPDF: "ダウンロード",
+      male: "男性",
+      female: "女性",
+      yearsOld: "歳",
+      people: "人",
+      seconds: "秒",
+      points: "点",
     },
     ko: {
       alertNoData: "데이터 없음",
@@ -76,6 +94,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       latestDateText: "{date} 측정",
       generatingPDF: "생성 중...",
       downloadPDF: "다운로드",
+      male: "남성",
+      female: "여성",
+      yearsOld: "세",
+      people: "명",
+      seconds: "초",
+      points: "점",
     },
   };
 
@@ -142,7 +166,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 建立人員卡片
 
   function createPersonCard(person) {
-    const genderText = person.Gender === 0 ? "男" : "女";
+    const genderText = person.Gender === 0 ? t("male") : t("female");
     const faceColors = {
       A: "#FEE2E2", // 紅色系
       B: "#FEF3C7", // 黃色系
@@ -187,7 +211,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(
               person.Name
             )}</h4>
-            <p class="small text-muted mb-0">${person.Age}歲 | ${genderText}</p>
+            <p class="small text-muted mb-0">${person.Age}${t(
+      "yearsOld"
+    )} | ${genderText}</p>
           </div>
         </div>
       </div>`;
@@ -572,9 +598,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       )}"
       ${isChecked ? "checked" : ""}></td>
       <td>${formattedDate}</td>
-      <td>${item.Count}人</td>
-      <td>${item.ChairSecond.toFixed(1)}秒</td>
-      <td>${item.BalanceScore.toFixed(1)}分</td>
+      <td>${item.Count}${t("people")}</td>
+      <td>${item.ChairSecond.toFixed(1)}${t("seconds")}</td>
+      <td>${item.BalanceScore.toFixed(1)}${t("points")}</td>
       <td>${item.GaitSpeed.toFixed(1)} cm/s</td>
       <td>${item.RiskRate.toFixed(1)}%</td>
     `;

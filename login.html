@@ -15,6 +15,7 @@
     class="d-flex justify-content-center align-items-center vh-100 bg-light px-3"
   >
     <div class="card p-4 shadow-sm w-100" style="max-width: 400px">
+      <h3 class="text-center mb-3" id="mainTitle"></h3>
       <h4 class="text-center mb-4" id="loginTitle">登入</h4>
 
       <!-- 帳號輸入 -->
@@ -39,6 +40,7 @@
 
       <!-- 語系選單 -->
       <div class="text-center mt-3">
+        <div class="text-start mb-3" id="langTitle">Language</div>
         <select id="languageSelect" class="form-select">
           <option value="zh">繁體中文</option>
           <option value="en">English</option>
@@ -52,38 +54,48 @@
 <script>
   const LANG = {
     zh: {
+      mainTitle: "建豐科技儀表板",
       loginTitle: "登入",
       labelAccount: "帳號",
       labelPassword: "密碼",
       loginBtn: "登入",
+      langTitle: "Language",
     },
     en: {
+      mainTitle: "FongAI., Ltd Dashboard",
       loginTitle: "Login",
       labelAccount: "Username",
       labelPassword: "Password",
       loginBtn: "Sign In",
+      langTitle: "Language",
     },
     ja: {
+      mainTitle: "FongAI., Ltd ダッシュボード",
       loginTitle: "ログイン",
       labelAccount: "アカウント",
       labelPassword: "パスワード",
       loginBtn: "ログイン",
+      langTitle: "日本語",
     },
     ko: {
+      mainTitle: "FongAI., Ltd 대시보드",
       loginTitle: "로그인",
       labelAccount: "계정",
       labelPassword: "비밀번호",
       loginBtn: "로그인",
+      langTitle: "한국어",
     },
   };
 
   window.currentLang = "zh";
 
   const langSelect = document.getElementById("languageSelect");
+  const mainTitle = document.getElementById("mainTitle");
   const loginTitle = document.getElementById("loginTitle");
   const labelAccount = document.getElementById("labelAccount");
   const labelPassword = document.getElementById("labelPassword");
   const loginBtn = document.getElementById("loginBtn");
+  const langTitle = document.getElementById("langTitle");
 
   langSelect.addEventListener("change", (e) => {
     window.currentLang = e.target.value;
@@ -92,10 +104,12 @@
 
   function updateTexts() {
     const t = LANG[window.currentLang];
+    mainTitle.textContent = t.mainTitle;
     loginTitle.textContent = t.loginTitle;
     labelAccount.textContent = t.labelAccount;
     labelPassword.textContent = t.labelPassword;
     loginBtn.textContent = t.loginBtn;
+    langTitle.textContent = t.langTitle;
     document.title = `${t.loginTitle} | Dashboard`;
   }
 
