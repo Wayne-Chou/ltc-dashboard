@@ -596,7 +596,7 @@
                     Average sit-stand seconds trend
                   </h5>
                   <div class="text-muted small mb-2">
-                    Recommended less than 12
+                    Recommended duration: less than 12 seconds
                   </div>
                   <div
                     class="chart-container"
@@ -615,7 +615,7 @@
                     Average Balance Test Score
                   </h5>
                   <div class="text-muted small mb-2">
-                    Recommended score: more than 3
+                    I recommend a score greater than 3.5.
                   </div>
                   <div
                     class="chart-container"
@@ -634,7 +634,7 @@
                     Average walking speed trend
                   </h5>
                   <div class="text-muted small mb-2">
-                    It is recommended to be greater than or equal to 100 seconds
+                    Recommended speed is greater than or equal to 100 cm/s
                   </div>
                   <div
                     class="chart-container"
@@ -652,6 +652,9 @@
                   <h5 class="fw-semibold text-dark mb-2">
                     Average AI fall risk probability
                   </h5>
+                  <div class="text-muted small mb-2" style="opacity: 0">
+                    15615
+                  </div>
                   <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -694,14 +697,14 @@
             class="btn btn-outline-primary active"
             id="riskModeBtn"
           >
-            Sorted by risk
+            Sorted by AI Fall Risk Level
           </button>
           <button
             type="button"
             class="btn btn-outline-primary"
             id="levelModeBtn"
           >
-            Sort by level
+            Sorted by Vivifrial level
           </button>
         </div>
         <div class="risk" id="riskContainer">
@@ -709,42 +712,42 @@
           <div class="d-none d-md-flex gap-2 mb-3 filterBtnsDesktop">
             <button
               type="button"
-              class="btn btn-secondary flex-fill active"
+              class="btn btn-secondary flex-fill active text-white"
               data-risk="all"
             >
               all
             </button>
             <button
               type="button"
-              class="btn btn-danger flex-fill risk-high-danger"
+              class="btn btn-danger flex-fill risk-high-danger text-white"
               data-risk="high"
             >
               Danger
             </button>
             <button
               type="button"
-              class="btn btn-warning flex-fill risk-high"
+              class="btn btn-warning flex-fill risk-high text-white"
               data-risk="slightlyHigh"
             >
               high
             </button>
             <button
               type="button"
-              class="btn btn-primary flex-fill risk-medium"
+              class="btn btn-primary flex-fill risk-medium text-white"
               data-risk="medium"
             >
               middle
             </button>
             <button
               type="button"
-              class="btn btn-info flex-fill risk-slightly-low"
+              class="btn btn-info flex-fill risk-slightly-low text-white"
               data-risk="slightlyLow"
             >
               Slightly lower
             </button>
             <button
               type="button"
-              class="btn btn-success flex-fill risk-low"
+              class="btn btn-success flex-fill risk-low text-white"
               data-risk="low"
             >
               Low
@@ -828,42 +831,42 @@
                   >
                     <button
                       type="button"
-                      class="btn btn-secondary flex-fill active"
+                      class="btn btn-secondary flex-fill active text-white"
                       data-risk="all"
                     >
                       all
                     </button>
                     <button
                       type="button"
-                      class="btn btn-danger flex-fill"
+                      class="btn btn-danger flex-fill text-white"
                       data-risk="high"
                     >
                       Danger
                     </button>
                     <button
                       type="button"
-                      class="btn btn-warning flex-fill"
+                      class="btn btn-warning flex-fill text-white"
                       data-risk="slightlyHigh"
                     >
                       high
                     </button>
                     <button
                       type="button"
-                      class="btn btn-primary flex-fill"
+                      class="btn btn-primary flex-fill text-white"
                       data-risk="medium"
                     >
                       middle
                     </button>
                     <button
                       type="button"
-                      class="btn btn-info flex-fill"
+                      class="btn btn-info flex-fill text-white"
                       data-risk="slightlyLow"
                     >
                       Slightly lower
                     </button>
                     <button
                       type="button"
-                      class="btn btn-success flex-fill"
+                      class="btn btn-success flex-fill text-white"
                       data-risk="low"
                     >
                       Low
@@ -941,35 +944,35 @@
           <div class="d-none d-md-flex gap-2 mb-3 levelFilterBtnsDesktop">
             <button
               type="button"
-              class="btn btn-secondary flex-fill active"
+              class="btn btn-secondary flex-fill active text-white"
               data-filter="all"
             >
               all
             </button>
             <button
               type="button"
-              class="btn btn-danger flex-fill"
+              class="btn btn-danger flex-fill text-white"
               data-filter="A"
             >
               A-level
             </button>
             <button
               type="button"
-              class="btn btn-warning flex-fill"
+              class="btn btn-warning flex-fill text-white"
               data-filter="B"
             >
               B-level
             </button>
             <button
               type="button"
-              class="btn btn-primary flex-fill"
+              class="btn btn-primary flex-fill text-white"
               data-filter="C"
             >
               C-level
             </button>
             <button
               type="button"
-              class="btn btn-success flex-fill"
+              class="btn btn-success flex-fill text-white"
               data-filter="D"
             >
               D-level
@@ -1053,38 +1056,38 @@
                   >
                     <button
                       type="button"
-                      class="btn btn-secondary flex-fill active"
+                      class="btn btn-secondary flex-fill active text-white"
                       data-filter="all"
                     >
                       all
                     </button>
                     <button
                       type="button"
-                      class="btn btn-danger flex-fill"
+                      class="btn btn-danger flex-fill text-white"
                       data-filter="A"
                     >
                       A-level
                     </button>
                     <button
                       type="button"
-                      class="btn btn-warning flex-fill"
+                      class="btn btn-warning flex-fill text-white"
                       data-filter="B"
                     >
                       B-level
                     </button>
                     <button
                       type="button"
-                      class="btn btn-primary flex-fill"
+                      class="btn btn-primary flex-fill text-white"
                       data-filter="C"
                     >
                       C-level
                     </button>
                     <button
                       type="button"
-                      class="btn btn-success flex-fill"
+                      class="btn btn-success flex-fill text-white"
                       data-filter="D"
                     >
-                      A-level
+                      D-level
                     </button>
                   </div>
 

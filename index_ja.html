@@ -563,7 +563,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均座位・立位秒数の傾向</h5>
-                  <div class="text-muted small mb-2">12歳未満を推奨</div>
+                  <div class="text-muted small mb-2">推奨時間: 12秒未満</div>
                  <div
                     class="chart-container"
                     style="position: relative; height: 300px; width: 100%"
@@ -579,7 +579,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">バランステストの平均スコア</h5>
-                  <div class="text-muted small mb-2">推奨スコア：3以上</div>
+                  <div class="text-muted small mb-2">3.5 以上のスコアをお勧めします。</div>
                  <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -595,7 +595,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均歩行速度の傾向</h5>
-                  <div class="text-muted small mb-2">100秒以上が推奨されますs</div>
+                  <div class="text-muted small mb-2">推奨速度は100 cm/s以上</div>
                    <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -612,6 +612,9 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均AI転倒リスク確率</h5>
+                  <div class="text-muted small mb-2" style="opacity: 0">
+                    15615
+                  </div>
                    <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -654,14 +657,14 @@
             class="btn btn-outline-primary active"
             id="riskModeBtn"
           >
-            Sorted by risk
+            AI転倒リスクレベル別
           </button>
           <button
             type="button"
             class="btn btn-outline-primary"
             id="levelModeBtn"
           >
-            Sort by level
+            生態レベル別
           </button>
         </div>
         <div class="risk" id="riskContainer">
@@ -669,42 +672,42 @@
           <div class="d-none d-md-flex gap-2 mb-3 filterBtnsDesktop">
             <button
               type="button"
-              class="btn btn-secondary flex-fill active"
+              class="btn btn-secondary flex-fill active text-white"
               data-risk="all"
             >
               全て
             </button>
             <button
               type="button"
-              class="btn btn-danger flex-fill"
+              class="btn btn-danger flex-fill text-white"
               data-risk="high"
             >
               危険
             </button>
             <button
               type="button"
-              class="btn btn-warning flex-fill"
+              class="btn btn-warning flex-fill text-white"
               data-risk="slightlyHigh"
             >
               高い
             </button>
             <button
               type="button"
-              class="btn btn-primary flex-fill"
+              class="btn btn-primary flex-fill text-white"
               data-risk="medium"
             >
               真ん中
             </button>
             <button
               type="button"
-              class="btn btn-info flex-fill"
+              class="btn btn-info flex-fill text-white"
               data-risk="slightlyLow"
             >
               わずかに低い
             </button>
             <button
               type="button"
-              class="btn btn-success flex-fill"
+              class="btn btn-success flex-fill text-white"
               data-risk="low"
             >
               低い
@@ -780,42 +783,42 @@
                   >
                     <button
                       type="button"
-                      class="btn btn-secondary flex-fill active"
+                      class="btn btn-secondary flex-fill active text-white"
                       data-risk="all"
                     >
                       全て
                     </button>
                     <button
                       type="button"
-                      class="btn btn-danger flex-fill"
+                      class="btn btn-danger flex-fill text-white"
                       data-risk="high"
                     >
                       危険
                     </button>
                     <button
                       type="button"
-                      class="btn btn-warning flex-fill"
+                      class="btn btn-warning flex-fill text-white"
                       data-risk="slightlyHigh"
                     >
                       高い
                     </button>
                     <button
                       type="button"
-                      class="btn btn-primary flex-fill"
+                      class="btn btn-primary flex-fill text-white"
                       data-risk="medium"
                     >
                       真ん中
                     </button>
                     <button
                       type="button"
-                      class="btn btn-info flex-fill"
+                      class="btn btn-info flex-fill text-white"
                       data-risk="slightlyLow"
                     >
                       わずかに低い
                     </button>
                     <button
                       type="button"
-                      class="btn btn-success flex-fill"
+                      class="btn btn-success flex-fill text-white"
                       data-risk="low"
                     >
                       低い
@@ -883,35 +886,35 @@
           <div class="d-none d-md-flex gap-2 mb-3 levelFilterBtnsDesktop">
             <button
               type="button"
-              class="btn btn-secondary flex-fill active"
+              class="btn btn-secondary flex-fill active text-white"
               data-filter="all"
             >
               全て
             </button>
             <button
               type="button"
-              class="btn btn-danger flex-fill"
+              class="btn btn-danger flex-fill text-white"
               data-filter="A"
             >
               グレードA
             </button>
             <button
               type="button"
-              class="btn btn-warning flex-fill"
+              class="btn btn-warning flex-fill text-white"
               data-filter="B"
             >
               クラスB
             </button>
             <button
               type="button"
-              class="btn btn-primary flex-fill"
+              class="btn btn-primary flex-fill text-white"
               data-filter="C"
             >
               クラスC
             </button>
             <button
               type="button"
-              class="btn btn-success flex-fill"
+              class="btn btn-success flex-fill text-white"
               data-filter="D"
             >
               クラスD
@@ -987,35 +990,35 @@
                   >
                     <button
                       type="button"
-                      class="btn btn-secondary flex-fill active"
+                      class="btn btn-secondary flex-fill active text-white"
                       data-filter="all"
                     >
                       全て
                     </button>
                     <button
                       type="button"
-                      class="btn btn-danger flex-fill"
+                      class="btn btn-danger flex-fill text-white"
                       data-filter="A"
                     >
                       グレードA
                     </button>
                     <button
                       type="button"
-                      class="btn btn-warning flex-fill"
+                      class="btn btn-warning flex-fill text-white"
                       data-filter="B"
                     >
                       クラスB
                     </button>
                     <button
                       type="button"
-                      class="btn btn-primary flex-fill"
+                      class="btn btn-primary flex-fill text-white"
                       data-filter="C"
                     >
                       クラスC
                     </button>
                     <button
                       type="button"
-                      class="btn btn-success flex-fill"
+                      class="btn btn-success flex-fill text-white"
                       data-filter="D"
                     >
                       クラスD

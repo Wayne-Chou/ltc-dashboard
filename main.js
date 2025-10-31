@@ -307,26 +307,66 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         let totalGaitSpeed = 0;
         let totalChairSecond = 0;
+        let gaitNames = [];
+        let chairNames = [];
+        function getAllNames(vivifrail) {
+          const levels = ["A", "B", "C", "D"];
+          const names = [];
+          levels.forEach((lvl) => {
+            if (vivifrail[lvl]) {
+              vivifrail[lvl].forEach((p) => {
+                if (p.Name) names.push(p.Name);
+              });
+            }
+          });
+          return names;
+        }
         selected.forEach((item) => {
           if (item.Degenerate) {
-            totalGaitSpeed += item.Degenerate.GaitSpeed || 0;
-            totalChairSecond += item.Degenerate.ChairSecond || 0;
+            const allNames = item.VIVIFRAIL
+              ? getAllNames(item.VIVIFRAIL)
+              : ["未知"];
+
+            if (item.Degenerate.GaitSpeed) {
+              totalGaitSpeed += item.Degenerate.GaitSpeed;
+
+              gaitNames.push(...allNames);
+            }
+
+            if (item.Degenerate.ChairSecond) {
+              totalChairSecond += item.Degenerate.ChairSecond;
+
+              chairNames.push(...allNames);
+            }
           }
         });
 
-        document.getElementById(
-          "degenerateGaitSpeed"
-        ).innerHTML = `<li class="list-group-item d-flex justify-content-between align-items-center">
-           ${t("walkDecline")}
-           <span >${totalGaitSpeed}</span>
-         </li>`;
+        const gaitHeader = document
+          .querySelector("#degenerateGaitSpeed")
+          .parentElement.querySelector(".card-header");
+        if (gaitHeader)
+          gaitHeader.textContent = `步行速度衰退 (${totalGaitSpeed})`;
 
-        document.getElementById(
-          "degenerateChair"
-        ).innerHTML = `<li class="list-group-item d-flex justify-content-between align-items-center">
-            ${t("sitStandIncrease")}
-           <span >${totalChairSecond}</span>
-         </li>`;
+        const chairHeader = document
+          .querySelector("#degenerateChair")
+          .parentElement.querySelector(".card-header");
+        if (chairHeader)
+          chairHeader.textContent = `起坐秒數增加 (${totalChairSecond})`;
+
+        // 顯示人名
+        const degGaitUl = document.getElementById("degenerateGaitSpeed");
+        degGaitUl.innerHTML = gaitNames.length
+          ? gaitNames
+              .map((n) => `<li class="list-group-item">${n}</li>`)
+              .join("")
+          : `<li class="list-group-item">${t("alertNoData")}</li>`;
+
+        const degChairUl = document.getElementById("degenerateChair");
+        degChairUl.innerHTML = chairNames.length
+          ? chairNames
+              .map((n) => `<li class="list-group-item">${n}</li>`)
+              .join("")
+          : `<li class="list-group-item">${t("alertNoData")}</li>`;
 
         const levelTitles = {
           A: t("vivifrailA"),
@@ -1463,7 +1503,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             backgroundColor: "rgba(59,130,246,0.3)",
             fill: true,
             tension: 0.3,
-            pointRadius: 4,
+            pointRadius: 2,
             borderWidth: 3,
           },
         ],
@@ -1582,7 +1622,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             backgroundColor: "rgba(245,158,11,0.3)",
             fill: true,
             tension: 0.3,
-            pointRadius: 4,
+            pointRadius: 2,
             borderWidth: 3,
           },
         ],
@@ -1709,7 +1749,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             backgroundColor: "rgba(239,68,68,0.3)",
             fill: true,
             tension: 0.3,
-            pointRadius: 4,
+            pointRadius: 2,
             borderWidth: 3,
           },
         ],

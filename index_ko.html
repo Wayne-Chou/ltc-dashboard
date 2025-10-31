@@ -584,7 +584,9 @@
                   <h5 class="fw-semibold text-dark mb-2">
                     평균 앉기-서기 시간 추이
                   </h5>
-                  <div class="text-muted small mb-2">12 이하 권장</div>
+                  <div class="text-muted small mb-2">
+                    권장 지속 시간: 12초 미만
+                  </div>
                   <div
                     class="chart-container"
                     style="position: relative; height: 300px; width: 100%"
@@ -601,7 +603,9 @@
                   <h5 class="fw-semibold text-dark mb-2">
                     평균 균형 테스트 점수
                   </h5>
-                  <div class="text-muted small mb-2">추천점수 : 3점 이상</div>
+                  <div class="text-muted small mb-2">
+                    3.5점 이상을 추천드립니다.
+                  </div>
                   <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -619,7 +623,7 @@
                     평균 보행 속도 추세
                   </h5>
                   <div class="text-muted small mb-2">
-                    100초 이상인 것이 좋습니다
+                    권장 속도는 100cm/s 이상입니다.
                   </div>
                   <div
                     class="chart-container"
@@ -637,6 +641,9 @@
                   <h5 class="fw-semibold text-dark mb-2">
                     평균 AI 낙상 위험 확률
                   </h5>
+                  <div class="text-muted small mb-2" style="opacity: 0">
+                    15615
+                  </div>
                   <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -679,14 +686,14 @@
             class="btn btn-outline-primary active"
             id="riskModeBtn"
           >
-            위험별로 정렬
+            AI 낙상 위험 수준별로 정렬
           </button>
           <button
             type="button"
             class="btn btn-outline-primary"
             id="levelModeBtn"
           >
-            레벨별로 정렬
+            Vivifrial 레벨별로 정렬
           </button>
         </div>
         <div class="risk" id="riskContainer">
@@ -694,42 +701,42 @@
           <div class="d-none d-md-flex gap-2 mb-3 filterBtnsDesktop">
             <button
               type="button"
-              class="btn btn-secondary flex-fill active"
+              class="btn btn-secondary flex-fill active text-white"
               data-risk="all"
             >
               모두
             </button>
             <button
               type="button"
-              class="btn btn-danger flex-fill risk-high-danger"
+              class="btn btn-danger flex-fill risk-high-danger text-white"
               data-risk="high"
             >
               위험
             </button>
             <button
               type="button"
-              class="btn btn-warning flex-fill risk-high"
+              class="btn btn-warning flex-fill risk-high text-white"
               data-risk="slightlyHigh"
             >
               높은
             </button>
             <button
               type="button"
-              class="btn btn-primary flex-fill risk-medium"
+              class="btn btn-primary flex-fill risk-medium text-white"
               data-risk="medium"
             >
               가운데
             </button>
             <button
               type="button"
-              class="btn btn-info flex-fill risk-slightly-low"
+              class="btn btn-info flex-fill risk-slightly-low text-white"
               data-risk="slightlyLow"
             >
               약간 낮음
             </button>
             <button
               type="button"
-              class="btn btn-success flex-fill risk-low"
+              class="btn btn-success flex-fill risk-low text-white"
               data-risk="low"
             >
               낮은
@@ -817,42 +824,42 @@
                   >
                     <button
                       type="button"
-                      class="btn btn-secondary flex-fill active"
+                      class="btn btn-secondary flex-fill active text-white"
                       data-risk="all"
                     >
                       모두
                     </button>
                     <button
                       type="button"
-                      class="btn btn-danger flex-fill risk-high-danger"
+                      class="btn btn-danger flex-fill risk-high-danger text-white"
                       data-risk="high"
                     >
                       위험
                     </button>
                     <button
                       type="button"
-                      class="btn btn-warning flex-fill risk-high"
+                      class="btn btn-warning flex-fill risk-high text-white"
                       data-risk="slightlyHigh"
                     >
                       높은
                     </button>
                     <button
                       type="button"
-                      class="btn btn-primary flex-fill risk-medium"
+                      class="btn btn-primary flex-fill risk-medium text-white"
                       data-risk="medium"
                     >
                       가운데
                     </button>
                     <button
                       type="button"
-                      class="btn btn-info flex-fill risk-slightly-low"
+                      class="btn btn-info flex-fill risk-slightly-low text-white"
                       data-risk="slightlyLow"
                     >
                       약간 낮음
                     </button>
                     <button
                       type="button"
-                      class="btn btn-success flex-fill risk-low"
+                      class="btn btn-success flex-fill risk-low text-white"
                       data-risk="low"
                     >
                       낮은
@@ -930,35 +937,35 @@
           <div class="d-none d-md-flex gap-2 mb-3 levelFilterBtnsDesktop">
             <button
               type="button"
-              class="btn btn-secondary flex-fill active"
+              class="btn btn-secondary flex-fill active text-white"
               data-filter="all"
             >
               모두
             </button>
             <button
               type="button"
-              class="btn btn-danger flex-fill"
+              class="btn btn-danger flex-fill text-white"
               data-filter="A"
             >
               A등급
             </button>
             <button
               type="button"
-              class="btn btn-warning flex-fill"
+              class="btn btn-warning flex-fill text-white"
               data-filter="B"
             >
               B반
             </button>
             <button
               type="button"
-              class="btn btn-primary flex-fill"
+              class="btn btn-primary flex-fill text-white"
               data-filter="C"
             >
               C클래스
             </button>
             <button
               type="button"
-              class="btn btn-success flex-fill"
+              class="btn btn-success flex-fill text-white"
               data-filter="D"
             >
               D반
@@ -1038,35 +1045,35 @@
                   >
                     <button
                       type="button"
-                      class="btn btn-secondary flex-fill active"
+                      class="btn btn-secondary flex-fill active text-white"
                       data-filter="all"
                     >
                       모두
                     </button>
                     <button
                       type="button"
-                      class="btn btn-danger flex-fill"
+                      class="btn btn-danger flex-fill text-white"
                       data-filter="A"
                     >
                       A등급
                     </button>
                     <button
                       type="button"
-                      class="btn btn-warning flex-fill"
+                      class="btn btn-warning flex-fill text-white"
                       data-filter="B"
                     >
                       B반
                     </button>
                     <button
                       type="button"
-                      class="btn btn-primary flex-fill"
+                      class="btn btn-primary flex-fill text-white"
                       data-filter="C"
                     >
                       C클래스
                     </button>
                     <button
                       type="button"
-                      class="btn btn-success flex-fill"
+                      class="btn btn-success flex-fill text-white"
                       data-filter="D"
                     >
                       D반

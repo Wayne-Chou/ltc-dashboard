@@ -577,7 +577,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均坐站秒數趨勢</h5>
-                  <div class="text-muted small mb-2">建議小於12</div>
+                  <div class="text-muted small mb-2">建議小於12s</div>
                   <div
                     class="chart-container"
                     style="position: relative; height: 300px; width: 100%"
@@ -592,7 +592,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均平衡測驗得分</h5>
-                  <div class="text-muted small mb-2">建議大於3分</div>
+                  <div class="text-muted small mb-2">建議大於3.5分</div>
                   <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -607,7 +607,7 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均步行速度趨勢</h5>
-                  <div class="text-muted small mb-2">建議大於等於100秒</div>
+                  <div class="text-muted small mb-2">建議大於等於100cm/s</div>
                   <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -622,6 +622,9 @@
               <div class="card shadow-sm h-100">
                 <div class="card-body">
                   <h5 class="fw-semibold text-dark mb-2">平均AI跌倒風險機率</h5>
+                  <div class="text-muted small mb-2" style="opacity: 0">
+                    15615
+                  </div>
                   <div
                     class="chart-container"
                     style="height: 300px; width: 100%"
@@ -664,14 +667,14 @@
             class="btn btn-outline-primary active"
             id="riskModeBtn"
           >
-            依風險排序
+            依AI跌倒風險等級排序
           </button>
           <button
             type="button"
             class="btn btn-outline-primary"
             id="levelModeBtn"
           >
-            依等級排序
+            依Vivifrial等級排序
           </button>
         </div>
         <div class="risk" id="riskContainer">
@@ -679,42 +682,42 @@
           <div class="d-none d-md-flex gap-2 mb-3 filterBtnsDesktop">
             <button
               type="button"
-              class="btn btn-secondary flex-fill active"
+              class="btn btn-secondary flex-fill active text-white"
               data-risk="all"
             >
               全部
             </button>
             <button
               type="button"
-              class="btn btn-danger flex-fill risk-high-danger"
+              class="btn btn-danger flex-fill risk-high-danger text-white"
               data-risk="high"
             >
               危險
             </button>
             <button
               type="button"
-              class="btn btn-warning flex-fill risk-high"
+              class="btn btn-warning flex-fill risk-high text-white"
               data-risk="slightlyHigh"
             >
               高
             </button>
             <button
               type="button"
-              class="btn btn-primary flex-fill risk-medium"
+              class="btn btn-primary flex-fill risk-medium text-white"
               data-risk="medium"
             >
               中
             </button>
             <button
               type="button"
-              class="btn btn-info flex-fill risk-slightly-low"
+              class="btn btn-info flex-fill risk-slightly-low text-white"
               data-risk="slightlyLow"
             >
               稍低
             </button>
             <button
               type="button"
-              class="btn btn-success flex-fill risk-low"
+              class="btn btn-success flex-fill risk-low text-white"
               data-risk="low"
             >
               低
@@ -800,42 +803,42 @@
                   >
                     <button
                       type="button"
-                      class="btn btn-secondary flex-fill active"
+                      class="btn btn-secondary flex-fill active text-white"
                       data-risk="all"
                     >
                       全部
                     </button>
                     <button
                       type="button"
-                      class="btn btn-danger flex-fill risk-high-danger"
+                      class="btn btn-danger flex-fill risk-high-danger text-white"
                       data-risk="high"
                     >
                       危險
                     </button>
                     <button
                       type="button"
-                      class="btn btn-warning flex-fill risk-high"
+                      class="btn btn-warning flex-fill risk-high text-white"
                       data-risk="slightlyHigh"
                     >
                       高
                     </button>
                     <button
                       type="button"
-                      class="btn btn-primary flex-fill risk-medium"
+                      class="btn btn-primary flex-fill risk-medium text-white"
                       data-risk="medium"
                     >
                       中
                     </button>
                     <button
                       type="button"
-                      class="btn btn-info flex-fill risk-slightly-low"
+                      class="btn btn-info flex-fill risk-slightly-low text-white"
                       data-risk="slightlyLow"
                     >
                       稍低
                     </button>
                     <button
                       type="button"
-                      class="btn btn-success flex-fill risk-low"
+                      class="btn btn-success flex-fill risk-low text-white"
                       data-risk="low"
                     >
                       低
@@ -911,35 +914,35 @@
           <div class="d-none d-md-flex gap-2 mb-3 levelFilterBtnsDesktop">
             <button
               type="button"
-              class="btn btn-secondary flex-fill active"
+              class="btn btn-secondary flex-fill active text-white"
               data-filter="all"
             >
               全部
             </button>
             <button
               type="button"
-              class="btn btn-danger flex-fill"
+              class="btn btn-danger flex-fill text-white"
               data-filter="A"
             >
               A級
             </button>
             <button
               type="button"
-              class="btn btn-warning flex-fill"
+              class="btn btn-warning flex-fill text-white"
               data-filter="B"
             >
               B級
             </button>
             <button
               type="button"
-              class="btn btn-primary flex-fill"
+              class="btn btn-primary flex-fill text-white"
               data-filter="C"
             >
               C級
             </button>
             <button
               type="button"
-              class="btn btn-success flex-fill"
+              class="btn btn-success flex-fill text-white"
               data-filter="D"
             >
               D級
@@ -1015,35 +1018,35 @@
                   >
                     <button
                       type="button"
-                      class="btn btn-secondary flex-fill active"
+                      class="btn btn-secondary flex-fill active text-white"
                       data-filter="all"
                     >
                       全部
                     </button>
                     <button
                       type="button"
-                      class="btn btn-danger flex-fill"
+                      class="btn btn-danger flex-fill text-white"
                       data-filter="A"
                     >
                       A級
                     </button>
                     <button
                       type="button"
-                      class="btn btn-warning flex-fill"
+                      class="btn btn-warning flex-fill text-white"
                       data-filter="B"
                     >
                       B級
                     </button>
                     <button
                       type="button"
-                      class="btn btn-primary flex-fill"
+                      class="btn btn-primary flex-fill text-white"
                       data-filter="C"
                     >
                       C級
                     </button>
                     <button
                       type="button"
-                      class="btn btn-success flex-fill"
+                      class="btn btn-success flex-fill text-white"
                       data-filter="D"
                     >
                       D級
