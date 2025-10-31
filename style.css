@@ -6,7 +6,12 @@
 .sticky-top {
   z-index: 20 !important;
 }
-
+.text-warn {
+  color: #e67e22;
+}
+.bg-warn {
+  background: #e67e22;
+}
 /* 地圖 */
 #map {
   height: 600px;
@@ -158,4 +163,54 @@ body {
   background-color: #6b7280;
   vertical-align: middle;
   margin: 0 0.1em;
+}
+/* 按鈕樣式 */
+.risk-high-danger {
+  background-color: #ff5757 !important;
+}
+
+.risk-high {
+  background-color: #ffa203 !important;
+}
+
+.risk-medium {
+  background-color: #ffd039 !important;
+}
+
+.risk-slightly-low {
+  background-color: #8cff00 !important;
+}
+
+.risk-low {
+  background-color: #4ffa00 !important;
+}
+
+.risk-high-danger:hover {
+  background-color: #e14b4b !important;
+}
+
+.risk-high:hover {
+  background-color: #e09100 !important;
+}
+
+.risk-medium:hover {
+  background-color: #e6bd33 !important;
+}
+
+.risk-slightly-low:hover {
+  background-color: #7ee600 !important;
+}
+
+.risk-low:hover {
+  background-color: #45e000 !important;
+}
+
+.filterBtnsDesktop button.active,
+#modalFilterBtnsDesktop button.active {
+  border: 5px solid #000;
+}
+
+.levelFilterBtnsDesktop button.active,
+#modalLevelFilterBtnsDesktop button.active {
+  border: 5px solid #000;
 }

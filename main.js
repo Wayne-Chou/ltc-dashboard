@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       countWarning: "尚無資料",
       noRecord: "尚無檢測紀錄",
       noMatchedPerson: "目前沒有符合條件的人員",
-      startDateText: "自 {year} 年 {month} 月起累計",
+      startDateText: "自 {yearMonth} ",
       latestDateText: "{date} 檢測",
       generatingPDF: "產生中...",
       downloadPDF: "下載",
@@ -25,6 +25,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       people: "人",
       seconds: "秒",
       points: "分",
+      walkDecline: "步行速度衰退",
+      sitStandIncrease: "起坐秒數增加",
+      vivifrailA: "A級失能者",
+      vivifrailB: "B級衰弱者",
+      vivifrailC: "C級衰弱前期者",
+      overview: "總表",
     },
     en: {
       alertNoData: "No data",
@@ -40,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       countWarning: "No data",
       noRecord: "No test records",
       noMatchedPerson: "No matching participants found",
-      startDateText: "Accumulated since {year}/{month}",
+      startDateText: "Accumulated since {yearMonth}",
       latestDateText: "Measured on {date}",
       generatingPDF: "Generating...",
       downloadPDF: "Download",
@@ -50,6 +56,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       people: "people",
       seconds: "s",
       points: "pts",
+      walkDecline: "Gait speed decline",
+      sitStandIncrease: "Sit-stand time increase",
+      vivifrailA: "Level A disabled",
+      vivifrailB: "Level B frail",
+      vivifrailC: "Level C pre-frail",
+      overview: "Overview",
     },
     ja: {
       alertNoData: "データなし",
@@ -65,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       countWarning: "データなし",
       noRecord: "検査記録なし",
       noMatchedPerson: "条件に一致する参加者がいません",
-      startDateText: "{year}年{month}月から累計",
+      startDateText: "以来{yearMonth}",
       latestDateText: "{date} 測定",
       generatingPDF: "生成中...",
       downloadPDF: "ダウンロード",
@@ -75,6 +87,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       people: "人",
       seconds: "秒",
       points: "点",
+      walkDecline: "歩行速度の低下",
+      sitStandIncrease: "起立時間の増加",
+      vivifrailA: "A級失能者",
+      vivifrailB: "B級衰弱者",
+      vivifrailC: "C級衰弱前期者",
+      overview: "総表",
     },
     ko: {
       alertNoData: "데이터 없음",
@@ -90,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       countWarning: "데이터 없음",
       noRecord: "검사 기록 없음",
       noMatchedPerson: "조건에 맞는 인원이 없습니다",
-      startDateText: "{year}년 {month}월부터 누적",
+      startDateText: "이래{yearMonth}",
       latestDateText: "{date} 측정",
       generatingPDF: "생성 중...",
       downloadPDF: "다운로드",
@@ -100,6 +118,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       people: "명",
       seconds: "초",
       points: "점",
+      walkDecline: "보행 속도 감소",
+      sitStandIncrease: "기립 시간 증가",
+      vivifrailA: "A등급 장애자",
+      vivifrailB: "B등급 허약자",
+      vivifrailC: "C등급 허약 전기자",
+      overview: "전체표",
     },
   };
 
@@ -108,7 +132,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const dropdownButton = document.getElementById("dropdownMenuButton");
-  if (dropdownButton) dropdownButton.textContent = "總表";
+  if (dropdownButton) dropdownButton.textContent = t("overview");
   const dropdownMenu = document.getElementById("dropdownMenu");
   // 檢測數據資料
   const locationCount = document.getElementById("locationCount");
@@ -136,6 +160,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 地區名 JSON 檔案
   const locationFileMap = {
     新加坡: "PageAPI-Singapore.json",
+    信義區: "PageAPI-0.json",
   };
 
   // VIVIFRAIL 陣列
@@ -164,7 +189,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // 建立人員卡片
-
   function createPersonCard(person) {
     const genderText = person.Gender === 0 ? t("male") : t("female");
     const faceColors = {
@@ -258,13 +282,27 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       if (!selected || selected.length === 0) {
-        document.getElementById("degenerateGaitSpeed").textContent =
-          t("alertNoData");
-        document.getElementById("degenerateChair").textContent = "";
+        document.getElementById(
+          "degenerateGaitSpeed"
+        ).innerHTML = `<li class="list-group-item">${t("alertNoData")}</li>`;
+        document.getElementById(
+          "degenerateChair"
+        ).innerHTML = `<li class="list-group-item">${t("alertNoData")}</li>`;
         ["vivifrailA", "vivifrailB", "vivifrailC"].forEach((id) => {
           document.getElementById(
             id
           ).innerHTML = `<li class="list-group-item">${t("alertNoData")}</li>`;
+
+          const ul = document.getElementById(id);
+          const cardHeader = ul.parentElement.querySelector(".card-header");
+          if (cardHeader) {
+            const defaultTitles = {
+              vivifrailA: t("vivifrailA"),
+              vivifrailB: t("vivifrailB"),
+              vivifrailC: t("vivifrailC"),
+            };
+            cardHeader.textContent = `${defaultTitles[id]}`;
+          }
         });
       } else {
         let totalGaitSpeed = 0;
@@ -275,30 +313,51 @@ document.addEventListener("DOMContentLoaded", async () => {
             totalChairSecond += item.Degenerate.ChairSecond || 0;
           }
         });
+
         document.getElementById(
           "degenerateGaitSpeed"
-        ).textContent = `步行速度衰退：${totalGaitSpeed} 人`;
+        ).innerHTML = `<li class="list-group-item d-flex justify-content-between align-items-center">
+           ${t("walkDecline")}
+           <span >${totalGaitSpeed}</span>
+         </li>`;
+
         document.getElementById(
           "degenerateChair"
-        ).textContent = `起坐秒數增加：${totalChairSecond} 人`;
+        ).innerHTML = `<li class="list-group-item d-flex justify-content-between align-items-center">
+            ${t("sitStandIncrease")}
+           <span >${totalChairSecond}</span>
+         </li>`;
 
-        // 顯示 VIVIFRAIL 名單
+        const levelTitles = {
+          A: t("vivifrailA"),
+          B: t("vivifrailB"),
+          C: t("vivifrailC"),
+        };
+
         const levels = ["A", "B", "C"];
         levels.forEach((level) => {
           const ul = document.getElementById("vivifrail" + level);
           ul.innerHTML = "";
+
           let names = [];
           selected.forEach((item) => {
             if (item.VIVIFRAIL && item.VIVIFRAIL[level]) {
               item.VIVIFRAIL[level].forEach((person) => {
                 names.push(
-                  `${person.Name} (${person.Age}歲, ${
-                    person.Gender === 1 ? "男" : "女"
+                  `${person.Name} (${person.Age}${t("yearsOld")}, ${
+                    person.Gender === 1 ? t("male") : t("female")
                   })`
                 );
               });
             }
           });
+
+          // 加上括號
+          const cardHeader = ul.parentElement.querySelector(".card-header");
+          if (cardHeader) {
+            cardHeader.textContent = `${levelTitles[level]} (${names.length})`;
+          }
+
           if (names.length === 0) {
             ul.innerHTML = `<li class="list-group-item">${t(
               "alertNoData"
@@ -376,7 +435,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const showOnlyOnRegion = document.querySelectorAll(".hide-on-all");
     const mainCols = document.querySelectorAll(".main-col");
     const sechide = document.querySelectorAll(".sechide");
-    if (location === "總表") {
+    if (location === t("overview")) {
       showOnlyOnRegion.forEach((el) => (el.style.display = "none"));
       mainCols.forEach((el) => {
         el.classList.remove("col-md-6");
@@ -394,11 +453,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // 地區的 JSON
-
   async function loadLocationData(location) {
     updateHideOnAll(location);
     try {
-      if (location === "總表") {
+      if (location === t("overview")) {
         let allAssessments = [];
         for (const loc of Object.keys(locationFileMap)) {
           const response = await fetch(locationFileMap[loc]);
@@ -407,7 +465,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         currentAssessments = allAssessments;
 
-        dropdownButton.textContent = "總表";
+        dropdownButton.textContent = t("overview");
 
         updateLatestCountDate(currentAssessments);
         updateTotalCountAndStartDate(currentAssessments);
@@ -517,10 +575,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const aAll = document.createElement("a");
     aAll.classList.add("dropdown-item");
     aAll.href = "#";
-    aAll.textContent = "總表";
+    aAll.textContent = t("overview");
     aAll.addEventListener("click", () => {
-      dropdownButton.textContent = "總表";
-      loadLocationData("總表");
+      dropdownButton.textContent = t("overview");
+      loadLocationData(t("overview"));
+
+      refreshLevelUI();
     });
     liAll.appendChild(aAll);
     dropdownMenu.appendChild(liAll);
@@ -536,12 +596,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       a.addEventListener("click", () => {
         dropdownButton.textContent = loc;
         loadLocationData(loc);
+        refreshLevelUI();
       });
 
       li.appendChild(a);
       dropdownMenu.appendChild(li);
     });
-    loadLocationData("總表");
+    loadLocationData(t("overview"));
   } catch (error) {
     console.error("失敗:", error);
   }
@@ -896,40 +957,51 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    //  收集所有 VIVIFRAIL 的 Name,重複的只算一次
+    // 收集所有 VIVIFRAIL 的 Name, 重複的只算一次
     const allNames = [];
-
-    assessments.forEach((item, index) => {
+    assessments.forEach((item) => {
       if (item.VIVIFRAIL) {
-        Object.entries(item.VIVIFRAIL).forEach(([groupKey, group]) => {
-          // console.log(`　 群組 ${groupKey} 含 ${group.length} 筆`);
+        Object.values(item.VIVIFRAIL).forEach((group) => {
           group.forEach((person) => {
-            if (person.Name) {
-              allNames.push(person.Name);
-              // console.log(`　　加入姓名：${person.Name}`);
-            }
+            if (person.Name) allNames.push(person.Name);
           });
         });
       }
     });
-    // 用 Set 去重後計算總人數
+
     const uniqueNames = [...new Set(allNames)];
     const totalCount = uniqueNames.length;
-    // console.log("所有名字：", allNames);
-    // console.log("去掉重覆後的唯一名字：", uniqueNames);
-    // console.log(`唯一人數：${totalCount}`);
 
-    //  找最舊日期
+    // 取得最舊與最新日期
+    const sortedDates = assessments
+      .map((item) => new Date(item.Date))
+      .sort((a, b) => a - b);
 
-    const minDate = new Date(Math.min(...assessments.map((item) => item.Date)));
-    const startYear = minDate.getFullYear();
-    const startMonth = (minDate.getMonth() + 1).toString().padStart(2, "0");
+    const formatDate = (date) =>
+      `${date.getFullYear()}/${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
 
+    const formattedOldest = formatDate(sortedDates[0]);
+    const formattedLatest = formatDate(sortedDates[sortedDates.length - 1]);
+
+    // 更新顯示
     if (totalCountEl) totalCountEl.textContent = totalCount;
-    if (startDateTextEl)
-      startDateTextEl.textContent = t("startDateText")
-        .replace("{year}", startYear)
-        .replace("{month}", startMonth);
+    if (startDateTextEl) {
+      if (sortedDates.length === 1) {
+        // 只有一個日期
+        startDateTextEl.textContent = t("startDateText").replace(
+          "{yearMonth}",
+          formattedLatest
+        );
+      } else {
+        // 多個日期，顯示範圍
+        startDateTextEl.textContent = t("startDateText").replace(
+          "{yearMonth}",
+          `${formattedOldest} ~ ${formattedLatest}`
+        );
+      }
+    }
   }
 
   // 人員卡片 (最多 12 個，按 A->B->C->D 排序)
@@ -984,7 +1056,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const cat = getRiskCategory(p.Risk);
       if (counts[cat] !== undefined) counts[cat]++;
     });
-
+    // 電腦
     document.querySelectorAll(".d-md-flex button").forEach((btn) => {
       const risk = btn.dataset.risk;
       const originalText = btn.getAttribute("data-original-text");
@@ -995,10 +1067,43 @@ document.addEventListener("DOMContentLoaded", async () => {
         btn.textContent = `${btn.textContent.trim()} (${counts[risk] || 0})`;
       }
     });
+    // 手機
+    document
+      .querySelectorAll(".filterDropdownMobile .dropdown-item")
+      .forEach((item) => {
+        const risk = item.dataset.risk;
+        const originalText = item.getAttribute("data-original-text");
+        if (originalText) {
+          item.textContent = `${originalText} (${counts[risk] || 0})`;
+        } else {
+          item.setAttribute("data-original-text", item.textContent.trim());
+          item.textContent = `${item.textContent.trim()} (${
+            counts[risk] || 0
+          })`;
+        }
+      });
   }
 
-  // 查看全部按鈕
+  // 桌機版風險按鈕（包含主畫面 & 彈窗）
+  const desktopRiskContainers = [
+    document.querySelector(".filterBtnsDesktop"),
+    document.querySelector("#modalFilterBtnsDesktop"),
+  ];
 
+  desktopRiskContainers.forEach((container) => {
+    if (!container) return;
+    container.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        container
+          .querySelectorAll("button")
+          .forEach((b) => b.classList.remove("active"));
+
+        btn.classList.add("active");
+      });
+    });
+  });
+
+  // 查看全部按鈕
   function updateViewAllBtn(show) {
     if (!viewAllBtn) return;
     viewAllBtn.style.display = show ? "inline-flex" : "none";
@@ -1018,10 +1123,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // 高低風險按鈕(手機)
-  document.querySelectorAll(".dropdown-menu .dropdown-item").forEach((item) => {
-    item.addEventListener("click", (e) => {
-      e.preventDefault();
-      handleRiskFilter(item.dataset.risk);
+  document.querySelectorAll(".dropdown").forEach((dropdown) => {
+    const dropdownBtn = dropdown.querySelector(".dropdown-toggle");
+    const items = dropdown.querySelectorAll(".dropdown-menu .dropdown-item");
+
+    if (!dropdownBtn || items.length === 0) return;
+
+    items.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const risk = item.dataset.risk;
+        const text = item.textContent.trim();
+
+        dropdownBtn.textContent = text;
+
+        handleRiskFilter(risk);
+      });
     });
   });
 
@@ -1055,18 +1173,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // 日期套件js
-  // const fp = flatpickr("#startDate", {
-  //   locale: "zh_tw",
-  //   dateFormat: "Y-m-d",
-  //   plugins: [new rangePlugin({ input: "#endDate" })],
-  //   onChange: function (selectedDates) {
-  //     if (selectedDates.length === 2) {
-  //       let start = selectedDates[0];
-  //       let end = selectedDates[1];
-  //       filterByDate(start, end);
-  //     }
-  //   },
-  // });
+
   const fp = flatpickr("#dateRange", {
     mode: "range",
     dateFormat: "Y-m-d",
@@ -1152,6 +1259,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 清除按鈕
   document.getElementById("clearBtn").addEventListener("click", () => {
+    if (!fp.selectedDates || fp.selectedDates.length === 0) return;
     fp.clear();
     const checkAllBtn = document.getElementById("checkAllBtn");
     const uncheckAllBtn = document.getElementById("uncheckAllBtn");
@@ -1185,6 +1293,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // 新曲線圖坐站平均秒數
+  Chart.register(window["chartjs-plugin-annotation"]);
   function drawSitStandChartChartJS(assessments) {
     const ctx = document.getElementById("sitStandChartCanvas");
     if (!ctx) return;
@@ -1207,6 +1316,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       labels = ["", ...labels, ""];
       dataValues = [null, ...dataValues, null];
     }
+    const baselineY = 12; // 基準線
+    const minValue = Math.min(...dataValues, baselineY);
+    const maxValue = Math.max(...dataValues, baselineY);
+    let yMin = minValue - (maxValue - minValue) * 0.2;
+    let yMax = maxValue + (maxValue - minValue) * 0.2;
+    if (yMin < 0) yMin = 0;
+    if (yMax - yMin < 5) yMax = yMin + 5;
     // 如果之前已有圖表，先銷毀
     if (window.sitStandChartInstance) {
       window.sitStandChartInstance.destroy();
@@ -1225,7 +1341,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             backgroundColor: "rgba(16,185,129,0.3)",
             fill: true,
             tension: 0.3,
-            pointRadius: 0,
+            pointRadius: 2,
             borderWidth: 3,
           },
         ],
@@ -1256,7 +1372,30 @@ document.addEventListener("DOMContentLoaded", async () => {
               },
             },
           },
+          annotation: {
+            annotations: {
+              baseline: {
+                type: "line",
+                yMin: 12,
+                yMax: 12,
+                borderColor: "#6b7280",
+                borderWidth: 2,
+                borderDash: [6, 4], // 虛線樣式
+                label: {
+                  display: true,
+                  content: "",
+                  position: "end",
+                  backgroundColor: "rgba(107,114,128,0.1)",
+                  color: "#374151",
+                  font: {
+                    style: "italic",
+                  },
+                },
+              },
+            },
+          },
         },
+
         scales: {
           x: {
             offset: true,
@@ -1269,6 +1408,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           y: {
             title: { display: true, text: t("sitStand") },
             beginAtZero: false,
+            min: yMin,
+            max: yMax,
           },
         },
       },
@@ -1298,6 +1439,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       labels = ["", ...labels, ""];
       dataValues = [null, ...dataValues, null];
     }
+    const baselineY = 3.5; // 基準線
+    const minValue = Math.min(...dataValues, baselineY);
+    const maxValue = Math.max(...dataValues, baselineY);
+    let yMin = minValue - (maxValue - minValue) * 0.2;
+    let yMax = maxValue + (maxValue - minValue) * 0.2;
+    if (yMin < 0) yMin = 0;
+    if (yMax - yMin < 2) yMax = yMin + 2;
     // 如果之前已有圖表，先銷毀
     if (window.balanceChartInstance) {
       window.balanceChartInstance.destroy();
@@ -1315,7 +1463,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             backgroundColor: "rgba(59,130,246,0.3)",
             fill: true,
             tension: 0.3,
-            pointRadius: 0,
+            pointRadius: 4,
             borderWidth: 3,
           },
         ],
@@ -1346,6 +1494,27 @@ document.addEventListener("DOMContentLoaded", async () => {
               },
             },
           },
+          annotation: {
+            annotations: {
+              baseline: {
+                type: "line",
+                yMin: 3.5,
+                yMax: 3.5,
+                borderColor: "#6b7280",
+                borderWidth: 2,
+                borderDash: [6, 6],
+                label: {
+                  display: true,
+                  content: "",
+                  position: "start",
+                  backgroundColor: "rgba(107,114,128,0.1)",
+                  color: "#374151",
+                  font: { weight: "bold" },
+                  padding: 4,
+                },
+              },
+            },
+          },
         },
         scales: {
           x: {
@@ -1359,6 +1528,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           y: {
             title: { display: true, text: t("balanceScore") },
             beginAtZero: false,
+            min: yMin,
+            max: yMax,
           },
         },
       },
@@ -1386,6 +1557,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       labels = ["", ...labels, ""];
       dataValues = [null, ...dataValues, null];
     }
+    const baseline1 = 100;
+    const baseline2 = 80;
+    const minValue = Math.min(...dataValues, baseline1, baseline2);
+    const maxValue = Math.max(...dataValues, baseline1, baseline2);
+    let yMin = minValue - (maxValue - minValue) * 0.2;
+    let yMax = maxValue + (maxValue - minValue) * 0.2;
+    if (yMin < 0) yMin = 0;
+    if (yMax - yMin < 10) yMax = yMin + 10;
+
     if (window.gaitChartInstance) {
       window.gaitChartInstance.destroy();
     }
@@ -1402,7 +1582,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             backgroundColor: "rgba(245,158,11,0.3)",
             fill: true,
             tension: 0.3,
-            pointRadius: 0, // 圓點隱藏
+            pointRadius: 4,
             borderWidth: 3,
           },
         ],
@@ -1433,6 +1613,44 @@ document.addEventListener("DOMContentLoaded", async () => {
               },
             },
           },
+          annotation: {
+            annotations: {
+              baseline100: {
+                type: "line",
+                yMin: 100,
+                yMax: 100,
+                borderColor: "#6b7280",
+                borderWidth: 2,
+                borderDash: [6, 6],
+                label: {
+                  display: true,
+                  content: "",
+                  position: "start",
+                  backgroundColor: "rgba(107,114,128,0.1)",
+                  color: "#374151",
+                  font: { weight: "bold" },
+                  padding: 4,
+                },
+              },
+              baseline80: {
+                type: "line",
+                yMin: 80,
+                yMax: 80,
+                borderColor: "#6b7280",
+                borderWidth: 2,
+                borderDash: [6, 6],
+                label: {
+                  display: true,
+                  content: "",
+                  position: "start",
+                  backgroundColor: "rgba(107,114,128,0.1)",
+                  color: "#374151",
+                  font: { weight: "bold" },
+                  padding: 4,
+                },
+              },
+            },
+          },
         },
         scales: {
           x: {
@@ -1443,6 +1661,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           y: {
             title: { display: true, text: t("gaitSpeed") },
             beginAtZero: false,
+            min: yMin,
+            max: yMax,
           },
         },
       },
@@ -1489,7 +1709,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             backgroundColor: "rgba(239,68,68,0.3)",
             fill: true,
             tension: 0.3,
-            pointRadius: 0,
+            pointRadius: 4,
             borderWidth: 3,
           },
         ],
@@ -1651,6 +1871,287 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
+  //A~D等級人員區塊
+  const riskModeBtn = document.getElementById("riskModeBtn");
+  const levelModeBtn = document.getElementById("levelModeBtn");
+  const riskContainer = document.getElementById("riskContainer");
+  const levelContainer = document.getElementById("levelContainer");
+
+  riskContainer.classList.remove("d-none");
+  levelContainer.classList.add("d-none");
+
+  // 風險排序
+  riskModeBtn.addEventListener("click", () => {
+    riskContainer.classList.remove("d-none");
+    levelContainer.classList.add("d-none");
+    riskModeBtn.classList.add("active");
+    levelModeBtn.classList.remove("active");
+  });
+
+  // 等級排序
+  levelModeBtn.addEventListener("click", () => {
+    riskContainer.classList.add("d-none");
+    levelContainer.classList.remove("d-none");
+    levelModeBtn.classList.add("active");
+    riskModeBtn.classList.remove("active");
+
+    refreshLevelUI();
+  });
+
+  function flattenLevelData(assessments) {
+    const levels = ["A", "B", "C", "D"];
+    const result = [];
+    assessments.forEach((item) => {
+      levels.forEach((level) => {
+        if (item.VIVIFRAIL && item.VIVIFRAIL[level]) {
+          item.VIVIFRAIL[level].forEach((p) => {
+            result.push({ ...p, Level: level });
+          });
+        }
+      });
+    });
+    return result;
+  }
+
+  // level建立人員卡片
+  function createLevelPersonCard(person) {
+    const genderText = person.Gender === 0 ? "男" : "女";
+    const faceColors = {
+      A: "#FEE2E2",
+      B: "#FEF3C7",
+      C: "#DBEAFE",
+      D: "#DCFCE7",
+    };
+    const levelLabels = { A: "A級", B: "B級", C: "C級", D: "D級" };
+    const borderClasses = {
+      A: "danger",
+      B: "warning",
+      C: "primary",
+      D: "success",
+    };
+    const faceColor = faceColors[person.Level] || "#E5E7EB";
+    const levelLabel = levelLabels[person.Level] || "";
+    const levelClass = `border-${borderClasses[person.Level] || "secondary"}`;
+
+    return `
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+    <div class="person-card bg-white rounded shadow-sm border border-2 ${levelClass} h-100"
+         data-person="${person.Name}"
+         data-age="${person.Age}"
+         data-gender="${genderText}"
+         data-level="${person.Level}">
+      <div class="position-relative">
+        <svg class="w-100" height="130" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="30" fill="${faceColor}" />
+          <circle cx="40" cy="45" r="5" fill="#4B5563" />
+          <circle cx="60" cy="45" r="5" fill="#4B5563" />
+          <path d="M40 65 Q50 70 60 65" fill="none" stroke="#4B5563" stroke-width="3" stroke-linecap="round" />
+        </svg>
+        <div class="position-absolute top-0 end-0 bg-${
+          borderClasses[person.Level]
+        } text-white small px-2 py-1 rounded-0 rounded-start">
+          ${levelLabel}
+        </div>
+      </div>
+      <div class="p-2 text-center">
+        <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(
+          person.Name
+        )}</h4>
+        <p class="small text-muted mb-0">${person.Age}歲 | ${genderText}</p>
+      </div>
+    </div>
+  </div>`;
+  }
+
+  // level卡片
+  function renderLevelCards(filter = null, options = {}) {
+    const container =
+      options.container || document.getElementById("levelPersonContainer");
+    const isModal = options.isModal || false;
+
+    container.innerHTML = "";
+    let allPersons = flattenLevelData(currentAssessments);
+
+    // A->D 排序
+    const levelOrder = { A: 1, B: 2, C: 3, D: 4 };
+    allPersons.sort((a, b) => levelOrder[a.Level] - levelOrder[b.Level]);
+
+    let persons = allPersons;
+    if (filter && filter !== "all")
+      persons = persons.filter((p) => p.Level === filter);
+
+    if (!isModal) persons = persons.slice(0, 12);
+
+    if (persons.length === 0) {
+      container.innerHTML = `<div class="col-12"><div class="alert alert-secondary text-center">沒有符合的人員</div></div>`;
+      return;
+    }
+
+    container.innerHTML = persons.map(createLevelPersonCard).join("");
+
+    updateLevelButtonsCounts(allPersons);
+  }
+
+  // level更新按鈕括弧 (桌機 + 手機 + 彈窗)
+  function updateLevelButtonsCounts(allPersons) {
+    const counts = { all: allPersons.length, A: 0, B: 0, C: 0, D: 0 };
+    allPersons.forEach((p) => {
+      if (counts[p.Level] !== undefined) counts[p.Level]++;
+    });
+
+    // 桌機主畫面
+    document
+      .querySelectorAll(".level .levelFilterBtnsDesktop button")
+      .forEach((btn) => {
+        const filter = btn.dataset.filter;
+        const originalText = btn.getAttribute("data-original-text");
+        if (originalText)
+          btn.textContent = `${originalText} (${counts[filter] || 0})`;
+        else {
+          btn.setAttribute("data-original-text", btn.textContent.trim());
+          btn.textContent = `${btn.textContent.trim()} (${
+            counts[filter] || 0
+          })`;
+        }
+      });
+
+    // level手機主畫面
+    document
+      .querySelectorAll(".level .levelFilterDropdownMobile .dropdown-item")
+      .forEach((item) => {
+        const filter = item.dataset.filter;
+        const originalText = item.getAttribute("data-original-text");
+        if (originalText)
+          item.textContent = `${originalText} (${counts[filter] || 0})`;
+        else {
+          item.setAttribute("data-original-text", item.textContent.trim());
+          item.textContent = `${item.textContent.trim()} (${
+            counts[filter] || 0
+          })`;
+        }
+      });
+
+    // level modal 桌機
+    document
+      .querySelectorAll("#modalLevelFilterBtnsDesktop button")
+      .forEach((btn) => {
+        const filter = btn.dataset.filter;
+        const originalText = btn.getAttribute("data-original-text");
+        if (originalText)
+          btn.textContent = `${originalText} (${counts[filter] || 0})`;
+        else {
+          btn.setAttribute("data-original-text", btn.textContent.trim());
+          btn.textContent = `${btn.textContent.trim()} (${
+            counts[filter] || 0
+          })`;
+        }
+      });
+
+    //level  modal 手機
+    document
+      .querySelectorAll("#modalLevelFilterDropdownMobile .dropdown-item")
+      .forEach((item) => {
+        const filter = item.dataset.filter;
+        const originalText = item.getAttribute("data-original-text");
+        if (originalText)
+          item.textContent = `${originalText} (${counts[filter] || 0})`;
+        else {
+          item.setAttribute("data-original-text", item.textContent.trim());
+          item.textContent = `${item.textContent.trim()} (${
+            counts[filter] || 0
+          })`;
+        }
+      });
+  }
+
+  // 篩選事件
+  function handleLevelFilter(filter, options = {}) {
+    renderLevelCards(filter, options);
+  }
+
+  document
+    .querySelectorAll(".level .levelFilterBtnsDesktop button")
+    .forEach((btn) => {
+      btn.addEventListener("click", () =>
+        handleLevelFilter(btn.dataset.filter)
+      );
+    });
+  document
+    .querySelectorAll(".level .levelFilterDropdownMobile .dropdown-item")
+    .forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        handleLevelFilter(item.dataset.filter);
+      });
+    });
+
+  // level查看全部彈窗
+  const viewAllLevelBtn = document.getElementById("viewAllLevelBtn");
+  const modalLevelPersonContainer = document.getElementById(
+    "modalLevelPersonContainer"
+  );
+
+  viewAllLevelBtn.addEventListener("click", () => {
+    renderLevelCards(null, {
+      container: modalLevelPersonContainer,
+      isModal: true,
+    });
+    const modal = new bootstrap.Modal(
+      document.getElementById("participantsLevelModal")
+    );
+    modal.show();
+  });
+
+  // level modal 篩選
+  document
+    .querySelectorAll("#modalLevelFilterBtnsDesktop button")
+    .forEach((btn) => {
+      btn.addEventListener("click", () =>
+        renderLevelCards(btn.dataset.filter, {
+          container: modalLevelPersonContainer,
+          isModal: true,
+        })
+      );
+    });
+  document
+    .querySelectorAll("#modalLevelFilterDropdownMobile .dropdown-item")
+    .forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderLevelCards(item.dataset.filter, {
+          container: modalLevelPersonContainer,
+          isModal: true,
+        });
+      });
+    });
+  // 等級桌機版按鈕樣式添加
+  const desktopLevelContainers = [
+    document.querySelector(".levelFilterBtnsDesktop"),
+    document.querySelector("#modalLevelFilterBtnsDesktop"),
+  ];
+
+  desktopLevelContainers.forEach((container) => {
+    if (!container) return;
+    container.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        container
+          .querySelectorAll("button")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+  });
+  // 切換地區更新畫面
+  function refreshLevelUI() {
+    const allPersons = flattenLevelData(currentAssessments);
+    const levelOrder = { A: 1, B: 2, C: 3, D: 4 };
+    allPersons.sort((a, b) => levelOrder[a.Level] - levelOrder[b.Level]);
+    renderLevelCards(null, {
+      container: document.getElementById("levelPersonContainer"),
+    });
+  }
+
+  refreshLevelUI();
 });
 
 // 地圖
