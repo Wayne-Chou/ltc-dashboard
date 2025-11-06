@@ -72,7 +72,7 @@
                 <li>
                   <button
                     class="dropdown-item"
-                    onclick="location.href='index.html'"
+                    onclick="switchLanguage('index.html','zh')"
                   >
                     繁體中文
                   </button>
@@ -80,7 +80,7 @@
                 <li>
                   <button
                     class="dropdown-item"
-                    onclick="location.href='index_en.html'"
+                    onclick="switchLanguage('index_en.html','en')"
                   >
                     ENGLISH
                   </button>
@@ -88,7 +88,7 @@
                 <li>
                   <button
                     class="dropdown-item"
-                    onclick="location.href='index_ja.html'"
+                    onclick="switchLanguage('index_ja.html','ja')"
                   >
                     日本語
                   </button>
@@ -96,12 +96,50 @@
                 <li>
                   <button
                     class="dropdown-item"
-                    onclick="location.href='index_ko.html'"
+                    onclick="switchLanguage('index_ko.html','ko')"
                   >
                     한국어
                   </button>
                 </li>
               </ul>
+
+              <!-- <ul
+                class="dropdown-menu dropdown-menu-end shadow-sm"
+                aria-labelledby="languageMenu"
+              >
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="switchLanguage('index.html')"
+                  >
+                    繁體中文
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="switchLanguage('index_en.html')"
+                  >
+                    ENGLISH
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="switchLanguage('index_ja.html')"
+                  >
+                    日本語
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="switchLanguage('index_ko.html')"
+                  >
+                    한국어
+                  </button>
+                </li>
+              </ul> -->
             </div>
             <button id="downloadBtn" class="btn btn-primary">
               <i class="bi bi-download me-1"></i> 下載
@@ -576,7 +614,18 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-2">平均坐站秒數趨勢</h5>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="fw-semibold text-dark mb-0">平均坐站秒數趨勢</h5>
+                    <button
+                      class="btn btn-sm btn-outline-primary download-chart"
+                      data-target="sitStandChartCanvas"
+                    >
+                      <i class="fa fa-download me-1"></i> 匯出
+                    </button>
+                  </div>
+
                   <div class="text-muted small mb-2">建議小於12s</div>
                   <div
                     class="chart-container"
@@ -591,7 +640,18 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-2">平均平衡測驗得分</h5>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="fw-semibold text-dark mb-0">平均平衡測驗得分</h5>
+                    <button
+                      class="btn btn-sm btn-outline-primary download-chart"
+                      data-target="balanceChartCanvas"
+                    >
+                      <i class="fa fa-download me-1"></i> 匯出
+                    </button>
+                  </div>
+
                   <div class="text-muted small mb-2">建議大於3.5分</div>
                   <div
                     class="chart-container"
@@ -606,7 +666,18 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-2">平均步行速度趨勢</h5>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="fw-semibold text-dark mb-0">平均步行速度趨勢</h5>
+                    <button
+                      class="btn btn-sm btn-outline-primary download-chart"
+                      data-target="gaitChartCanvas"
+                    >
+                      <i class="fa fa-download me-1"></i> 匯出
+                    </button>
+                  </div>
+
                   <div class="text-muted small mb-2">建議大於等於100cm/s</div>
                   <div
                     class="chart-container"
@@ -621,7 +692,20 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-2">平均AI跌倒風險機率</h5>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="fw-semibold text-dark mb-0">
+                      平均AI跌倒風險機率
+                    </h5>
+                    <button
+                      class="btn btn-sm btn-outline-primary download-chart"
+                      data-target="riskChartCanvas"
+                    >
+                      <i class="fa fa-download me-1"></i> 下載圖檔
+                    </button>
+                  </div>
+
                   <div class="text-muted small mb-2" style="opacity: 0">
                     15615
                   </div>
@@ -1143,6 +1227,38 @@
         <!-- 地圖 -->
         <div id="map"></div>
       </div>
+
+      <!-- 等級人員彈窗 -->
+      <div
+        class="modal fade"
+        id="personDetailModal"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="personDetailTitle"></h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body" id="personDetailBody"></div>
+          </div>
+        </div>
+      </div>
+
+      <!--  Cookie 提示區 -->
+      <div id="cookieConsent">
+        <p>我們使用 Cookie 來記錄您的語系偏好，是否同意？</p>
+        <div class="d-flex justify-content-end gap-2">
+          <button class="btn btn-primary" id="acceptCookies">同意</button>
+          <button class="btn btn-secondary" id="rejectCookies">不同意</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>
@@ -1152,6 +1268,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
 
 <script src="main.js"></script>
+<script src="cookie.js"></script>
 <!-- 圖表js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>

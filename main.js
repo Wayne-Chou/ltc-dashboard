@@ -31,6 +31,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       vivifrailB: "B級衰弱者",
       vivifrailC: "C級衰弱前期者",
       overview: "總表",
+      riskLabel: {
+        high: "危險",
+        slightlyHigh: "高",
+        medium: "中",
+        slightlyLow: "稍低",
+        low: "低",
+        unknown: "未知",
+      },
+      name: "姓名",
+      genderLabel: "性別",
+      ageLabel: "年齡",
+      riskLevel: "等級",
+      dates: "日期",
     },
     en: {
       alertNoData: "No data",
@@ -62,6 +75,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       vivifrailB: "Level B frail",
       vivifrailC: "Level C pre-frail",
       overview: "Overview",
+      riskLabel: {
+        high: "Danger",
+        slightlyHigh: "high",
+        medium: "middle",
+        slightlyLow: "Slightly lower",
+        low: "Low",
+        unknown: "Unknown",
+      },
+      name: "Name",
+      genderLabel: "Gender",
+      ageLabel: "Age",
+      riskLevel: "Level",
+      dates: "Date",
     },
     ja: {
       alertNoData: "データなし",
@@ -93,6 +119,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       vivifrailB: "B級衰弱者",
       vivifrailC: "C級衰弱前期者",
       overview: "総表",
+      riskLabel: {
+        high: "危険",
+        slightlyHigh: "高い",
+        medium: "真ん中",
+        slightlyLow: "わずかに低い",
+        low: "低い",
+        unknown: "不明",
+      },
+      name: "名前",
+      genderLabel: "性別",
+      ageLabel: "年齢",
+      riskLevel: "等級",
+      dates: "日付",
     },
     ko: {
       alertNoData: "데이터 없음",
@@ -124,6 +163,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       vivifrailB: "B등급 허약자",
       vivifrailC: "C등급 허약 전기자",
       overview: "전체표",
+      riskLabel: {
+        high: "위험",
+        slightlyHigh: "높은",
+        medium: "가운데",
+        slightlyLow: "약간 낮음",
+        low: "낮은",
+        unknown: "알 수 없음",
+      },
+      name: "이름",
+      genderLabel: "성별",
+      ageLabel: "나이",
+      riskLevel: "등급",
+      dates: "날짜",
     },
   };
 
@@ -160,7 +212,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 地區名 JSON 檔案
   const locationFileMap = {
     新加坡: "PageAPI-Singapore.json",
-    信義區: "PageAPI-0.json",
+    全成: "PageAPI-全成.json",
   };
 
   // VIVIFRAIL 陣列
@@ -191,56 +243,77 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 建立人員卡片
   function createPersonCard(person) {
     const genderText = person.Gender === 0 ? t("male") : t("female");
-    const faceColors = {
-      A: "#FEE2E2", // 紅色系
-      B: "#FEF3C7", // 黃色系
-      C: "#DBEAFE", // 藍色系
-      D: "#DCFCE7", // 綠色系
-    };
-    const levelLabels = { A: "A級", B: "B級", C: "C級", D: "D級" };
-    const borderClasses = {
-      A: "danger",
-      B: "warning",
-      C: "primary",
-      D: "success",
+    const riskCategory = getRiskCategory(person.Risk);
+
+    const riskStyles = {
+      high: {
+        face: "#ff5757",
+        border: "#dc3545",
+        label: t("riskLabel").high,
+      },
+      slightlyHigh: {
+        face: "#ffa203",
+        border: "#fd7e14",
+        label: t("riskLabel").slightlyHigh,
+      },
+      medium: {
+        face: "#ffd039",
+        border: "#ffc107",
+        label: t("riskLabel").medium,
+      },
+      slightlyLow: {
+        face: "#8cff00",
+        border: "#28a745",
+        label: t("riskLabel").slightlyLow,
+      },
+      low: {
+        face: "#4ffa00",
+        border: "#198754",
+        label: t("riskLabel").low,
+      },
     };
 
-    const faceColor = faceColors[person.Level] || "#E5E7EB";
-    const levelLabel = levelLabels[person.Level] || "";
-    const levelClass = `border-${borderClasses[person.Level] || "secondary"}`;
+    const style = riskStyles[riskCategory] || {
+      face: "#E5E7EB",
+      border: "#6c757d",
+      label: t("riskLabel").unknown,
+    };
 
     return `
-      <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
-        <div class="person-card bg-white rounded shadow-sm border border-2 ${levelClass} h-100"
-             data-person="${person.Name}"
-             data-age="${person.Age}"
-             data-gender="${genderText}"
-             data-level="${person.Level}"
-             data-risk="${getRiskCategory(person.Risk)}">
-          <div class="position-relative">
-            <!-- SVG 簡單人臉 -->
-            <svg class="w-100" height="130" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="50" cy="50" r="30" fill="${faceColor}" />
-              <circle cx="40" cy="45" r="5" fill="#4B5563" />
-              <circle cx="60" cy="45" r="5" fill="#4B5563" />
-              <path d="M40 65 Q50 70 60 65" fill="none" stroke="#4B5563" stroke-width="3" stroke-linecap="round" />
-            </svg>
-            <div class="position-absolute top-0 end-0 bg-${
-              borderClasses[person.Level]
-            } text-white small px-2 py-1 rounded-0 rounded-start">
-              ${levelLabel}
-            </div>
-          </div>
-          <div class="p-2 text-center">
-            <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(
-              person.Name
-            )}</h4>
-            <p class="small text-muted mb-0">${person.Age}${t(
-      "yearsOld"
-    )} | ${genderText}</p>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+      <div class="person-card bg-white rounded shadow-sm h-100"
+           style="border: 3px solid ${style.border};"
+           data-person="${person.Name}"
+           data-age="${person.Age}"
+           data-gender="${genderText}"
+           data-risk="${riskCategory}">
+        <div class="position-relative">
+          <!-- SVG 簡單人臉 -->
+          <svg class="w-100" height="130" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="30" fill="${style.face}" />
+            <circle cx="40" cy="45" r="5" fill="#4B5563" />
+            <circle cx="60" cy="45" r="5" fill="#4B5563" />
+            <path d="M40 65 Q50 70 60 65" fill="none" stroke="#4B5563" stroke-width="3" stroke-linecap="round" />
+          </svg>
+
+          <!-- 右上角顯示風險文字 -->
+          <div class="position-absolute top-0 end-0 text-white small px-2 py-1 rounded-0 rounded-start"
+               style="background-color:${style.border};">
+            ${style.label}
           </div>
         </div>
-      </div>`;
+
+        <!-- 人員基本資訊 -->
+        <div class="p-2 text-center">
+          <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(
+            person.Name
+          )}</h4>
+          <p class="small text-muted mb-0">${person.Age}${t(
+      "yearsOld"
+    )} | ${genderText}</p>
+        </div>
+      </div>
+    </div>`;
   }
 
   // 姓名（顯示圓點）
@@ -261,6 +334,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return name;
     }
   }
+
   // 詳細名單彈窗
   const viewDetailsBtn = document.getElementById("viewDetailsBtn");
   if (viewDetailsBtn) {
@@ -321,11 +395,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           });
           return names;
         }
+
         selected.forEach((item) => {
           if (item.Degenerate) {
             const allNames = item.VIVIFRAIL
               ? getAllNames(item.VIVIFRAIL)
-              : ["未知"];
+              : [t("unknown")];
 
             if (item.Degenerate.GaitSpeed) {
               totalGaitSpeed += item.Degenerate.GaitSpeed;
@@ -345,13 +420,15 @@ document.addEventListener("DOMContentLoaded", async () => {
           .querySelector("#degenerateGaitSpeed")
           .parentElement.querySelector(".card-header");
         if (gaitHeader)
-          gaitHeader.textContent = `步行速度衰退 (${totalGaitSpeed})`;
+          gaitHeader.textContent = `${t("walkDecline")} (${totalGaitSpeed})`;
 
         const chairHeader = document
           .querySelector("#degenerateChair")
           .parentElement.querySelector(".card-header");
         if (chairHeader)
-          chairHeader.textContent = `起坐秒數增加 (${totalChairSecond})`;
+          chairHeader.textContent = `${t(
+            "sitStandIncrease"
+          )} (${totalChairSecond})`;
 
         // 顯示人名
         const degGaitUl = document.getElementById("degenerateGaitSpeed");
@@ -383,11 +460,23 @@ document.addEventListener("DOMContentLoaded", async () => {
           selected.forEach((item) => {
             if (item.VIVIFRAIL && item.VIVIFRAIL[level]) {
               item.VIVIFRAIL[level].forEach((person) => {
-                names.push(
-                  `${person.Name} (${person.Age}${t("yearsOld")}, ${
-                    person.Gender === 1 ? t("male") : t("female")
-                  })`
-                );
+                const ageText = person.Age
+                  ? `${person.Age}${t("yearsOld")}`
+                  : t("unknown");
+                const genderText =
+                  person.Gender === 0
+                    ? t("male")
+                    : person.Gender === 1
+                    ? t("female")
+                    : t("unknown");
+
+                const dateText = item.Date
+                  ? new Date(item.Date).toLocaleDateString()
+                  : t("unknown");
+                names.push({
+                  nameLine: `${person.Name} (${ageText}, ${genderText})`,
+                  dateLine: dateText,
+                });
               });
             }
           });
@@ -406,7 +495,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             names.forEach((n) => {
               const li = document.createElement("li");
               li.className = "list-group-item";
-              li.textContent = n;
+
+              const nameDiv = document.createElement("div");
+              nameDiv.textContent = n.nameLine;
+
+              const dateDiv = document.createElement("div");
+              dateDiv.textContent = n.dateLine;
+              dateDiv.className = "text-muted small"; // 日期字體淡色小字
+
+              li.appendChild(nameDiv);
+              li.appendChild(dateDiv);
               ul.appendChild(li);
             });
           }
@@ -619,8 +717,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     aAll.addEventListener("click", () => {
       dropdownButton.textContent = t("overview");
       loadLocationData(t("overview"));
-
       refreshLevelUI();
+
+      // 更新 URL，清除 region 參數
+      const url = new URL(window.location);
+      url.searchParams.delete("region");
+      window.history.replaceState({}, "", url);
     });
     liAll.appendChild(aAll);
     dropdownMenu.appendChild(liAll);
@@ -637,12 +739,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         dropdownButton.textContent = loc;
         loadLocationData(loc);
         refreshLevelUI();
+
+        // 點地區時更新網址參數
+        const url = new URL(window.location);
+        url.searchParams.set("region", loc);
+        window.history.replaceState({}, "", url);
       });
 
       li.appendChild(a);
       dropdownMenu.appendChild(li);
     });
-    loadLocationData(t("overview"));
+
+    // 根據 URL 自動載入對應地區
+    const params = new URL(window.location).searchParams;
+    const region = params.get("region");
+    if (region && locationFileMap[region]) {
+      dropdownButton.textContent = region;
+      loadLocationData(region);
+    } else {
+      loadLocationData(t("overview"));
+    }
   } catch (error) {
     console.error("失敗:", error);
   }
@@ -653,7 +769,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const pageSize = 10;
   let checkAllAcrossPages = true; // 紀錄是否全選
   let selected = []; //紀錄跨頁勾選
-
   function renderAssessmentTable(assessments) {
     window.lastRenderedAssessments = assessments;
     const assessmentTableBody = document.getElementById("assessmentTableBody");
@@ -677,10 +792,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const start = (currentPage - 1) * pageSize;
     const end = start + pageSize;
     const pageData = sorted.slice(start, end);
+
+    // 初始全選
     if (checkAllAcrossPages && selected.length === 0) {
       selected = assessments.map((_, i) => i);
     }
-    // 表格內容生成
+
+    // 表格生成
     pageData.forEach((item) => {
       const tr = document.createElement("tr");
       const date = new Date(item.Date);
@@ -688,16 +806,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         .toString()
         .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
 
-      // 跨頁索引
       const globalIndex = assessments.indexOf(item);
-      // 是否全勾,或是跨頁勾選
-      const isChecked = checkAllAcrossPages || selected.includes(globalIndex);
+      const isChecked = selected.includes(globalIndex);
 
       tr.innerHTML = `
-      <td><input type="checkbox" class="row-check" data-index="${assessments.indexOf(
-        item
-      )}"
-      ${isChecked ? "checked" : ""}></td>
+      <td><input type="checkbox" class="row-check" data-index="${globalIndex}" ${
+        isChecked ? "checked" : ""
+      }></td>
       <td>${formattedDate}</td>
       <td>${item.Count}${t("people")}</td>
       <td>${item.ChairSecond.toFixed(1)}${t("seconds")}</td>
@@ -707,20 +822,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
       assessmentTableBody.appendChild(tr);
     });
+
+    // 根據選取更新統計和卡片
     const selectedAssessments = assessments.filter((_, i) =>
       selected.includes(i)
     );
-
+    updateRiskButtonsCounts(selectedAssessments);
     renderRisk(selectedAssessments);
     updateDegenerateAndLevels(selectedAssessments);
     updateLatestCountDate(selectedAssessments);
     updateTotalCountAndStartDate(selectedAssessments);
+
+    // 更新卡片
+    const mergedVIVIFRAIL = mergeAllVIVIFRAIL(selectedAssessments);
+    renderCards(flattenData(mergedVIVIFRAIL));
+
     // checkbox 勾選事件
     const checkboxes = document.querySelectorAll(".row-check");
     checkboxes.forEach((cb) => {
       cb.addEventListener("change", () => {
         const idx = parseInt(cb.dataset.index);
-
         if (cb.checked) {
           if (!selected.includes(idx)) selected.push(idx);
         } else {
@@ -730,13 +851,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const selectedAssessments = assessments.filter((_, i) =>
           selected.includes(i)
         );
+
+        updateRiskButtonsCounts(selectedAssessments);
         renderRisk(selectedAssessments);
         updateDegenerateAndLevels(selectedAssessments);
         updateLatestCountDate(selectedAssessments);
         updateTotalCountAndStartDate(selectedAssessments);
-        checkAllAcrossPages = selected.length === assessments.length;
 
-        // 勾選狀態變化同步更新圖表
+        const mergedVIVIFRAIL = mergeAllVIVIFRAIL(selectedAssessments);
+        renderCards(flattenData(mergedVIVIFRAIL));
+
+        checkAllAcrossPages = selected.length === assessments.length;
+        renderLevelCards(null, {}, flattenLevelData(selectedAssessments));
         updateChartsBasedOnSelection(assessments);
         removeNoDataOverlay();
       });
@@ -774,6 +900,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       paginationContainer.appendChild(nextBtn);
     }
   }
+
   // 每次勾選也同步更新圖表
   function updateChartsBasedOnSelection(assessments) {
     const selectedAssessments = assessments.filter((_, i) =>
@@ -803,8 +930,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 同步畫面上的 checkbox（只處理目前這頁顯示的）
     const checkboxes = document.querySelectorAll(".row-check");
     checkboxes.forEach((cb) => (cb.checked = true));
+    const mergedVIVIFRAIL = mergeAllVIVIFRAIL(renderData);
+    renderCards(flattenData(mergedVIVIFRAIL));
+    renderLevelCards(null, {}, flattenLevelData(renderData));
 
-    //
     renderRisk(renderData);
     updateDegenerateAndLevels(renderData);
     updateLatestCountDate(renderData);
@@ -820,10 +949,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("uncheckAllBtn").addEventListener("click", () => {
     checkAllAcrossPages = false; // 取消跨頁全選
     selected = [];
+
     // 先取消所有 checkbox
     const checkboxes = document.querySelectorAll(".row-check");
     checkboxes.forEach((cb) => (cb.checked = false));
-
+    renderLevelCards(null, {}, []);
+    renderCards([]);
+    updateRiskButtonsCounts([]);
     renderRisk([]);
     updateDegenerateAndLevels([]);
     updateLatestCountDate([]);
@@ -1044,6 +1176,84 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  // 顯示等級人員詳細彈窗
+  function bindPersonCardClick(allSelectedData) {
+    const cards = document.querySelectorAll(".person-card");
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const name = card.dataset.person;
+        const age = card.dataset.age;
+        const gender = card.dataset.gender;
+
+        const riskLabelDiv = card.querySelector(
+          ".position-absolute.top-0.end-0"
+        );
+        const risk = riskLabelDiv
+          ? riskLabelDiv.textContent
+          : t("riskLabel.unknown");
+
+        // 找出所有該人的測試紀錄
+        const personRecords = allSelectedData.filter((item) => {
+          if (item.VIVIFRAIL) {
+            const allPeople = flattenData(item.VIVIFRAIL);
+            return allPeople.some((p) => p.Name === name);
+          }
+          return false;
+        });
+
+        // 日期清單
+        let datesHtml = "";
+        if (personRecords.length > 0) {
+          datesHtml = personRecords
+            .map((item) => {
+              const dateText = item.Date
+                ? new Date(item.Date).toLocaleDateString()
+                : t("unknown");
+              return `<div class="py-1 border-bottom">${dateText}</div>`;
+            })
+            .join("");
+        } else {
+          datesHtml = `<div class="text-muted py-1 border-bottom">${t(
+            "alertNoData"
+          )}</div>`;
+        }
+
+        // Grid 2x2
+        const bodyHtml = `
+        <div class="row mb-3 gx-0 border">
+          <div class="col-6 border-end p-2">
+            <strong>${t("name")}:</strong> ${name}
+          </div>
+          <div class="col-6 p-2">
+            <strong>${t("genderLabel")}:</strong> ${gender}
+          </div>
+          <div class="col-6 border-top border-end p-2">
+            <strong>${t("ageLabel")}:</strong> ${age}
+          </div>
+          <div class="col-6 border-top p-2">
+            <strong>${t("riskLevel")}:</strong> ${risk}
+          </div>
+        </div>
+
+        <div class="mb-2">
+          <strong>${t("dates")}:</strong>
+          <div class="pt-2">
+            ${datesHtml}
+          </div>
+        </div>
+      `;
+
+        document.getElementById("personDetailTitle").textContent = name;
+        document.getElementById("personDetailBody").innerHTML = bodyHtml;
+
+        const modal = new bootstrap.Modal(
+          document.getElementById("personDetailModal")
+        );
+        modal.show();
+      });
+    });
+  }
+
   // 人員卡片 (最多 12 個，按 A->B->C->D 排序)
   function renderCards(allVIVIFRAIL, filterRisk = null, options = {}) {
     const container = options.container || personContainer;
@@ -1077,6 +1287,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     container.innerHTML = persons.map(createPersonCard).join("");
+    bindPersonCardClick(currentAssessments);
     if (!isModal) updateRiskButtonsCounts(allVIVIFRAIL);
   }
 
@@ -1150,10 +1361,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // 高低風險按鈕 (桌機)
-
   function handleRiskFilter(risk) {
     if (currentAssessments.length > 0) {
-      const mergedVIVIFRAIL = mergeAllVIVIFRAIL(currentAssessments);
+      const mergedVIVIFRAIL = mergeAllVIVIFRAIL(
+        currentAssessments.filter((_, i) => selected.includes(i))
+      );
       if (risk === "all") {
         renderCards(flattenData(mergedVIVIFRAIL));
       } else {
@@ -1851,6 +2063,33 @@ document.addEventListener("DOMContentLoaded", async () => {
       .querySelectorAll(".no-data-overlay")
       .forEach((overlay) => overlay.remove());
   }
+  // 圖表下載功能
+  document.querySelectorAll(".download-chart").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.dataset.target;
+      const canvas = document.getElementById(targetId);
+      if (!canvas) return;
+
+      // 添加白底
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-over";
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+
+      //圖檔
+      const image = canvas.toDataURL("image/png", 0.9);
+
+      // a 標籤下載
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = `${targetId}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  });
 
   // 下載功能
   const btn = document.getElementById("downloadBtn");
@@ -1911,6 +2150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
+
   //A~D等級人員區塊
   const riskModeBtn = document.getElementById("riskModeBtn");
   const levelModeBtn = document.getElementById("levelModeBtn");
@@ -1934,8 +2174,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     levelContainer.classList.remove("d-none");
     levelModeBtn.classList.add("active");
     riskModeBtn.classList.remove("active");
+    // 根據目前勾選的資料決定要顯示的內容
+    const allAssessments = window.lastRenderedAssessments || [];
+    const selectedAssessments = allAssessments.filter((_, i) =>
+      selected.includes(i)
+    );
 
-    refreshLevelUI();
+    // 如果沒勾選，就顯示「無資料」
+    const dataToShow =
+      selectedAssessments.length > 0 ? selectedAssessments : [];
+
+    refreshLevelUI(dataToShow);
   });
 
   function flattenLevelData(assessments) {
@@ -2004,31 +2253,44 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // level卡片
-  function renderLevelCards(filter = null, options = {}) {
+  function renderLevelCards(filter = null, options = {}, personsData = []) {
     const container =
       options.container || document.getElementById("levelPersonContainer");
     const isModal = options.isModal || false;
 
     container.innerHTML = "";
-    let allPersons = flattenLevelData(currentAssessments);
 
-    // A->D 排序
+    // 如果沒資料，顯示「無符合條件的人員」
+    if (!personsData || personsData.length === 0) {
+      container.innerHTML = `<div class="col-12"><div class="alert alert-secondary text-center">${t(
+        "noMatchedPerson"
+      )}</div></div>`;
+      updateLevelButtonsCounts([]);
+      return;
+    }
+
+    // 資料存在才排序
+    const allPersons = [...personsData];
     const levelOrder = { A: 1, B: 2, C: 3, D: 4 };
     allPersons.sort((a, b) => levelOrder[a.Level] - levelOrder[b.Level]);
 
     let persons = allPersons;
-    if (filter && filter !== "all")
+    if (filter && filter !== "all") {
       persons = persons.filter((p) => p.Level === filter);
+    }
 
     if (!isModal) persons = persons.slice(0, 12);
 
     if (persons.length === 0) {
-      container.innerHTML = `<div class="col-12"><div class="alert alert-secondary text-center">沒有符合的人員</div></div>`;
+      container.innerHTML = `<div class="col-12"><div class="alert alert-secondary text-center">${t(
+        "noMatchedPerson"
+      )}</div></div>`;
+      updateLevelButtonsCounts([]);
       return;
     }
 
     container.innerHTML = persons.map(createLevelPersonCard).join("");
-
+    bindPersonCardClick(currentAssessments);
     updateLevelButtonsCounts(allPersons);
   }
 
@@ -2106,7 +2368,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 篩選事件
   function handleLevelFilter(filter, options = {}) {
-    renderLevelCards(filter, options);
+    // 取出目前所有資料
+    const allAssessments = window.lastRenderedAssessments || [];
+    // 取出目前勾選的資料索引
+    const selectedAssessments = allAssessments.filter((_, i) =>
+      selected.includes(i)
+    );
+
+    //  用勾選資料,如果沒勾選顯示空
+    const dataToShow =
+      selectedAssessments.length > 0 ? selectedAssessments : [];
+
+    // 把資料給各級人員
+    const personsData = flattenLevelData(dataToShow);
+
+    //  最後 renderLevelCards
+    renderLevelCards(filter, options, personsData);
   }
 
   document
@@ -2132,38 +2409,79 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
 
   viewAllLevelBtn.addEventListener("click", () => {
-    renderLevelCards(null, {
-      container: modalLevelPersonContainer,
-      isModal: true,
-    });
+    // 使用目前勾選的資料
+    const allAssessments = window.lastRenderedAssessments || [];
+    const selectedAssessments = allAssessments.filter((_, i) =>
+      selected.includes(i)
+    );
+    const dataToShow =
+      selectedAssessments.length > 0 ? selectedAssessments : [];
+    const personsData = flattenLevelData(dataToShow);
+
+    renderLevelCards(
+      null,
+      {
+        container: modalLevelPersonContainer,
+        isModal: true,
+      },
+      personsData
+    ); //加入第三個參數
+
     const modal = new bootstrap.Modal(
       document.getElementById("participantsLevelModal")
     );
     modal.show();
   });
-
-  // level modal 篩選
+  // 桌機版
   document
     .querySelectorAll("#modalLevelFilterBtnsDesktop button")
     .forEach((btn) => {
-      btn.addEventListener("click", () =>
-        renderLevelCards(btn.dataset.filter, {
-          container: modalLevelPersonContainer,
-          isModal: true,
-        })
-      );
+      btn.addEventListener("click", () => {
+        const allAssessments = window.lastRenderedAssessments || [];
+        const selectedAssessments = allAssessments.filter((_, i) =>
+          selected.includes(i)
+        );
+        const dataToShow =
+          selectedAssessments.length > 0 ? selectedAssessments : [];
+        const personsData = flattenLevelData(dataToShow);
+
+        renderLevelCards(
+          btn.dataset.filter,
+          {
+            container: modalLevelPersonContainer,
+            isModal: true,
+          },
+          personsData
+        );
+      });
     });
+
+  // 手機版
   document
     .querySelectorAll("#modalLevelFilterDropdownMobile .dropdown-item")
     .forEach((item) => {
       item.addEventListener("click", (e) => {
         e.preventDefault();
-        renderLevelCards(item.dataset.filter, {
-          container: modalLevelPersonContainer,
-          isModal: true,
-        });
+
+        const allAssessments = window.lastRenderedAssessments || [];
+        const selectedAssessments = allAssessments.filter((_, i) =>
+          selected.includes(i)
+        );
+        const dataToShow =
+          selectedAssessments.length > 0 ? selectedAssessments : [];
+        const personsData = flattenLevelData(dataToShow);
+
+        renderLevelCards(
+          item.dataset.filter,
+          {
+            container: modalLevelPersonContainer,
+            isModal: true,
+          },
+          personsData
+        );
       });
     });
+
   // 等級桌機版按鈕樣式添加
   const desktopLevelContainers = [
     document.querySelector(".levelFilterBtnsDesktop"),
@@ -2182,13 +2500,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
   // 切換地區更新畫面
-  function refreshLevelUI() {
-    const allPersons = flattenLevelData(currentAssessments);
+  function refreshLevelUI(assessments = []) {
+    // 如果 assessments 空的（例如未勾選），顯示空畫面
+    if (!assessments || assessments.length === 0) {
+      renderLevelCards(null, {}, []); // 顯示「目前沒有符合條件的人員」
+      return;
+    }
+
+    const allPersons = flattenLevelData(assessments);
     const levelOrder = { A: 1, B: 2, C: 3, D: 4 };
     allPersons.sort((a, b) => levelOrder[a.Level] - levelOrder[b.Level]);
-    renderLevelCards(null, {
-      container: document.getElementById("levelPersonContainer"),
-    });
+    window.lastLevelPersons = allPersons;
+    renderLevelCards(
+      null,
+      {
+        container: document.getElementById("levelPersonContainer"),
+      },
+      allPersons
+    );
   }
 
   refreshLevelUI();

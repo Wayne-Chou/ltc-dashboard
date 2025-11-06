@@ -214,3 +214,23 @@ body {
 #modalLevelFilterBtnsDesktop button.active {
   border: 5px solid #000;
 }
+/* cookie樣式 */
+
+#cookieConsent {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  width: 60%;
+  max-width: 600px;
+  z-index: 1000;
+}
+#cookieConsent button {
+  min-width: 100px;
+}

@@ -1,0 +1,3379 @@
+{
+  "Location": "全成",
+  "assessments": [
+    {
+      "Date": 1745251200000,
+      "ChairSecond": 20.610000610351562,
+      "GaitSpeed": 102.38999938964844,
+      "BalanceScore": 1.0,
+      "RiskRate": 50.67048645019531,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1745337600000,
+      "ChairSecond": 42.44499969482422,
+      "GaitSpeed": 57.2400016784668,
+      "BalanceScore": 1.0,
+      "RiskRate": 50.1130485534668,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 6,
+            "Name": "曾王寶葉",
+            "Gender": 0,
+            "Age": 90,
+            "Risk": 60.36354064941406
+          }
+        ],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 27,
+            "Name": "卓陳桃",
+            "Gender": 0,
+            "Age": 99,
+            "Risk": 39.86255645751953
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1745424000000,
+      "ChairSecond": 11.463334083557129,
+      "GaitSpeed": 72.61333465576172,
+      "BalanceScore": 2.6666666666666665,
+      "RiskRate": 35.738831520080566,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "B": [],
+        "C": [
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          }
+        ],
+        "D": [
+          {
+            "Number": 20,
+            "Name": "喬養珠",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 14.929739952087402
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1745510400000,
+      "ChairSecond": 13.184999465942383,
+      "GaitSpeed": 87.7750015258789,
+      "BalanceScore": 4.0,
+      "RiskRate": 29.511777877807617,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 13,
+            "Name": "徐素娥",
+            "Gender": 0,
+            "Age": 73,
+            "Risk": 24.656780242919922
+          }
+        ],
+        "D": [
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1745596800000,
+      "ChairSecond": 2.177500009536743,
+      "GaitSpeed": 35.38500213623047,
+      "BalanceScore": 3.75,
+      "RiskRate": 37.18642520904541,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 21,
+            "Name": "吳李玉粉",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 42.220802307128906
+          }
+        ],
+        "B": [
+          {
+            "Number": 22,
+            "Name": "倪朝雄",
+            "Gender": 1,
+            "Age": 75,
+            "Risk": 35.07945251464844
+          },
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "C": [],
+        "D": [
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1745683200000,
+      "ChairSecond": 16.576000213623047,
+      "GaitSpeed": 43.9379997253418,
+      "BalanceScore": 3.2,
+      "RiskRate": 49.52764739990234,
+      "Count": 5,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          }
+        ],
+        "B": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          }
+        ],
+        "C": [
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          },
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1745769600000,
+      "ChairSecond": 17.059999465942383,
+      "GaitSpeed": 76.72000122070312,
+      "BalanceScore": 4.0,
+      "RiskRate": 32.210233497619626,
+      "Count": 5,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          },
+          {
+            "Number": 17,
+            "Name": "何許富美",
+            "Gender": 0,
+            "Age": 87,
+            "Risk": 58.652870178222656
+          }
+        ],
+        "C": [
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          },
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1745856000000,
+      "ChairSecond": 11.0625,
+      "GaitSpeed": 87.26499938964844,
+      "BalanceScore": 3.0,
+      "RiskRate": 36.51823425292969,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "B": [],
+        "C": [
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          }
+        ],
+        "D": [
+          {
+            "Number": 2,
+            "Name": "楊朝嘉",
+            "Gender": 1,
+            "Age": 72,
+            "Risk": 31.153337478637695
+          },
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1745942400000,
+      "ChairSecond": 24.162500381469727,
+      "GaitSpeed": 70.52749633789062,
+      "BalanceScore": 2.75,
+      "RiskRate": 41.648990631103516,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          },
+          {
+            "Number": 25,
+            "Name": "柯王束滿",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 48.20829391479492
+          }
+        ],
+        "C": [
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "D": [
+          {
+            "Number": 30,
+            "Name": "王江水",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 24.93954086303711
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1746460800000,
+      "ChairSecond": 100.0,
+      "GaitSpeed": 21.059999465942383,
+      "BalanceScore": 1.0,
+      "RiskRate": 60.36354064941406,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 6,
+            "Name": "曾王寶葉",
+            "Gender": 0,
+            "Age": 90,
+            "Risk": 60.36354064941406
+          }
+        ],
+        "B": [],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1746633600000,
+      "ChairSecond": 21.924999237060547,
+      "GaitSpeed": 85.51499938964844,
+      "BalanceScore": 2.5,
+      "RiskRate": 42.37358474731445,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "C": [
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1746720000000,
+      "ChairSecond": 16.03999900817871,
+      "GaitSpeed": 83.81300354003906,
+      "BalanceScore": 3.4,
+      "RiskRate": 36.0616250038147,
+      "Count": 10,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          }
+        ],
+        "C": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          },
+          {
+            "Number": 27,
+            "Name": "卓陳桃",
+            "Gender": 0,
+            "Age": 99,
+            "Risk": 39.86255645751953
+          },
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          },
+          {
+            "Number": 22,
+            "Name": "倪朝雄",
+            "Gender": 1,
+            "Age": 75,
+            "Risk": 35.07945251464844
+          },
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          },
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          },
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          },
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1746806400000,
+      "ChairSecond": 20.211999893188477,
+      "GaitSpeed": 43.582000732421875,
+      "BalanceScore": 2.8,
+      "RiskRate": 50.21109619140625,
+      "Count": 5,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          }
+        ],
+        "B": [
+          {
+            "Number": 17,
+            "Name": "何許富美",
+            "Gender": 0,
+            "Age": 87,
+            "Risk": 58.652870178222656
+          },
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "C": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          }
+        ],
+        "D": [
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1746892800000,
+      "ChairSecond": 14.604999542236328,
+      "GaitSpeed": 48.40250015258789,
+      "BalanceScore": 3.5,
+      "RiskRate": 38.05813264846802,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          }
+        ],
+        "B": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          }
+        ],
+        "C": [
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1746979200000,
+      "ChairSecond": 20.40999984741211,
+      "GaitSpeed": 46.040000915527344,
+      "BalanceScore": 2.0,
+      "RiskRate": 42.220802307128906,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 21,
+            "Name": "吳李玉粉",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 42.220802307128906
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1747065600000,
+      "ChairSecond": 26.25,
+      "GaitSpeed": 84.73666381835938,
+      "BalanceScore": 2.3333333333333335,
+      "RiskRate": 35.68230406443278,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "C": [
+          {
+            "Number": 20,
+            "Name": "喬養珠",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 14.929739952087402
+          }
+        ],
+        "D": [
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1747152000000,
+      "ChairSecond": 17.84000015258789,
+      "GaitSpeed": 80.43000030517578,
+      "BalanceScore": 4.0,
+      "RiskRate": 31.153337478637695,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 2,
+            "Name": "楊朝嘉",
+            "Gender": 1,
+            "Age": 72,
+            "Risk": 31.153337478637695
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1747238400000,
+      "ChairSecond": 15.850000381469727,
+      "GaitSpeed": 38.959999084472656,
+      "BalanceScore": 4.0,
+      "RiskRate": 48.20829391479492,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 25,
+            "Name": "柯王束滿",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 48.20829391479492
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1747497600000,
+      "ChairSecond": 11.489999771118164,
+      "GaitSpeed": 73.16999816894531,
+      "BalanceScore": 4.0,
+      "RiskRate": 24.93954086303711,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 30,
+            "Name": "王江水",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 24.93954086303711
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1747584000000,
+      "ChairSecond": 23.236000061035156,
+      "GaitSpeed": 74.52400207519531,
+      "BalanceScore": 3.2,
+      "RiskRate": 41.72759017944336,
+      "Count": 5,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 27,
+            "Name": "卓陳桃",
+            "Gender": 0,
+            "Age": 99,
+            "Risk": 39.86255645751953
+          },
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          }
+        ],
+        "C": [
+          {
+            "Number": 13,
+            "Name": "徐素娥",
+            "Gender": 0,
+            "Age": 73,
+            "Risk": 24.656780242919922
+          },
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          },
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1747670400000,
+      "ChairSecond": 28.049999237060547,
+      "GaitSpeed": 22.479999542236328,
+      "BalanceScore": 2.0,
+      "RiskRate": 60.36354064941406,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 6,
+            "Name": "曾王寶葉",
+            "Gender": 0,
+            "Age": 90,
+            "Risk": 60.36354064941406
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1748016000000,
+      "ChairSecond": 14.729090690612793,
+      "GaitSpeed": 65.00181579589844,
+      "BalanceScore": 3.8181818181818183,
+      "RiskRate": 32.75776264884255,
+      "Count": 11,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          },
+          {
+            "Number": 21,
+            "Name": "吳李玉粉",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 42.220802307128906
+          }
+        ],
+        "C": [
+          {
+            "Number": 2,
+            "Name": "楊朝嘉",
+            "Gender": 1,
+            "Age": 72,
+            "Risk": 31.153337478637695
+          },
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          },
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          },
+          {
+            "Number": 22,
+            "Name": "倪朝雄",
+            "Gender": 1,
+            "Age": 75,
+            "Risk": 35.07945251464844
+          },
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          },
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          },
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1748102400000,
+      "ChairSecond": 13.998571395874023,
+      "GaitSpeed": 50.93714141845703,
+      "BalanceScore": 3.0,
+      "RiskRate": 49.02466474260603,
+      "Count": 7,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          },
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "B": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          },
+          {
+            "Number": 17,
+            "Name": "何許富美",
+            "Gender": 0,
+            "Age": 87,
+            "Risk": 58.652870178222656
+          },
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "C": [
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          },
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1748275200000,
+      "ChairSecond": 17.479999542236328,
+      "GaitSpeed": 73.34249877929688,
+      "BalanceScore": 2.5,
+      "RiskRate": 27.135825872421265,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 20,
+            "Name": "喬養珠",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 14.929739952087402
+          }
+        ],
+        "C": [
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          },
+          {
+            "Number": 13,
+            "Name": "徐素娥",
+            "Gender": 0,
+            "Age": 73,
+            "Risk": 24.656780242919922
+          },
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1748361600000,
+      "ChairSecond": 0.0,
+      "GaitSpeed": 14.710000038146973,
+      "BalanceScore": 0.0,
+      "RiskRate": 57.696746826171875,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "B": [],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1748448000000,
+      "ChairSecond": 20.170000076293945,
+      "GaitSpeed": 51.779998779296875,
+      "BalanceScore": 4.0,
+      "RiskRate": 48.20829391479492,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 25,
+            "Name": "柯王束滿",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 48.20829391479492
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1748966400000,
+      "ChairSecond": 18.93000030517578,
+      "GaitSpeed": 18.479999542236328,
+      "BalanceScore": 0.0,
+      "RiskRate": 60.36354064941406,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 6,
+            "Name": "曾王寶葉",
+            "Gender": 0,
+            "Age": 90,
+            "Risk": 60.36354064941406
+          }
+        ],
+        "B": [],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1749139200000,
+      "ChairSecond": 19.299999237060547,
+      "GaitSpeed": 63.712501525878906,
+      "BalanceScore": 4.0,
+      "RiskRate": 45.99529266357422,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          }
+        ],
+        "C": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          },
+          {
+            "Number": 27,
+            "Name": "卓陳桃",
+            "Gender": 0,
+            "Age": 99,
+            "Risk": 39.86255645751953
+          },
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1749225600000,
+      "ChairSecond": 18.47749900817871,
+      "GaitSpeed": 53.3125,
+      "BalanceScore": 4.0,
+      "RiskRate": 39.46843242645264,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "C": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          },
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          },
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1749312000000,
+      "ChairSecond": 14.223999977111816,
+      "GaitSpeed": 65.25800323486328,
+      "BalanceScore": 2.4,
+      "RiskRate": 48.062460327148436,
+      "Count": 5,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          }
+        ],
+        "B": [
+          {
+            "Number": 21,
+            "Name": "吳李玉粉",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 42.220802307128906
+          }
+        ],
+        "C": [
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          },
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "D": [
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1749484800000,
+      "ChairSecond": 15.329999923706055,
+      "GaitSpeed": 61.97999954223633,
+      "BalanceScore": 4.0,
+      "RiskRate": 48.20829391479492,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 25,
+            "Name": "柯王束滿",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 48.20829391479492
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1749571200000,
+      "ChairSecond": 17.748332977294922,
+      "GaitSpeed": 73.94666290283203,
+      "BalanceScore": 4.0,
+      "RiskRate": 37.48215341567993,
+      "Count": 6,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "C": [
+          {
+            "Number": 17,
+            "Name": "何許富美",
+            "Gender": 0,
+            "Age": 87,
+            "Risk": 58.652870178222656
+          },
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          },
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          },
+          {
+            "Number": 20,
+            "Name": "喬養珠",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 14.929739952087402
+          }
+        ],
+        "D": [
+          {
+            "Number": 13,
+            "Name": "徐素娥",
+            "Gender": 0,
+            "Age": 73,
+            "Risk": 24.656780242919922
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1749830400000,
+      "ChairSecond": 14.231666564941406,
+      "GaitSpeed": 67.7249984741211,
+      "BalanceScore": 4.0,
+      "RiskRate": 30.072725137074787,
+      "Count": 6,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          }
+        ],
+        "C": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          },
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          }
+        ],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          },
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          },
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1750262400000,
+      "ChairSecond": 14.390000343322754,
+      "GaitSpeed": 70.26000213623047,
+      "BalanceScore": 4.0,
+      "RiskRate": 31.153337478637695,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 2,
+            "Name": "楊朝嘉",
+            "Gender": 1,
+            "Age": 72,
+            "Risk": 31.153337478637695
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1750348800000,
+      "ChairSecond": 19.545000076293945,
+      "GaitSpeed": 73.01249694824219,
+      "BalanceScore": 3.0,
+      "RiskRate": 45.99529266357422,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          }
+        ],
+        "B": [],
+        "C": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          },
+          {
+            "Number": 27,
+            "Name": "卓陳桃",
+            "Gender": 0,
+            "Age": 99,
+            "Risk": 39.86255645751953
+          },
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1750435200000,
+      "ChairSecond": 20.292499542236328,
+      "GaitSpeed": 61.79499816894531,
+      "BalanceScore": 3.125,
+      "RiskRate": 41.2741060256958,
+      "Count": 8,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "B": [
+          {
+            "Number": 17,
+            "Name": "何許富美",
+            "Gender": 0,
+            "Age": 87,
+            "Risk": 58.652870178222656
+          },
+          {
+            "Number": 21,
+            "Name": "吳李玉粉",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 42.220802307128906
+          }
+        ],
+        "C": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          },
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "D": [
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          },
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          },
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1750521600000,
+      "ChairSecond": 9.993332862854004,
+      "GaitSpeed": 66.63666534423828,
+      "BalanceScore": 2.6666666666666665,
+      "RiskRate": 44.285491943359375,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          }
+        ],
+        "B": [],
+        "C": [
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          }
+        ],
+        "D": [
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1750608000000,
+      "ChairSecond": 16.049999237060547,
+      "GaitSpeed": 54.45000076293945,
+      "BalanceScore": 1.0,
+      "RiskRate": 57.696746826171875,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1750694400000,
+      "ChairSecond": 18.531999588012695,
+      "GaitSpeed": 63.167999267578125,
+      "BalanceScore": 4.0,
+      "RiskRate": 42.995778274536136,
+      "Count": 5,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          }
+        ],
+        "C": [
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          },
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "D": [
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1750953600000,
+      "ChairSecond": 12.053333282470703,
+      "GaitSpeed": 93.98666381835938,
+      "BalanceScore": 4.0,
+      "RiskRate": 19.785719235738117,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 2,
+            "Name": "楊朝嘉",
+            "Gender": 1,
+            "Age": 72,
+            "Risk": 31.153337478637695
+          }
+        ],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          },
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1751385600000,
+      "ChairSecond": 16.114999771118164,
+      "GaitSpeed": 74.31500244140625,
+      "BalanceScore": 3.25,
+      "RiskRate": 37.00825595855713,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 21,
+            "Name": "吳李玉粉",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 42.220802307128906
+          },
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          },
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "D": [
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1751731200000,
+      "ChairSecond": 15.59857177734375,
+      "GaitSpeed": 53.157142639160156,
+      "BalanceScore": 3.5714285714285716,
+      "RiskRate": 37.89751352582659,
+      "Count": 7,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "C": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          },
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          },
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          },
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          },
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1752076800000,
+      "ChairSecond": 25.290000915527344,
+      "GaitSpeed": 58.77000045776367,
+      "BalanceScore": 2.0,
+      "RiskRate": 51.26020622253418,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "B": [],
+        "C": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1752336000000,
+      "ChairSecond": 18.6200008392334,
+      "GaitSpeed": 59.63999938964844,
+      "BalanceScore": 4.0,
+      "RiskRate": 62.746360778808594,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1752422400000,
+      "ChairSecond": 12.579999923706055,
+      "GaitSpeed": 61.67399978637695,
+      "BalanceScore": 2.4,
+      "RiskRate": 44.80490341186523,
+      "Count": 5,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          }
+        ],
+        "B": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          },
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          },
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "C": [],
+        "D": [
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1752595200000,
+      "ChairSecond": 10.199999809265137,
+      "GaitSpeed": 145.58999633789062,
+      "BalanceScore": 4.0,
+      "RiskRate": 12.197609901428223,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1752681600000,
+      "ChairSecond": 26.219999313354492,
+      "GaitSpeed": 27.1299991607666,
+      "BalanceScore": 2.0,
+      "RiskRate": 48.20829391479492,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 25,
+            "Name": "柯王束滿",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 48.20829391479492
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1752768000000,
+      "ChairSecond": 10.029999732971191,
+      "GaitSpeed": 79.1500015258789,
+      "BalanceScore": 3.0,
+      "RiskRate": 34.36677551269531,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1752854400000,
+      "ChairSecond": 16.790000915527344,
+      "GaitSpeed": 88.93000030517578,
+      "BalanceScore": 4.0,
+      "RiskRate": 29.370811462402344,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1752940800000,
+      "ChairSecond": 20.790000915527344,
+      "GaitSpeed": 41.144996643066406,
+      "BalanceScore": 2.0,
+      "RiskRate": 51.73826789855957,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 17,
+            "Name": "何許富美",
+            "Gender": 0,
+            "Age": 87,
+            "Risk": 58.652870178222656
+          }
+        ],
+        "B": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1753200000000,
+      "ChairSecond": 26.5,
+      "GaitSpeed": 23.65999984741211,
+      "BalanceScore": 2.0,
+      "RiskRate": 57.696746826171875,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1753286400000,
+      "ChairSecond": 19.415000915527344,
+      "GaitSpeed": 78.65499877929688,
+      "BalanceScore": 3.0,
+      "RiskRate": 35.72272300720215,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "C": [],
+        "D": [
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1753372800000,
+      "ChairSecond": 14.875,
+      "GaitSpeed": 54.38249969482422,
+      "BalanceScore": 3.0,
+      "RiskRate": 44.67715549468994,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          },
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          }
+        ],
+        "C": [
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "D": [
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1753459200000,
+      "ChairSecond": 16.8799991607666,
+      "GaitSpeed": 48.663333892822266,
+      "BalanceScore": 3.3333333333333335,
+      "RiskRate": 31.958954175313313,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "C": [
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          }
+        ],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1753545600000,
+      "ChairSecond": 13.085000038146973,
+      "GaitSpeed": 52.633331298828125,
+      "BalanceScore": 3.0,
+      "RiskRate": 46.479763984680176,
+      "Count": 6,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          }
+        ],
+        "B": [
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          }
+        ],
+        "C": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          },
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          },
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1753804800000,
+      "ChairSecond": 13.199999809265137,
+      "GaitSpeed": 85.0199966430664,
+      "BalanceScore": 4.0,
+      "RiskRate": 16.006210327148438,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1753891200000,
+      "ChairSecond": 23.219999313354492,
+      "GaitSpeed": 40.459999084472656,
+      "BalanceScore": 2.0,
+      "RiskRate": 48.20829391479492,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 25,
+            "Name": "柯王束滿",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 48.20829391479492
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1754409600000,
+      "ChairSecond": 7.050000190734863,
+      "GaitSpeed": 62.74500274658203,
+      "BalanceScore": 3.0,
+      "RiskRate": 34.47839164733887,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          }
+        ],
+        "C": [
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1754668800000,
+      "ChairSecond": 15.949999809265137,
+      "GaitSpeed": 42.654998779296875,
+      "BalanceScore": 4.0,
+      "RiskRate": 37.097238540649414,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          }
+        ],
+        "C": [
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1754841600000,
+      "ChairSecond": 17.991666793823242,
+      "GaitSpeed": 52.83833312988281,
+      "BalanceScore": 2.6666666666666665,
+      "RiskRate": 42.57110277811686,
+      "Count": 6,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 27,
+            "Name": "卓陳桃",
+            "Gender": 0,
+            "Age": 99,
+            "Risk": 39.86255645751953
+          }
+        ],
+        "B": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          },
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          },
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "C": [
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "D": [
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1754928000000,
+      "ChairSecond": 15.699999809265137,
+      "GaitSpeed": 79.58000183105469,
+      "BalanceScore": 4.0,
+      "RiskRate": 31.240346908569336,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1755014400000,
+      "ChairSecond": 10.049999237060547,
+      "GaitSpeed": 100.18499755859375,
+      "BalanceScore": 4.0,
+      "RiskRate": 14.10191011428833,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          },
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1755100800000,
+      "ChairSecond": 18.18000030517578,
+      "GaitSpeed": 40.467498779296875,
+      "BalanceScore": 3.0,
+      "RiskRate": 44.67223262786865,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "B": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          }
+        ],
+        "C": [
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1755273600000,
+      "ChairSecond": 22.655000686645508,
+      "GaitSpeed": 61.22999954223633,
+      "BalanceScore": 2.0,
+      "RiskRate": 63.32302665710449,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          }
+        ],
+        "B": [
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1755446400000,
+      "ChairSecond": 12.494999885559082,
+      "GaitSpeed": 60.80999755859375,
+      "BalanceScore": 4.0,
+      "RiskRate": 34.47839164733887,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          }
+        ],
+        "D": [
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1755532800000,
+      "ChairSecond": 22.829999923706055,
+      "GaitSpeed": 33.76333236694336,
+      "BalanceScore": 2.0,
+      "RiskRate": 43.96251551310221,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "B": [
+          {
+            "Number": 25,
+            "Name": "柯王束滿",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 48.20829391479492
+          }
+        ],
+        "C": [
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1755878400000,
+      "ChairSecond": 20.104999542236328,
+      "GaitSpeed": 58.69499969482422,
+      "BalanceScore": 4.0,
+      "RiskRate": 35.72272300720215,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          },
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1756137600000,
+      "ChairSecond": 10.270000457763672,
+      "GaitSpeed": 114.16500091552734,
+      "BalanceScore": 4.0,
+      "RiskRate": 14.10191011428833,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          },
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1756310400000,
+      "ChairSecond": 25.55500030517578,
+      "GaitSpeed": 52.217498779296875,
+      "BalanceScore": 3.0,
+      "RiskRate": 45.99529266357422,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 27,
+            "Name": "卓陳桃",
+            "Gender": 0,
+            "Age": 99,
+            "Risk": 39.86255645751953
+          },
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          }
+        ],
+        "C": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          },
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1756396800000,
+      "ChairSecond": 19.63833236694336,
+      "GaitSpeed": 39.96500015258789,
+      "BalanceScore": 2.8333333333333335,
+      "RiskRate": 43.963128407796226,
+      "Count": 6,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "B": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          },
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          },
+          {
+            "Number": 25,
+            "Name": "柯王束滿",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 48.20829391479492
+          }
+        ],
+        "C": [
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          },
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1756569600000,
+      "ChairSecond": 14.976666450500488,
+      "GaitSpeed": 56.151668548583984,
+      "BalanceScore": 2.0,
+      "RiskRate": 46.479763984680176,
+      "Count": 6,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          }
+        ],
+        "B": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          },
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "C": [
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          }
+        ],
+        "D": [
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1756828800000,
+      "ChairSecond": 11.309999465942383,
+      "GaitSpeed": 56.209999084472656,
+      "BalanceScore": 4.0,
+      "RiskRate": 34.47839164733887,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          }
+        ],
+        "D": [
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1756915200000,
+      "ChairSecond": 16.709999084472656,
+      "GaitSpeed": 68.2249984741211,
+      "BalanceScore": 3.0,
+      "RiskRate": 35.72272300720215,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "C": [],
+        "D": [
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1757260800000,
+      "ChairSecond": 10.604999542236328,
+      "GaitSpeed": 101.72000122070312,
+      "BalanceScore": 4.0,
+      "RiskRate": 14.10191011428833,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          },
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1757347200000,
+      "ChairSecond": 46.470001220703125,
+      "GaitSpeed": 47.619998931884766,
+      "BalanceScore": 2.0,
+      "RiskRate": 47.95100784301758,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1757433600000,
+      "ChairSecond": 19.78499984741211,
+      "GaitSpeed": 42.625,
+      "BalanceScore": 2.5,
+      "RiskRate": 38.05813264846802,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          },
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          }
+        ],
+        "C": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1757520000000,
+      "ChairSecond": 20.78333282470703,
+      "GaitSpeed": 44.106666564941406,
+      "BalanceScore": 2.6666666666666665,
+      "RiskRate": 51.28811772664388,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "B": [
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "C": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1757692800000,
+      "ChairSecond": 18.092498779296875,
+      "GaitSpeed": 42.94499969482422,
+      "BalanceScore": 3.5,
+      "RiskRate": 39.46843242645264,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "C": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          },
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          }
+        ],
+        "D": [
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1757952000000,
+      "ChairSecond": 3.5900001525878906,
+      "GaitSpeed": 42.996665954589844,
+      "BalanceScore": 1.3333333333333333,
+      "RiskRate": 55.50286992390951,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          },
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "B": [],
+        "C": [
+          {
+            "Number": 27,
+            "Name": "卓陳桃",
+            "Gender": 0,
+            "Age": 99,
+            "Risk": 39.86255645751953
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1758124800000,
+      "ChairSecond": 18.475000381469727,
+      "GaitSpeed": 56.22999954223633,
+      "BalanceScore": 4.0,
+      "RiskRate": 35.72272300720215,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 29,
+            "Name": "陳何盡",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 44.395023345947266
+          }
+        ],
+        "C": [
+          {
+            "Number": 23,
+            "Name": "蔡李和香",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 27.05042266845703
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1758211200000,
+      "ChairSecond": 10.96500015258789,
+      "GaitSpeed": 107.11000061035156,
+      "BalanceScore": 4.0,
+      "RiskRate": 14.10191011428833,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 1,
+            "Name": "王戊坤",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 12.197609901428223
+          },
+          {
+            "Number": 9,
+            "Name": "楊世杰",
+            "Gender": 1,
+            "Age": 70,
+            "Risk": 16.006210327148438
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1758297600000,
+      "ChairSecond": 14.692500114440918,
+      "GaitSpeed": 45.244998931884766,
+      "BalanceScore": 3.5,
+      "RiskRate": 38.05813264846802,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 3,
+            "Name": "陳阿才",
+            "Gender": 1,
+            "Age": 91,
+            "Risk": 43.41291427612305
+          }
+        ],
+        "C": [
+          {
+            "Number": 4,
+            "Name": "蔡錦",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 39.609004974365234
+          },
+          {
+            "Number": 5,
+            "Name": "楊陳寶美",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 37.97026443481445
+          },
+          {
+            "Number": 7,
+            "Name": "紀沼澤",
+            "Gender": 1,
+            "Age": 85,
+            "Risk": 31.240346908569336
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1758470400000,
+      "ChairSecond": 24.633333206176758,
+      "GaitSpeed": 46.186668395996094,
+      "BalanceScore": 4.0,
+      "RiskRate": 48.039538065592446,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 26,
+            "Name": "陳翁桂枝",
+            "Gender": 0,
+            "Age": 94,
+            "Risk": 50.67048645019531
+          }
+        ],
+        "C": [
+          {
+            "Number": 28,
+            "Name": "陳啓哲",
+            "Gender": 1,
+            "Age": 86,
+            "Risk": 47.95100784301758
+          },
+          {
+            "Number": 31,
+            "Name": "童瑞海",
+            "Gender": 1,
+            "Age": 66,
+            "Risk": 45.49711990356445
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1758729600000,
+      "ChairSecond": 18.649999618530273,
+      "GaitSpeed": 38.900001525878906,
+      "BalanceScore": 3.0,
+      "RiskRate": 42.686702728271484,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 19,
+            "Name": "蔡碧蘭",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 57.696746826171875
+          }
+        ],
+        "B": [
+          {
+            "Number": 18,
+            "Name": "王秀娥",
+            "Gender": 0,
+            "Age": 69,
+            "Risk": 45.466796875
+          }
+        ],
+        "C": [
+          {
+            "Number": 15,
+            "Name": "洪瑞欽",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 38.21245574951172
+          },
+          {
+            "Number": 16,
+            "Name": "洪林蜜",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 29.370811462402344
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1758816000000,
+      "ChairSecond": 8.219999313354492,
+      "GaitSpeed": 45.61499786376953,
+      "BalanceScore": 1.5,
+      "RiskRate": 52.83306884765625,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 8,
+            "Name": "王福田",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 63.89969253540039
+          },
+          {
+            "Number": 10,
+            "Name": "黃金雄",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 62.746360778808594
+          }
+        ],
+        "B": [
+          {
+            "Number": 12,
+            "Name": "蔡秀",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 44.823665618896484
+          },
+          {
+            "Number": 27,
+            "Name": "卓陳桃",
+            "Gender": 0,
+            "Age": 99,
+            "Risk": 39.86255645751953
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1758902400000,
+      "ChairSecond": 8.569999694824219,
+      "GaitSpeed": 51.43000030517578,
+      "BalanceScore": 4.0,
+      "RiskRate": 34.36677551269531,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 11,
+            "Name": "陳嚴阿葉",
+            "Gender": 0,
+            "Age": 83,
+            "Risk": 34.36677551269531
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    },
+    {
+      "Date": 1758988800000,
+      "ChairSecond": 10.449999809265137,
+      "GaitSpeed": 56.61000061035156,
+      "BalanceScore": 4.0,
+      "RiskRate": 34.59000778198242,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 14,
+            "Name": "陽敏俊",
+            "Gender": 1,
+            "Age": 79,
+            "Risk": 34.59000778198242
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": 0, "ChairSecond": 0 }
+    }
+  ]
+}

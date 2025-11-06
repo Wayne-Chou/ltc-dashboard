@@ -77,7 +77,7 @@
                 <li>
                   <button
                     class="dropdown-item"
-                    onclick="location.href='index.html'"
+                    onclick="switchLanguage('index.html','zh')"
                   >
                     繁體中文
                   </button>
@@ -85,7 +85,7 @@
                 <li>
                   <button
                     class="dropdown-item"
-                    onclick="location.href='index_en.html'"
+                    onclick="switchLanguage('index_en.html','en')"
                   >
                     ENGLISH
                   </button>
@@ -93,7 +93,7 @@
                 <li>
                   <button
                     class="dropdown-item"
-                    onclick="location.href='index_ja.html'"
+                    onclick="switchLanguage('index_ja.html','ja')"
                   >
                     日本語
                   </button>
@@ -101,12 +101,49 @@
                 <li>
                   <button
                     class="dropdown-item"
-                    onclick="location.href='index_ko.html'"
+                    onclick="switchLanguage('index_ko.html','ko')"
                   >
                     한국어
                   </button>
                 </li>
               </ul>
+              <!-- <ul
+                class="dropdown-menu dropdown-menu-end shadow-sm"
+                aria-labelledby="languageMenu"
+              >
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="switchLanguage('index.html')"
+                  >
+                    繁體中文
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="switchLanguage('index_en.html')"
+                  >
+                    ENGLISH
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="switchLanguage('index_ja.html')"
+                  >
+                    日本語
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    onclick="switchLanguage('index_ko.html')"
+                  >
+                    한국어
+                  </button>
+                </li>
+              </ul> -->
             </div>
             <button id="downloadBtn" class="btn btn-primary">
               <i class="bi bi-download me-1"></i> 下載
@@ -592,9 +629,20 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-2">
-                    Average sit-stand seconds trend
-                  </h5>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="fw-semibold text-dark">
+                      Average sit-stand seconds trend
+                    </h5>
+                    <button
+                      class="btn btn-sm btn-outline-primary download-chart"
+                      data-target="sitStandChartCanvas"
+                    >
+                      <i class="fa fa-download me-1"></i> Outbound
+                    </button>
+                  </div>
+
                   <div class="text-muted small mb-2">
                     Recommended duration: less than 12 seconds
                   </div>
@@ -611,9 +659,20 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-2">
-                    Average Balance Test Score
-                  </h5>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="fw-semibold text-dark">
+                      Average Balance Test Score
+                    </h5>
+                    <button
+                      class="btn btn-sm btn-outline-primary download-chart"
+                      data-target="balanceChartCanvas"
+                    >
+                      <i class="fa fa-download me-1"></i> Outbound
+                    </button>
+                  </div>
+
                   <div class="text-muted small mb-2">
                     I recommend a score greater than 3.5.
                   </div>
@@ -630,9 +689,20 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-2">
-                    Average walking speed trend
-                  </h5>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="fw-semibold text-dark">
+                      Average walking speed trend
+                    </h5>
+                    <button
+                      class="btn btn-sm btn-outline-primary download-chart"
+                      data-target="gaitChartCanvas"
+                    >
+                      <i class="fa fa-download me-1"></i> Outbound
+                    </button>
+                  </div>
+
                   <div class="text-muted small mb-2">
                     Recommended speed is greater than or equal to 100 cm/s
                   </div>
@@ -649,9 +719,20 @@
             <div class="col-12 col-md-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h5 class="fw-semibold text-dark mb-2">
-                    Average AI fall risk probability
-                  </h5>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="fw-semibold text-dark">
+                      Average AI fall risk probability
+                    </h5>
+                    <button
+                      class="btn btn-sm btn-outline-primary download-chart"
+                      data-target="riskChartCanvas"
+                    >
+                      <i class="fa fa-download me-1"></i> Outbound
+                    </button>
+                  </div>
+
                   <div class="text-muted small mb-2" style="opacity: 0">
                     15615
                   </div>
@@ -1180,6 +1261,40 @@
 
         <!-- 地圖 -->
         <div id="map"></div>
+        <!-- 等級人員彈窗 -->
+        <div
+          class="modal fade"
+          id="personDetailModal"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="personDetailTitle"></h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body" id="personDetailBody"></div>
+            </div>
+          </div>
+        </div>
+        <!--  Cookie 提示區 -->
+        <div id="cookieConsent">
+          <p>
+            We use cookies to remember your language preference. Do you agree?
+          </p>
+          <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-primary" id="acceptCookies">Accept</button>
+            <button class="btn btn-secondary" id="rejectCookies">
+              Decline
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </body>
@@ -1188,6 +1303,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
 <script src="main.js"></script>
+<script src="cookie.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
