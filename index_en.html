@@ -107,43 +107,6 @@
                   </button>
                 </li>
               </ul>
-              <!-- <ul
-                class="dropdown-menu dropdown-menu-end shadow-sm"
-                aria-labelledby="languageMenu"
-              >
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index.html')"
-                  >
-                    繁體中文
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index_en.html')"
-                  >
-                    ENGLISH
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index_ja.html')"
-                  >
-                    日本語
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index_ko.html')"
-                  >
-                    한국어
-                  </button>
-                </li>
-              </ul> -->
             </div>
             <button id="downloadBtn" class="btn btn-primary">
               <i class="bi bi-download me-1"></i> 下載
@@ -372,7 +335,7 @@
                 compared to the previous test)
               </p>
               <ul id="degenerateList" class="ms-4 text-secondary">
-                <li>Decline in walking speed：<span></span> people</li>
+                <li>Decline in walking speed：<span></span>people</li>
                 <li>Increased sit-up time：<span></span>people</li>
               </ul>
             </div>
@@ -437,18 +400,14 @@
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">
-                <!-- 功能衰退警示 -->
 
+              <div class="modal-body">
                 <div id="degenerateSection" class="mb-3">
-                  <h6>
-                    Functional Decline Alert (Decline >10% since last
-                    assessment)
-                  </h6>
                   <div class="row">
                     <div class="col-12 col-md-6 mb-2">
                       <div class="card">
-                        <div class="card-header">Gait speed decline</div>
+                        <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="degenerateGaitSpeed"
@@ -457,7 +416,8 @@
                     </div>
                     <div class="col-12 col-md-6 mb-2">
                       <div class="card">
-                        <div class="card-header">Sit-stand time increase</div>
+                        <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="degenerateChair"
@@ -466,13 +426,13 @@
                     </div>
                   </div>
                 </div>
-                <!-- 高風險族群 -->
+
                 <div id="vivifrailSection">
-                  <h6>High Risk Group</h6>
                   <div class="row">
                     <div class="col-12 col-md-4 mb-2">
                       <div class="card">
                         <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="vivifrailA"
@@ -482,6 +442,7 @@
                     <div class="col-12 col-md-4 mb-2">
                       <div class="card">
                         <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="vivifrailB"
@@ -491,6 +452,7 @@
                     <div class="col-12 col-md-4 mb-2">
                       <div class="card">
                         <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="vivifrailC"
@@ -500,6 +462,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="modal-footer">
                 <button
                   type="button"
@@ -639,7 +602,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="sitStandChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> Outbound
+                      <i class="fa fa-download me-1"></i> Download image file
                     </button>
                   </div>
 
@@ -669,7 +632,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="balanceChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> Outbound
+                      <i class="fa fa-download me-1"></i> Download image file
                     </button>
                   </div>
 
@@ -699,7 +662,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="gaitChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> Outbound
+                      <i class="fa fa-download me-1"></i> Download image file
                     </button>
                   </div>
 
@@ -729,7 +692,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="riskChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> Outbound
+                      <i class="fa fa-download me-1"></i> Download image file
                     </button>
                   </div>
 
@@ -1035,28 +998,28 @@
               class="btn btn-danger flex-fill text-white"
               data-filter="A"
             >
-              A-level
+              Level A: Disabled
             </button>
             <button
               type="button"
               class="btn btn-warning flex-fill text-white"
               data-filter="B"
             >
-              B-level
+              Level B: Frail
             </button>
             <button
               type="button"
               class="btn btn-primary flex-fill text-white"
               data-filter="C"
             >
-              C-level
+              Level C: Pre-frail
             </button>
             <button
               type="button"
               class="btn btn-success flex-fill text-white"
               data-filter="D"
             >
-              D-level
+              Level D: Healthy
             </button>
           </div>
 
@@ -1074,16 +1037,24 @@
                 <a class="dropdown-item" href="#" data-filter="all">all</a>
               </li>
               <li>
-                <a class="dropdown-item" href="#" data-filter="A">A-level</a>
+                <a class="dropdown-item" href="#" data-filter="A"
+                  >Level A: Disabled</a
+                >
               </li>
               <li>
-                <a class="dropdown-item" href="#" data-filter="B">D-level</a>
+                <a class="dropdown-item" href="#" data-filter="B"
+                  >Level B: Frail</a
+                >
               </li>
               <li>
-                <a class="dropdown-item" href="#" data-filter="C">D-level</a>
+                <a class="dropdown-item" href="#" data-filter="C"
+                  >Level C: Pre-frail</a
+                >
               </li>
               <li>
-                <a class="dropdown-item" href="#" data-filter="D">D-level</a>
+                <a class="dropdown-item" href="#" data-filter="D"
+                  >Level D: Healthy</a
+                >
               </li>
             </ul>
           </div>
@@ -1147,28 +1118,28 @@
                       class="btn btn-danger flex-fill text-white"
                       data-filter="A"
                     >
-                      A-level
+                      Level A: Disabled
                     </button>
                     <button
                       type="button"
                       class="btn btn-warning flex-fill text-white"
                       data-filter="B"
                     >
-                      B-level
+                      Level B: Frail
                     </button>
                     <button
                       type="button"
                       class="btn btn-primary flex-fill text-white"
                       data-filter="C"
                     >
-                      C-level
+                      Level C: Pre-frail
                     </button>
                     <button
                       type="button"
                       class="btn btn-success flex-fill text-white"
                       data-filter="D"
                     >
-                      D-level
+                      Level D: Healthy
                     </button>
                   </div>
 
@@ -1192,22 +1163,22 @@
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="A"
-                          >A-level</a
+                          >Level A: Disabled</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="B"
-                          >A-level</a
+                          >Level B: Frail</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="C"
-                          >C-level</a
+                          >Level C: Pre-frail</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="D"
-                          >D-level</a
+                          >Level D: Healthy</a
                         >
                       </li>
                     </ul>

@@ -330,7 +330,7 @@
                 기능 저하 경고 (이전 테스트 대비 10% 이상 저하)
               </p>
               <ul id="degenerateList" class="ms-4 text-secondary">
-                <li>보행 속도 감소：<span></span> 사람들</li>
+                <li>보행 속도 감소：<span></span>사람들</li>
                 <li>윗몸 일으키기 시간 증가：<span></span>사람들</li>
               </ul>
             </div>
@@ -395,14 +395,13 @@
                   aria-label="Close"
                 ></button>
               </div>
+
               <div class="modal-body">
-                <!-- 功能衰退警示 -->
                 <div id="degenerateSection" class="mb-3">
-                  <h6>기능 저하 경고(이전 테스트 대비 10% 이상 저하)</h6>
                   <div class="row">
                     <div class="col-12 col-md-6 mb-2">
                       <div class="card">
-                        <div class="card-header">보행 속도 감소</div>
+                        <div class="card-header"></div>
                         <ul
                           class="list-group list-group-flush"
                           id="degenerateGaitSpeed"
@@ -411,7 +410,7 @@
                     </div>
                     <div class="col-12 col-md-6 mb-2">
                       <div class="card">
-                        <div class="card-header">기립 시간 증가</div>
+                        <div class="card-header"></div>
                         <ul
                           class="list-group list-group-flush"
                           id="degenerateChair"
@@ -421,9 +420,7 @@
                   </div>
                 </div>
 
-                <!-- 高風險族群 -->
                 <div id="vivifrailSection">
-                  <h6>고위험군</h6>
                   <div class="row">
                     <div class="col-12 col-md-4 mb-2">
                       <div class="card">
@@ -455,13 +452,14 @@
                   </div>
                 </div>
               </div>
+
               <div class="modal-footer">
                 <button
                   type="button"
                   class="btn btn-secondary btn-sm"
                   data-bs-dismiss="modal"
                 >
-                  폐쇄
+                  닫기
                 </button>
               </div>
             </div>
@@ -590,7 +588,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="sitStandChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> 배 밖으로
+                      <i class="fa fa-download me-1"></i> 이미지 파일 다운로드
                     </button>
                   </div>
 
@@ -618,7 +616,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="balanceChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> 배 밖으로
+                      <i class="fa fa-download me-1"></i> 이미지 파일 다운로드
                     </button>
                   </div>
 
@@ -646,7 +644,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="gaitChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> 배 밖으로
+                      <i class="fa fa-download me-1"></i> 이미지 파일 다운로드
                     </button>
                   </div>
 
@@ -676,7 +674,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="riskChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> 배 밖으로
+                      <i class="fa fa-download me-1"></i> 이미지 파일 다운로드
                     </button>
                   </div>
 
@@ -986,28 +984,28 @@
               class="btn btn-danger flex-fill text-white"
               data-filter="A"
             >
-              A등급
+              A등급: 장애인
             </button>
             <button
               type="button"
               class="btn btn-warning flex-fill text-white"
               data-filter="B"
             >
-              B반
+              B등급: 허약자
             </button>
             <button
               type="button"
               class="btn btn-primary flex-fill text-white"
               data-filter="C"
             >
-              C클래스
+              C등급: 전(前)허약자
             </button>
             <button
               type="button"
               class="btn btn-success flex-fill text-white"
               data-filter="D"
             >
-              D반
+              D등급: 건강자
             </button>
           </div>
 
@@ -1025,13 +1023,25 @@
                 <a class="dropdown-item" href="#" data-filter="all">모두</a>
               </li>
               <li>
-                <a class="dropdown-item" href="#" data-filter="A">A등급</a>
+                <a class="dropdown-item" href="#" data-filter="A"
+                  >A등급: 장애인</a
+                >
               </li>
-              <li><a class="dropdown-item" href="#" data-filter="B">B반</a></li>
               <li>
-                <a class="dropdown-item" href="#" data-filter="C">C클래스</a>
+                <a class="dropdown-item" href="#" data-filter="B"
+                  >B등급: 허약자</a
+                >
               </li>
-              <li><a class="dropdown-item" href="#" data-filter="D">D반</a></li>
+              <li>
+                <a class="dropdown-item" href="#" data-filter="C"
+                  >C등급: 전(前)허약자</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-filter="D"
+                  >D등급: 건강자</a
+                >
+              </li>
             </ul>
           </div>
 
@@ -1094,28 +1104,28 @@
                       class="btn btn-danger flex-fill text-white"
                       data-filter="A"
                     >
-                      A등급
+                      A등급: 장애인
                     </button>
                     <button
                       type="button"
                       class="btn btn-warning flex-fill text-white"
                       data-filter="B"
                     >
-                      B반
+                      B등급: 허약자
                     </button>
                     <button
                       type="button"
                       class="btn btn-primary flex-fill text-white"
                       data-filter="C"
                     >
-                      C클래스
+                      C등급: 전(前)허약자
                     </button>
                     <button
                       type="button"
                       class="btn btn-success flex-fill text-white"
                       data-filter="D"
                     >
-                      D반
+                      D등급: 건강자
                     </button>
                   </div>
 
@@ -1139,22 +1149,22 @@
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="A"
-                          >A등급</a
+                          >A등급: 장애인</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="B"
-                          >B반</a
+                          >B등급: 허약자</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="C"
-                          >C클래스</a
+                          >C등급: 전(前)허약자</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="D"
-                          >D반</a
+                          >D등급: 건강자</a
                         >
                       </li>
                     </ul>

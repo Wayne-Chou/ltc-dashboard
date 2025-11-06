@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       people: "人",
       seconds: "秒",
       points: "分",
+      gaitSpeed: "cm/s",
+      fallRisk: "％",
       walkDecline: "步行速度衰退",
       sitStandIncrease: "起坐秒數增加",
       vivifrailA: "A級失能者",
@@ -44,6 +46,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       ageLabel: "年齡",
       riskLevel: "等級",
       dates: "日期",
+      degenerateWarning: "功能衰退警示 (較前次檢測衰退超過10%)",
+      highRiskGroup: "高風險族群",
+      all: "全部",
+      month: "月",
+      noDataThisMonth: "本月無資料",
     },
     en: {
       alertNoData: "No data",
@@ -69,6 +76,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       people: "people",
       seconds: "s",
       points: "pts",
+      gaitSpeed: "cm/s",
+      fallRisk: "％",
       walkDecline: "Gait speed decline",
       sitStandIncrease: "Sit-stand time increase",
       vivifrailA: "Level A disabled",
@@ -88,6 +97,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       ageLabel: "Age",
       riskLevel: "Level",
       dates: "Date",
+      degenerateWarning: "Degeneration Warning (decline > 10% since last test)",
+      highRiskGroup: "High-Risk Group",
+      all: "All",
+      month: "Month",
+      noDataThisMonth: "No data this month",
     },
     ja: {
       alertNoData: "データなし",
@@ -113,6 +127,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       people: "人",
       seconds: "秒",
       points: "点",
+      gaitSpeed: "cm/s",
+      fallRisk: "％",
       walkDecline: "歩行速度の低下",
       sitStandIncrease: "起立時間の増加",
       vivifrailA: "A級失能者",
@@ -132,6 +148,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       ageLabel: "年齢",
       riskLevel: "等級",
       dates: "日付",
+      degenerateWarning: "機能衰退警告（前回検査より10％以上低下）",
+      highRiskGroup: "高リスク群",
+      all: "すべて",
+      month: "月",
+      noDataThisMonth: "今月データなし",
     },
     ko: {
       alertNoData: "데이터 없음",
@@ -157,6 +178,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       people: "명",
       seconds: "초",
       points: "점",
+      gaitSpeed: "cm/s",
+      fallRisk: "％",
       walkDecline: "보행 속도 감소",
       sitStandIncrease: "기립 시간 증가",
       vivifrailA: "A등급 장애자",
@@ -176,6 +199,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       ageLabel: "나이",
       riskLevel: "등급",
       dates: "날짜",
+      degenerateWarning: "기능 저하 경고 (이전 검사 대비 10% 이상 감소)",
+      highRiskGroup: "고위험군",
+      all: "전체",
+      month: "월",
+      noDataThisMonth: "이번 달 데이터 없음",
     },
   };
 
@@ -216,17 +244,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   // VIVIFRAIL 陣列
-
   function flattenData(VIVIFRAIL) {
-    const levels = ["A", "B", "C", "D"];
     const result = [];
-    levels.forEach((level) => {
-      if (VIVIFRAIL[level]) {
-        VIVIFRAIL[level].forEach((p) => {
-          result.push({ ...p, Level: level });
-        });
-      }
+
+    // 展平所有 A~D
+    Object.values(VIVIFRAIL).forEach((group) => {
+      group.forEach((p) => result.push({ ...p, Level: p.Level || "" }));
     });
+
+    // 依風險排序
+    const riskOrder = ["high", "slightlyHigh", "medium", "slightlyLow", "low"];
+    result.sort((a, b) => {
+      const aCategory = getRiskCategory(a.Risk);
+      const bCategory = getRiskCategory(b.Risk);
+      return riskOrder.indexOf(aCategory) - riskOrder.indexOf(bCategory);
+    });
+
     return result;
   }
 
@@ -242,7 +275,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 建立人員卡片
   function createPersonCard(person) {
-    const genderText = person.Gender === 0 ? t("male") : t("female");
+    const genderText = person.Gender === 0 ? t("female") : t("male");
     const riskCategory = getRiskCategory(person.Risk);
 
     const riskStyles = {
@@ -279,41 +312,54 @@ document.addEventListener("DOMContentLoaded", async () => {
       label: t("riskLabel").unknown,
     };
 
+    //  判斷嘴巴表情
+    let mouthPath = "";
+    if (riskCategory === "low") {
+      // 笑臉
+      mouthPath = "M40 65 Q50 75 60 65";
+    } else if (riskCategory === "slightlyLow") {
+      // 直線
+      mouthPath = "M40 65 L60 65";
+    } else {
+      // 哭臉
+      mouthPath = "M40 65 Q50 55 60 65";
+    }
+
     return `
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
-      <div class="person-card bg-white rounded shadow-sm h-100"
-           style="border: 3px solid ${style.border};"
-           data-person="${person.Name}"
-           data-age="${person.Age}"
-           data-gender="${genderText}"
-           data-risk="${riskCategory}">
-        <div class="position-relative">
-          <!-- SVG 簡單人臉 -->
-          <svg class="w-100" height="130" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="30" fill="${style.face}" />
-            <circle cx="40" cy="45" r="5" fill="#4B5563" />
-            <circle cx="60" cy="45" r="5" fill="#4B5563" />
-            <path d="M40 65 Q50 70 60 65" fill="none" stroke="#4B5563" stroke-width="3" stroke-linecap="round" />
-          </svg>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+    <div class="person-card bg-white rounded shadow-sm h-100"
+         style="border: 3px solid ${style.border};"
+         data-person="${person.Name}"
+         data-age="${person.Age}"
+         data-gender="${genderText}"
+         data-risk="${riskCategory}">
+      <div class="position-relative">
+        <!-- SVG 簡單人臉 -->
+        <svg class="w-100" height="130" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="30" fill="${style.face}" />
+          <circle cx="40" cy="45" r="5" fill="#4B5563" />
+          <circle cx="60" cy="45" r="5" fill="#4B5563" />
+          <path d="${mouthPath}" fill="none" stroke="#4B5563" stroke-width="3" stroke-linecap="round" />
+        </svg>
 
-          <!-- 右上角顯示風險文字 -->
-          <div class="position-absolute top-0 end-0 text-white small px-2 py-1 rounded-0 rounded-start"
-               style="background-color:${style.border};">
-            ${style.label}
-          </div>
-        </div>
-
-        <!-- 人員基本資訊 -->
-        <div class="p-2 text-center">
-          <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(
-            person.Name
-          )}</h4>
-          <p class="small text-muted mb-0">${person.Age}${t(
-      "yearsOld"
-    )} | ${genderText}</p>
+        <!-- 右上角顯示風險文字 -->
+        <div class="position-absolute top-0 end-0 text-white small px-2 py-1 rounded-0 rounded-start"
+             style="background-color:${style.border};">
+          ${style.label}
         </div>
       </div>
-    </div>`;
+
+      <!-- 人員基本資訊 -->
+      <div class="p-2 text-center">
+        <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(
+          person.Name
+        )}</h4>
+        <p class="small text-muted mb-0">${person.Age}${t(
+      "yearsOld"
+    )} | ${genderText}</p>
+      </div>
+    </div>
+  </div>`;
   }
 
   // 姓名（顯示圓點）
@@ -342,10 +388,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       let selected = [];
 
       if (checkAllAcrossPages) {
-        // 全選跨頁直接使用整筆資料
         selected = [...currentAssessments];
       } else {
-        // 只抓目前頁面勾選
         const checkedIndexes = Array.from(
           document.querySelectorAll(".row-check")
         )
@@ -355,36 +399,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         selected = checkedIndexes.map((i) => currentAssessments[i]);
       }
 
-      if (!selected || selected.length === 0) {
-        document.getElementById(
-          "degenerateGaitSpeed"
-        ).innerHTML = `<li class="list-group-item">${t("alertNoData")}</li>`;
-        document.getElementById(
-          "degenerateChair"
-        ).innerHTML = `<li class="list-group-item">${t("alertNoData")}</li>`;
-        ["vivifrailA", "vivifrailB", "vivifrailC"].forEach((id) => {
-          document.getElementById(
-            id
-          ).innerHTML = `<li class="list-group-item">${t("alertNoData")}</li>`;
+      const modalBody = document.querySelector("#detailsModal .modal-body");
+      modalBody.innerHTML = "";
 
-          const ul = document.getElementById(id);
-          const cardHeader = ul.parentElement.querySelector(".card-header");
-          if (cardHeader) {
-            const defaultTitles = {
-              vivifrailA: t("vivifrailA"),
-              vivifrailB: t("vivifrailB"),
-              vivifrailC: t("vivifrailC"),
-            };
-            cardHeader.textContent = `${defaultTitles[id]}`;
-          }
-        });
+      if (!selected || selected.length === 0) {
+        modalBody.innerHTML = `<div class="text-center text-muted">${t(
+          "alertNoData"
+        )}</div>`;
       } else {
+        // ===== 功能衰退統計 =====
         let totalGaitSpeed = 0;
         let totalChairSecond = 0;
         let gaitNames = [];
         let chairNames = [];
+
         function getAllNames(vivifrail) {
-          const levels = ["A", "B", "C", "D"];
+          const levels = ["A", "B", "C"];
           const names = [];
           levels.forEach((lvl) => {
             if (vivifrail[lvl]) {
@@ -401,123 +431,602 @@ document.addEventListener("DOMContentLoaded", async () => {
             const allNames = item.VIVIFRAIL
               ? getAllNames(item.VIVIFRAIL)
               : [t("unknown")];
-
             if (item.Degenerate.GaitSpeed) {
               totalGaitSpeed += item.Degenerate.GaitSpeed;
-
               gaitNames.push(...allNames);
             }
-
             if (item.Degenerate.ChairSecond) {
               totalChairSecond += item.Degenerate.ChairSecond;
-
               chairNames.push(...allNames);
             }
           }
         });
 
-        const gaitHeader = document
-          .querySelector("#degenerateGaitSpeed")
-          .parentElement.querySelector(".card-header");
-        if (gaitHeader)
-          gaitHeader.textContent = `${t("walkDecline")} (${totalGaitSpeed})`;
+        const degenerateHtml = `
+        <div class="mb-4">
+          <h6 class="fw-bold">${t("degenerateWarning")}</h6>
+          <div class="row g-2">
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <div class="card-header">${t(
+                  "walkDecline"
+                )} (${totalGaitSpeed})</div>
+                <ul id="degenerateGaitSpeed" class="list-group list-group-flush">
+                  ${
+                    gaitNames.length
+                      ? gaitNames
+                          .map((n) => `<li class="list-group-item">${n}</li>`)
+                          .join("")
+                      : `<li class="list-group-item text-muted">${t(
+                          "alertNoData"
+                        )}</li>`
+                  }
+                </ul>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <div class="card-header">${t(
+                  "sitStandIncrease"
+                )} (${totalChairSecond})</div>
+                <ul id="degenerateChair" class="list-group list-group-flush">
+                  ${
+                    chairNames.length
+                      ? chairNames
+                          .map((n) => `<li class="list-group-item">${n}</li>`)
+                          .join("")
+                      : `<li class="list-group-item text-muted">${t(
+                          "alertNoData"
+                        )}</li>`
+                  }
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+        modalBody.innerHTML += degenerateHtml;
 
-        const chairHeader = document
-          .querySelector("#degenerateChair")
-          .parentElement.querySelector(".card-header");
-        if (chairHeader)
-          chairHeader.textContent = `${t(
-            "sitStandIncrease"
-          )} (${totalChairSecond})`;
+        // ===== 年份下拉 + 標題 =====
+        modalBody.innerHTML += `<div class="mb-2 fw-bold">${t(
+          "highRiskGroup"
+        )}</div>`;
 
-        // 顯示人名
-        const degGaitUl = document.getElementById("degenerateGaitSpeed");
-        degGaitUl.innerHTML = gaitNames.length
-          ? gaitNames
-              .map((n) => `<li class="list-group-item">${n}</li>`)
-              .join("")
-          : `<li class="list-group-item">${t("alertNoData")}</li>`;
+        const startYear = 1900;
+        const endYear = new Date().getFullYear();
+        const years = [];
+        for (let y = startYear; y <= endYear; y++) years.push(y);
+        const currentYear = new Date().getFullYear();
 
-        const degChairUl = document.getElementById("degenerateChair");
-        degChairUl.innerHTML = chairNames.length
-          ? chairNames
-              .map((n) => `<li class="list-group-item">${n}</li>`)
-              .join("")
-          : `<li class="list-group-item">${t("alertNoData")}</li>`;
+        modalBody.innerHTML += `
+        <div class="mb-2">
+          <select id="yearSelect" class="form-select form-select-sm w-auto">
+            ${years
+              .map(
+                (y) =>
+                  `<option value="${y}" ${
+                    y === currentYear ? "selected" : ""
+                  }>${y}</option>`
+              )
+              .join("")}
+          </select>
+        </div>
+        <div id="monthButtons" class="mb-3 d-flex flex-wrap gap-1"></div>
+        <div id="monthContent" class="row"></div>
+      `;
 
-        const levelTitles = {
-          A: t("vivifrailA"),
-          B: t("vivifrailB"),
-          C: t("vivifrailC"),
-        };
+        const monthButtonsContainer = modalBody.querySelector("#monthButtons");
+        const monthContent = modalBody.querySelector("#monthContent");
+        const yearSelect = modalBody.querySelector("#yearSelect");
 
-        const levels = ["A", "B", "C"];
-        levels.forEach((level) => {
-          const ul = document.getElementById("vivifrail" + level);
-          ul.innerHTML = "";
+        function renderMonthButtons(year) {
+          monthButtonsContainer.innerHTML = "";
 
-          let names = [];
-          selected.forEach((item) => {
-            if (item.VIVIFRAIL && item.VIVIFRAIL[level]) {
-              item.VIVIFRAIL[level].forEach((person) => {
-                const ageText = person.Age
-                  ? `${person.Age}${t("yearsOld")}`
-                  : t("unknown");
-                const genderText =
-                  person.Gender === 0
-                    ? t("male")
-                    : person.Gender === 1
-                    ? t("female")
-                    : t("unknown");
-
-                const dateText = item.Date
-                  ? new Date(item.Date).toLocaleDateString()
-                  : t("unknown");
-                names.push({
-                  nameLine: `${person.Name} (${ageText}, ${genderText})`,
-                  dateLine: dateText,
-                });
-              });
-            }
+          // 「全部」按鈕
+          const allBtn = document.createElement("button");
+          allBtn.className = "btn btn-outline-secondary btn-sm active";
+          allBtn.textContent = t("all");
+          monthButtonsContainer.appendChild(allBtn);
+          allBtn.addEventListener("click", () => {
+            renderAllLevels();
+            monthButtonsContainer
+              .querySelectorAll("button")
+              .forEach((b) => b.classList.remove("active"));
+            allBtn.classList.add("active");
           });
 
-          // 加上括號
-          const cardHeader = ul.parentElement.querySelector(".card-header");
-          if (cardHeader) {
-            cardHeader.textContent = `${levelTitles[level]} (${names.length})`;
-          }
+          // 月份按鈕
+          const monthNamesEN = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+          for (let m = 1; m <= 12; m++) {
+            const btn = document.createElement("button");
+            btn.className = "btn btn-outline-primary btn-sm";
+            btn.dataset.month = m;
 
-          if (names.length === 0) {
-            ul.innerHTML = `<li class="list-group-item">${t(
-              "alertNoData"
-            )}</li>`;
-          } else {
-            names.forEach((n) => {
-              const li = document.createElement("li");
-              li.className = "list-group-item";
+            if (window.currentLang === "en") {
+              btn.textContent = monthNamesEN[m - 1]; // 英文縮寫
+            } else {
+              btn.textContent = `${m} ${t("month")}`; // 其他語系仍是 "1 月"、"2 月"...
+            }
 
-              const nameDiv = document.createElement("div");
-              nameDiv.textContent = n.nameLine;
+            monthButtonsContainer.appendChild(btn);
 
-              const dateDiv = document.createElement("div");
-              dateDiv.textContent = n.dateLine;
-              dateDiv.className = "text-muted small"; // 日期字體淡色小字
-
-              li.appendChild(nameDiv);
-              li.appendChild(dateDiv);
-              ul.appendChild(li);
+            btn.addEventListener("click", () => {
+              renderMonth(year, m);
+              monthButtonsContainer
+                .querySelectorAll("button")
+                .forEach((b) => b.classList.remove("active"));
+              btn.classList.add("active");
             });
           }
-        });
+
+          // 預設顯示「全部」
+          renderAllLevels();
+        }
+
+        function renderAllLevels() {
+          monthContent.innerHTML = "";
+          const levels = ["A", "B", "C"];
+          const levelTitles = {
+            A: t("vivifrailA"),
+            B: t("vivifrailB"),
+            C: t("vivifrailC"),
+          };
+          const levelColors = { A: "danger", B: "warning", C: "primary" };
+
+          // 使用 row g-2, 3 col-4 併排
+          let html = "";
+          levels.forEach((level) => {
+            let names = [];
+            selected.forEach((item) => {
+              if (item.VIVIFRAIL && item.VIVIFRAIL[level]) {
+                item.VIVIFRAIL[level].forEach((person) => {
+                  const ageText = person.Age
+                    ? `${person.Age}${t("yearsOld")}`
+                    : t("unknown");
+                  const genderText =
+                    person.Gender === 0
+                      ? t("male")
+                      : person.Gender === 1
+                      ? t("female")
+                      : t("unknown");
+                  names.push(`${person.Name} (${ageText}, ${genderText})`);
+                });
+              }
+            });
+
+            html += `
+            <div class="col-12 col-md-4 mb-2">
+              <div class="card">
+                <div class="card-header bg-${levelColors[level]} text-white">
+                  ${levelTitles[level]} (${names.length})
+                </div>
+                <ul class="list-group list-group-flush">
+                  ${
+                    names.length
+                      ? names
+                          .map((n) => `<li class="list-group-item">${n}</li>`)
+                          .join("")
+                      : `<li class="list-group-item text-muted">${t(
+                          "alertNoData"
+                        )}</li>`
+                  }
+                </ul>
+              </div>
+            </div>
+          `;
+          });
+          monthContent.innerHTML = `<div class="row g-2">${html}</div>`;
+        }
+
+        function renderMonth(year, month = null) {
+          monthContent.innerHTML = "";
+
+          const items = selected.filter((item) => {
+            if (!item.Date) return false;
+            const d = new Date(item.Date);
+            if (month)
+              return (
+                d.getFullYear() === parseInt(year) && d.getMonth() + 1 === month
+              );
+            return d.getFullYear() === parseInt(year);
+          });
+
+          if (!items || items.length === 0) {
+            monthContent.innerHTML = `<div class="text-center text-muted">${t(
+              "noDataThisMonth"
+            )}</div>`;
+            return;
+          }
+
+          const levels = ["A", "B", "C"];
+          const levelTitles = {
+            A: t("vivifrailA"),
+            B: t("vivifrailB"),
+            C: t("vivifrailC"),
+          };
+          const levelColors = { A: "danger", B: "warning", C: "primary" };
+
+          const groupedByDate = {};
+          items.forEach((item) => {
+            const dateKey = item.Date
+              ? new Date(item.Date).toLocaleDateString()
+              : t("unknown");
+            if (!groupedByDate[dateKey]) groupedByDate[dateKey] = [];
+            groupedByDate[dateKey].push(item);
+          });
+
+          Object.keys(groupedByDate)
+            .sort((a, b) => new Date(a) - new Date(b))
+            .forEach((date) => {
+              const dateItems = groupedByDate[date];
+              const dateHtml = `<div class="mb-3 p-2 bg-light rounded">
+              <h6 class="fw-bold mb-2">${date}</h6>
+              <div class="row g-2">
+                ${levels
+                  .map((level) => {
+                    const names = [];
+                    dateItems.forEach((item) => {
+                      if (item.VIVIFRAIL && item.VIVIFRAIL[level]) {
+                        item.VIVIFRAIL[level].forEach((person) => {
+                          const ageText = person.Age
+                            ? `${person.Age}${t("yearsOld")}`
+                            : t("unknown");
+                          const genderText =
+                            person.Gender === 0
+                              ? t("male")
+                              : person.Gender === 1
+                              ? t("female")
+                              : t("unknown");
+                          names.push({
+                            nameLine: `${person.Name} (${ageText}, ${genderText})`,
+                            dateLine: date,
+                          });
+                        });
+                      }
+                    });
+
+                    return `<div class="col-12 col-md-4">
+                      <div class="card">
+                        <div class="card-header bg-${
+                          levelColors[level]
+                        } text-white">
+                          ${levelTitles[level]} (${names.length})
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          ${
+                            names.length
+                              ? names
+                                  .map(
+                                    (n) =>
+                                      `<li class="list-group-item"><div>${n.nameLine}</div></li>`
+                                  )
+                                  .join("")
+                              : `<li class="list-group-item text-muted">${t(
+                                  "alertNoData"
+                                )}</li>`
+                          }
+                        </ul>
+                      </div>
+                    </div>`;
+                  })
+                  .join("")}
+              </div>
+            </div>`;
+              monthContent.innerHTML += dateHtml;
+            });
+        }
+
+        renderMonthButtons(parseInt(yearSelect.value));
+        yearSelect.addEventListener("change", (e) =>
+          renderMonthButtons(e.target.value)
+        );
       }
 
-      // 彈窗顯示
       const modal = new bootstrap.Modal(
         document.getElementById("detailsModal")
       );
       modal.show();
     });
   }
+
+  // const viewDetailsBtn = document.getElementById("viewDetailsBtn");
+  // if (viewDetailsBtn) {
+  //   viewDetailsBtn.addEventListener("click", () => {
+  //     let selected = [];
+
+  //     if (checkAllAcrossPages) {
+  //       selected = [...currentAssessments];
+  //     } else {
+  //       const checkedIndexes = Array.from(
+  //         document.querySelectorAll(".row-check")
+  //       )
+  //         .filter((c) => c.checked)
+  //         .map((c) => parseInt(c.dataset.index));
+
+  //       selected = checkedIndexes.map((i) => currentAssessments[i]);
+  //     }
+
+  //     const modalBody = document.querySelector("#detailsModal .modal-body");
+  //     modalBody.innerHTML = "";
+
+  //     if (!selected || selected.length === 0) {
+  //       modalBody.innerHTML = `<div class="text-center text-muted">${t(
+  //         "alertNoData"
+  //       )}</div>`;
+  //     } else {
+  //       // 功能衰退統計
+  //       let totalGaitSpeed = 0;
+  //       let totalChairSecond = 0;
+  //       let gaitNames = [];
+  //       let chairNames = [];
+
+  //       function getAllNames(vivifrail) {
+  //         const levels = ["A", "B", "C"];
+  //         const names = [];
+  //         levels.forEach((lvl) => {
+  //           if (vivifrail[lvl]) {
+  //             vivifrail[lvl].forEach((p) => {
+  //               if (p.Name) names.push(p.Name);
+  //             });
+  //           }
+  //         });
+  //         return names;
+  //       }
+
+  //       selected.forEach((item) => {
+  //         if (item.Degenerate) {
+  //           const allNames = item.VIVIFRAIL
+  //             ? getAllNames(item.VIVIFRAIL)
+  //             : [t("unknown")];
+
+  //           if (item.Degenerate.GaitSpeed) {
+  //             totalGaitSpeed += item.Degenerate.GaitSpeed;
+  //             gaitNames.push(...allNames);
+  //           }
+
+  //           if (item.Degenerate.ChairSecond) {
+  //             totalChairSecond += item.Degenerate.ChairSecond;
+  //             chairNames.push(...allNames);
+  //           }
+  //         }
+  //       });
+
+  //       // 功能衰退區塊
+  //       const degenerateHtml = `
+  //     <div class="mb-4">
+  //       <h6 class="fw-bold">功能衰退警示 (較前次檢測衰退超過10%)</h6>
+  //       <div class="row g-2">
+  //         <div class="col-12 col-md-6">
+  //           <div class="card">
+  //             <div class="card-header">步行速度衰退 (${totalGaitSpeed})</div>
+  //             <ul id="degenerateGaitSpeed" class="list-group list-group-flush">
+  //               ${
+  //                 gaitNames.length
+  //                   ? gaitNames
+  //                       .map((n) => `<li class="list-group-item">${n}</li>`)
+  //                       .join("")
+  //                   : `<li class="list-group-item text-muted">${t(
+  //                       "alertNoData"
+  //                     )}</li>`
+  //               }
+  //             </ul>
+  //           </div>
+  //         </div>
+  //         <div class="col-12 col-md-6">
+  //           <div class="card">
+  //             <div class="card-header">起坐秒數增加 (${totalChairSecond})</div>
+  //             <ul id="degenerateChair" class="list-group list-group-flush">
+  //               ${
+  //                 chairNames.length
+  //                   ? chairNames
+  //                       .map((n) => `<li class="list-group-item">${n}</li>`)
+  //                       .join("")
+  //                   : `<li class="list-group-item text-muted">${t(
+  //                       "alertNoData"
+  //                     )}</li>`
+  //               }
+  //             </ul>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //     `;
+  //       modalBody.innerHTML += degenerateHtml;
+
+  //       // 年份範圍
+  //       const startYear = 1900;
+  //       const endYear = new Date().getFullYear();
+  //       const years = [];
+  //       for (let y = startYear; y <= endYear; y++) years.push(y);
+  //       const currentYear = new Date().getFullYear();
+  //       const currentMonth = 1; // 預設 1 月
+
+  //       const yearHtml = `
+  //     <div class="mb-2">
+  //       <select id="yearSelect" class="form-select form-select-sm w-auto">
+  //         ${years
+  //           .map(
+  //             (y) =>
+  //               `<option value="${y}" ${
+  //                 y === currentYear ? "selected" : ""
+  //               }>${y}</option>`
+  //           )
+  //           .join("")}
+  //       </select>
+  //     </div>
+  //     `;
+  //       modalBody.innerHTML += yearHtml;
+
+  //       // 月份按鈕區
+  //       modalBody.innerHTML += `<div id="monthButtons" class="mb-3 d-flex flex-wrap gap-1"></div>`;
+  //       modalBody.innerHTML += `<div id="monthContent"></div>`;
+
+  //       const monthButtonsContainer = modalBody.querySelector("#monthButtons");
+  //       const monthContent = modalBody.querySelector("#monthContent");
+  //       const yearSelect = modalBody.querySelector("#yearSelect");
+
+  //       function renderMonthButtons(year) {
+  //         monthButtonsContainer.innerHTML = "";
+
+  //         // 新增「全部」按鈕
+  //         const allBtn = document.createElement("button");
+  //         allBtn.className = "btn btn-outline-secondary btn-sm";
+  //         allBtn.textContent = "全部";
+  //         monthButtonsContainer.appendChild(allBtn);
+  //         allBtn.addEventListener("click", () => {
+  //           renderMonth(year, null); // null 代表不篩選月份
+  //           monthButtonsContainer
+  //             .querySelectorAll("button")
+  //             .forEach((b) => b.classList.remove("active"));
+  //           allBtn.classList.add("active");
+  //         });
+
+  //         for (let m = 1; m <= 12; m++) {
+  //           const btn = document.createElement("button");
+  //           btn.className = "btn btn-outline-primary btn-sm";
+  //           btn.dataset.month = m;
+  //           btn.textContent = `${m} 月`;
+  //           monthButtonsContainer.appendChild(btn);
+
+  //           btn.addEventListener("click", () => {
+  //             renderMonth(year, m);
+  //             monthButtonsContainer
+  //               .querySelectorAll("button")
+  //               .forEach((b) => b.classList.remove("active"));
+  //             btn.classList.add("active");
+  //           });
+  //         }
+
+  //         // 預設 active：1 月
+  //         const defaultMonthBtn =
+  //           monthButtonsContainer.querySelector(
+  //             `button[data-month="${currentMonth}"]`
+  //           ) || monthButtonsContainer.querySelector("button");
+  //         defaultMonthBtn.classList.add("active");
+  //         renderMonth(year, parseInt(defaultMonthBtn.dataset.month));
+  //       }
+
+  //       function renderMonth(year, month = null) {
+  //         monthContent.innerHTML = "";
+
+  //         const items = selected.filter((item) => {
+  //           if (!item.Date) return false;
+  //           const d = new Date(item.Date);
+  //           if (month) {
+  //             return (
+  //               d.getFullYear() === parseInt(year) && d.getMonth() + 1 === month
+  //             );
+  //           }
+  //           return d.getFullYear() === parseInt(year);
+  //         });
+
+  //         if (!items || items.length === 0) {
+  //           monthContent.innerHTML = `<div class="text-center text-muted">本月無資料</div>`;
+  //           return;
+  //         }
+
+  //         const levels = ["A", "B", "C"];
+  //         const levelTitles = {
+  //           A: t("vivifrailA"),
+  //           B: t("vivifrailB"),
+  //           C: t("vivifrailC"),
+  //         };
+  //         const levelColors = { A: "danger", B: "warning", C: "primary" };
+
+  //         // 分日期
+  //         const groupedByDate = {};
+  //         items.forEach((item) => {
+  //           const dateKey = item.Date
+  //             ? new Date(item.Date).toLocaleDateString()
+  //             : t("unknown");
+  //           if (!groupedByDate[dateKey]) groupedByDate[dateKey] = [];
+  //           groupedByDate[dateKey].push(item);
+  //         });
+
+  //         Object.keys(groupedByDate)
+  //           .sort((a, b) => new Date(a) - new Date(b))
+  //           .forEach((date) => {
+  //             const dateItems = groupedByDate[date];
+  //             const dateHtml = `<div class="mb-3 p-2 bg-light rounded">
+  //           <h6 class="fw-bold mb-2">${date}</h6>
+  //           <div class="row g-2">
+  //             ${levels
+  //               .map((level) => {
+  //                 const names = [];
+  //                 dateItems.forEach((item) => {
+  //                   if (item.VIVIFRAIL && item.VIVIFRAIL[level]) {
+  //                     item.VIVIFRAIL[level].forEach((person) => {
+  //                       const ageText = person.Age
+  //                         ? `${person.Age}${t("yearsOld")}`
+  //                         : t("unknown");
+  //                       const genderText =
+  //                         person.Gender === 0
+  //                           ? t("male")
+  //                           : person.Gender === 1
+  //                           ? t("female")
+  //                           : t("unknown");
+  //                       names.push({
+  //                         nameLine: `${person.Name} (${ageText}, ${genderText})`,
+  //                         dateLine: date,
+  //                       });
+  //                     });
+  //                   }
+  //                 });
+
+  //                 return `<div class="col-12 col-md-4">
+  //                 <div class="card">
+  //                   <div class="card-header bg-${
+  //                     levelColors[level]
+  //                   } text-white">${levelTitles[level]} (${names.length})</div>
+  //                   <ul class="list-group list-group-flush">
+  //                     ${
+  //                       names.length
+  //                         ? names
+  //                             .map(
+  //                               (n) =>
+  //                                 `<li class="list-group-item"><div>${n.nameLine}</div><div class="text-muted small">${n.dateLine}</div></li>`
+  //                             )
+  //                             .join("")
+  //                         : `<li class="list-group-item text-muted">${t(
+  //                             "alertNoData"
+  //                           )}</li>`
+  //                     }
+  //                   </ul>
+  //                 </div>
+  //               </div>`;
+  //               })
+  //               .join("")}
+  //           </div>
+  //         </div>`;
+  //             monthContent.innerHTML += dateHtml;
+  //           });
+  //       }
+
+  //       renderMonthButtons(parseInt(yearSelect.value));
+  //       yearSelect.addEventListener("change", (e) =>
+  //         renderMonthButtons(e.target.value)
+  //       );
+  //     }
+
+  //     const modal = new bootstrap.Modal(
+  //       document.getElementById("detailsModal")
+  //     );
+  //     modal.show();
+  //   });
+  // }
 
   // 查看全部彈窗
   viewAllBtn.addEventListener("click", () => {
@@ -1177,6 +1686,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // 顯示等級人員詳細彈窗
+  const personDetailModalEl = document.getElementById("personDetailModal");
+  const personDetailModal = new bootstrap.Modal(personDetailModalEl);
+
   function bindPersonCardClick(allSelectedData) {
     const cards = document.querySelectorAll(".person-card");
     cards.forEach((card) => {
@@ -1201,7 +1713,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           return false;
         });
 
-        // 日期清單
         let datesHtml = "";
         if (personRecords.length > 0) {
           datesHtml = personRecords
@@ -1218,38 +1729,31 @@ document.addEventListener("DOMContentLoaded", async () => {
           )}</div>`;
         }
 
-        // Grid 2x2
         const bodyHtml = `
         <div class="row mb-3 gx-0 border">
-          <div class="col-6 border-end p-2">
-            <strong>${t("name")}:</strong> ${name}
-          </div>
-          <div class="col-6 p-2">
-            <strong>${t("genderLabel")}:</strong> ${gender}
-          </div>
-          <div class="col-6 border-top border-end p-2">
-            <strong>${t("ageLabel")}:</strong> ${age}
-          </div>
-          <div class="col-6 border-top p-2">
-            <strong>${t("riskLevel")}:</strong> ${risk}
-          </div>
+          <div class="col-6 border-end p-2"><strong>${t(
+            "name"
+          )}:</strong> ${name}</div>
+          <div class="col-6 p-2"><strong>${t(
+            "genderLabel"
+          )}:</strong> ${gender}</div>
+          <div class="col-6 border-top border-end p-2"><strong>${t(
+            "ageLabel"
+          )}:</strong> ${age}</div>
+          <div class="col-6 border-top p-2"><strong>${t(
+            "riskLevel"
+          )}:</strong> ${risk}</div>
         </div>
-
         <div class="mb-2">
           <strong>${t("dates")}:</strong>
-          <div class="pt-2">
-            ${datesHtml}
-          </div>
+          <div class="pt-2">${datesHtml}</div>
         </div>
       `;
 
         document.getElementById("personDetailTitle").textContent = name;
         document.getElementById("personDetailBody").innerHTML = bodyHtml;
 
-        const modal = new bootstrap.Modal(
-          document.getElementById("personDetailModal")
-        );
-        modal.show();
+        personDetailModal.show();
       });
     });
   }
@@ -1619,8 +2123,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                       dateObj.getMonth() + 1
                     }/${dateObj.getDate()}`
                   : labels[context.dataIndex];
-
-                return `${fullDate}：${value.toFixed(1)} 秒`;
+                const unit = t("seconds");
+                return `${fullDate}：${value.toFixed(1)} ${unit}`;
               },
             },
           },
@@ -1691,13 +2195,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       labels = ["", ...labels, ""];
       dataValues = [null, ...dataValues, null];
     }
-    const baselineY = 3.5; // 基準線
-    const minValue = Math.min(...dataValues, baselineY);
-    const maxValue = Math.max(...dataValues, baselineY);
-    let yMin = minValue - (maxValue - minValue) * 0.2;
-    let yMax = maxValue + (maxValue - minValue) * 0.2;
-    if (yMin < 0) yMin = 0;
-    if (yMax - yMin < 2) yMax = yMin + 2;
+    const yMin = 0;
+    const yMax = 4;
+
     // 如果之前已有圖表，先銷毀
     if (window.balanceChartInstance) {
       window.balanceChartInstance.destroy();
@@ -1741,8 +2241,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                       dateObj.getMonth() + 1
                     }/${dateObj.getDate()}`
                   : labels[context.dataIndex];
-
-                return `${fullDate}：${value.toFixed(1)} 秒`;
+                const unit = t("points");
+                return `${fullDate}：${value.toFixed(1)} ${unit}`;
               },
             },
           },
@@ -1860,8 +2360,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                       dateObj.getMonth() + 1
                     }/${dateObj.getDate()}`
                   : labels[context.dataIndex];
-
-                return `${fullDate}：${value.toFixed(1)} 秒`;
+                const unit = t("gaitSpeed");
+                return `${fullDate}：${value.toFixed(1)} ${unit}`;
               },
             },
           },
@@ -1987,8 +2487,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                       dateObj.getMonth() + 1
                     }/${dateObj.getDate()}`
                   : labels[context.dataIndex];
-
-                return `${fullDate}：${value.toFixed(1)} 秒`;
+                const unit = t("fallRisk");
+                return `${fullDate}：${value.toFixed(1)} ${unit}`;
               },
             },
           },
@@ -2090,6 +2590,31 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.body.removeChild(link);
     });
   });
+
+  // Chart.js 圖表 hover/語系更新處理
+  // 當滑鼠 hover 或切換語系時，Chart.js 需要重新繪製圖表
+  // 以避免 tooltip 或單位顯示錯誤
+  const chartList = [
+    { instance: "balanceChartInstance", draw: drawBalanceChartChartJS },
+    { instance: "sitStandChartInstance", draw: drawSitStandChartChartJS },
+    { instance: "gaitChartInstance", draw: drawGaitChartChartJS },
+    { instance: "riskChartInstance", draw: drawRiskChartChartJS },
+  ];
+
+  // 重新繪製所有圖表（在切換語系或 hover 時使用）
+  function refreshChartsForLang(lang) {
+    window.currentLang = lang;
+
+    chartList.forEach((chart) => {
+      // 若圖表已存在，先銷毀舊圖表
+      // 這是為了避免 Chart.js tooltip 單位或 hover 資料顯示錯誤
+      if (window[chart.instance]) {
+        window[chart.instance].destroy();
+        window[chart.instance] = null;
+      }
+      chart.draw(assessments);
+    });
+  }
 
   // 下載功能
   const btn = document.getElementById("downloadBtn");
@@ -2204,7 +2729,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // level建立人員卡片
   function createLevelPersonCard(person) {
-    const genderText = person.Gender === 0 ? "男" : "女";
+    const genderText = person.Gender === 0 ? t("female") : t("male");
     const faceColors = {
       A: "#FEE2E2",
       B: "#FEF3C7",
@@ -2222,6 +2747,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const levelLabel = levelLabels[person.Level] || "";
     const levelClass = `border-${borderClasses[person.Level] || "secondary"}`;
 
+    // ===== 判斷嘴巴表情 =====
+    let mouthPath = "";
+    if (person.Level === "D") {
+      // 笑臉
+      mouthPath = "M40 65 Q50 75 60 65";
+    } else if (person.Level === "C") {
+      // 直線
+      mouthPath = "M40 65 L60 65";
+    } else {
+      // 哭臉
+      mouthPath = "M40 65 Q50 55 60 65";
+    }
+
     return `
   <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
     <div class="person-card bg-white rounded shadow-sm border border-2 ${levelClass} h-100"
@@ -2234,7 +2772,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <circle cx="50" cy="50" r="30" fill="${faceColor}" />
           <circle cx="40" cy="45" r="5" fill="#4B5563" />
           <circle cx="60" cy="45" r="5" fill="#4B5563" />
-          <path d="M40 65 Q50 70 60 65" fill="none" stroke="#4B5563" stroke-width="3" stroke-linecap="round" />
+          <path d="${mouthPath}" fill="none" stroke="#4B5563" stroke-width="3" stroke-linecap="round" />
         </svg>
         <div class="position-absolute top-0 end-0 bg-${
           borderClasses[person.Level]

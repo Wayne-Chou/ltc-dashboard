@@ -102,44 +102,6 @@
                   </button>
                 </li>
               </ul>
-
-              <!-- <ul
-                class="dropdown-menu dropdown-menu-end shadow-sm"
-                aria-labelledby="languageMenu"
-              >
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index.html')"
-                  >
-                    繁體中文
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index_en.html')"
-                  >
-                    ENGLISH
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index_ja.html')"
-                  >
-                    日本語
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index_ko.html')"
-                  >
-                    한국어
-                  </button>
-                </li>
-              </ul> -->
             </div>
             <button id="downloadBtn" class="btn btn-primary">
               <i class="bi bi-download me-1"></i> 下載
@@ -365,7 +327,7 @@
                 功能衰退警示 (較前次檢測衰退超過10%)
               </p>
               <ul id="degenerateList" class="ms-4 text-secondary">
-                <li>步行速度衰退：<span></span> 人</li>
+                <li>步行速度衰退：<span></span>人</li>
                 <li>起坐秒數增加：<span></span>人</li>
               </ul>
             </div>
@@ -430,14 +392,14 @@
                   aria-label="Close"
                 ></button>
               </div>
+
               <div class="modal-body">
-                <!-- 功能衰退警示 -->
                 <div id="degenerateSection" class="mb-3">
-                  <h6>功能衰退警示 (較前次檢測衰退超過10%)</h6>
                   <div class="row">
                     <div class="col-12 col-md-6 mb-2">
                       <div class="card">
-                        <div class="card-header">步行速度衰退</div>
+                        <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="degenerateGaitSpeed"
@@ -446,7 +408,8 @@
                     </div>
                     <div class="col-12 col-md-6 mb-2">
                       <div class="card">
-                        <div class="card-header">起坐秒數增加</div>
+                        <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="degenerateChair"
@@ -456,13 +419,12 @@
                   </div>
                 </div>
 
-                <!-- 高風險族群 -->
                 <div id="vivifrailSection">
-                  <h6>高風險族群</h6>
                   <div class="row">
                     <div class="col-12 col-md-4 mb-2">
                       <div class="card">
                         <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="vivifrailA"
@@ -472,6 +434,7 @@
                     <div class="col-12 col-md-4 mb-2">
                       <div class="card">
                         <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="vivifrailB"
@@ -481,6 +444,7 @@
                     <div class="col-12 col-md-4 mb-2">
                       <div class="card">
                         <div class="card-header"></div>
+
                         <ul
                           class="list-group list-group-flush"
                           id="vivifrailC"
@@ -490,6 +454,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="modal-footer">
                 <button
                   type="button"
@@ -502,6 +467,7 @@
             </div>
           </div>
         </div>
+
         <!-- 四個等級 -->
         <div class="row g-3 hide-on-all">
           <div class="row g-3 mt-4">
@@ -622,11 +588,11 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="sitStandChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> 匯出
+                      <i class="fa fa-download me-1"></i> 下載圖檔
                     </button>
                   </div>
 
-                  <div class="text-muted small mb-2">建議小於12s</div>
+                  <div class="text-muted small mb-2">建議小於12秒</div>
                   <div
                     class="chart-container"
                     style="position: relative; height: 300px; width: 100%"
@@ -648,7 +614,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="balanceChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> 匯出
+                      <i class="fa fa-download me-1"></i> 下載圖檔
                     </button>
                   </div>
 
@@ -674,7 +640,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="gaitChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> 匯出
+                      <i class="fa fa-download me-1"></i> 下載圖檔
                     </button>
                   </div>
 
@@ -1008,28 +974,28 @@
               class="btn btn-danger flex-fill text-white"
               data-filter="A"
             >
-              A級
+              A級失能者
             </button>
             <button
               type="button"
               class="btn btn-warning flex-fill text-white"
               data-filter="B"
             >
-              B級
+              B級衰弱者
             </button>
             <button
               type="button"
               class="btn btn-primary flex-fill text-white"
               data-filter="C"
             >
-              C級
+              C級衰弱前期者
             </button>
             <button
               type="button"
               class="btn btn-success flex-fill text-white"
               data-filter="D"
             >
-              D級
+              D級健康者
             </button>
           </div>
 
@@ -1046,10 +1012,20 @@
               <li>
                 <a class="dropdown-item" href="#" data-filter="all">全部</a>
               </li>
-              <li><a class="dropdown-item" href="#" data-filter="A">A級</a></li>
-              <li><a class="dropdown-item" href="#" data-filter="B">B級</a></li>
-              <li><a class="dropdown-item" href="#" data-filter="C">C級</a></li>
-              <li><a class="dropdown-item" href="#" data-filter="D">D級</a></li>
+              <li>
+                <a class="dropdown-item" href="#" data-filter="A">A級失能者</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-filter="B">B級衰弱者</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-filter="C"
+                  >C級衰弱前期者</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-filter="D">D級健康者</a>
+              </li>
             </ul>
           </div>
 
@@ -1112,28 +1088,28 @@
                       class="btn btn-danger flex-fill text-white"
                       data-filter="A"
                     >
-                      A級
+                      A級失能者
                     </button>
                     <button
                       type="button"
                       class="btn btn-warning flex-fill text-white"
                       data-filter="B"
                     >
-                      B級
+                      B級衰弱者
                     </button>
                     <button
                       type="button"
                       class="btn btn-primary flex-fill text-white"
                       data-filter="C"
                     >
-                      C級
+                      C級衰弱前期者
                     </button>
                     <button
                       type="button"
                       class="btn btn-success flex-fill text-white"
                       data-filter="D"
                     >
-                      D級
+                      D級健康者
                     </button>
                   </div>
 
@@ -1157,22 +1133,22 @@
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="A"
-                          >A級</a
+                          >A級失能者</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="B"
-                          >B級</a
+                          >B級衰弱者</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="C"
-                          >C級</a
+                          >C級衰弱前期者</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="D"
-                          >D級</a
+                          >D級健康者</a
                         >
                       </li>
                     </ul>
@@ -1227,7 +1203,6 @@
         <!-- 地圖 -->
         <div id="map"></div>
       </div>
-
       <!-- 等級人員彈窗 -->
       <div
         class="modal fade"
@@ -1250,7 +1225,6 @@
           </div>
         </div>
       </div>
-
       <!--  Cookie 提示區 -->
       <div id="cookieConsent">
         <p>我們使用 Cookie 來記錄您的語系偏好，是否同意？</p>

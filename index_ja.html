@@ -331,7 +331,7 @@
                 機能低下警告（前回テストと比較して10％以上の低下）
               </p>
               <ul id="degenerateList" class="ms-4 text-secondary">
-                <li>歩行速度の低下：<span></span> 人々</li>
+                <li>歩行速度の低下：<span></span>人々</li>
                 <li>腹筋運動時間の増加：<span></span>人々</li>
               </ul>
             </div>
@@ -377,77 +377,62 @@
         </div>
         <!-- 詳細名單彈窗 -->
         <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="detailsModalLabel">詳細リスト</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <!-- 功能衰退警示 -->
-                <div id="degenerateSection" class="mb-3">
-                  <h6>機能低下アラート（前回評価より10%以上低下）</h6>
-                  <div class="row">
-                    <div class="col-12 col-md-6 mb-2">
-                      <div class="card">
-                        <div class="card-header">歩行速度の低下</div>
-                        <ul
-                          class="list-group list-group-flush"
-                          id="degenerateGaitSpeed"
-                        ></ul>
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="detailsModalLabel">詳細リスト</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                  <div id="degenerateSection" class="mb-3">
+                    <div class="row">
+                      <div class="col-12 col-md-6 mb-2">
+                        <div class="card">
+                          <div class="card-header"></div>
+                          <ul class="list-group list-group-flush" id="degenerateGaitSpeed"></ul>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 mb-2">
+                        <div class="card">
+                          <div class="card-header"></div>
+                          <ul class="list-group list-group-flush" id="degenerateChair"></ul>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6 mb-2">
-                      <div class="card">
-                        <div class="card-header">起立時間の増加</div>
-                        <ul
-                          class="list-group list-group-flush"
-                          id="degenerateChair"
-                        ></ul>
+                  </div>
+
+                  <div id="vivifrailSection">
+                    <div class="row">
+                      <div class="col-12 col-md-4 mb-2">
+                        <div class="card">
+                          <div class="card-header"></div>
+                          <ul class="list-group list-group-flush" id="vivifrailA"></ul>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-4 mb-2">
+                        <div class="card">
+                          <div class="card-header"></div>
+                          <ul class="list-group list-group-flush" id="vivifrailB"></ul>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-4 mb-2">
+                        <div class="card">
+                          <div class="card-header"></div>
+                          <ul class="list-group list-group-flush" id="vivifrailC"></ul>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!-- 高風險族群 -->
-                <div id="vivifrailSection">
-                  <h6>ハイリスクグループ</h6>
-                  <div class="row">
-                    <div class="col-12 col-md-4 mb-2">
-                      <div class="card">
-                        <div class="card-header"></div>
-                        <ul
-                          class="list-group list-group-flush"
-                          id="vivifrailA"
-                        ></ul>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-4 mb-2">
-                      <div class="card">
-                        <div class="card-header"></div>
-                        <ul
-                          class="list-group list-group-flush"
-                          id="vivifrailB"
-                        ></ul>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-4 mb-2">
-                      <div class="card">
-                        <div class="card-header"></div>
-                        <ul
-                          class="list-group list-group-flush"
-                          id="vivifrailC"
-                        ></ul>
-                      </div>
-                    </div>
-                  </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">閉じる</button>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">閉じる</button>
               </div>
             </div>
-          </div>
         </div>
+
 
 
 
@@ -569,7 +554,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="sitStandChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> アウトバウンド
+                      <i class="fa fa-download me-1"></i> 画像ファイルをダウンロード
                     </button>
                   </div>
                   
@@ -594,7 +579,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="balanceChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> アウトバウンド
+                      <i class="fa fa-download me-1"></i> 画像ファイルをダウンロード
                     </button>
                   </div>
                   
@@ -619,7 +604,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="gaitChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> アウトバウンド
+                      <i class="fa fa-download me-1"></i> 画像ファイルをダウンロード
                     </button>
                   </div>
                   
@@ -645,7 +630,7 @@
                       class="btn btn-sm btn-outline-primary download-chart"
                       data-target="riskChartCanvas"
                     >
-                      <i class="fa fa-download me-1"></i> アウトバウンド
+                      <i class="fa fa-download me-1"></i> 画像ファイルをダウンロード
                     </button>
                   </div>
                   
@@ -933,28 +918,28 @@
               class="btn btn-danger flex-fill text-white"
               data-filter="A"
             >
-              グレードA
+              A級：要介護者
             </button>
             <button
               type="button"
               class="btn btn-warning flex-fill text-white"
               data-filter="B"
             >
-              クラスB
+              B級：虚弱者
             </button>
             <button
               type="button"
               class="btn btn-primary flex-fill text-white"
               data-filter="C"
             >
-              クラスC
+              C級：前虚弱者
             </button>
             <button
               type="button"
               class="btn btn-success flex-fill text-white"
               data-filter="D"
             >
-              クラスD
+              D級：健康者
             </button>
           </div>
 
@@ -971,10 +956,10 @@
               <li>
                 <a class="dropdown-item" href="#" data-filter="all">全て</a>
               </li>
-              <li><a class="dropdown-item" href="#" data-filter="A">グレードA</a></li>
-              <li><a class="dropdown-item" href="#" data-filter="B">クラスB</a></li>
-              <li><a class="dropdown-item" href="#" data-filter="C">クラスC</a></li>
-              <li><a class="dropdown-item" href="#" data-filter="D">クラスD</a></li>
+              <li><a class="dropdown-item" href="#" data-filter="A">A級：要介護者</a></li>
+              <li><a class="dropdown-item" href="#" data-filter="B">B級：虚弱者</a></li>
+              <li><a class="dropdown-item" href="#" data-filter="C">C級：前虚弱者</a></li>
+              <li><a class="dropdown-item" href="#" data-filter="D">D級：健康者</a></li>
             </ul>
           </div>
 
@@ -1037,28 +1022,28 @@
                       class="btn btn-danger flex-fill text-white"
                       data-filter="A"
                     >
-                      グレードA
+                      A級：要介護者
                     </button>
                     <button
                       type="button"
                       class="btn btn-warning flex-fill text-white"
                       data-filter="B"
                     >
-                      クラスB
+                      B級：虚弱者
                     </button>
                     <button
                       type="button"
                       class="btn btn-primary flex-fill text-white"
                       data-filter="C"
                     >
-                      クラスC
+                      C級：前虚弱者
                     </button>
                     <button
                       type="button"
                       class="btn btn-success flex-fill text-white"
                       data-filter="D"
                     >
-                      クラスD
+                      D級：健康者
                     </button>
                   </div>
 
@@ -1082,22 +1067,22 @@
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="A"
-                          >グレードA</a
+                          >A級：要介護者</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="B"
-                          >クラスB</a
+                          >B級：虚弱者</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="C"
-                          >クラスC</a
+                          >C級：前虚弱者</a
                         >
                       </li>
                       <li>
                         <a class="dropdown-item" href="#" data-filter="D"
-                          >クラスD</a
+                          >D級：健康者</a
                         >
                       </li>
                     </ul>
