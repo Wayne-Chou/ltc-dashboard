@@ -339,39 +339,41 @@
               <ul id="levelList" class="ms-4 text-secondary">
                 <li>A급 장애인：<span></span> 사람들</li>
                 <li>B 레벨 약화：<span></span>사람들</li>
-                <li>C레벨 초기 약점：<span></span>사람들</li>
+                <div class="d-flex justify-content-between flex-wrap">
+                  <li>C레벨 초기 약점：<span></span>사람들</li>
+                  <div class="mt-2">
+                    <button
+                      id="viewDetailsBtn"
+                      class="btn btn-warning btn-sm d-inline-flex align-items-center"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="me-1"
+                        width="16"
+                        height="16"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                      자세한 목록 보기
+                    </button>
+                  </div>
+                </div>
               </ul>
             </div>
-          </div>
-          <div class="mt-2 text-end">
-            <button
-              id="viewDetailsBtn"
-              class="btn btn-warning btn-sm d-inline-flex align-items-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="me-1"
-                width="16"
-                height="16"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                />
-              </svg>
-              자세한 목록 보기
-            </button>
           </div>
         </div>
         <!-- 詳細名單彈窗 -->
@@ -461,6 +463,51 @@
                 >
                   닫기
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 衰退區塊 -->
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div
+              class="risk-box p-3"
+              style="border-left: 4px solid #6f42c1; background-color: #f3e9fa"
+            >
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="fw-bold mb-0 text-purple">보행 속도 감소</h6>
+                </div>
+                <div
+                  class="fs-3 fw-bold text-purple"
+                  id="degenerateGaitSpeedTotal"
+                >
+                  0
+                </div>
+              </div>
+              <div class="mt-2 progress rounded-pill">
+                <div class="progress-bar" id="progressGaitSpeed"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div
+              class="risk-box p-3"
+              style="border-left: 4px solid #0dcaf0; background-color: #e8f8fc"
+            >
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="fw-bold mb-0 text-info">
+                    윗몸 일으키기 시간 증가
+                  </h6>
+                </div>
+                <div class="fs-3 fw-bold text-info" id="degenerateChairTotal">
+                  0
+                </div>
+              </div>
+              <div class="mt-2 progress rounded-pill">
+                <div class="progress-bar bg-info" id="progressChair"></div>
               </div>
             </div>
           </div>
