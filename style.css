@@ -44,6 +44,9 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+.bg-purple {
+  background-color: #4c1d95 !important;
+}
 /* 外容器 */
 .custom-container {
   max-width: 1280px;

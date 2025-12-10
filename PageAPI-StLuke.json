@@ -1,0 +1,1527 @@
+{
+  "Location": "St Luke",
+  "assessments": [
+    {
+      "Date": 1759248000000,
+      "ChairSecond": 5.00097131729126,
+      "GaitSpeed": 33.55704879760742,
+      "BalanceScore": 1.5,
+      "RiskRate": 38.2092227935791,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 37,
+            "Name": "KSH",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 35.376739501953125
+          }
+        ],
+        "B": [],
+        "C": [],
+        "D": [
+          {
+            "Number": 21,
+            "Name": "NC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 41.04170608520508
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1759334400000,
+      "ChairSecond": 12.212986946105957,
+      "GaitSpeed": 82.58837890625,
+      "BalanceScore": 3.0833333333333335,
+      "RiskRate": 26.65657154719035,
+      "Count": 12,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 36,
+            "Name": "PYY",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 50.61164474487305
+          }
+        ],
+        "B": [],
+        "C": [
+          {
+            "Number": 4,
+            "Name": "LLC",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 38.810333251953125
+          },
+          {
+            "Number": 29,
+            "Name": "LLL",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 22.907867431640625
+          },
+          {
+            "Number": 32,
+            "Name": "CST",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 30.539400100708008
+          },
+          {
+            "Number": 39,
+            "Name": "LKY",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 40.95421600341797
+          },
+          {
+            "Number": 51,
+            "Name": "JTNT",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 15.683422088623047
+          },
+          {
+            "Number": 37,
+            "Name": "KSH",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 35.376739501953125
+          }
+        ],
+        "D": [
+          {
+            "Number": 10,
+            "Name": "EKL",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 15.382675170898438
+          },
+          {
+            "Number": 26,
+            "Name": "THK",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 10.049833297729492
+          },
+          {
+            "Number": 28,
+            "Name": "NSH",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 14.210042953491211
+          },
+          {
+            "Number": 45,
+            "Name": "KKC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 28.047300338745117
+          },
+          {
+            "Number": 31,
+            "Name": "MT",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 17.305383682250977
+          }
+        ]
+      },
+      "Degenerate": {
+        "GaitSpeed": [
+          {
+            "Number": 51,
+            "Name": "JTNT",
+            "Gender": 0,
+            "Age": 76,
+            "LastValue": 86.58416,
+            "Value": 71.942444
+          }
+        ],
+        "ChairSecond": [
+          {
+            "Number": 28,
+            "Name": "NSH",
+            "Gender": 1,
+            "Age": 76,
+            "LastValue": 8.000209,
+            "Value": 8.836078
+          },
+          {
+            "Number": 51,
+            "Name": "JTNT",
+            "Gender": 0,
+            "Age": 76,
+            "LastValue": 11.66,
+            "Value": 14.674019
+          }
+        ]
+      }
+    },
+    {
+      "Date": 1759420800000,
+      "ChairSecond": 14.625813484191895,
+      "GaitSpeed": 77.29353332519531,
+      "BalanceScore": 2.5,
+      "RiskRate": 33.46024799346924,
+      "Count": 2,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 42,
+            "Name": "OHP",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 35.739810943603516
+          },
+          {
+            "Number": 44,
+            "Name": "TSK",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 31.18068504333496
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1759680000000,
+      "ChairSecond": 13.80424690246582,
+      "GaitSpeed": 66.80349731445312,
+      "BalanceScore": 2.4285714285714284,
+      "RiskRate": 30.37277705328805,
+      "Count": 7,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 17,
+            "Name": "daycare 8",
+            "Gender": 0,
+            "Age": 73,
+            "Risk": 44.2888298034668
+          },
+          {
+            "Number": 57,
+            "Name": "daycare 14",
+            "Gender": 0,
+            "Age": 90,
+            "Risk": 28.993392944335938
+          }
+        ],
+        "C": [
+          {
+            "Number": 19,
+            "Name": "daycare 4",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 24.64547348022461
+          },
+          {
+            "Number": 22,
+            "Name": "rehab 7",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 46.62009811401367
+          },
+          {
+            "Number": 54,
+            "Name": "rehab 6",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 25.65066909790039
+          },
+          {
+            "Number": 58,
+            "Name": "daycare 11",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 37.08040237426758
+          }
+        ],
+        "D": [
+          {
+            "Number": 52,
+            "Name": "rehab 4",
+            "Gender": 0,
+            "Age": 68,
+            "Risk": 5.330573558807373
+          }
+        ]
+      },
+      "Degenerate": {
+        "GaitSpeed": [
+          {
+            "Number": 19,
+            "Name": "daycare 4",
+            "Gender": 1,
+            "Age": 68,
+            "LastValue": 84.033615,
+            "Value": 59.217876
+          },
+          {
+            "Number": 54,
+            "Name": "rehab 6",
+            "Gender": 0,
+            "Age": 82,
+            "LastValue": 88.45209,
+            "Value": 53.859962
+          },
+          {
+            "Number": 57,
+            "Name": "daycare 14",
+            "Gender": 0,
+            "Age": 90,
+            "LastValue": 90.63444,
+            "Value": 66.666664
+          },
+          {
+            "Number": 52,
+            "Name": "rehab 4",
+            "Gender": 0,
+            "Age": 68,
+            "LastValue": 141.73228,
+            "Value": 112.78195
+          }
+        ],
+        "ChairSecond": []
+      }
+    },
+    {
+      "Date": 1759766400000,
+      "ChairSecond": 16.170513153076172,
+      "GaitSpeed": 62.89305114746094,
+      "BalanceScore": 2.2857142857142856,
+      "RiskRate": 41.10672814505441,
+      "Count": 7,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 24,
+            "Name": "rehab 10",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 43.977535247802734
+          },
+          {
+            "Number": 25,
+            "Name": "rehab 11",
+            "Gender": 0,
+            "Age": 80,
+            "Risk": 49.32556915283203
+          },
+          {
+            "Number": 62,
+            "Name": "daycare 20",
+            "Gender": 1,
+            "Age": 87,
+            "Risk": 41.76858139038086
+          }
+        ],
+        "C": [
+          {
+            "Number": 14,
+            "Name": "daycare 17",
+            "Gender": 0,
+            "Age": 79,
+            "Risk": 41.83007049560547
+          },
+          {
+            "Number": 56,
+            "Name": "daycare 12",
+            "Gender": 1,
+            "Age": 82,
+            "Risk": 14.837310791015625
+          },
+          {
+            "Number": 65,
+            "Name": "rehab 18",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 48.42595291137695
+          },
+          {
+            "Number": 67,
+            "Name": "rehab 9",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 47.58207702636719
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": {
+        "GaitSpeed": [
+          {
+            "Number": 56,
+            "Name": "daycare 12",
+            "Gender": 1,
+            "Age": 82,
+            "LastValue": 80.86253,
+            "Value": 70.92199
+          },
+          {
+            "Number": 62,
+            "Name": "daycare 20",
+            "Gender": 1,
+            "Age": 87,
+            "LastValue": 55.14706,
+            "Value": 45.19774
+          }
+        ],
+        "ChairSecond": [
+          {
+            "Number": 25,
+            "Name": "rehab 11",
+            "Gender": 0,
+            "Age": 80,
+            "LastValue": 17.384676,
+            "Value": 26.8
+          },
+          {
+            "Number": 56,
+            "Name": "daycare 12",
+            "Gender": 1,
+            "Age": 82,
+            "LastValue": 13.178051,
+            "Value": 15.515432
+          }
+        ]
+      }
+    },
+    {
+      "Date": 1759852800000,
+      "ChairSecond": 16.107511520385742,
+      "GaitSpeed": 61.90707778930664,
+      "BalanceScore": 2.0,
+      "RiskRate": 38.93486404418945,
+      "Count": 5,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 15,
+            "Name": "daycare 2",
+            "Gender": 0,
+            "Age": 81,
+            "Risk": 50.68165588378906
+          },
+          {
+            "Number": 53,
+            "Name": "rehab 15",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 48.9761848449707
+          }
+        ],
+        "B": [
+          {
+            "Number": 18,
+            "Name": "daycare 3",
+            "Gender": 1,
+            "Age": 88,
+            "Risk": 29.55908203125
+          }
+        ],
+        "C": [
+          {
+            "Number": 16,
+            "Name": "daycare 16",
+            "Gender": 0,
+            "Age": 59,
+            "Risk": 35.78400802612305
+          }
+        ],
+        "D": [
+          {
+            "Number": 13,
+            "Name": "daycare 6",
+            "Gender": 0,
+            "Age": 73,
+            "Risk": 29.673389434814453
+          }
+        ]
+      },
+      "Degenerate": {
+        "GaitSpeed": [
+          {
+            "Number": 18,
+            "Name": "daycare 3",
+            "Gender": 1,
+            "Age": 88,
+            "LastValue": 84.745766,
+            "Value": 74.812965
+          }
+        ],
+        "ChairSecond": []
+      }
+    },
+    {
+      "Date": 1759939200000,
+      "ChairSecond": 16.69507598876953,
+      "GaitSpeed": 64.0176773071289,
+      "BalanceScore": 3.0,
+      "RiskRate": 36.774597712925505,
+      "Count": 7,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 30,
+            "Name": "rehab 13",
+            "Gender": 0,
+            "Age": 71,
+            "Risk": 25.334964752197266
+          },
+          {
+            "Number": 33,
+            "Name": "rehab 12",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 42.08592224121094
+          }
+        ],
+        "C": [
+          {
+            "Number": 23,
+            "Name": "rehab3",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 29.268590927124023
+          },
+          {
+            "Number": 27,
+            "Name": "Rehab 14",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 38.07364273071289
+          },
+          {
+            "Number": 35,
+            "Name": "daycare 9",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 31.265905380249023
+          },
+          {
+            "Number": 38,
+            "Name": "rehab 16",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 42.96720504760742
+          }
+        ],
+        "D": [
+          {
+            "Number": 65,
+            "Name": "rehab 18",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 48.42595291137695
+          }
+        ]
+      },
+      "Degenerate": {
+        "GaitSpeed": [
+          {
+            "Number": 30,
+            "Name": "rehab 13",
+            "Gender": 0,
+            "Age": 71,
+            "LastValue": 82.56881,
+            "Value": 65.21739
+          },
+          {
+            "Number": 33,
+            "Name": "rehab 12",
+            "Gender": 0,
+            "Age": 88,
+            "LastValue": 53.731342,
+            "Value": 37.783375
+          }
+        ],
+        "ChairSecond": [
+          {
+            "Number": 30,
+            "Name": "rehab 13",
+            "Gender": 0,
+            "Age": 71,
+            "LastValue": 18.072296,
+            "Value": 22.218594
+          },
+          {
+            "Number": 33,
+            "Name": "rehab 12",
+            "Gender": 0,
+            "Age": 88,
+            "LastValue": 15.177784,
+            "Value": 18.782244
+          },
+          {
+            "Number": 65,
+            "Name": "rehab 18",
+            "Gender": 1,
+            "Age": 76,
+            "LastValue": 11.304836,
+            "Value": 16.04
+          }
+        ]
+      }
+    },
+    {
+      "Date": 1760025600000,
+      "ChairSecond": 11.645241737365723,
+      "GaitSpeed": 76.92308044433594,
+      "BalanceScore": 2.0,
+      "RiskRate": 41.83007049560547,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 14,
+            "Name": "daycare 17",
+            "Gender": 0,
+            "Age": 79,
+            "Risk": 41.83007049560547
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1760284800000,
+      "ChairSecond": 21.483600616455078,
+      "GaitSpeed": 60.72874450683594,
+      "BalanceScore": 2.0,
+      "RiskRate": 27.517244338989258,
+      "Count": 1,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 68,
+            "Name": "rehab19",
+            "Gender": 1,
+            "Age": 67,
+            "Risk": 27.517244338989258
+          }
+        ],
+        "C": [],
+        "D": []
+      },
+      "Degenerate": {
+        "GaitSpeed": [
+          {
+            "Number": 68,
+            "Name": "rehab19",
+            "Gender": 1,
+            "Age": 67,
+            "LastValue": 82.294266,
+            "Value": 60.728745
+          }
+        ],
+        "ChairSecond": []
+      }
+    },
+    {
+      "Date": 1757865600000,
+      "ChairSecond": 7.759321212768555,
+      "GaitSpeed": 78.8671646118164,
+      "BalanceScore": 4.0,
+      "RiskRate": 28.439195950826008,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 4,
+            "Name": "LLC",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 38.810333251953125
+          }
+        ],
+        "D": [
+          {
+            "Number": 2,
+            "Name": "Test",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 14.878487586975098
+          },
+          {
+            "Number": 3,
+            "Name": "PSB",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 31.628767013549805
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1757952000000,
+      "ChairSecond": 14.776620864868164,
+      "GaitSpeed": 68.08807373046875,
+      "BalanceScore": 3.3333333333333335,
+      "RiskRate": 25.01117467880249,
+      "Count": 6,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 5,
+            "Name": "SWN",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 16.05341339111328
+          },
+          {
+            "Number": 6,
+            "Name": "WCK",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 32.562931060791016
+          },
+          {
+            "Number": 7,
+            "Name": "MSS",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 31.23644256591797
+          },
+          {
+            "Number": 8,
+            "Name": "KKN",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 12.721226692199707
+          },
+          {
+            "Number": 9,
+            "Name": "OKH",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 42.11035919189453
+          }
+        ],
+        "D": [
+          {
+            "Number": 10,
+            "Name": "EKL",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 15.382675170898438
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1758038400000,
+      "ChairSecond": 18.516536712646484,
+      "GaitSpeed": 71.7904281616211,
+      "BalanceScore": 3.0,
+      "RiskRate": 31.512916564941406,
+      "Count": 9,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 17,
+            "Name": "daycare 8",
+            "Gender": 0,
+            "Age": 73,
+            "Risk": 44.2888298034668
+          },
+          {
+            "Number": 22,
+            "Name": "rehab 7",
+            "Gender": 1,
+            "Age": 84,
+            "Risk": 46.62009811401367
+          },
+          {
+            "Number": 21,
+            "Name": "NC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 41.04170608520508
+          }
+        ],
+        "C": [
+          {
+            "Number": 11,
+            "Name": "bryan",
+            "Gender": 1,
+            "Age": 30,
+            "Risk": 8.963784217834473
+          },
+          {
+            "Number": 12,
+            "Name": "daycare 1",
+            "Gender": 0,
+            "Age": 74,
+            "Risk": 15.5005464553833
+          },
+          {
+            "Number": 13,
+            "Name": "daycare 6",
+            "Gender": 0,
+            "Age": 73,
+            "Risk": 29.673389434814453
+          },
+          {
+            "Number": 14,
+            "Name": "daycare 17",
+            "Gender": 0,
+            "Age": 79,
+            "Risk": 41.83007049560547
+          },
+          {
+            "Number": 16,
+            "Name": "daycare 16",
+            "Gender": 0,
+            "Age": 59,
+            "Risk": 35.78400802612305
+          },
+          {
+            "Number": 20,
+            "Name": "DRC2",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 19.913816452026367
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1758124800000,
+      "ChairSecond": 16.662931442260742,
+      "GaitSpeed": 74.62271118164062,
+      "BalanceScore": 2.9411764705882355,
+      "RiskRate": 27.409431611790378,
+      "Count": 17,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 25,
+            "Name": "rehab 11",
+            "Gender": 0,
+            "Age": 80,
+            "Risk": 49.32556915283203
+          },
+          {
+            "Number": 27,
+            "Name": "Rehab 14",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 38.07364273071289
+          },
+          {
+            "Number": 32,
+            "Name": "CST",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 30.539400100708008
+          },
+          {
+            "Number": 36,
+            "Name": "PYY",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 50.61164474487305
+          }
+        ],
+        "C": [
+          {
+            "Number": 11,
+            "Name": "bryan",
+            "Gender": 1,
+            "Age": 30,
+            "Risk": 8.963784217834473
+          },
+          {
+            "Number": 30,
+            "Name": "rehab 13",
+            "Gender": 0,
+            "Age": 71,
+            "Risk": 25.334964752197266
+          },
+          {
+            "Number": 33,
+            "Name": "rehab 12",
+            "Gender": 0,
+            "Age": 88,
+            "Risk": 42.08592224121094
+          },
+          {
+            "Number": 35,
+            "Name": "daycare 9",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 31.265905380249023
+          },
+          {
+            "Number": 26,
+            "Name": "THK",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 10.049833297729492
+          },
+          {
+            "Number": 29,
+            "Name": "LLL",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 22.907867431640625
+          },
+          {
+            "Number": 34,
+            "Name": "HLC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 24.167034149169922
+          },
+          {
+            "Number": 37,
+            "Name": "KSH",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 35.376739501953125
+          },
+          {
+            "Number": 39,
+            "Name": "LKY",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 40.95421600341797
+          }
+        ],
+        "D": [
+          {
+            "Number": 40,
+            "Name": "rehab 3",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 22.722583770751953
+          },
+          {
+            "Number": 28,
+            "Name": "NSH",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 14.210042953491211
+          },
+          {
+            "Number": 31,
+            "Name": "MT",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 17.305383682250977
+          },
+          {
+            "Number": 41,
+            "Name": "OSC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 2.065803289413452
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1758211200000,
+      "ChairSecond": 16.37897300720215,
+      "GaitSpeed": 76.15726470947266,
+      "BalanceScore": 2.5555555555555554,
+      "RiskRate": 30.66323513454861,
+      "Count": 9,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 50,
+            "Name": "WKL",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 53.560001373291016
+          }
+        ],
+        "B": [
+          {
+            "Number": 45,
+            "Name": "KKC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 28.047300338745117
+          },
+          {
+            "Number": 49,
+            "Name": "APC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 43.02784729003906
+          }
+        ],
+        "C": [
+          {
+            "Number": 42,
+            "Name": "OHP",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 35.739810943603516
+          },
+          {
+            "Number": 43,
+            "Name": "TCL",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 12.162202835083008
+          },
+          {
+            "Number": 44,
+            "Name": "TSK",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 31.18068504333496
+          },
+          {
+            "Number": 47,
+            "Name": "THT",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 27.519229888916016
+          },
+          {
+            "Number": 48,
+            "Name": "NSC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 29.048616409301758
+          }
+        ],
+        "D": [
+          {
+            "Number": 51,
+            "Name": "JTNT",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 15.683422088623047
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1758470400000,
+      "ChairSecond": 21.504966735839844,
+      "GaitSpeed": 80.12969207763672,
+      "BalanceScore": 2.3846153846153846,
+      "RiskRate": 30.3637375831604,
+      "Count": 13,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 15,
+            "Name": "daycare 2",
+            "Gender": 0,
+            "Age": 81,
+            "Risk": 50.68165588378906
+          },
+          {
+            "Number": 53,
+            "Name": "rehab 15",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 48.9761848449707
+          },
+          {
+            "Number": 60,
+            "Name": "daycare 15",
+            "Gender": 1,
+            "Age": 80,
+            "Risk": 41.78780746459961
+          },
+          {
+            "Number": 61,
+            "Name": "daycare 19",
+            "Gender": 0,
+            "Age": 84,
+            "Risk": 36.453670501708984
+          }
+        ],
+        "C": [
+          {
+            "Number": 11,
+            "Name": "bryan",
+            "Gender": 1,
+            "Age": 30,
+            "Risk": 8.963784217834473
+          },
+          {
+            "Number": 18,
+            "Name": "daycare 3",
+            "Gender": 1,
+            "Age": 88,
+            "Risk": 29.55908203125
+          },
+          {
+            "Number": 19,
+            "Name": "daycare 4",
+            "Gender": 1,
+            "Age": 68,
+            "Risk": 24.64547348022461
+          },
+          {
+            "Number": 54,
+            "Name": "rehab 6",
+            "Gender": 0,
+            "Age": 82,
+            "Risk": 25.65066909790039
+          },
+          {
+            "Number": 57,
+            "Name": "daycare 14",
+            "Gender": 0,
+            "Age": 90,
+            "Risk": 28.993392944335938
+          },
+          {
+            "Number": 58,
+            "Name": "daycare 11",
+            "Gender": 1,
+            "Age": 69,
+            "Risk": 37.08040237426758
+          },
+          {
+            "Number": 62,
+            "Name": "daycare 20",
+            "Gender": 1,
+            "Age": 87,
+            "Risk": 41.76858139038086
+          }
+        ],
+        "D": [
+          {
+            "Number": 52,
+            "Name": "rehab 4",
+            "Gender": 0,
+            "Age": 68,
+            "Risk": 5.330573558807373
+          },
+          {
+            "Number": 56,
+            "Name": "daycare 12",
+            "Gender": 1,
+            "Age": 82,
+            "Risk": 14.837310791015625
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1758556800000,
+      "ChairSecond": 15.709128379821777,
+      "GaitSpeed": 70.99613189697266,
+      "BalanceScore": 3.2222222222222223,
+      "RiskRate": 26.57415623135037,
+      "Count": 9,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 24,
+            "Name": "rehab 10",
+            "Gender": 0,
+            "Age": 75,
+            "Risk": 43.977535247802734
+          },
+          {
+            "Number": 65,
+            "Name": "rehab 18",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 48.42595291137695
+          },
+          {
+            "Number": 9,
+            "Name": "OKH",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 42.11035919189453
+          }
+        ],
+        "C": [
+          {
+            "Number": 5,
+            "Name": "SWN",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 16.05341339111328
+          },
+          {
+            "Number": 6,
+            "Name": "WCK",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 32.562931060791016
+          },
+          {
+            "Number": 26,
+            "Name": "THK",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 10.049833297729492
+          }
+        ],
+        "D": [
+          {
+            "Number": 63,
+            "Name": "rehab 17",
+            "Gender": 0,
+            "Age": 71,
+            "Risk": 25.995454788208008
+          },
+          {
+            "Number": 64,
+            "Name": "rehab 1",
+            "Gender": 0,
+            "Age": 71,
+            "Risk": 7.270699501037598
+          },
+          {
+            "Number": 8,
+            "Name": "KKN",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 12.721226692199707
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1758643200000,
+      "ChairSecond": 10.24889087677002,
+      "GaitSpeed": 90.27482604980469,
+      "BalanceScore": 3.25,
+      "RiskRate": 20.92913955450058,
+      "Count": 4,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 66,
+            "Name": "TWL",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 28.44684600830078
+          },
+          {
+            "Number": 21,
+            "Name": "NC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 41.04170608520508
+          }
+        ],
+        "D": [
+          {
+            "Number": 41,
+            "Name": "OSC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 2.065803289413452
+          },
+          {
+            "Number": 43,
+            "Name": "TCL",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 12.162202835083008
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1758729600000,
+      "ChairSecond": 17.305267333984375,
+      "GaitSpeed": 65.69768524169922,
+      "BalanceScore": 2.6666666666666665,
+      "RiskRate": 32.0293091668023,
+      "Count": 9,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 36,
+            "Name": "PYY",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 50.61164474487305
+          },
+          {
+            "Number": 39,
+            "Name": "LKY",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 40.95421600341797
+          },
+          {
+            "Number": 67,
+            "Name": "rehab 9",
+            "Gender": 0,
+            "Age": 77,
+            "Risk": 47.58207702636719
+          },
+          {
+            "Number": 68,
+            "Name": "rehab19",
+            "Gender": 1,
+            "Age": 67,
+            "Risk": 27.517244338989258
+          }
+        ],
+        "C": [
+          {
+            "Number": 32,
+            "Name": "CST",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 30.539400100708008
+          },
+          {
+            "Number": 34,
+            "Name": "HLC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 24.167034149169922
+          },
+          {
+            "Number": 37,
+            "Name": "KSH",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 35.376739501953125
+          }
+        ],
+        "D": [
+          {
+            "Number": 31,
+            "Name": "MT",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 17.305383682250977
+          },
+          {
+            "Number": 28,
+            "Name": "NSH",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 14.210042953491211
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    },
+    {
+      "Date": 1758816000000,
+      "ChairSecond": 15.967031478881836,
+      "GaitSpeed": 43.289546966552734,
+      "BalanceScore": 2.6666666666666665,
+      "RiskRate": 40.160165786743164,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [
+          {
+            "Number": 50,
+            "Name": "WKL",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 53.560001373291016
+          }
+        ],
+        "B": [],
+        "C": [
+          {
+            "Number": 42,
+            "Name": "OHP",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 35.739810943603516
+          },
+          {
+            "Number": 44,
+            "Name": "TSK",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 31.18068504333496
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": {
+        "GaitSpeed": [
+          {
+            "Number": 50,
+            "Name": "WKL",
+            "Gender": 1,
+            "Age": 76,
+            "LastValue": 20.754717,
+            "Value": 0.0
+          }
+        ],
+        "ChairSecond": []
+      }
+    },
+    {
+      "Date": 1759075200000,
+      "ChairSecond": 15.543145179748535,
+      "GaitSpeed": 63.959529876708984,
+      "BalanceScore": 3.6666666666666665,
+      "RiskRate": 30.128146489461262,
+      "Count": 3,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [],
+        "C": [
+          {
+            "Number": 3,
+            "Name": "PSB",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 31.628767013549805
+          },
+          {
+            "Number": 47,
+            "Name": "THT",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 27.519229888916016
+          },
+          {
+            "Number": 7,
+            "Name": "MSS",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 31.23644256591797
+          }
+        ],
+        "D": []
+      },
+      "Degenerate": {
+        "GaitSpeed": [
+          {
+            "Number": 47,
+            "Name": "THT",
+            "Gender": 1,
+            "Age": 76,
+            "LastValue": 111.9403,
+            "Value": 61.88614
+          }
+        ],
+        "ChairSecond": [
+          {
+            "Number": 3,
+            "Name": "PSB",
+            "Gender": 1,
+            "Age": 76,
+            "LastValue": 11.2423525,
+            "Value": 15.705454
+          },
+          {
+            "Number": 7,
+            "Name": "MSS",
+            "Gender": 1,
+            "Age": 76,
+            "LastValue": 13.33,
+            "Value": 16.209671
+          }
+        ]
+      }
+    },
+    {
+      "Date": 1759161600000,
+      "ChairSecond": 15.609773635864258,
+      "GaitSpeed": 72.9466323852539,
+      "BalanceScore": 3.3333333333333335,
+      "RiskRate": 27.562314828236897,
+      "Count": 6,
+      "VIVIFRAIL": {
+        "A": [],
+        "B": [
+          {
+            "Number": 9,
+            "Name": "OKH",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 42.11035919189453
+          }
+        ],
+        "C": [
+          {
+            "Number": 6,
+            "Name": "WCK",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 32.562931060791016
+          },
+          {
+            "Number": 45,
+            "Name": "KKC",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 28.047300338745117
+          },
+          {
+            "Number": 69,
+            "Name": "TAT",
+            "Gender": 1,
+            "Age": 76,
+            "Risk": 33.878658294677734
+          }
+        ],
+        "D": [
+          {
+            "Number": 5,
+            "Name": "SWN",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 16.05341339111328
+          },
+          {
+            "Number": 8,
+            "Name": "KKN",
+            "Gender": 0,
+            "Age": 76,
+            "Risk": 12.721226692199707
+          }
+        ]
+      },
+      "Degenerate": { "GaitSpeed": [], "ChairSecond": [] }
+    }
+  ]
+}

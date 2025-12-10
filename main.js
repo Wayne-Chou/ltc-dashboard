@@ -279,6 +279,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const riskB = document.getElementById("riskB");
   const riskC = document.getElementById("riskC");
   const riskD = document.getElementById("riskD");
+  const degenerateGaitSpeedTotal = document.getElementById(
+    "degenerateGaitSpeedTotal"
+  );
+  const progressGaitSpeed = document.getElementById("progressGaitSpeed");
+  const degenerateChairTotal = document.getElementById("degenerateChairTotal");
+  const progressChair = document.getElementById("progressChair");
   const progressA = document.getElementById("progressA");
   const progressB = document.getElementById("progressB");
   const progressC = document.getElementById("progressC");
@@ -294,8 +300,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 地區名 JSON 檔案
   const locationFileMap = {
-    新加坡: "PageAPI-Singapore.json",
-    全成: "PageAPI-全成.json",
+    StLuke: "PageAPI-StLuke.json",
   };
 
   // VIVIFRAIL 陣列
@@ -431,6 +436,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
   <div class="person-card bg-white rounded shadow-sm h-100"
        style="border:3px solid ${isAll ? "#000" : style.border};"
+       data-Number="${person.Number}"
        data-person="${person.Name}"
        data-age="${person.Age}"
        data-gender="${genderText}"
@@ -524,32 +530,49 @@ document.addEventListener("DOMContentLoaded", async () => {
         let gaitNames = [];
         let chairNames = [];
 
-        function getAllNames(vivifrail) {
-          const levels = ["A", "B", "C"];
-          const names = [];
-          levels.forEach((lvl) => {
-            if (vivifrail[lvl]) {
-              vivifrail[lvl].forEach((p) => {
-                if (p.Name) names.push(p.Name);
-              });
-            }
-          });
-          return names;
-        }
-
         selected.forEach((item) => {
-          if (item.Degenerate) {
-            const allNames = item.VIVIFRAIL
-              ? getAllNames(item.VIVIFRAIL)
-              : [t("unknown")];
-            if (item.Degenerate.GaitSpeed) {
-              totalGaitSpeed += item.Degenerate.GaitSpeed;
-              gaitNames.push(...allNames);
-            }
-            if (item.Degenerate.ChairSecond) {
-              totalChairSecond += item.Degenerate.ChairSecond;
-              chairNames.push(...allNames);
-            }
+          if (!item.Degenerate) return;
+
+          // === 步行速度衰退 ===
+          if (Array.isArray(item.Degenerate.GaitSpeed)) {
+            const list = item.Degenerate.GaitSpeed;
+
+            totalGaitSpeed += list.length; // 累加人數
+
+            list.forEach((p) => {
+              gaitNames.push(
+                `${p.Name || t("unknown")} (${p.Age || t("unknown")}${t(
+                  "yearsOld"
+                )}, ${
+                  p.Gender === 0
+                    ? t("male")
+                    : p.Gender === 1
+                    ? t("female")
+                    : t("unknown")
+                })`
+              );
+            });
+          }
+
+          // === 起坐秒數衰退 ===
+          if (Array.isArray(item.Degenerate.ChairSecond)) {
+            const list = item.Degenerate.ChairSecond;
+
+            totalChairSecond += list.length;
+
+            list.forEach((p) => {
+              chairNames.push(
+                `${p.Name || t("unknown")} (${p.Age || t("unknown")}${t(
+                  "yearsOld"
+                )}, ${
+                  p.Gender === 0
+                    ? t("male")
+                    : p.Gender === 1
+                    ? t("female")
+                    : t("unknown")
+                })`
+              );
+            });
           }
         });
 
@@ -1334,13 +1357,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // 風險等級 function
-
   function renderRisk(selectedAssessments = []) {
     let totalCount = 0;
     let countA = 0,
       countB = 0,
       countC = 0,
       countD = 0;
+    let gaitSpeedDeclineCount = 0;
+    let chairSecondIncreaseCount = 0;
 
     selectedAssessments.forEach((item) => {
       totalCount += item.Count;
@@ -1349,6 +1373,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       countB += V.B ? V.B.length : 0;
       countC += V.C ? V.C.length : 0;
       countD += V.D ? V.D.length : 0;
+      const D = item.Degenerate;
+      if (D) {
+        gaitSpeedDeclineCount += Array.isArray(D.GaitSpeed)
+          ? D.GaitSpeed.length
+          : 0;
+
+        chairSecondIncreaseCount += Array.isArray(D.ChairSecond)
+          ? D.ChairSecond.length
+          : 0;
+      }
     });
 
     riskA.textContent = countA;
@@ -1367,6 +1401,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       : "0%";
     progressD.style.width = totalCount
       ? `${(countD / totalCount) * 100}%`
+      : "0%";
+    degenerateGaitSpeedTotal.textContent = gaitSpeedDeclineCount;
+    degenerateChairTotal.textContent = chairSecondIncreaseCount;
+
+    progressGaitSpeed.style.width = totalCount
+      ? `${(gaitSpeedDeclineCount / totalCount) * 100}%`
+      : "0%";
+
+    progressChair.style.width = totalCount
+      ? `${(chairSecondIncreaseCount / totalCount) * 100}%`
       : "0%";
   }
   // 更新最新檢測數與日期
@@ -1456,8 +1500,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     assessments.forEach((item) => {
       if (item.Degenerate) {
-        totalGaitSpeed += item.Degenerate.GaitSpeed || 0;
-        totalChairSecond += item.Degenerate.ChairSecond || 0;
+        totalGaitSpeed += Array.isArray(item.Degenerate.GaitSpeed)
+          ? item.Degenerate.GaitSpeed.length
+          : 0;
+
+        totalChairSecond += Array.isArray(item.Degenerate.ChairSecond)
+          ? item.Degenerate.ChairSecond.length
+          : 0;
       }
 
       const V = item.VIVIFRAIL;
@@ -1552,44 +1601,58 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     cards.forEach((card) => {
       card.addEventListener("click", () => {
-        const name = card.dataset.person;
-        const age = card.dataset.age;
-        const gender = card.dataset.gender;
+        // ⬇️ 取得 data-number
+        const id = card.dataset.number;
 
-        const riskLabelDiv = card.querySelector(
-          ".position-absolute.top-0.end-0"
-        );
-        const risk = riskLabelDiv ? riskLabelDiv.textContent : "未知";
-
-        // 找出該人的所有測試紀錄
-        const personRecords = allSelectedData.filter((item) => {
-          if (item.VIVIFRAIL) {
-            const allPeople = flattenData(item.VIVIFRAIL);
-            return allPeople.some((p) => p.Name === name);
-          }
-          return false;
-        });
-
-        // 將資料打包起來
-        const personData = {
-          name,
-          age,
-          gender,
-          risk,
-          records: personRecords,
-        };
-
-        // 存進 sessionStorage
-        sessionStorage.setItem(
-          "selectedPersonData",
-          JSON.stringify(personData)
-        );
-
-        // 跳轉到詳細頁（同分頁）
-        window.location.href = "personDetail.html";
+        // ⬇️ 直接使用 URL 參數跳轉
+        window.location.href = `personDetail.html?id=${encodeURIComponent(id)}`;
       });
     });
   }
+
+  // function bindPersonCardClick(allSelectedData) {
+  //   const cards = document.querySelectorAll(".person-card");
+
+  //   cards.forEach((card) => {
+  //     card.addEventListener("click", () => {
+  //       const name = card.dataset.person;
+  //       const age = card.dataset.age;
+  //       const gender = card.dataset.gender;
+
+  //       const riskLabelDiv = card.querySelector(
+  //         ".position-absolute.top-0.end-0"
+  //       );
+  //       const risk = riskLabelDiv ? riskLabelDiv.textContent : "未知";
+
+  //       // 找出該人的所有測試紀錄
+  //       const personRecords = allSelectedData.filter((item) => {
+  //         if (item.VIVIFRAIL) {
+  //           const allPeople = flattenData(item.VIVIFRAIL);
+  //           return allPeople.some((p) => p.Name === name);
+  //         }
+  //         return false;
+  //       });
+
+  //       // 將資料打包起來
+  //       const personData = {
+  //         name,
+  //         age,
+  //         gender,
+  //         risk,
+  //         records: personRecords,
+  //       };
+
+  //       // 存進 sessionStorage
+  //       sessionStorage.setItem(
+  //         "selectedPersonData",
+  //         JSON.stringify(personData)
+  //       );
+
+  //       // 跳轉到詳細頁（同分頁）
+  //       window.location.href = "personDetail.html";
+  //     });
+  //   });
+  // }
 
   // 人員卡片 (最多 12 個，按 A->B->C->D 排序)
   function renderCards(allVIVIFRAIL, filterRisk = null, options = {}) {
@@ -2703,6 +2766,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
       <div class="person-card bg-white rounded shadow-sm h-100"
            style="border:3px solid ${borderColor};"
+           data-Number="${person.Number}"
            data-person="${person.Name}"
            data-age="${person.Age}"
            data-gender="${genderText}"
