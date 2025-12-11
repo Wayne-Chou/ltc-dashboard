@@ -259,6 +259,17 @@
       selectAll: "全選",
       unselectAll: "取消全選",
       back: "← 返回上一頁",
+      male: "男",
+      female: "女",
+      riskLabel: {
+        high: "危險",
+        slightlyHigh: "高",
+        medium: "中",
+        slightlyLow: "稍低",
+        low: "低",
+        unknown: "未知",
+      },
+      dates: "日期",
     },
     en: {
       Select: "Select",
@@ -286,6 +297,17 @@
       selectAll: "Select All",
       unselectAll: "Unselect All",
       back: "← Back",
+      male: "Male",
+      female: "Female",
+      riskLabel: {
+        high: "Danger",
+        slightlyHigh: "high",
+        medium: "middle",
+        slightlyLow: "Slightly lower",
+        low: "Low",
+        unknown: "Unknown",
+        dates: "Date",
+      },
     },
     ja: {
       Select: "選択",
@@ -313,6 +335,17 @@
       selectAll: "全選択",
       unselectAll: "全選択解除",
       back: "← 戻る",
+      male: "男性",
+      female: "女性",
+      riskLabel: {
+        high: "危険",
+        slightlyHigh: "高い",
+        medium: "真ん中",
+        slightlyLow: "わずかに低い",
+        low: "低い",
+        unknown: "不明",
+      },
+      dates: "日付",
     },
     ko: {
       Select: "선택",
@@ -340,6 +373,17 @@
       selectAll: "전체 선택",
       unselectAll: "전체 선택 해제",
       back: "← 뒤로가기",
+      male: "남성",
+      female: "여성",
+      riskLabel: {
+        high: "위험",
+        slightlyHigh: "높은",
+        medium: "가운데",
+        slightlyLow: "약간 낮음",
+        low: "낮은",
+        unknown: "알 수 없음",
+      },
+      dates: "날짜",
     },
   };
 
@@ -361,16 +405,20 @@
 
   // 判斷性別
   function genderText(g) {
-    return g === 0 ? "女" : g === 1 ? "男" : "未知";
+    if (g === 0) return LANG[currentLang].female;
+    if (g === 1) return LANG[currentLang].male;
+    return "Unknown";
   }
 
   // 風險中文對應
   function getRiskLabel(risk) {
-    if (risk > 50) return "危險";
-    if (risk > 30) return "稍高";
-    if (risk > 17.5) return "中";
-    if (risk > 5) return "稍低";
-    return "低";
+    const label = LANG[currentLang].riskLabel;
+
+    if (risk > 50) return label.high;
+    if (risk > 30) return label.slightlyHigh;
+    if (risk > 17.5) return label.medium;
+    if (risk > 5) return label.slightlyLow;
+    return label.low;
   }
 
   // 顯示 Loading
@@ -449,11 +497,16 @@
           : "未知";
         const sitStand =
           d.SPPB?.Chairtest?.Second != null
-            ? d.SPPB.Chairtest.Second.toFixed(2)
+            ? d.SPPB.Chairtest.Second === 0
+              ? "0"
+              : d.SPPB.Chairtest.Second.toFixed(2)
             : "-";
+
         const walkSpeed =
           d.SPPB?.Gaitspeed?.Speed != null
-            ? d.SPPB.Gaitspeed.Speed.toFixed(2)
+            ? d.SPPB.Gaitspeed.Speed === 0
+              ? "0"
+              : d.SPPB.Gaitspeed.Speed.toFixed(2)
             : "-";
         const b1 = d.SPPB?.Balancetest?.balance1?.Score ?? "-";
         const b2 = d.SPPB?.Balancetest?.balance2?.Score ?? "-";
@@ -643,7 +696,7 @@
         scales: {
           x: {
             offset: true,
-            title: { display: true, text: "日期" },
+            title: { display: true, text: t("dates") },
             ticks: {
               autoSkip: true,
               maxTicksLimit: 7, // 最多顯示 7 個刻度
@@ -759,7 +812,7 @@
         scales: {
           x: {
             offset: true,
-            title: { display: true, text: "日期" },
+            title: { display: true, text: t("dates") },
             ticks: {
               autoSkip: true,
               maxTicksLimit: 7, // 最多顯示 7 個刻度
@@ -895,7 +948,7 @@
         scales: {
           x: {
             offset: true,
-            title: { display: true, text: "日期" },
+            title: { display: true, text: t("dates") },
             ticks: { autoSkip: true, maxTicksLimit: 7 },
           },
           y: {
@@ -984,7 +1037,7 @@
         scales: {
           x: {
             offset: true,
-            title: { display: true, text: "日期" },
+            title: { display: true, text: t("dates") },
             ticks: {
               autoSkip: true,
               maxTicksLimit: 7, // 最多顯示 7 個刻度

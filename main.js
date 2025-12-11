@@ -1610,50 +1610,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // function bindPersonCardClick(allSelectedData) {
-  //   const cards = document.querySelectorAll(".person-card");
-
-  //   cards.forEach((card) => {
-  //     card.addEventListener("click", () => {
-  //       const name = card.dataset.person;
-  //       const age = card.dataset.age;
-  //       const gender = card.dataset.gender;
-
-  //       const riskLabelDiv = card.querySelector(
-  //         ".position-absolute.top-0.end-0"
-  //       );
-  //       const risk = riskLabelDiv ? riskLabelDiv.textContent : "未知";
-
-  //       // 找出該人的所有測試紀錄
-  //       const personRecords = allSelectedData.filter((item) => {
-  //         if (item.VIVIFRAIL) {
-  //           const allPeople = flattenData(item.VIVIFRAIL);
-  //           return allPeople.some((p) => p.Name === name);
-  //         }
-  //         return false;
-  //       });
-
-  //       // 將資料打包起來
-  //       const personData = {
-  //         name,
-  //         age,
-  //         gender,
-  //         risk,
-  //         records: personRecords,
-  //       };
-
-  //       // 存進 sessionStorage
-  //       sessionStorage.setItem(
-  //         "selectedPersonData",
-  //         JSON.stringify(personData)
-  //       );
-
-  //       // 跳轉到詳細頁（同分頁）
-  //       window.location.href = "personDetail.html";
-  //     });
-  //   });
-  // }
-
   // 人員卡片 (最多 12 個，按 A->B->C->D 排序)
   function renderCards(allVIVIFRAIL, filterRisk = null, options = {}) {
     const container = options.container || personContainer;
@@ -2104,7 +2060,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         scales: {
           x: {
             offset: true,
-            title: { display: true, text: "日期" },
+            title: { display: true, text: t("dates") },
             ticks: {
               autoSkip: true,
               maxTicksLimit: 7, // 最多顯示 7 個刻度
@@ -2220,7 +2176,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         scales: {
           x: {
             offset: true,
-            title: { display: true, text: "日期" },
+            title: { display: true, text: t("dates") },
             ticks: {
               autoSkip: true,
               maxTicksLimit: 7, // 最多顯示 7 個刻度
@@ -2356,7 +2312,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         scales: {
           x: {
             offset: true,
-            title: { display: true, text: "日期" },
+            title: { display: true, text: t("dates") },
             ticks: { autoSkip: true, maxTicksLimit: 7 },
           },
           y: {
@@ -2445,7 +2401,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         scales: {
           x: {
             offset: true,
-            title: { display: true, text: "日期" },
+            title: { display: true, text: t("dates") },
             ticks: {
               autoSkip: true,
               maxTicksLimit: 7, // 最多顯示 7 個刻度
