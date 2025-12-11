@@ -502,20 +502,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const viewDetailsBtn = document.getElementById("viewDetailsBtn");
   if (viewDetailsBtn) {
     viewDetailsBtn.addEventListener("click", () => {
-      let selected = [];
+      const checkedIndexes = Array.from(document.querySelectorAll(".row-check"))
+        .filter((c) => c.checked)
+        .map((c) => parseInt(c.dataset.index));
 
-      if (checkAllAcrossPages) {
-        selected = [...currentAssessments];
-      } else {
-        const checkedIndexes = Array.from(
-          document.querySelectorAll(".row-check")
-        )
-          .filter((c) => c.checked)
-          .map((c) => parseInt(c.dataset.index));
-
-        selected = checkedIndexes.map((i) => currentAssessments[i]);
-      }
-
+      // selected = 勾選的資料對應目前表格顯示的資料
+      const selected = checkedIndexes.map(
+        (i) => window.lastRenderedAssessments[i]
+      );
       const modalBody = document.querySelector("#detailsModal .modal-body");
       modalBody.innerHTML = "";
 
