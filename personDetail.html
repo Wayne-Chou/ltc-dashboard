@@ -4,1131 +4,246 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>人員詳細資料</title>
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+
+    <link rel="stylesheet" href="css/dashboard.css" />
   </head>
-  <body class="bg-light">
-    <div class="container py-4">
-      <!-- 返回按鈕 -->
-      <button data-lang="back" class="btn btn-secondary mb-3" id="backBtn">
-        ← 返回上一頁
-      </button>
 
-      <!-- 人名 -->
-      <h3 id="personName" class="mb-3 fw-bold"></h3>
-
-      <!-- 基本資料 -->
-      <div id="personInfo" class="border rounded bg-white p-3 mb-3"></div>
-
-      <!-- 表格 -->
-      <div class="bg-white rounded p-3 shadow-sm">
-        <div class="d-flex gap-2">
-          <button
-            data-lang="selectAll"
-            id="checkAllBtn"
-            class="btn btn-outline-primary btn-sm"
-          >
-            全選
+  <body class="app">
+    <div class="container app-shell">
+      <header class="patient-header">
+        <div class="patient-header-top">
+          <button data-lang="back" class="app-back" id="backBtn">
+            <i class="fa-solid fa-arrow-left"></i>
           </button>
-          <button
-            data-lang="unselectAll"
-            id="uncheckAllBtn"
-            class="btn btn-outline-secondary btn-sm"
-          >
-            取消全選
-          </button>
+
+          <div class="patient-title">
+            <div class="patient-name">
+              <i class="fa-solid fa-user-injured"></i>
+              <h1 id="personName"></h1>
+            </div>
+          </div>
         </div>
-        <div id="personTable"></div>
-      </div>
 
-      <div class="mt-3 mb-3">
-        <h5
-          id="trend"
-          class="fw-bold d-flex align-items-center"
-          data-lang="personalTrend"
+        <div id="personInfo" class="patient-meta"></div>
+        <section
+          id="reportHeadline"
+          class="headline clinical-headline"
+          data-status="critical"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            class="me-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            style="stroke: #3b82f6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-            />
-          </svg>
-          個人變化趨勢
-        </h5>
+          <div class="headline-left">
+            <div class="headline-badge" data-tone="neutral">
+              <i class="fa-solid fa-circle-info"></i>
+              <span data-lang="headlineLoading"></span>
+            </div>
+            <div class="headline-text">
+              <div
+                class="headline-title"
+                data-lang="headlineDefaultTitle"
+              ></div>
+              <div class="headline-desc" data-lang="headlineDefaultDesc"></div>
+            </div>
+          </div>
 
-        <div class="container my-4">
-          <div class="row g-4">
-            <!-- 坐站秒數 -->
-            <div class="col-12 col-md-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <h5
-                      data-lang="sitStandTrend"
-                      class="fw-semibold text-dark mb-0"
-                    >
-                      坐站秒數趨勢
-                    </h5>
+          <div class="headline-right">
+            <div class="headline-meta">
+              <div class="meta-label" data-lang="compareRange"></div>
+              <div id="reportRange" class="meta-value">--</div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span data-lang="panelTrendSummary"></span>
+              </h2>
+              <div class="panel-hint"></div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div id="trendSummary"></div>
+          </div>
+        </section>
+      </header>
+
+      <main class="report">
+        <div class="layout">
+          <div class="layout-left">
+            <!-- 表格 -->
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">
+                    <i class="fa-solid fa-table"></i>
+                    <span data-lang="panelRecordList"></span>
+                  </h2>
+                  <div class="panel-hint" data-lang="panelRecordHint"></div>
+                </div>
+
+                <div class="panel-actions">
+                  <button
+                    id="checkAllBtn"
+                    class="btn-soft"
+                    data-lang="selectAll"
+                  ></button>
+                  <button
+                    id="uncheckAllBtn"
+                    class="btn-soft secondary"
+                    data-lang="unselectAll"
+                  ></button>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <div class="panel-filters">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      id="dateRange"
+                      class="form-control flatpickr-input"
+                      data-lang="dateRangePlaceholder"
+                      readonly
+                    />
                     <button
-                      class="btn btn-sm btn-outline-primary download-chart"
+                      class="btn btn-outline-secondary"
+                      id="clearBtn"
+                      data-lang="clear"
+                    ></button>
+                  </div>
+                </div>
+                <div id="personTable" class="table-wrap"></div>
+              </div>
+            </section>
+          </div>
+
+          <!-- ===== RIGHT：圖表 ===== -->
+          <div class="layout-right">
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span data-lang="panelTrendChart"></span>
+                  </h2>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <!-- 坐站 -->
+                <div class="chart-card mb-4">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title" data-lang="sitStandTrend"></div>
+                      <div class="chart-sub" data-lang="suggestSit"></div>
+                    </div>
+                    <button
+                      class="download-chart"
                       data-target="sitStandChartCanvas"
                       data-lang="downloadImage"
                     >
-                      <i class="fa fa-download me-1"></i> 下載圖檔
+                      <i class="fa-solid fa-download"></i>
                     </button>
                   </div>
-
-                  <div data-lang="suggestSit" class="text-muted small mb-2">
-                    建議小於12秒
-                  </div>
-                  <div
-                    class="chart-container"
-                    style="position: relative; height: 300px; width: 100%"
-                  >
+                  <div class="chart-body">
                     <canvas id="sitStandChartCanvas"></canvas>
                   </div>
                 </div>
-              </div>
-            </div>
-            <!-- 平衡測驗得分 -->
-            <div class="col-12 col-md-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <h5
-                      data-lang="balanceTrend"
-                      class="fw-semibold text-dark mb-0"
-                    >
-                      平衡測驗得分
-                    </h5>
+
+                <!-- 平衡 -->
+                <div class="chart-card mb-4">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title" data-lang="suggestBalance"></div>
+                      <div class="chart-sub" data-lang="suggestBalance"></div>
+                    </div>
                     <button
-                      class="btn btn-sm btn-outline-primary download-chart"
+                      class="download-chart"
                       data-target="balanceChartCanvas"
                       data-lang="downloadImage"
                     >
-                      <i class="fa fa-download me-1"></i> 下載圖檔
+                      <i class="fa-solid fa-download"></i>
                     </button>
                   </div>
-
-                  <div data-lang="suggestBalance" class="text-muted small mb-2">
-                    建議大於3.5分
-                  </div>
-                  <div
-                    class="chart-container"
-                    style="height: 300px; width: 100%"
-                  >
+                  <div class="chart-body">
                     <canvas id="balanceChartCanvas"></canvas>
                   </div>
                 </div>
-              </div>
-            </div>
-            <!-- 步行速度趨勢 -->
-            <div class="col-12 col-md-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <h5
-                      data-lang="gaitTrend"
-                      class="fw-semibold text-dark mb-0"
-                    >
-                      步行速度趨勢
-                    </h5>
+
+                <!-- 步行 -->
+                <div class="chart-card mb-4">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title" data-lang="gaitTrend"></div>
+                      <div class="chart-sub" data-lang="suggestGait"></div>
+                    </div>
                     <button
-                      class="btn btn-sm btn-outline-primary download-chart"
+                      class="download-chart"
                       data-target="gaitChartCanvas"
                       data-lang="downloadImage"
                     >
-                      <i class="fa fa-download me-1"></i> 下載圖檔
+                      <i class="fa-solid fa-download"></i>
                     </button>
                   </div>
-
-                  <div data-lang="suggestGait" class="text-muted small mb-2">
-                    建議大於等於100cm/s
-                  </div>
-                  <div
-                    class="chart-container"
-                    style="height: 300px; width: 100%"
-                  >
+                  <div class="chart-body">
                     <canvas id="gaitChartCanvas"></canvas>
                   </div>
                 </div>
-              </div>
-            </div>
-            <!-- AI跌倒風險機率 -->
-            <div class="col-12 col-md-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <h5
-                      data-lang="aiFallRisk"
-                      class="fw-semibold text-dark mb-0"
-                    >
-                      AI跌倒風險機率
-                    </h5>
+
+                <!-- 風險 -->
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title" data-lang="aiFallRisk"></div>
+                    </div>
                     <button
-                      class="btn btn-sm btn-outline-primary download-chart"
+                      class="download-chart"
                       data-target="riskChartCanvas"
                       data-lang="downloadImage"
                     >
-                      <i class="fa fa-download me-1"></i> 下載圖檔
+                      <i class="fa-solid fa-download"></i>
                     </button>
                   </div>
-
-                  <div class="text-muted small mb-2" style="opacity: 0">
-                    15615
-                  </div>
-                  <div
-                    class="chart-container"
-                    style="height: 300px; width: 100%"
-                  >
+                  <div class="chart-body">
                     <canvas id="riskChartCanvas"></canvas>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
           </div>
         </div>
-      </div>
+      </main>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+
+    <script src="js/personDetail/url.js"></script>
+    <script src="js/personDetail/lang.js"></script>
+    <script src="js/personDetail/charts.js"></script>
+    <script src="js/personDetail/calculateTrend.js"></script>
+    <script src="js/personDetail/renderTrendSummary.js"></script>
+    <script src="js/personDetail/table.js"></script>
+    <script src="js/personDetail/reportHeadline.js"></script>
+    <script src="js/personDetail/main.js"></script>
   </body>
 </html>
-<!-- 圖表js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
-<!-- pdf下載 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-  const ref = document.referrer;
-  if (ref.includes("index_en.html")) {
-    window.currentLang = "en";
-  } else if (ref.includes("index_ja.html")) {
-    window.currentLang = "ja";
-  } else if (ref.includes("index_ko.html")) {
-    window.currentLang = "ko";
-  } else {
-    window.currentLang = "zh";
-  }
-</script>
-<script>
-  const LANG = {
-    zh: {
-      Select: "選取",
-      Date: "檢測日期",
-      sitStand: "坐站秒數",
-      balance1: "平衡得分-雙腳並排站立",
-      balance2: "平衡得分-雙腳半並排站立",
-      balance3: "平衡得分-雙腳直線站立",
-      gaitSpeed: "步行速度",
-      fallRisk: "跌倒風險",
-      seconds: "秒",
-      points: "分",
-      sitStandTrend: "坐站秒數趨勢",
-      balanceTrend: "平衡測驗得分",
-      gaitTrend: "步行速度趨勢",
-      aiFallRisk: "AI跌倒風險機率",
-      suggestSit: "建議小於12秒",
-      suggestBalance: "建議大於3.5分",
-      suggestGait: "建議大於等於100cm/s",
-      downloadImage: "下載圖檔",
-      personalTrend: "個人變化趨勢",
-      name: "姓名",
-      gender: "性別",
-      age: "年齡",
-      selectAll: "全選",
-      unselectAll: "取消全選",
-      back: "← 返回上一頁",
-      male: "男",
-      female: "女",
-      riskLabel: {
-        high: "危險",
-        slightlyHigh: "高",
-        medium: "中",
-        slightlyLow: "稍低",
-        low: "低",
-        unknown: "未知",
-      },
-      dates: "日期",
-    },
-    en: {
-      Select: "Select",
-      Date: "Date",
-      sitStand: "Sit-Stand (s)",
-      balance1: "Balance Score - Feet Together",
-      balance2: "Balance Score - Semi-Tandem",
-      balance3: "Balance Score - Tandem",
-      gaitSpeed: "Gait Speed",
-      fallRisk: "Fall Risk",
-      seconds: "s",
-      points: "pts",
-      sitStandTrend: "Sit-Stand Trend",
-      balanceTrend: "Balance Test Score",
-      gaitTrend: "Gait Speed Trend",
-      aiFallRisk: "AI Fall Risk Probability",
-      suggestSit: "Recommended: < 12 seconds",
-      suggestBalance: "Recommended: > 3.5 points",
-      suggestGait: "Recommended: ≥ 100 cm/s",
-      downloadImage: "Download Image",
-      personalTrend: "Personal Progress Trend",
-      name: "Name",
-      gender: "Gender",
-      age: "Age",
-      selectAll: "Select All",
-      unselectAll: "Unselect All",
-      back: "← Back",
-      male: "Male",
-      female: "Female",
-      riskLabel: {
-        high: "Danger",
-        slightlyHigh: "high",
-        medium: "middle",
-        slightlyLow: "Slightly lower",
-        low: "Low",
-        unknown: "Unknown",
-        dates: "Date",
-      },
-    },
-    ja: {
-      Select: "選択",
-      Date: "検査日",
-      sitStand: "座立秒数",
-      balance1: "バランススコア - 並立",
-      balance2: "バランススコア - 半並立",
-      balance3: "バランススコア - 直線立位",
-      gaitSpeed: "歩行速度",
-      fallRisk: "転倒リスク",
-      seconds: "秒",
-      points: "点",
-      sitStandTrend: "座立秒数の推移",
-      balanceTrend: "バランステスト得点",
-      gaitTrend: "歩行速度の推移",
-      aiFallRisk: "AI転倒リスク確率",
-      suggestSit: "推奨：12秒未満",
-      suggestBalance: "推奨：3.5点以上",
-      suggestGait: "推奨：100cm/s 以上",
-      downloadImage: "画像をダウンロード",
-      personalTrend: "個人の変化傾向",
-      name: "氏名",
-      gender: "性別",
-      age: "年齢",
-      selectAll: "全選択",
-      unselectAll: "全選択解除",
-      back: "← 戻る",
-      male: "男性",
-      female: "女性",
-      riskLabel: {
-        high: "危険",
-        slightlyHigh: "高い",
-        medium: "真ん中",
-        slightlyLow: "わずかに低い",
-        low: "低い",
-        unknown: "不明",
-      },
-      dates: "日付",
-    },
-    ko: {
-      Select: "선택",
-      Date: "검사 날짜",
-      sitStand: "좌/서 시간",
-      balance1: "균형 점수 - 양발 나란히",
-      balance2: "균형 점수 - 반 텐덤",
-      balance3: "균형 점수 - 직선 스탠드",
-      gaitSpeed: "보행 속도",
-      fallRisk: "낙상 위험",
-      seconds: "초",
-      points: "점",
-      sitStandTrend: "좌/서 시간 추세",
-      balanceTrend: "균형 검사 점수",
-      gaitTrend: "보행 속도 추세",
-      aiFallRisk: "AI 낙상 위험 확률",
-      suggestSit: "권장: 12초 미만",
-      suggestBalance: "권장: 3.5점 이상",
-      suggestGait: "권장: 100cm/s 이상",
-      downloadImage: "이미지 다운로드",
-      personalTrend: "개인 변화 추세",
-      name: "이름",
-      gender: "성별",
-      age: "나이",
-      selectAll: "전체 선택",
-      unselectAll: "전체 선택 해제",
-      back: "← 뒤로가기",
-      male: "남성",
-      female: "여성",
-      riskLabel: {
-        high: "위험",
-        slightlyHigh: "높은",
-        medium: "가운데",
-        slightlyLow: "약간 낮음",
-        low: "낮은",
-        unknown: "알 수 없음",
-      },
-      dates: "날짜",
-    },
-  };
-
-  function t(key) {
-    return LANG[window.currentLang][key] || key;
-  }
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-
-  if (!id) {
-    document.body.innerHTML = `
-      <div class="text-center mt-5">
-        <p class="text-danger fs-5">未提供人員編號</p>
-        <button class="btn btn-secondary" onclick="history.back()">返回</button>
-      </div>
-    `;
-    throw new Error("No ID in URL");
-  }
-
-  // 判斷性別
-  function genderText(g) {
-    if (g === 0) return LANG[currentLang].female;
-    if (g === 1) return LANG[currentLang].male;
-    return "Unknown";
-  }
-
-  // 風險中文對應
-  function getRiskLabel(risk) {
-    const label = LANG[currentLang].riskLabel;
-
-    if (risk > 50) return label.high;
-    if (risk > 30) return label.slightlyHigh;
-    if (risk > 17.5) return label.medium;
-    if (risk > 5) return label.slightlyLow;
-    return label.low;
-  }
-
-  // 顯示 Loading
-  document.getElementById("personName").textContent = "載入中...";
-
-  // 讀取 JSON
-  fetch("PageAPI_PersonalData-StLuke.json")
-    .then((res) => res.json())
-    .then((all) => {
-      const person = all.find((p) => String(p.Profile.Number) === String(id));
-
-      if (!person) {
-        document.body.innerHTML = `
-        <div class="text-center mt-5">
-          <p class="text-danger fs-5">找不到編號 ${id} 的資料</p>
-          <button class="btn btn-secondary" onclick="history.back()">返回</button>
-        </div>
-      `;
-        return;
-      }
-
-      const profile = person.Profile;
-      const datas = person.Datas;
-
-      // 顯示人名
-      document.getElementById("personName").textContent = profile.Name;
-
-      // 顯示基本資料
-      document.getElementById("personInfo").innerHTML = `
-      <div class="row gx-0 border">
-
-        <div class="col-4 border-end p-2">
-          <strong data-lang="name"></strong>：${profile.Name}
-        </div>
-
-        <div class="col-4 border-end p-2">
-          <strong data-lang="gender"></strong>：${genderText(profile.Gender)}
-        </div>
-
-        <div class="col-4 p-2">
-          <strong data-lang="age"></strong>：${profile.Age}
-        </div>
-
-      </div>
-    `;
-      applyLanguage();
-
-      if (!datas || datas.length === 0) {
-        document.getElementById("personTable").innerHTML =
-          '<div class="text-muted py-2">查無資料</div>';
-        return;
-      }
-
-      // 產生表格 HTML
-      let html = `
-      <div style="max-height: 400px; overflow-y: auto;">
-        <table class="table table-bordered align-middle mt-2">
-          <thead class="bg-light">
-            <tr>
-                <th>${t("Select")}</th>
-                <th>${t("Date")}</th>
-                <th>${t("sitStand")}</th>
-                <th>${t("balance1")}</th>
-                <th>${t("balance2")}</th>
-                <th>${t("balance3")}</th>
-                <th>${t("gaitSpeed")}</th>
-                <th>${t("fallRisk")}</th>
-            </tr>
-          </thead>
-          <tbody>
-    `;
-
-      datas.forEach((d, index) => {
-        const dateText = d.Date
-          ? new Date(d.Date).toLocaleDateString()
-          : "未知";
-        const sitStand =
-          d.SPPB?.Chairtest?.Second != null
-            ? d.SPPB.Chairtest.Second === 0
-              ? "0"
-              : d.SPPB.Chairtest.Second.toFixed(2)
-            : "-";
-
-        const walkSpeed =
-          d.SPPB?.Gaitspeed?.Speed != null
-            ? d.SPPB.Gaitspeed.Speed === 0
-              ? "0"
-              : d.SPPB.Gaitspeed.Speed.toFixed(2)
-            : "-";
-        const b1 = d.SPPB?.Balancetest?.balance1?.Score ?? "-";
-        const b2 = d.SPPB?.Balancetest?.balance2?.Score ?? "-";
-        const b3 = d.SPPB?.Balancetest?.balance3?.Score ?? "-";
-        const fallRisk = d.Risk != null ? getRiskLabel(d.Risk) : "-";
-
-        html += `
-        <tr>
-          <td><input type="checkbox" class="row-check" data-index="${index}" checked></td>
-          <td>${dateText}</td>
-          <td>${sitStand}${t("seconds")}</td>
-          <td>${b1}${t("points")}</td>
-          <td>${b2}${t("points")}</td>
-          <td>${b3}${t("points")}</td>
-          <td>${walkSpeed}cm/s</td>
-          <td>${fallRisk}</td>
-        </tr>
-      `;
-      });
-
-      html += `
-          </tbody>
-        </table>
-      </div>
-    `;
-
-      document.getElementById("personTable").innerHTML = html;
-
-      // 轉換資料給圖表
-      const assessments = datas.map((d) => ({
-        Date: d.Date,
-        ChairSecond: d.SPPB?.Chairtest?.Second ?? null,
-        BalanceScore:
-          (d.SPPB?.Balancetest?.balance1?.Score ?? 0) +
-          (d.SPPB?.Balancetest?.balance2?.Score ?? 0) +
-          (d.SPPB?.Balancetest?.balance3?.Score ?? 0),
-        GaitSpeed: d.SPPB?.Gaitspeed?.Speed ?? null,
-        RiskRate: d.Risk ?? null,
-      }));
-
-      const rowChecks = document.querySelectorAll(".row-check");
-      const checkAllBtn = document.getElementById("checkAllBtn");
-      const uncheckAllBtn = document.getElementById("uncheckAllBtn");
-
-      function updateCharts() {
-        const selectedIndexes = Array.from(rowChecks)
-          .filter((c) => c.checked)
-          .map((c) => parseInt(c.dataset.index));
-
-        const filteredAssessments = selectedIndexes.map((i) => assessments[i]);
-
-        drawSitStandChartChartJS(filteredAssessments);
-        drawBalanceChartChartJS(filteredAssessments);
-        drawGaitChartChartJS(filteredAssessments);
-        drawRiskChartChartJS(filteredAssessments);
-      }
-
-      // 個別勾選事件
-      rowChecks.forEach((c) => c.addEventListener("change", updateCharts));
-
-      // 全選按鈕
-      checkAllBtn.addEventListener("click", () => {
-        rowChecks.forEach((c) => (c.checked = true));
-        updateCharts();
-      });
-
-      // 取消全選按鈕
-      uncheckAllBtn.addEventListener("click", () => {
-        rowChecks.forEach((c) => (c.checked = false));
-        updateCharts();
-      });
-
-      // 初始繪製圖表
-      updateCharts();
-    });
-
-  // 返回按鈕
-  document.getElementById("backBtn").addEventListener("click", () => {
-    history.back();
-  });
-
-  // 曲線圖
-  // 新曲線圖坐站平均秒數
-  Chart.register(window["chartjs-plugin-annotation"]);
-  function drawSitStandChartChartJS(assessments) {
-    const ctx = document.getElementById("sitStandChartCanvas");
-    if (!ctx) return;
-
-    if (!assessments || assessments.length === 0) {
-      ctx.getContext("2d").clearRect(0, 0, ctx.width, ctx.height);
-      return;
-    }
-
-    // 依日期排序
-    const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
-
-    // 完整資料
-    let labels = sorted.map((d) => {
-      const date = new Date(d.Date);
-      return `${date.getMonth() + 1}/${date.getDate()}`;
-    });
-    let dataValues = sorted.map((d) => d.ChairSecond);
-    if (labels.length === 1) {
-      labels = ["", ...labels, ""];
-      dataValues = [null, ...dataValues, null];
-    }
-    const baselineY = 12; // 基準線
-    const minValue = Math.min(...dataValues, baselineY);
-    const maxValue = Math.max(...dataValues, baselineY);
-    let yMin = minValue - (maxValue - minValue) * 0.2;
-    let yMax = maxValue + (maxValue - minValue) * 0.2;
-    if (yMin < 0) yMin = 0;
-    if (yMax - yMin < 5) yMax = yMin + 5;
-    // 如果之前已有圖表，先銷毀
-    if (window.sitStandChartInstance) {
-      window.sitStandChartInstance.destroy();
-    }
-
-    // 建立圖表
-    window.sitStandChartInstance = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: labels, // 全部資料
-        datasets: [
-          {
-            label: t("sitStand"),
-            data: dataValues,
-            borderColor: "#10b981",
-            backgroundColor: "rgba(16,185,129,0.3)",
-            fill: true,
-            tension: 0.3,
-            pointRadius: 2,
-            borderWidth: 3,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: {
-          mode: "nearest",
-          intersect: false,
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const value = context.parsed.y;
-                const dateObj = sorted[context.dataIndex]
-                  ? new Date(sorted[context.dataIndex].Date)
-                  : null;
-                const fullDate = dateObj
-                  ? `${dateObj.getFullYear()}/${
-                      dateObj.getMonth() + 1
-                    }/${dateObj.getDate()}`
-                  : labels[context.dataIndex];
-                const unit = t("seconds");
-                return `${fullDate}：${value.toFixed(1)} ${unit}`;
-              },
-            },
-          },
-          annotation: {
-            annotations: {
-              baseline: {
-                type: "line",
-                yMin: 12,
-                yMax: 12,
-                borderColor: "#6b7280",
-                borderWidth: 2,
-                borderDash: [6, 4], // 虛線樣式
-                label: {
-                  display: true,
-                  content: "",
-                  position: "end",
-                  backgroundColor: "rgba(107,114,128,0.1)",
-                  color: "#374151",
-                  font: {
-                    style: "italic",
-                  },
-                },
-              },
-            },
-          },
-        },
-
-        scales: {
-          x: {
-            offset: true,
-            title: { display: true, text: t("dates") },
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 7, // 最多顯示 7 個刻度
-            },
-          },
-          y: {
-            title: { display: true, text: t("sitStand") },
-            beginAtZero: false,
-            min: yMin,
-            max: yMax,
-          },
-        },
-      },
-    });
-  }
-
-  // 新曲線圖平衡測驗得分
-  function drawBalanceChartChartJS(assessments) {
-    const ctx = document.getElementById("balanceChartCanvas");
-    if (!ctx) return;
-
-    if (!assessments || assessments.length === 0) {
-      ctx.getContext("2d").clearRect(0, 0, ctx.width, ctx.height);
-      return;
-    }
-
-    // 依日期排序
-    const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
-
-    let labels = sorted.map((d) => {
-      const date = new Date(d.Date);
-      return `${date.getMonth() + 1}/${date.getDate()}`;
-    });
-
-    let dataValues = sorted.map((d) => d.BalanceScore);
-    if (labels.length === 1) {
-      labels = ["", ...labels, ""];
-      dataValues = [null, ...dataValues, null];
-    }
-    const yMin = 0;
-    const yMax = 4;
-
-    // 如果之前已有圖表，先銷毀
-    if (window.balanceChartInstance) {
-      window.balanceChartInstance.destroy();
-    }
-
-    window.balanceChartInstance = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: labels, // 全部資料
-        datasets: [
-          {
-            label: t("balanceScore"),
-            data: dataValues,
-            borderColor: "#3b82f6",
-            backgroundColor: "rgba(59,130,246,0.3)",
-            fill: true,
-            tension: 0.3,
-            pointRadius: 2,
-            borderWidth: 3,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: {
-          mode: "nearest",
-          intersect: false,
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const value = context.parsed.y;
-                const dateObj = sorted[context.dataIndex]
-                  ? new Date(sorted[context.dataIndex].Date)
-                  : null;
-                const fullDate = dateObj
-                  ? `${dateObj.getFullYear()}/${
-                      dateObj.getMonth() + 1
-                    }/${dateObj.getDate()}`
-                  : labels[context.dataIndex];
-                const unit = t("points");
-                return `${fullDate}：${value.toFixed(1)} ${unit}`;
-              },
-            },
-          },
-          annotation: {
-            annotations: {
-              baseline: {
-                type: "line",
-                yMin: 3.5,
-                yMax: 3.5,
-                borderColor: "#6b7280",
-                borderWidth: 2,
-                borderDash: [6, 6],
-                label: {
-                  display: true,
-                  content: "",
-                  position: "start",
-                  backgroundColor: "rgba(107,114,128,0.1)",
-                  color: "#374151",
-                  font: { weight: "bold" },
-                  padding: 4,
-                },
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            offset: true,
-            title: { display: true, text: t("dates") },
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 7, // 最多顯示 7 個刻度
-            },
-          },
-          y: {
-            title: { display: true, text: t("balanceScore") },
-            beginAtZero: false,
-            min: yMin,
-            max: yMax,
-          },
-        },
-      },
-    });
-  }
-  // 新曲線圖步行速度趨勢
-  function drawGaitChartChartJS(assessments) {
-    const ctx = document.getElementById("gaitChartCanvas");
-    if (!ctx) return;
-
-    if (!assessments || assessments.length === 0) {
-      ctx.getContext("2d").clearRect(0, 0, ctx.width, ctx.height);
-      return;
-    }
-
-    // 依日期排序
-    const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
-
-    let labels = sorted.map((d) => {
-      const date = new Date(d.Date);
-      return `${date.getMonth() + 1}/${date.getDate()}`;
-    });
-    let dataValues = sorted.map((d) => d.GaitSpeed);
-    if (labels.length === 1) {
-      labels = ["", ...labels, ""];
-      dataValues = [null, ...dataValues, null];
-    }
-    const baseline1 = 100;
-    const baseline2 = 80;
-    const minValue = Math.min(...dataValues, baseline1, baseline2);
-    const maxValue = Math.max(...dataValues, baseline1, baseline2);
-    let yMin = minValue - (maxValue - minValue) * 0.2;
-    let yMax = maxValue + (maxValue - minValue) * 0.2;
-    if (yMin < 0) yMin = 0;
-    if (yMax - yMin < 10) yMax = yMin + 10;
-
-    if (window.gaitChartInstance) {
-      window.gaitChartInstance.destroy();
-    }
-
-    window.gaitChartInstance = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: t("gaitSpeed"),
-            data: dataValues,
-            borderColor: "#f59e0b",
-            backgroundColor: "rgba(245,158,11,0.3)",
-            fill: true,
-            tension: 0.3,
-            pointRadius: 2,
-            borderWidth: 3,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: {
-          mode: "nearest",
-          intersect: false,
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const value = context.parsed.y;
-                const dateObj = sorted[context.dataIndex]
-                  ? new Date(sorted[context.dataIndex].Date)
-                  : null;
-                const fullDate = dateObj
-                  ? `${dateObj.getFullYear()}/${
-                      dateObj.getMonth() + 1
-                    }/${dateObj.getDate()}`
-                  : labels[context.dataIndex];
-                const unit = t("gaitSpeed");
-                return `${fullDate}：${value.toFixed(1)} ${unit}`;
-              },
-            },
-          },
-          annotation: {
-            annotations: {
-              baseline100: {
-                type: "line",
-                yMin: 100,
-                yMax: 100,
-                borderColor: "#6b7280",
-                borderWidth: 2,
-                borderDash: [6, 6],
-                label: {
-                  display: true,
-                  content: "",
-                  position: "start",
-                  backgroundColor: "rgba(107,114,128,0.1)",
-                  color: "#374151",
-                  font: { weight: "bold" },
-                  padding: 4,
-                },
-              },
-              baseline80: {
-                type: "line",
-                yMin: 80,
-                yMax: 80,
-                borderColor: "#6b7280",
-                borderWidth: 2,
-                borderDash: [6, 6],
-                label: {
-                  display: true,
-                  content: "",
-                  position: "start",
-                  backgroundColor: "rgba(107,114,128,0.1)",
-                  color: "#374151",
-                  font: { weight: "bold" },
-                  padding: 4,
-                },
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            offset: true,
-            title: { display: true, text: t("dates") },
-            ticks: { autoSkip: true, maxTicksLimit: 7 },
-          },
-          y: {
-            title: { display: true, text: t("gaitSpeed") },
-            beginAtZero: false,
-            min: yMin,
-            max: yMax,
-          },
-        },
-      },
-    });
-  }
-
-  // 新曲線圖平均AI跌倒風險機率
-  function drawRiskChartChartJS(assessments) {
-    const ctx = document.getElementById("riskChartCanvas");
-    if (!ctx) return;
-
-    if (!assessments || assessments.length === 0) {
-      ctx.getContext("2d").clearRect(0, 0, ctx.width, ctx.height);
-      return;
-    }
-
-    // 依日期排序
-    const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
-
-    let labels = sorted.map((d) => {
-      const date = new Date(d.Date);
-      return `${date.getMonth() + 1}/${date.getDate()}`;
-    });
-
-    let dataValues = sorted.map((d) => d.RiskRate);
-    if (labels.length === 1) {
-      labels = ["", ...labels, ""];
-      dataValues = [null, ...dataValues, null];
-    }
-    // 如果之前已有圖表，先銷毀
-    if (window.riskChartInstance) {
-      window.riskChartInstance.destroy();
-    }
-
-    window.riskChartInstance = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: labels, // 全部資料
-        datasets: [
-          {
-            label: t("fallRisk"),
-            data: dataValues,
-            borderColor: "#ef4444",
-            backgroundColor: "rgba(239,68,68,0.3)",
-            fill: true,
-            tension: 0.3,
-            pointRadius: 2,
-            borderWidth: 3,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: {
-          mode: "nearest",
-          intersect: false,
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const value = context.parsed.y;
-                const dateObj = sorted[context.dataIndex]
-                  ? new Date(sorted[context.dataIndex].Date)
-                  : null;
-                const fullDate = dateObj
-                  ? `${dateObj.getFullYear()}/${
-                      dateObj.getMonth() + 1
-                    }/${dateObj.getDate()}`
-                  : labels[context.dataIndex];
-                const unit = t("fallRisk");
-                return `${fullDate}：${value.toFixed(1)} ${unit}`;
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            offset: true,
-            title: { display: true, text: t("dates") },
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 7, // 最多顯示 7 個刻度
-            },
-          },
-          y: {
-            title: { display: true, text: t("fallRisk") },
-            beginAtZero: false,
-          },
-        },
-      },
-    });
-  }
-  // 曲線圖查無資料
-  function drawNoDataChart() {
-    const charts = [
-      "sitStandChartCanvas",
-      "balanceChartCanvas",
-      "gaitChartCanvas",
-      "riskChartCanvas",
-    ];
-
-    charts.forEach((id) => {
-      const canvas = document.getElementById(id);
-      if (!canvas) return;
-
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      // 清空畫布
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#888";
-      ctx.font = "18px sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-
-      // 顯示文字
-      ctx.fillText(t("alertNoData"), canvas.width / 2, canvas.height / 2);
-
-      // 加上遮罩防止滑鼠觸碰折線圖顯示問題
-      if (!canvas.parentElement.querySelector(".no-data-overlay")) {
-        const overlay = document.createElement("div");
-        overlay.classList.add("no-data-overlay");
-        Object.assign(overlay.style, {
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "transparent",
-          pointerEvents: "auto",
-          zIndex: 10,
-        });
-
-        canvas.parentElement.style.position = "relative";
-        canvas.parentElement.appendChild(overlay);
-      }
-    });
-  }
-  // 圖表下載功能
-  document.querySelectorAll(".download-chart").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const targetId = btn.dataset.target;
-      const canvas = document.getElementById(targetId);
-      if (!canvas) return;
-
-      // 添加白底
-      const ctx = canvas.getContext("2d");
-      ctx.save();
-      ctx.globalCompositeOperation = "destination-over";
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.restore();
-
-      //圖檔
-      const image = canvas.toDataURL("image/png", 0.9);
-
-      // a 標籤下載
-      const link = document.createElement("a");
-      link.href = image;
-      link.download = `${targetId}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-  });
-  function applyLanguage() {
-    document.querySelectorAll("[data-lang]").forEach((el) => {
-      const key = el.getAttribute("data-lang");
-      el.textContent = t(key);
-    });
-  }
-</script>

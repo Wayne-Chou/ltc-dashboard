@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,6 +7,7 @@
       AI Dynamic Skeleton Fall-Prevention Group Dashboard - Jianfeng Health
       Technology
     </title>
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -16,6 +17,10 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
     <!-- 日期套件 -->
     <link
       rel="stylesheet"
@@ -24,871 +29,356 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="bg-white">
-    <div class="container custom-container pb-5 px-4">
-      <!-- 統計資訊 -->
-      <header class="custom-header mt-4 mb-4">
-        <div
-          class="d-flex justify-content-between align-items-center flex-wrap flex-sm-nowrap"
-        >
-          <div>
-            <h1 class="custom-title h3 h2-md h1-lg mb-1">
-              AI Dynamic Skeleton Fall-Prevention Group Dashboard
-            </h1>
-            <h2 class="custom-subtitle h5 h4-md h3-lg mb-0">Singapore</h2>
-          </div>
-          <div class="text-end">
-            <p class="text-secondary mb-0">
-              Updated:<span class="fw-semibold">2025/07/15</span>
-            </p>
-          </div>
-        </div>
-        <div class="dropdown mt-3 d-flex justify-content-between">
-          <button
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          ></button>
-          <ul
-            class="dropdown-menu"
-            id="dropdownMenu"
-            aria-labelledby="dropdownMenuButton"
-          ></ul>
-          <div class="d-flex gap-2 align-items-center">
-            <!-- 語系切換 -->
-
-            <div class="dropdown">
-              <button
-                class="btn btn-outline-primary fw-bold"
-                type="button"
-                id="languageMenu"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Language
-              </button>
-              <ul
-                class="dropdown-menu dropdown-menu-end shadow-sm"
-                aria-labelledby="languageMenu"
-              >
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index.html','zh')"
-                  >
-                    繁體中文
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index_en.html','en')"
-                  >
-                    ENGLISH
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index_ja.html','ja')"
-                  >
-                    日本語
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    onclick="switchLanguage('index_ko.html','ko')"
-                  >
-                    한국어
-                  </button>
-                </li>
-              </ul>
-            </div>
-            <button id="downloadBtn" class="btn btn-primary">
-              <i class="bi bi-download me-1"></i> Download
-            </button>
-          </div>
-        </div>
-      </header>
-      <nav
-        class="navbar navbar-expand-lg bg-white shadow-sm sticky-top border-bottom hide-on-all"
-      >
-        <div class="container-fluid">
-          <!-- 手機版漢堡選單 -->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#mainNavbar"
-            aria-controls="mainNavbar"
-            aria-expanded="false"
-            aria-label="切換導航"
-          >
-            <span class="navbar-toggler-icon"></span>
+    <div class="custom-container content">
+      <div class="page-wrapper">
+        <div class="sidebar" id="mySidebar">
+          <button id="sidebarToggle" class="btn btn-primary shadow-sm">
+            <i class="bi bi-chevron-left" id="toggleIcon"></i>
           </button>
-
-          <!-- 收合區塊 -->
-          <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#summary"
-                  >Summary of test statistics</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#risk"
-                  >Risk grading statistics</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#trend"
-                  >Group change trends</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#status"
-                  >Participant Status</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold text-dark" href="#location"
-                  >Distribution of testing locations</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <!-- 檢測摘要 -->
-      <div class="mb-4 mt-4 bg-white p-4 rounded shadow">
-        <h5
-          id="summary"
-          class="fw-bold text-dark mb-3 d-flex align-items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="me-2 text-primary"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-            />
-          </svg>
-          Summary of test statistics
-        </h5>
-        <div class="my-3 hide-on-all">
-          <div class="input-group">
-            <input
-              type="text"
-              id="dateRange"
-              class="form-control"
-              placeholder="Please select a date range"
-            />
-            <button class="btn btn-outline-secondary" id="clearBtn">
-              Clear
-            </button>
-          </div>
-        </div>
-
-        <!-- 統計資訊 -->
-        <div class="row g-4">
-          <div class="col-md-4 main-col">
-            <div class="stat-card stat-blue">
-              <h6 class="fw-semibold mb-2">Total Number of People Tested</h6>
-              <div class="d-flex align-items-end">
-                <span id="totalCount" class="display-6 fw-bold text-blue"
-                  >0</span
-                >
-                <span class="ms-2 mb-1 text-blue">people</span>
-              </div>
-              <p id="startDateText" class="small mt-2 text-blue">No data yet</p>
-            </div>
-          </div>
-
-          <div class="col-md-4 main-col">
-            <div class="stat-card stat-green">
-              <h6 class="fw-semibold mb-2">Total Number of Tests</h6>
-              <div class="d-flex align-items-end">
-                <span
-                  id="latestCount"
-                  class="display-6 fw-bold text-green"
-                ></span>
-                <span class="ms-2 mb-1 text-green">people</span>
-              </div>
-              <p id="latestDate" class="small mt-2 text-green"></p>
-            </div>
-          </div>
-
-          <div class="col-md-4 sechide">
-            <div class="stat-card stat-purple">
-              <h6 class="fw-semibold mb-2">Number of testing locations</h6>
-              <div class="d-flex align-items-end">
-                <span
-                  id="locationCount"
-                  class="display-6 fw-bold text-purple"
-                ></span>
-                <span class="ms-2 mb-1 text-purple">Department</span>
-              </div>
-              <p id="locationList" class="small mt-2 text-purple"></p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 表格 -->
-        <div class="mt-4 hide-on-all">
-          <h6 class="fw-semibold text-secondary mb-3">
-            Average test scores of all times
-          </h6>
-
-          <div class="table-responsive">
-            <div class="d-flex gap-2 mb-2">
-              <button id="checkAllBtn" class="btn btn-outline-primary btn-sm">
-                Select All
-              </button>
-              <button
-                id="uncheckAllBtn"
-                class="btn btn-outline-secondary btn-sm"
-              >
-                Deselect All
-              </button>
-            </div>
-            <table class="table table-bordered align-middle">
-              <thead class="bg-light">
-                <tr>
-                  <th style="width: 50px">Select</th>
-                  <th>Testing date</th>
-                  <th>Number of participants</th>
-                  <th>Average seconds to sit and stand</th>
-                  <th>Average Balance Score</th>
-                  <th>Average walking speed</th>
-                  <th>Average fall risk</th>
-                </tr>
-              </thead>
-
-              <tbody id="assessmentTableBody"></tbody>
-            </table>
-            <div
-              id="tablePaginationContainer"
-              class="d-flex justify-content-between align-items-center mt-2 w-100"
-            ></div>
-          </div>
-        </div>
-      </div>
-      <!-- 風險分級統計區塊 -->
-      <div class="mb-4 hide-on-all">
-        <h5 id="risk" class="fw-bold text-dark mb-3 d-flex align-items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="me-2 text-primary"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-            />
-          </svg>
-          Risk grading statistics
-        </h5>
-
-        <!-- 警示清單 -->
-        <div class="alert-box mb-4 p-3 hide-on-all">
-          <div class="d-flex align-items-center mb-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="me-2 text-warning"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          <div class="sidebar-inner-content">
+            <div class="text-center mt-3 mb-2">
+              <img
+                style="max-width: 150px; height: auto"
+                src="./img/logo.png"
+                alt="建豐健康科技"
               />
-            </svg>
-            <h6 class="fw-bold text-warning mb-0">Warning List</h6>
-          </div>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <p class="fw-semibold text-warning mb-1">
-                Functional decline warning (degradation of more than 10%
-                compared to the previous test)
-              </p>
-              <ul id="degenerateList" class="ms-4 text-secondary">
-                <li>Decline in walking speed：<span></span>people</li>
-                <li>Increased sit-up time：<span></span>people</li>
-              </ul>
             </div>
-            <div class="col-md-6">
-              <p class="fw-semibold text-warning mb-1">High-risk groups</p>
-              <ul id="levelList" class="ms-4 text-secondary">
-                <li>Class A disabled persons：<span></span> people</li>
-                <li>B-level debilitated：<span></span>people</li>
-                <div class="d-flex justify-content-between flex-wrap">
-                  <li>C-level early stage of weakness：<span></span>people</li>
-                  <div class="mt-2">
-                    <button
-                      id="viewDetailsBtn"
-                      class="btn btn-warning btn-sm d-inline-flex align-items-center"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="me-1"
-                        width="16"
-                        height="16"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                        />
-                      </svg>
-                      View detailed list
-                    </button>
-                  </div>
+            <!-- 統計資訊 -->
+            <header class="custom-header mt-4 mb-4">
+              <div
+                class="d-flex justify-content-between align-items-center flex-wrap flex-sm-nowrap"
+              >
+                <div>
+                  <h1 class="custom-title h3 h2-md h1-lg mb-1">
+                    AI Dynamic Skeleton Fall-Prevention Group Dashboard
+                  </h1>
+                  <h2 class="custom-subtitle h5 h4-md h3-lg mb-0">St Luke</h2>
                 </div>
-              </ul>
-            </div>
+                <div class="text-end">
+                  <p class="text-secondary mb-0">
+                    Updated:<span class="fw-semibold">2025/07/15</span>
+                  </p>
+                </div>
+              </div>
+              <div class="dropdown mt-3 d-flex justify-content-between">
+                <button
+                  class="btn btn-primary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                ></button>
+                <ul
+                  class="dropdown-menu"
+                  id="dropdownMenu"
+                  aria-labelledby="dropdownMenuButton"
+                ></ul>
+                <div class="d-flex gap-2 align-items-center">
+                  <!-- 語系切換 -->
+
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-outline-primary fw-bold"
+                      type="button"
+                      id="languageMenu"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Language
+                    </button>
+                    <ul
+                      class="dropdown-menu dropdown-menu-end shadow-sm"
+                      aria-labelledby="languageMenu"
+                    >
+                      <li>
+                        <button
+                          class="dropdown-item"
+                          onclick="switchLanguage('index.html', 'zh')"
+                        >
+                          繁體中文
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          class="dropdown-item"
+                          onclick="switchLanguage('index_en.html', 'en')"
+                        >
+                          ENGLISH
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          class="dropdown-item"
+                          onclick="switchLanguage('index_ja.html', 'ja')"
+                        >
+                          日本語
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          class="dropdown-item"
+                          onclick="switchLanguage('index_ko.html', 'ko')"
+                        >
+                          한국어
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                  <button id="downloadBtn" class="btn btn-primary">
+                    <i class="bi bi-download me-1"></i> Download
+                  </button>
+                </div>
+              </div>
+            </header>
+            <nav
+              class="navbar navbar-expand-lg bg-white shadow-sm sticky-top border-bottom hide-on-all"
+            >
+              <div class="container-fluid">
+                <!-- 手機版漢堡選單 -->
+                <button
+                  class="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#mainNavbar"
+                  aria-controls="mainNavbar"
+                  aria-expanded="false"
+                  aria-label="切換導航"
+                >
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- 收合區塊 -->
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-dark" href="#summary"
+                        >Summary of test statistics</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-dark" href="#risk"
+                        >Risk grading statistics</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-dark" href="#trend"
+                        >Group change trends</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-dark" href="#status"
+                        >Participant Status</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fw-bold text-dark" href="#location"
+                        >Distribution of testing locations</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
           </div>
         </div>
-        <!-- 詳細名單彈窗 -->
-        <div
-          class="modal fade"
-          id="detailsModal"
-          tabindex="-1"
-          aria-labelledby="detailsModalLabel"
-          aria-hidden="true"
-        >
-          <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
-          >
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="detailsModalLabel">Detail List</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-
-              <div class="modal-body">
-                <div id="degenerateSection" class="mb-3">
-                  <div class="row">
-                    <div class="col-12 col-md-6 mb-2">
-                      <div class="card">
-                        <div class="card-header"></div>
-
-                        <ul
-                          class="list-group list-group-flush"
-                          id="degenerateGaitSpeed"
-                        ></ul>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-6 mb-2">
-                      <div class="card">
-                        <div class="card-header"></div>
-
-                        <ul
-                          class="list-group list-group-flush"
-                          id="degenerateChair"
-                        ></ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div id="vivifrailSection">
-                  <div class="row">
-                    <div class="col-12 col-md-4 mb-2">
-                      <div class="card">
-                        <div class="card-header"></div>
-
-                        <ul
-                          class="list-group list-group-flush"
-                          id="vivifrailA"
-                        ></ul>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-4 mb-2">
-                      <div class="card">
-                        <div class="card-header"></div>
-
-                        <ul
-                          class="list-group list-group-flush"
-                          id="vivifrailB"
-                        ></ul>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-4 mb-2">
-                      <div class="card">
-                        <div class="card-header"></div>
-
-                        <ul
-                          class="list-group list-group-flush"
-                          id="vivifrailC"
-                        ></ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary btn-sm"
-                  data-bs-dismiss="modal"
-                >
-                  Close
+        <div class="main-content">
+          <!-- 檢測摘要 -->
+          <div class="mb-4 mt-4 bg-white p-4 rounded shadow">
+            <h5
+              id="summary"
+              class="fw-bold text-dark mb-3 d-flex align-items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="me-2 text-primary"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
+              </svg>
+              Summary of test statistics
+            </h5>
+            <div class="my-3 hide-on-all">
+              <div class="input-group">
+                <input
+                  type="text"
+                  id="dateRange"
+                  class="form-control"
+                  placeholder="Please select a date range"
+                />
+                <button class="btn btn-outline-secondary" id="clearBtn">
+                  Clear
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-        <!-- 衰退區塊 -->
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div
-              class="risk-box p-3"
-              style="border-left: 4px solid #6f42c1; background-color: #f3e9fa"
-            >
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold mb-0 text-purple">
-                    walking speed decline
+
+            <!-- 統計資訊 -->
+            <div class="row g-4">
+              <div class="col-md-4 main-col">
+                <div class="stat-card stat-blue">
+                  <h6 class="fw-semibold mb-2">
+                    Total Number of People Tested
                   </h6>
-                </div>
-                <div
-                  class="fs-3 fw-bold text-purple"
-                  id="degenerateGaitSpeedTotal"
-                >
-                  0
-                </div>
-              </div>
-              <div class="mt-2 progress rounded-pill">
-                <div
-                  class="progress-bar bg-purple"
-                  id="progressGaitSpeed"
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div
-              class="risk-box p-3"
-              style="border-left: 4px solid #0dcaf0; background-color: #e8f8fc"
-            >
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold mb-0 text-info">
-                    Increase in sit-up time
-                  </h6>
-                </div>
-                <div class="fs-3 fw-bold text-info" id="degenerateChairTotal">
-                  0
-                </div>
-              </div>
-              <div class="mt-2 progress rounded-pill">
-                <div class="progress-bar bg-info" id="progressChair"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 四個等級 -->
-        <div class="row g-3 mt-4">
-          <div class="col-md-3">
-            <div class="risk-box risk-red p-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold text-danger mb-0">Level A</h6>
-                  <p class="small text-danger mb-0">
-                    Disabled (SPPB=0-3 points)
+                  <div class="d-flex align-items-end">
+                    <span id="totalCount" class="display-6 fw-bold text-blue"
+                      >0</span
+                    >
+                    <span class="ms-2 mb-1 text-blue">people</span>
+                  </div>
+                  <p id="startDateText" class="small mt-2 text-blue">
+                    No data yet
                   </p>
                 </div>
-                <div class="fs-3 fw-bold text-danger" id="riskA">0</div>
               </div>
-              <div class="mt-2 progress rounded-pill">
-                <div
-                  class="progress-bar bg-danger"
-                  id="progressA"
-                  style="width: 0%"
-                ></div>
-              </div>
-            </div>
-          </div>
 
-          <div class="col-md-3">
-            <div class="risk-box risk-yellow p-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold text-warn mb-0">Level B</h6>
-                  <p class="small text-warn mb-0">Frail (SPPB=4-6 points)</p>
-                </div>
-                <div class="fs-3 fw-bold text-warn" id="riskB">0</div>
-              </div>
-              <div class="mt-2 progress rounded-pill">
-                <div
-                  class="progress-bar bg-warn"
-                  id="progressB"
-                  style="width: 0%"
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-3">
-            <div class="risk-box risk-blue p-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold text-primary mb-0">Level C</h6>
-                  <p class="small text-primary mb-0">
-                    Pre-frailty (SPPB=7-9 points)
-                  </p>
-                </div>
-                <div class="fs-3 fw-bold text-primary" id="riskC">0</div>
-              </div>
-              <div class="mt-2 progress rounded-pill">
-                <div
-                  class="progress-bar bg-primary"
-                  id="progressC"
-                  style="width: 0%"
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-3">
-            <div class="risk-box risk-green p-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-bold text-success mb-0">Level D</h6>
-                  <p class="small text-success mb-0">
-                    Healthy people (SPPB=10-12 points)
-                  </p>
-                </div>
-                <div class="fs-3 fw-bold text-success" id="riskD">0</div>
-              </div>
-              <div class="mt-2 progress rounded-pill">
-                <div
-                  class="progress-bar bg-success"
-                  id="progressD"
-                  style="width: 0%"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 群體變化趨勢 -->
-      <div class="mb-8 hide-on-all">
-        <h5 id="trend" class="fw-bold mb-3 d-flex align-items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            class="me-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            style="stroke: #3b82f6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-            />
-          </svg>
-          Group change trends
-        </h5>
-
-        <div class="container my-4">
-          <div class="row g-4">
-            <!-- 坐站平均秒數 -->
-            <div class="col-12 col-md-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <h5 class="fw-semibold text-dark">
-                      Average sit-stand seconds trend
-                    </h5>
-                    <button
-                      class="btn btn-sm btn-outline-primary download-chart"
-                      data-target="sitStandChartCanvas"
-                    >
-                      <i class="fa fa-download me-1"></i> Download image file
-                    </button>
+              <div class="col-md-4 main-col">
+                <div class="stat-card stat-green">
+                  <h6 class="fw-semibold mb-2">Total Number of Tests</h6>
+                  <div class="d-flex align-items-end">
+                    <span
+                      id="latestCount"
+                      class="display-6 fw-bold text-green"
+                    ></span>
+                    <span class="ms-2 mb-1 text-green">people</span>
                   </div>
+                  <p id="latestDate" class="small mt-2 text-green"></p>
+                </div>
+              </div>
 
-                  <div class="text-muted small mb-2">
-                    Recommended duration: less than 12 seconds
+              <div class="col-md-4 sechide">
+                <div class="stat-card stat-purple">
+                  <h6 class="fw-semibold mb-2">Number of testing locations</h6>
+                  <div class="d-flex align-items-end">
+                    <span
+                      id="locationCount"
+                      class="display-6 fw-bold text-purple"
+                    ></span>
+                    <span class="ms-2 mb-1 text-purple">Department</span>
                   </div>
-                  <div
-                    class="chart-container"
-                    style="position: relative; height: 300px; width: 100%"
-                  >
-                    <canvas id="sitStandChartCanvas"></canvas>
-                  </div>
+                  <p id="locationList" class="small mt-2 text-purple"></p>
                 </div>
               </div>
             </div>
-            <!-- 平衡測驗得分 -->
-            <div class="col-12 col-md-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <h5 class="fw-semibold text-dark">
-                      Average Balance Test Score
-                    </h5>
-                    <button
-                      class="btn btn-sm btn-outline-primary download-chart"
-                      data-target="balanceChartCanvas"
-                    >
-                      <i class="fa fa-download me-1"></i> Download image file
-                    </button>
-                  </div>
 
-                  <div class="text-muted small mb-2">
-                    I recommend a score greater than 3.5.
-                  </div>
-                  <div
-                    class="chart-container"
-                    style="height: 300px; width: 100%"
-                  >
-                    <canvas id="balanceChartCanvas"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- 步行速度趨勢 -->
-            <div class="col-12 col-md-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <h5 class="fw-semibold text-dark">
-                      Average walking speed trend
-                    </h5>
-                    <button
-                      class="btn btn-sm btn-outline-primary download-chart"
-                      data-target="gaitChartCanvas"
-                    >
-                      <i class="fa fa-download me-1"></i> Download image file
-                    </button>
-                  </div>
+            <!-- 表格 -->
+            <div class="mt-4 hide-on-all">
+              <h6 class="fw-semibold text-secondary mb-3">
+                Average test scores of all times
+              </h6>
 
-                  <div class="text-muted small mb-2">
-                    Recommended speed is greater than or equal to 100 cm/s
-                  </div>
-                  <div
-                    class="chart-container"
-                    style="height: 300px; width: 100%"
-                  >
-                    <canvas id="gaitChartCanvas"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- 平均AI跌倒風險機率 -->
-            <div class="col-12 col-md-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <h5 class="fw-semibold text-dark">
-                      Average AI fall risk probability
-                    </h5>
-                    <button
-                      class="btn btn-sm btn-outline-primary download-chart"
-                      data-target="riskChartCanvas"
-                    >
-                      <i class="fa fa-download me-1"></i> Download image file
-                    </button>
-                  </div>
-
-                  <div class="text-muted small mb-2" style="opacity: 0">
-                    15615
-                  </div>
-                  <div
-                    class="chart-container"
-                    style="height: 300px; width: 100%"
-                  >
-                    <canvas id="riskChartCanvas"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 參與者狀態 -->
-      <div class="mb-4 hide-on-all">
-        <h5
-          id="status"
-          class="fw-bold text-dark mb-3 d-flex align-items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="me-2 text-primary"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-          </svg>
-          Participant Status
-        </h5>
-        <div class="d-flex gap-2 mb-3 sortModeSwitch">
-          <button
-            type="button"
-            class="btn btn-outline-primary active"
-            id="riskModeBtn"
-          >
-            Sorted by AI Fall Risk Level
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            id="levelModeBtn"
-          >
-            Sorted by Vivifrial level
-          </button>
-        </div>
-        <div class="risk" id="riskContainer">
-          <!-- 篩選按鈕 -->
-          <div class="d-none d-md-flex gap-2 mb-3 filterBtnsDesktop">
-            <button
-              type="button"
-              class="btn btn-secondary flex-fill active text-white"
-              data-risk="all"
-            >
-              all
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger flex-fill risk-high-danger text-white"
-              data-risk="high"
-            >
-              Danger
-            </button>
-            <button
-              type="button"
-              class="btn btn-warning flex-fill risk-high text-white"
-              data-risk="slightlyHigh"
-            >
-              high
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary flex-fill risk-medium text-white"
-              data-risk="medium"
-            >
-              middle
-            </button>
-            <button
-              type="button"
-              class="btn btn-info flex-fill risk-slightly-low text-white"
-              data-risk="slightlyLow"
-            >
-              Slightly lower
-            </button>
-            <button
-              type="button"
-              class="btn btn-success flex-fill risk-low text-white"
-              data-risk="low"
-            >
-              Low
-            </button>
-          </div>
-
-          <!-- 篩選區：手機版下拉 -->
-          <div class="dropdown d-md-none mb-3 filterDropdownMobile">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle w-100"
-              type="button"
-              data-bs-toggle="dropdown"
-            >
-              Please select risk
-            </button>
-            <ul class="dropdown-menu w-100">
-              <li><a class="dropdown-item" href="#" data-risk="all">all</a></li>
-              <li>
-                <a class="dropdown-item" href="#" data-risk="high">Danger</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-risk="slightlyHigh"
-                  >high</a
+              <div class="d-flex gap-2 mb-3">
+                <button id="checkAllBtn" class="btn btn-outline-primary btn-sm">
+                  Select All
+                </button>
+                <button
+                  id="uncheckAllBtn"
+                  class="btn btn-outline-secondary btn-sm"
                 >
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-risk="medium">middle</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-risk="slightlyLow"
-                  >Slightly lower</a
-                >
-              </li>
-              <li><a class="dropdown-item" href="#" data-risk="low">Low</a></li>
-            </ul>
-          </div>
-          <!-- 人員區塊 -->
-          <div class="row g-3" id="personContainer"></div>
+                  Deselect All
+                </button>
+              </div>
 
-          <div class="mt-3 text-end">
-            <button
-              id="viewAllBtn"
-              class="btn btn-primary btn-sm d-inline-flex align-items-center viewAllBtn"
+              <div id="assessmentCardsContainer" class="row g-3"></div>
+
+              <div
+                id="tablePaginationContainer"
+                class="d-flex justify-content-between align-items-center mt-4 w-100"
+              ></div>
+            </div>
+          </div>
+          <!-- 群體比對 -->
+          <div class="mt-4 hide-on-all mb-4" id="groupCompareSection">
+            <div class="bg-white p-4 rounded shadow-sm border">
+              <div
+                class="d-flex justify-content-between align-items-center mb-4"
+              >
+                <h5 class="fw-bold text-dark m-0 d-flex align-items-center">
+                  <i class="bi bi-intersect text-primary me-2"></i>
+                  Group Comparison Analysis
+                </h5>
+                <div
+                  class="d-flex align-items-center bg-light px-3 py-2 rounded-pill border"
+                >
+                  <label
+                    class="form-check-label small fw-bold me-2 text-secondary"
+                    for="groupCompareToggle"
+                    >Enable Comparison Mode</label
+                  >
+                  <div class="form-check form-switch m-0">
+                    <input
+                      class="form-check-input custom-switch-lg"
+                      type="checkbox"
+                      id="groupCompareToggle"
+                      style="cursor: pointer; width: 3rem; height: 1.5rem"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-secondary small mb-4 p-2 bg-light rounded">
+                <i class="bi bi-info-circle me-1"></i>
+                Compare overall changes across time periods (based on group
+                averages)
+              </div>
+
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="small fw-bold text-muted mb-1"
+                    >First Date Range (Baseline)</label
+                  >
+                  <div class="input-group shadow-sm">
+                    <input
+                      id="groupA-range"
+                      class="form-control bg-white"
+                      placeholder="Select Start and End Dates"
+                      readonly
+                    />
+                    <button class="btn btn-outline-secondary" id="clearGroupA">
+                      Clear
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="small fw-bold text-muted mb-1"
+                    >Second Date Range (Comparison)</label
+                  >
+                  <div class="input-group shadow-sm">
+                    <input
+                      id="groupB-range"
+                      class="form-control bg-white"
+                      placeholder="Select Start and End Dates"
+                      readonly
+                    />
+                    <button class="btn btn-outline-secondary" id="clearGroupB">
+                      Clear
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="groupCompareResult"></div>
+            </div>
+          </div>
+
+          <!-- 風險分級統計區塊 -->
+          <div class="mb-4 hide-on-all">
+            <h5
+              id="risk"
+              class="fw-bold text-dark mb-3 d-flex align-items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="me-1"
-                width="16"
-                height="16"
+                class="me-2 text-primary"
+                width="24"
+                height="24"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -897,230 +387,508 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
                 />
               </svg>
-              View All Participants
-            </button>
-          </div>
-          <!-- 查看全部彈窗 -->
-          <div class="modal fade" id="participantsModal" tabindex="-1">
-            <div class="modal-dialog modal-xl modal-dialog-scrollable">
-              <div class="modal-content">
-                <div class="modal-header flex-column">
-                  <h5 class="modal-title w-100">Participant Status</h5>
+              Risk grading statistics
+            </h5>
 
-                  <!-- 分類按鈕：桌機版 -->
-                  <div
-                    class="d-none d-md-flex gap-2 mt-2 w-100"
-                    id="modalFilterBtnsDesktop"
-                  >
-                    <button
-                      type="button"
-                      class="btn btn-secondary flex-fill active text-white"
-                      data-risk="all"
-                    >
-                      all
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger flex-fill text-white"
-                      data-risk="high"
-                    >
-                      Danger
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-warning flex-fill text-white"
-                      data-risk="slightlyHigh"
-                    >
-                      high
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-primary flex-fill text-white"
-                      data-risk="medium"
-                    >
-                      middle
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-info flex-fill text-white"
-                      data-risk="slightlyLow"
-                    >
-                      Slightly lower
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-success flex-fill text-white"
-                      data-risk="low"
-                    >
-                      Low
-                    </button>
-                  </div>
-
-                  <!-- 分類下拉：手機版 -->
-                  <div
-                    class="dropdown d-md-none mt-2 w-100"
-                    id="modalFilterDropdownMobile"
-                  >
-                    <button
-                      class="btn btn-outline-secondary dropdown-toggle w-100"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                    >
-                      Please select risk
-                    </button>
-                    <ul class="dropdown-menu w-100">
-                      <li>
-                        <a class="dropdown-item" href="#" data-risk="all"
-                          >all</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#" data-risk="high"
-                          >Danger</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          data-risk="slightlyHigh"
-                          >high</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#" data-risk="medium"
-                          >middle</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          data-risk="slightlyLow"
-                          >Slightly lower</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#" data-risk="low"
-                          >Low</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-
-                  <button
-                    type="button"
-                    class="btn-close mt-2"
-                    data-bs-dismiss="modal"
-                  ></button>
+            <!-- 警示清單 -->
+            <div class="alert-box mb-4 p-3 hide-on-all">
+              <div class="d-flex align-items-center mb-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="me-2 text-warning"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                <h6 class="fw-bold text-warning mb-0">Warning List</h6>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <p class="fw-semibold text-warning mb-1">
+                    Functional decline warning (degradation of more than 10%
+                    compared to the previous test)
+                  </p>
+                  <ul id="degenerateList" class="ms-4 text-secondary">
+                    <li>Decline in walking speed：<span></span>people</li>
+                    <li>Increased sit-up time：<span></span>people</li>
+                  </ul>
                 </div>
+                <div class="col-md-6">
+                  <p class="fw-semibold text-warning mb-1">High-risk groups</p>
+                  <ul id="levelList" class="ms-4 text-secondary">
+                    <li>Class A disabled persons：<span></span> people</li>
+                    <li>B-level debilitated：<span></span>people</li>
+                    <div class="d-flex justify-content-between flex-wrap">
+                      <li>
+                        C-level early stage of weakness：<span></span>people
+                      </li>
+                      <div class="mt-2">
+                        <button
+                          id="viewDetailsBtn"
+                          class="btn btn-warning btn-sm d-inline-flex align-items-center"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="me-1"
+                            width="16"
+                            height="16"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            />
+                          </svg>
+                          View detailed list
+                        </button>
+                      </div>
+                    </div>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- 詳細名單彈窗 -->
+            <div
+              class="modal fade"
+              id="detailsModal"
+              tabindex="-1"
+              aria-labelledby="detailsModalLabel"
+              aria-hidden="true"
+            >
+              <div
+                class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+              >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">
+                      Detail List
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
 
-                <div class="modal-body">
-                  <div class="row g-3" id="modalPersonContainer"></div>
+                  <div class="modal-body">
+                    <div id="degenerateSection" class="mb-3">
+                      <div class="row">
+                        <div class="col-12 col-md-6 mb-2">
+                          <div class="card">
+                            <div class="card-header"></div>
+
+                            <ul
+                              class="list-group list-group-flush"
+                              id="degenerateGaitSpeed"
+                            ></ul>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                          <div class="card">
+                            <div class="card-header"></div>
+
+                            <ul
+                              class="list-group list-group-flush"
+                              id="degenerateChair"
+                            ></ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="vivifrailSection">
+                      <div class="row">
+                        <div class="col-12 col-md-4 mb-2">
+                          <div class="card">
+                            <div class="card-header"></div>
+
+                            <ul
+                              class="list-group list-group-flush"
+                              id="vivifrailA"
+                            ></ul>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-4 mb-2">
+                          <div class="card">
+                            <div class="card-header"></div>
+
+                            <ul
+                              class="list-group list-group-flush"
+                              id="vivifrailB"
+                            ></ul>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-4 mb-2">
+                          <div class="card">
+                            <div class="card-header"></div>
+
+                            <ul
+                              class="list-group list-group-flush"
+                              id="vivifrailC"
+                            ></ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary btn-sm"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 衰退區塊 -->
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div
+                  class="risk-box p-3"
+                  style="
+                    border-left: 4px solid #6f42c1;
+                    background-color: #f3e9fa;
+                  "
+                >
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="fw-bold mb-0 text-purple">
+                        walking speed decline
+                      </h6>
+                    </div>
+                    <div
+                      class="fs-3 fw-bold text-purple"
+                      id="degenerateGaitSpeedTotal"
+                    >
+                      0
+                    </div>
+                  </div>
+                  <div class="mt-2 progress rounded-pill">
+                    <div
+                      class="progress-bar bg-purple"
+                      id="progressGaitSpeed"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div
+                  class="risk-box p-3"
+                  style="
+                    border-left: 4px solid #0dcaf0;
+                    background-color: #e8f8fc;
+                  "
+                >
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="fw-bold mb-0 text-info">
+                        Increase in sit-up time
+                      </h6>
+                    </div>
+                    <div
+                      class="fs-3 fw-bold text-info"
+                      id="degenerateChairTotal"
+                    >
+                      0
+                    </div>
+                  </div>
+                  <div class="mt-2 progress rounded-pill">
+                    <div class="progress-bar bg-info" id="progressChair"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 四個等級 -->
+            <div class="row g-3 mt-4">
+              <div class="col-md-3">
+                <div class="risk-box risk-red p-3">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="fw-bold text-danger mb-0">Level A</h6>
+                      <p class="small text-danger mb-0">
+                        Disabled (SPPB=0-3 points)
+                      </p>
+                    </div>
+                    <div class="fs-3 fw-bold text-danger" id="riskA">0</div>
+                  </div>
+                  <div class="mt-2 progress rounded-pill">
+                    <div
+                      class="progress-bar bg-danger"
+                      id="progressA"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="risk-box risk-yellow p-3">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="fw-bold text-warn mb-0">Level B</h6>
+                      <p class="small text-warn mb-0">
+                        Frail (SPPB=4-6 points)
+                      </p>
+                    </div>
+                    <div class="fs-3 fw-bold text-warn" id="riskB">0</div>
+                  </div>
+                  <div class="mt-2 progress rounded-pill">
+                    <div
+                      class="progress-bar bg-warn"
+                      id="progressB"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="risk-box risk-blue p-3">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="fw-bold text-primary mb-0">Level C</h6>
+                      <p class="small text-primary mb-0">
+                        Pre-frailty (SPPB=7-9 points)
+                      </p>
+                    </div>
+                    <div class="fs-3 fw-bold text-primary" id="riskC">0</div>
+                  </div>
+                  <div class="mt-2 progress rounded-pill">
+                    <div
+                      class="progress-bar bg-primary"
+                      id="progressC"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="risk-box risk-green p-3">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6 class="fw-bold text-success mb-0">Level D</h6>
+                      <p class="small text-success mb-0">
+                        Healthy people (SPPB=10-12 points)
+                      </p>
+                    </div>
+                    <div class="fs-3 fw-bold text-success" id="riskD">0</div>
+                  </div>
+                  <div class="mt-2 progress rounded-pill">
+                    <div
+                      class="progress-bar bg-success"
+                      id="progressD"
+                      style="width: 0%"
+                    ></div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="level" id="levelContainer">
-          <!-- 篩選按鈕：桌機版 -->
-          <div class="d-none d-md-flex gap-2 mb-3 levelFilterBtnsDesktop">
-            <button
-              type="button"
-              class="btn btn-secondary flex-fill active text-white"
-              data-filter="all"
-            >
-              all
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger flex-fill text-white"
-              data-filter="A"
-            >
-              Level A: Disabled
-            </button>
-            <button
-              type="button"
-              class="btn btn-warning flex-fill text-white"
-              data-filter="B"
-            >
-              Level B: Frail
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary flex-fill text-white"
-              data-filter="C"
-            >
-              Level C: Pre-frail
-            </button>
-            <button
-              type="button"
-              class="btn btn-success flex-fill text-white"
-              data-filter="D"
-            >
-              Level D: Healthy
-            </button>
+          <!-- 群體變化趨勢 -->
+          <div class="mb-8 hide-on-all">
+            <h5 id="trend" class="fw-bold mb-3 d-flex align-items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                class="me-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                style="stroke: #3b82f6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
+              </svg>
+              Group change trends
+            </h5>
+
+            <div class="my-4">
+              <div class="row g-4">
+                <!-- 坐站平均秒數 -->
+                <div class="col-12 col-md-6">
+                  <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                      <div
+                        class="d-flex align-items-center justify-content-between"
+                      >
+                        <h5 class="fw-semibold text-dark">
+                          Average sit-stand seconds trend
+                        </h5>
+                        <button
+                          class="btn btn-sm btn-outline-primary download-chart"
+                          data-target="sitStandChartCanvas"
+                        >
+                          <i class="fa fa-download me-1"></i> Download image
+                          file
+                        </button>
+                      </div>
+
+                      <div class="text-muted small mb-2">
+                        Recommended duration: less than 12 seconds
+                      </div>
+                      <div
+                        class="chart-container"
+                        style="position: relative; height: 300px; width: 100%"
+                      >
+                        <canvas id="sitStandChartCanvas"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 平衡測驗得分 -->
+                <div class="col-12 col-md-6">
+                  <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                      <div
+                        class="d-flex align-items-center justify-content-between"
+                      >
+                        <h5 class="fw-semibold text-dark">
+                          Average Balance Test Score
+                        </h5>
+                        <button
+                          class="btn btn-sm btn-outline-primary download-chart"
+                          data-target="balanceChartCanvas"
+                        >
+                          <i class="fa fa-download me-1"></i> Download image
+                          file
+                        </button>
+                      </div>
+
+                      <div class="text-muted small mb-2">
+                        I recommend a score greater than 3.5.
+                      </div>
+                      <div
+                        class="chart-container"
+                        style="height: 300px; width: 100%"
+                      >
+                        <canvas id="balanceChartCanvas"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 步行速度趨勢 -->
+                <div class="col-12 col-md-6">
+                  <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                      <div
+                        class="d-flex align-items-center justify-content-between"
+                      >
+                        <h5 class="fw-semibold text-dark">
+                          Average walking speed trend
+                        </h5>
+                        <button
+                          class="btn btn-sm btn-outline-primary download-chart"
+                          data-target="gaitChartCanvas"
+                        >
+                          <i class="fa fa-download me-1"></i> Download image
+                          file
+                        </button>
+                      </div>
+
+                      <div class="text-muted small mb-2">
+                        Recommended speed is greater than or equal to 100 cm/s
+                      </div>
+                      <div
+                        class="chart-container"
+                        style="height: 300px; width: 100%"
+                      >
+                        <canvas id="gaitChartCanvas"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 平均AI跌倒風險機率 -->
+                <div class="col-12 col-md-6">
+                  <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                      <div
+                        class="d-flex align-items-center justify-content-between"
+                      >
+                        <h5 class="fw-semibold text-dark">
+                          Average AI fall risk probability
+                        </h5>
+                        <button
+                          class="btn btn-sm btn-outline-primary download-chart"
+                          data-target="riskChartCanvas"
+                        >
+                          <i class="fa fa-download me-1"></i> Download image
+                          file
+                        </button>
+                      </div>
+
+                      <div class="text-muted small mb-2" style="opacity: 0">
+                        15615
+                      </div>
+                      <div
+                        class="chart-container"
+                        style="height: 300px; width: 100%"
+                      >
+                        <canvas id="riskChartCanvas"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <!-- 篩選區：手機版下拉 -->
-          <div class="dropdown d-md-none mb-3 levelFilterDropdownMobile">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle w-100"
-              type="button"
-              data-bs-toggle="dropdown"
-            >
-              Please select level
-            </button>
-            <ul class="dropdown-menu w-100">
-              <li>
-                <a class="dropdown-item" href="#" data-filter="all">all</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-filter="A"
-                  >Level A: Disabled</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-filter="B"
-                  >Level B: Frail</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-filter="C"
-                  >Level C: Pre-frail</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-filter="D"
-                  >Level D: Healthy</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- 人員區塊 -->
-          <div class="row g-3" id="levelPersonContainer"></div>
-
-          <!-- 查看全部參與者按鈕 -->
-          <div class="mt-3 text-end">
-            <button
-              id="viewAllLevelBtn"
-              class="btn btn-primary btn-sm d-inline-flex align-items-center viewAllBtn"
+          <!-- 參與者狀態 -->
+          <div class="mb-4 hide-on-all">
+            <h5
+              id="status"
+              class="fw-bold text-dark mb-3 d-flex align-items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="me-1"
-                width="16"
-                height="16"
+                class="me-2 text-primary"
+                width="24"
+                height="24"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -1129,189 +897,553 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              View All Participants
-            </button>
-          </div>
-
-          <!-- 查看全部彈窗 -->
-          <div class="modal fade" id="participantsLevelModal" tabindex="-1">
-            <div class="modal-dialog modal-xl modal-dialog-scrollable">
-              <div class="modal-content">
-                <div class="modal-header flex-column">
-                  <h5 class="modal-title w-100">Participant Status</h5>
-
-                  <!-- 桌機版篩選按鈕 -->
-                  <div
-                    class="d-none d-md-flex gap-2 mt-2 w-100"
-                    id="modalLevelFilterBtnsDesktop"
-                  >
-                    <button
-                      type="button"
-                      class="btn btn-secondary flex-fill active text-white"
-                      data-filter="all"
-                    >
-                      all
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger flex-fill text-white"
-                      data-filter="A"
-                    >
-                      Level A: Disabled
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-warning flex-fill text-white"
-                      data-filter="B"
-                    >
-                      Level B: Frail
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-primary flex-fill text-white"
-                      data-filter="C"
-                    >
-                      Level C: Pre-frail
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-success flex-fill text-white"
-                      data-filter="D"
-                    >
-                      Level D: Healthy
-                    </button>
-                  </div>
-
-                  <!-- 手機版篩選下拉 -->
-                  <div
-                    class="dropdown d-md-none mt-2 w-100"
-                    id="modalLevelFilterDropdownMobile"
-                  >
-                    <button
-                      class="btn btn-outline-secondary dropdown-toggle w-100"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                    >
-                      Please select level
-                    </button>
-                    <ul class="dropdown-menu w-100">
-                      <li>
-                        <a class="dropdown-item" href="#" data-filter="all"
-                          >all</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#" data-filter="A"
-                          >Level A: Disabled</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#" data-filter="B"
-                          >Level B: Frail</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#" data-filter="C"
-                          >Level C: Pre-frail</a
-                        >
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#" data-filter="D"
-                          >Level D: Healthy</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-
-                  <button
-                    type="button"
-                    class="btn-close mt-2"
-                    data-bs-dismiss="modal"
-                  ></button>
-                </div>
-
-                <div class="modal-body">
-                  <div class="row g-3" id="modalLevelPersonContainer"></div>
-                </div>
-              </div>
+              Participant Status
+            </h5>
+            <div class="d-flex gap-2 mb-3 sortModeSwitch">
+              <button
+                type="button"
+                class="btn btn-outline-primary active"
+                id="riskModeBtn"
+              >
+                Sorted by AI Fall Risk Level
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                id="levelModeBtn"
+              >
+                Sorted by Vivifrial level
+              </button>
             </div>
-          </div>
-        </div>
-      </div>
-      <!-- 地圖區塊 -->
-      <div class="mb-4">
-        <h5
-          id="location"
-          class="fw-bold text-dark mb-3 d-flex align-items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="me-2 text-primary"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-            />
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
-          Distribution of testing locations
-        </h5>
-
-        <!-- 地圖 -->
-        <div id="map"></div>
-        <!-- 等級人員彈窗 -->
-        <div
-          class="modal fade"
-          id="personDetailModal"
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="personDetailTitle"></h5>
+            <div class="risk" id="riskContainer">
+              <!-- 篩選按鈕 -->
+              <div class="d-none d-md-flex gap-2 mb-3 filterBtnsDesktop">
                 <button
                   type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                  class="btn btn-secondary flex-fill active text-white"
+                  data-risk="all"
+                >
+                  all
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger flex-fill risk-high-danger text-white"
+                  data-risk="high"
+                >
+                  Danger
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning flex-fill risk-high text-white"
+                  data-risk="slightlyHigh"
+                >
+                  high
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary flex-fill risk-medium text-white"
+                  data-risk="medium"
+                >
+                  middle
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-info flex-fill risk-slightly-low text-white"
+                  data-risk="slightlyLow"
+                >
+                  Slightly lower
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-success flex-fill risk-low text-white"
+                  data-risk="low"
+                >
+                  Low
+                </button>
               </div>
-              <div class="modal-body" id="personDetailBody"></div>
+
+              <!-- 篩選區：手機版下拉 -->
+              <div class="dropdown d-md-none mb-3 filterDropdownMobile">
+                <button
+                  class="btn btn-outline-secondary dropdown-toggle w-100"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                >
+                  Please select risk
+                </button>
+                <ul class="dropdown-menu w-100">
+                  <li>
+                    <a class="dropdown-item" href="#" data-risk="all">all</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-risk="high"
+                      >Danger</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-risk="slightlyHigh"
+                      >high</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-risk="medium"
+                      >middle</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-risk="slightlyLow"
+                      >Slightly lower</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-risk="low">Low</a>
+                  </li>
+                </ul>
+              </div>
+              <!-- 人員區塊 -->
+              <div class="row g-3" id="personContainer"></div>
+
+              <div class="mt-3 text-end">
+                <button
+                  id="viewAllBtn"
+                  class="btn btn-primary btn-sm d-inline-flex align-items-center viewAllBtn"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="me-1"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                  View All Participants
+                </button>
+              </div>
+              <!-- 查看全部彈窗 -->
+              <div class="modal fade" id="participantsModal" tabindex="-1">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <h5 class="modal-title w-100">Participant Status</h5>
+
+                      <!-- 分類按鈕：桌機版 -->
+                      <div
+                        class="d-none d-md-flex gap-2 mt-2 w-100"
+                        id="modalFilterBtnsDesktop"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-secondary flex-fill active text-white"
+                          data-risk="all"
+                        >
+                          all
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-danger flex-fill text-white"
+                          data-risk="high"
+                        >
+                          Danger
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-warning flex-fill text-white"
+                          data-risk="slightlyHigh"
+                        >
+                          high
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-primary flex-fill text-white"
+                          data-risk="medium"
+                        >
+                          middle
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-info flex-fill text-white"
+                          data-risk="slightlyLow"
+                        >
+                          Slightly lower
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-success flex-fill text-white"
+                          data-risk="low"
+                        >
+                          Low
+                        </button>
+                      </div>
+
+                      <!-- 分類下拉：手機版 -->
+                      <div
+                        class="dropdown d-md-none mt-2 w-100"
+                        id="modalFilterDropdownMobile"
+                      >
+                        <button
+                          class="btn btn-outline-secondary dropdown-toggle w-100"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                        >
+                          Please select risk
+                        </button>
+                        <ul class="dropdown-menu w-100">
+                          <li>
+                            <a class="dropdown-item" href="#" data-risk="all"
+                              >all</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#" data-risk="high"
+                              >Danger</a
+                            >
+                          </li>
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              data-risk="slightlyHigh"
+                              >high</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#" data-risk="medium"
+                              >middle</a
+                            >
+                          </li>
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              data-risk="slightlyLow"
+                              >Slightly lower</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#" data-risk="low"
+                              >Low</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+
+                      <button
+                        type="button"
+                        class="btn-close mt-2"
+                        data-bs-dismiss="modal"
+                      ></button>
+                    </div>
+
+                    <div class="modal-body">
+                      <div class="row g-3" id="modalPersonContainer"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="level" id="levelContainer">
+              <!-- 篩選按鈕：桌機版 -->
+              <div class="d-none d-md-flex gap-2 mb-3 levelFilterBtnsDesktop">
+                <button
+                  type="button"
+                  class="btn btn-secondary flex-fill active text-white"
+                  data-filter="all"
+                >
+                  all
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger flex-fill text-white"
+                  data-filter="A"
+                >
+                  Level A: Disabled
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning flex-fill text-white"
+                  data-filter="B"
+                >
+                  Level B: Frail
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary flex-fill text-white"
+                  data-filter="C"
+                >
+                  Level C: Pre-frail
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-success flex-fill text-white"
+                  data-filter="D"
+                >
+                  Level D: Healthy
+                </button>
+              </div>
+
+              <!-- 篩選區：手機版下拉 -->
+              <div class="dropdown d-md-none mb-3 levelFilterDropdownMobile">
+                <button
+                  class="btn btn-outline-secondary dropdown-toggle w-100"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                >
+                  Please select level
+                </button>
+                <ul class="dropdown-menu w-100">
+                  <li>
+                    <a class="dropdown-item" href="#" data-filter="all">all</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-filter="A"
+                      >Level A: Disabled</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-filter="B"
+                      >Level B: Frail</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-filter="C"
+                      >Level C: Pre-frail</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-filter="D"
+                      >Level D: Healthy</a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <!-- 人員區塊 -->
+              <div class="row g-3" id="levelPersonContainer"></div>
+
+              <!-- 查看全部參與者按鈕 -->
+              <div class="mt-3 text-end">
+                <button
+                  id="viewAllLevelBtn"
+                  class="btn btn-primary btn-sm d-inline-flex align-items-center viewAllBtn"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="me-1"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                  View All Participants
+                </button>
+              </div>
+
+              <!-- 查看全部彈窗 -->
+              <div class="modal fade" id="participantsLevelModal" tabindex="-1">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">
+                      <h5 class="modal-title w-100">Participant Status</h5>
+
+                      <!-- 桌機版篩選按鈕 -->
+                      <div
+                        class="d-none d-md-flex gap-2 mt-2 w-100"
+                        id="modalLevelFilterBtnsDesktop"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-secondary flex-fill active text-white"
+                          data-filter="all"
+                        >
+                          all
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-danger flex-fill text-white"
+                          data-filter="A"
+                        >
+                          Level A: Disabled
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-warning flex-fill text-white"
+                          data-filter="B"
+                        >
+                          Level B: Frail
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-primary flex-fill text-white"
+                          data-filter="C"
+                        >
+                          Level C: Pre-frail
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-success flex-fill text-white"
+                          data-filter="D"
+                        >
+                          Level D: Healthy
+                        </button>
+                      </div>
+
+                      <!-- 手機版篩選下拉 -->
+                      <div
+                        class="dropdown d-md-none mt-2 w-100"
+                        id="modalLevelFilterDropdownMobile"
+                      >
+                        <button
+                          class="btn btn-outline-secondary dropdown-toggle w-100"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                        >
+                          Please select level
+                        </button>
+                        <ul class="dropdown-menu w-100">
+                          <li>
+                            <a class="dropdown-item" href="#" data-filter="all"
+                              >all</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#" data-filter="A"
+                              >Level A: Disabled</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#" data-filter="B"
+                              >Level B: Frail</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#" data-filter="C"
+                              >Level C: Pre-frail</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#" data-filter="D"
+                              >Level D: Healthy</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+
+                      <button
+                        type="button"
+                        class="btn-close mt-2"
+                        data-bs-dismiss="modal"
+                      ></button>
+                    </div>
+
+                    <div class="modal-body">
+                      <div class="row g-3" id="modalLevelPersonContainer"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <!--  Cookie 提示區 -->
-        <div id="cookieConsent">
-          <p>
-            We use cookies to remember your language preference. Do you agree?
-          </p>
-          <div class="d-flex justify-content-end gap-2">
-            <button class="btn btn-primary" id="acceptCookies">Accept</button>
-            <button class="btn btn-secondary" id="rejectCookies">
-              Decline
-            </button>
+          <!-- 地圖區塊 -->
+          <div class="mb-4">
+            <h5
+              id="location"
+              class="fw-bold text-dark mb-3 d-flex align-items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="me-2 text-primary"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              Distribution of testing locations
+            </h5>
+
+            <!-- 地圖 -->
+            <div id="map"></div>
+            <!-- 等級人員彈窗 -->
+            <div
+              class="modal fade"
+              id="personDetailModal"
+              tabindex="-1"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="personDetailTitle"></h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body" id="personDetailBody"></div>
+                </div>
+              </div>
+            </div>
+            <!--  Cookie 提示區 -->
+            <div id="cookieConsent">
+              <p>
+                We use cookies to remember your language preference. Do you
+                agree?
+              </p>
+              <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-primary" id="acceptCookies">
+                  Accept
+                </button>
+                <button class="btn btn-secondary" id="rejectCookies">
+                  Decline
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1320,15 +1452,40 @@
 </html>
 <!-- 日期套件 -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
-<script src="main.js"></script>
-<script src="cookie.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="js/common/lang.js"></script>
+<script src="js/common/cookie.js"></script>
+<script src="js/common/map.js"></script>
+<script src="js/common/utils.js"></script>
+<script src="js/common/state.js"></script>
+<!-- 圖表js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+<script src="js/common/riskStats.js"></script>
+<script src="js/common/personCardRisk.js"></script>
+<script src="js/common/personCardLevel.js"></script>
+<script src="js/common/charts/sitStandChart.js"></script>
+<script src="js/common/charts/balanceChart.js"></script>
+<script src="js/common/charts/gaitChart.js"></script>
+<script src="js/common/charts/riskChart.js"></script>
+<script src="js/common/charts/noDataChart.js"></script>
+<script src="js/common/downloadChart.js"></script>
+<script src="js/common/downloadPdf.js"></script>
+<script src="js/common/location.js"></script>
+<script src="js/common/table.js"></script>
+<script src="js/common/dateFilter.js"></script>
+<script src="js/common/groupCompare.js"></script>
+<script src="js/common/modal/detailModal.js"></script>
+<script src="js/common/modal/viewAllModal.js"></script>
+<script src="js/common/sortModeSwitch.js"></script>
+<script src="js/common/initSidebar.js"></script>
+<script src="js/common/main.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- pdf下載 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACfOxn7DJ9gdcb-XBx-R2X5pbHWeskzUg&callback=initMap"
   async
