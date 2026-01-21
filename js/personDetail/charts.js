@@ -508,32 +508,29 @@ function drawNoDataChart() {
   });
 }
 // 圖表下載功能
-// document.querySelectorAll(".download-chart").forEach((btn) => {
-//   btn.addEventListener("click", () => {
-//     const targetId = btn.dataset.target;
-//     const canvas = document.getElementById(targetId);
-//     if (!canvas) return;
-
-//     // 添加白底
-//     const ctx = canvas.getContext("2d");
-//     ctx.save();
-//     ctx.globalCompositeOperation = "destination-over";
-//     ctx.fillStyle = "white";
-//     ctx.fillRect(0, 0, canvas.width, canvas.height);
-//     ctx.restore();
-
-//     //圖檔
-//     const image = canvas.toDataURL("image/png", 0.9);
-
-//     // a 標籤下載
-//     const link = document.createElement("a");
-//     link.href = image;
-//     link.download = `${targetId}.png`;
-//     document.body.appendChild(link);
-//     link.click();
-//     document.body.removeChild(link);
-//   });
-// });
+document.querySelectorAll(".download-chart").forEach((btn) => {
+  // btn.addEventListener("click", () => {
+  //   const targetId = btn.dataset.target;
+  //   const canvas = document.getElementById(targetId);
+  //   if (!canvas) return;
+  //   // 添加白底
+  //   const ctx = canvas.getContext("2d");
+  //   ctx.save();
+  //   ctx.globalCompositeOperation = "destination-over";
+  //   ctx.fillStyle = "white";
+  //   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  //   ctx.restore();
+  //   //圖檔
+  //   const image = canvas.toDataURL("image/png", 0.9);
+  //   // a 標籤下載
+  //   const link = document.createElement("a");
+  //   link.href = image;
+  //   link.download = `${targetId}.png`;
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // });
+});
 function applyLanguage() {
   document.querySelectorAll("[data-lang]").forEach((el) => {
     const key = el.getAttribute("data-lang");

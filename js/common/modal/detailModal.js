@@ -14,12 +14,14 @@
   }
 
   function getSelectedAssessments() {
-    const checkedIndexes = Array.from(document.querySelectorAll(".row-check"))
-      .filter((c) => c.checked)
-      .map((c) => parseInt(c.dataset.index, 10));
+    const selectedIndexes = window.selected || [];
 
     const list = window.lastRenderedAssessments || [];
-    return checkedIndexes.map((i) => list[i]).filter(Boolean);
+
+    const results = selectedIndexes.map((i) => list[i]).filter(Boolean);
+
+    // console.log("Modal 取得的選取資料內容:", results);
+    return results;
   }
 
   function buildDegenerateBlock(selected) {
@@ -38,14 +40,14 @@
         list.forEach((p) => {
           gaitNames.push(
             `${p.Name || t("unknown")} (${p.Age || t("unknown")}${t(
-              "yearsOld"
+              "yearsOld",
             )}, ${
               p.Gender === 0
                 ? t("male")
                 : p.Gender === 1
-                ? t("female")
-                : t("unknown")
-            })`
+                  ? t("female")
+                  : t("unknown")
+            })`,
           );
         });
       }
@@ -57,14 +59,14 @@
         list.forEach((p) => {
           chairNames.push(
             `${p.Name || t("unknown")} (${p.Age || t("unknown")}${t(
-              "yearsOld"
+              "yearsOld",
             )}, ${
               p.Gender === 0
                 ? t("male")
                 : p.Gender === 1
-                ? t("female")
-                : t("unknown")
-            })`
+                  ? t("female")
+                  : t("unknown")
+            })`,
           );
         });
       }
@@ -77,7 +79,7 @@
           <div class="col-12 col-md-6">
             <div class="card">
               <div class="card-header">${t(
-                "walkDecline"
+                "walkDecline",
               )} (${totalGaitSpeed})</div>
               <ul class="list-group list-group-flush">
                 ${
@@ -86,7 +88,7 @@
                         .map((n) => `<li class="list-group-item">${n}</li>`)
                         .join("")
                     : `<li class="list-group-item text-muted">${t(
-                        "alertNoData"
+                        "alertNoData",
                       )}</li>`
                 }
               </ul>
@@ -96,7 +98,7 @@
           <div class="col-12 col-md-6">
             <div class="card">
               <div class="card-header">${t(
-                "sitStandIncrease"
+                "sitStandIncrease",
               )} (${totalChairSecond})</div>
               <ul class="list-group list-group-flush">
                 ${
@@ -105,7 +107,7 @@
                         .map((n) => `<li class="list-group-item">${n}</li>`)
                         .join("")
                     : `<li class="list-group-item text-muted">${t(
-                        "alertNoData"
+                        "alertNoData",
                       )}</li>`
                 }
               </ul>
@@ -141,8 +143,8 @@
               person.Gender === 0
                 ? t("male")
                 : person.Gender === 1
-                ? t("female")
-                : t("unknown");
+                  ? t("female")
+                  : t("unknown");
             names.push(`${person.Name} (${ageText}, ${genderText})`);
           });
         }
@@ -161,7 +163,7 @@
                       .map((n) => `<li class="list-group-item">${n}</li>`)
                       .join("")
                   : `<li class="list-group-item text-muted">${t(
-                      "alertNoData"
+                      "alertNoData",
                     )}</li>`
               }
             </ul>
@@ -228,10 +230,10 @@
                           person.Gender === 0
                             ? t("male")
                             : person.Gender === 1
-                            ? t("female")
-                            : t("unknown");
+                              ? t("female")
+                              : t("unknown");
                         names.push(
-                          `${person.Name} (${ageText}, ${genderText})`
+                          `${person.Name} (${ageText}, ${genderText})`,
                         );
                       });
                     }
@@ -251,11 +253,11 @@
                               ? names
                                   .map(
                                     (n) =>
-                                      `<li class="list-group-item">${n}</li>`
+                                      `<li class="list-group-item">${n}</li>`,
                                   )
                                   .join("")
                               : `<li class="list-group-item text-muted">${t(
-                                  "alertNoData"
+                                  "alertNoData",
                                 )}</li>`
                           }
                         </ul>
@@ -276,7 +278,7 @@
     selected,
     year,
     monthButtonsContainer,
-    monthContent
+    monthContent,
   ) {
     monthButtonsContainer.innerHTML = "";
 
@@ -360,7 +362,7 @@
 
       if (!selected.length) {
         modalBody.innerHTML = `<div class="text-center text-muted">${t(
-          "alertNoData"
+          "alertNoData",
         )}</div>`;
       } else {
         // 功能衰退統計
@@ -368,7 +370,7 @@
 
         // 年份下拉 + 標題
         modalBody.innerHTML += `<div class="mb-2 fw-bold">${t(
-          "highRiskGroup"
+          "highRiskGroup",
         )}</div>`;
 
         const yearsSet = new Set();
@@ -387,7 +389,7 @@
                   (y) =>
                     `<option value="${y}" ${
                       y === defaultYear ? "selected" : ""
-                    }>${y}</option>`
+                    }>${y}</option>`,
                 )
                 .join("")}
             </select>
@@ -404,7 +406,7 @@
           selected,
           parseInt(yearSelect.value, 10),
           monthButtonsContainer,
-          monthContent
+          monthContent,
         );
 
         yearSelect.addEventListener("change", (e) => {
@@ -412,7 +414,7 @@
             selected,
             parseInt(e.target.value, 10),
             monthButtonsContainer,
-            monthContent
+            monthContent,
           );
         });
       }

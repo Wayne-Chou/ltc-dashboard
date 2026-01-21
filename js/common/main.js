@@ -3,13 +3,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   initLocationDropdown();
   initTable();
   initSidebarToggle();
-  initDownloadPdf();
+  // initDownloadPdf();
   initDateFilter();
   initGroupCompare();
   initPersonCardRisk();
   initPersonCardLevel();
   initRiskModeUI();
-  initDownloadChart();
+  // initDownloadChart();
   initDetailModal();
   initViewAllModal();
   initSortModeSwitch();
