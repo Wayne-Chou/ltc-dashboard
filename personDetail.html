@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>人員詳細資料</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+
+    <link rel="stylesheet" href="css/personDetail.css" />
+  </head>
+
+  <body class="app">
+    <div class="container app-shell">
+      <header class="patient-header">
+        <div class="patient-header-top">
+          <div class="back-action">
+            <button type="button" class="custom-back-btn" onclick="goBack()">
+              <div class="icon-circle">
+                <i class="fa-solid fa-arrow-left"></i>
+              </div>
+              <span data-lang="back"></span>
+            </button>
+          </div>
+          <div class="patient-title">
+            <div class="patient-name">
+              <i class="fa-solid fa-user-injured"></i>
+              <h1 id="personName"></h1>
+            </div>
+          </div>
+        </div>
+
+        <div id="personInfo" class="patient-meta"></div>
+        <section
+          id="reportHeadline"
+          class="headline clinical-headline"
+          data-status="critical"
+        >
+          <div class="headline-left">
+            <div class="headline-badge" data-tone="neutral">
+              <i class="fa-solid fa-circle-info"></i>
+              <span data-lang="headlineLoading"></span>
+            </div>
+            <div class="headline-text">
+              <div
+                class="headline-title"
+                data-lang="headlineDefaultTitle"
+              ></div>
+              <div class="headline-desc" data-lang="headlineDefaultDesc"></div>
+            </div>
+          </div>
+
+          <div class="headline-right">
+            <div class="headline-meta">
+              <div class="meta-label" data-lang="compareRange"></div>
+              <div id="reportRange" class="meta-value">--</div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span data-lang="panelTrendSummary"></span>
+              </h2>
+              <div class="panel-hint"></div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div id="trendSummary"></div>
+          </div>
+        </section>
+      </header>
+
+      <main class="report">
+        <div class="layout">
+          <div class="layout-left">
+            <!-- 表格 -->
+
+            <section class="panel">
+              <h2 class="panel-title">
+                <i class="fa-solid fa-table"></i>
+                <span data-lang="panelRecordList"></span>
+              </h2>
+              <div class="panel-header">
+                <div>
+                  <div class="panel-hint" data-lang="panelRecordHint"></div>
+                </div>
+
+                <div class="panel-actions">
+                  <button
+                    id="checkAllBtn"
+                    class="btn-soft"
+                    data-lang="selectAll"
+                  ></button>
+                  <button
+                    id="uncheckAllBtn"
+                    class="btn-soft secondary"
+                    data-lang="unselectAll"
+                  ></button>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <div class="panel-filters">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      id="dateRange"
+                      class="form-control flatpickr-input"
+                      data-lang="dateRangePlaceholder"
+                      readonly
+                    />
+                    <button
+                      class="btn btn-outline-secondary"
+                      id="clearBtn"
+                      data-lang="clear"
+                    ></button>
+                  </div>
+                </div>
+                <div id="personTable" class="table-wrap"></div>
+              </div>
+            </section>
+          </div>
+
+          <!-- ===== RIGHT：圖表 ===== -->
+          <div class="layout-right">
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span data-lang="panelTrendChart"></span>
+                  </h2>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <!-- 坐站 -->
+                <div class="chart-card mb-4">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title" data-lang="sitStandTrend"></div>
+                      <div class="chart-sub" data-lang="suggestSit"></div>
+                    </div>
+                    <button
+                      class="download-chart"
+                      data-target="sitStandChartCanvas"
+                      data-lang="downloadImage"
+                    >
+                      <i class="fa-solid fa-download"></i>
+                    </button>
+                  </div>
+                  <div class="chart-body">
+                    <canvas id="sitStandChartCanvas"></canvas>
+                  </div>
+                </div>
+
+                <!-- 平衡 -->
+                <div class="chart-card mb-4">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title" data-lang="suggestBalance"></div>
+                      <div class="chart-sub" data-lang="suggestBalance"></div>
+                    </div>
+                    <button
+                      class="download-chart"
+                      data-target="balanceChartCanvas"
+                      data-lang="downloadImage"
+                    >
+                      <i class="fa-solid fa-download"></i>
+                    </button>
+                  </div>
+                  <div class="chart-body">
+                    <canvas id="balanceChartCanvas"></canvas>
+                  </div>
+                </div>
+
+                <!-- 步行 -->
+                <div class="chart-card mb-4">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title" data-lang="gaitTrend"></div>
+                      <div class="chart-sub" data-lang="suggestGait"></div>
+                    </div>
+                    <button
+                      class="download-chart"
+                      data-target="gaitChartCanvas"
+                      data-lang="downloadImage"
+                    >
+                      <i class="fa-solid fa-download"></i>
+                    </button>
+                  </div>
+                  <div class="chart-body">
+                    <canvas id="gaitChartCanvas"></canvas>
+                  </div>
+                </div>
+
+                <!-- 風險 -->
+                <div class="chart-card">
+                  <div class="chart-head">
+                    <div>
+                      <div class="chart-title" data-lang="aiFallRisk"></div>
+                    </div>
+                    <button
+                      class="download-chart"
+                      data-target="riskChartCanvas"
+                      data-lang="downloadImage"
+                    >
+                      <i class="fa-solid fa-download"></i>
+                    </button>
+                  </div>
+                  <div class="chart-body">
+                    <canvas id="riskChartCanvas"></canvas>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+    <script src="/js/common/config.js"></script>
+    <script src="/js/personDetail/url.js"></script>
+    <script src="/js/personDetail/lang.js"></script>
+    <script src="/js/personDetail/charts.js"></script>
+    <script src="/js/personDetail/calculateTrend.js"></script>
+    <script src="/js/personDetail/renderTrendSummary.js"></script>
+    <script src="/js/personDetail/table.js"></script>
+    <script src="/js/personDetail/reportHeadline.js"></script>
+    <script src="/js/personDetail/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+/* 卡片樣式 */
+.login-card {
+  max-width: 400px;
+  border-radius: 15px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* 輸入框 focus */
+.form-control:focus {
+  border-color: #0dcaf0;
+  box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.25);
+}
+
+/* 登入按鈕 */
+#loginBtn {
+  background-color: #0dcaf0;
+  border-color: #0dcaf0;
+}
+
+#loginBtn:hover {
+  background-color: #0bb8d9;
+  border-color: #0bb8d9;
+}
+
+#mainTitle {
+  color: #007b8f;
+  font-weight: 700;
+}
+
+.language-label i {
+  margin-right: 5px;
+}
+/* 讓眼睛圖示看起來可以點擊，且移除輸入框右側重複的邊框線 */
+#togglePassword {
+  cursor: pointer;
+  border-left: none; /* 讓中間看起來是一體的 */
+}
+
+#password {
+  border-right: none;
+}
+
+/* 點擊 input 時，讓旁邊的 icon 顏色也能同步變化 (選修) */
+.input-group:focus-within .input-group-text {
+  border-color: #86b7fe;
+}
