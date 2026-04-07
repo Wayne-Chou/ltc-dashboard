@@ -1613,8 +1613,13 @@ function initCompareView() {
   drawNoDataChart();
 }
 function initDefaultView() {
+  initLogoutButton();
   initLocationPage();
   initTable();
+  initSidebarToggle();
+  initDownloadPdf();
+  initDateFilter();
+  initGroupCompare();
   initPersonCardRisk();
   initPersonCardLevel();
   initRiskModeUI();
@@ -1622,7 +1627,6 @@ function initDefaultView() {
   initDetailModal();
   initViewAllModal();
   initSortModeSwitch();
-  renderAllCharts();
 }
 document.addEventListener("DOMContentLoaded", async () => {
   // initLogoutButton();
