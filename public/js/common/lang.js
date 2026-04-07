@@ -1,6 +1,7 @@
 // 語系
 const LANG = {
   zh: {
+    backToDefault: "返回一般模式",
     groupComparison: "群體比較分析",
     enableCompare: "啟用比較模式",
     compareDesc: "比較不同時間區間的整體變化（以群體平均值為基準）",
@@ -184,6 +185,7 @@ const LANG = {
   },
 
   en: {
+    backToDefault: "Back to Default Mode",
     groupComparison: "Group Comparison Analysis",
     enableCompare: "Enable Comparison Mode",
     compareDesc:
@@ -372,6 +374,7 @@ const LANG = {
     companyName: "FongAI Tech",
   },
   ja: {
+    backToDefault: "通常モードに戻る",
     groupComparison: "グループ比較分析",
     enableCompare: "比較モードを有効にする",
     compareDesc: "期間ごとの全体的な変化を比較（グループ平均を基準）",
@@ -560,6 +563,7 @@ const LANG = {
     companyName: "建豐健康科技",
   },
   ko: {
+    backToDefault: "기본 모드로 돌아가기",
     groupComparison: "그룹 비교 분석",
     enableCompare: "비교 모드 활성화",
     compareDesc: "기간별 전체 변화 비교 (그룹 평균 기준)",

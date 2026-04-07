@@ -1,3 +1,4 @@
+import "./lang.js";
 const BASE_URL = "https://service.fongai.co/WebAPI/api";
 document.addEventListener("DOMContentLoaded", () => {
   async function validateOnLoginPage() {

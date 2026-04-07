@@ -1,14 +1,3 @@
-const ref = document.referrer;
-if (ref.includes("index_en.html")) {
-  window.currentLang = "en";
-} else if (ref.includes("index_ja.html")) {
-  window.currentLang = "ja";
-} else if (ref.includes("index_ko.html")) {
-  window.currentLang = "ko";
-} else {
-  window.currentLang = "zh";
-}
-
 const LANG = {
   zh: {
     alertNoData: "查無資料",

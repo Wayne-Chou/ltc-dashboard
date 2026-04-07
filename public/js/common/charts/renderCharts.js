@@ -1,74 +1,21 @@
 /* ========================
-   比較模式（進入）
-   ======================== */
-
-function enterCompareMode() {
-  //  切換狀態
-  dashboardState.view = "compare";
-
-  //  清掉目前畫面所有 chart
-  clearAllCharts();
-
-  // 初始化讓他能維持垂直水平至中（延遲一幀，避免 Chart 衝突）
-  requestAnimationFrame(() => {
-    initEmptyCharts();
-    drawNoDataChart();
-  });
-
-  //  隱藏原本單一模式 UI
-  document.querySelectorAll(".compare-hide").forEach((el) => {
-    el.classList.add("hidden");
-  });
-
-  //  顯示比較 UI 區塊
-  document.getElementById("compareView").classList.remove("hidden");
-
-  //  重置已選據點
-  dashboardState.selectedSites = [];
-
-  //  更新 UI
-  renderSelectedSites();
-  renderSiteSelector();
-
-  // 按鈕文字切換（UX）
-  document.getElementById("compareBtn").innerHTML =
-    '<i class="bi bi-x-lg me-1"></i> 返回一般模式';
-}
-
-/* ========================
-   比較模式(離開)
-   ======================== */
-function exitCompareMode() {
-  dashboardState.view = "default";
-  removeNoDataOverlay();
-  // 顯示原本 UI
-  document.querySelectorAll(".compare-hide").forEach((el) => {
-    el.classList.remove("hidden");
-  });
-
-  //  隱藏比較 UI
-  document.getElementById("compareView").classList.add("hidden");
-
-  //  清空選擇
-  dashboardState.selectedSites = [];
-  renderSelectedSites();
-
-  //  重新畫單一圖
-  renderAllCharts();
-
-  document.getElementById("compareBtn").innerHTML =
-    '<i class="bi bi-intersect me-1"></i> 群體比較模式';
-}
-
-/* ========================
    模式切換
    ======================== */
 window.toggleCompareMode = function () {
-  if (dashboardState.view === "compare") {
-    exitCompareMode();
-  } else {
-    enterCompareMode();
+  const isCompare = dashboardState.view === "compare";
+
+  dashboardState.view = isCompare ? "default" : "compare";
+
+  const btn = document.getElementById("compareBtn");
+  if (btn) {
+    const span = btn.querySelector("span");
+
+    if (span) {
+      span.dataset.i18n = isCompare ? "compareMode" : "backToDefault";
+    }
   }
+
+  renderView(); // render 裡面會 applyI18n
 };
 
 /* ========================
@@ -84,15 +31,12 @@ function clearAllCharts() {
 
   canvasIds.forEach((id) => {
     const chart = Chart.getChart(id);
-
-    if (chart) {
-      chart.destroy();
-    }
+    if (chart) chart.destroy();
   });
 }
 
 /* ========================
-   渲染據點列表（卡片）
+   渲染據點列表
    ======================== */
 window.renderSiteSelector = function () {
   const container = document.getElementById("siteSelector");
@@ -105,7 +49,6 @@ window.renderSiteSelector = function () {
     return;
   }
 
-  //  每個據點一張卡片
   container.innerHTML = sites
     .map(
       (site) => `
@@ -128,25 +71,20 @@ window.toggleSite = async function (siteCode, el) {
   const list = dashboardState.selectedSites;
 
   if (list.includes(siteCode)) {
-    //  取消選擇
     dashboardState.selectedSites = list.filter((s) => s !== siteCode);
     el.classList.remove("active");
   } else {
-    //  最多3個
     if (list.length >= 3) {
       alert("最多選擇3個據點");
       return;
     }
-
     dashboardState.selectedSites.push(siteCode);
     el.classList.add("active");
   }
 
-  //  更新上方 tag UI
   renderSelectedSites();
 
-  //  如果全部取消 → 清圖
-  if (dashboardState.selectedSites.length === 0) {
+  if (!dashboardState.selectedSites.length) {
     clearAllCharts();
 
     requestAnimationFrame(() => {
@@ -157,12 +95,11 @@ window.toggleSite = async function (siteCode, el) {
     return;
   }
 
-  //  重新抓資料 + 畫圖
   await renderCompareCharts();
 };
 
 /* ========================
-   已選據點（tag UI）
+   已選據點（tag）
    ======================== */
 function renderSelectedSites() {
   const container = document.getElementById("selectedSites");
@@ -186,7 +123,7 @@ function renderSelectedSites() {
 }
 
 /* ========================
-   移除據點（點 tag）
+   移除據點
    ======================== */
 window.removeSite = async function (code) {
   dashboardState.selectedSites = dashboardState.selectedSites.filter(
@@ -195,10 +132,8 @@ window.removeSite = async function (code) {
 
   renderSelectedSites();
 
-  // 同步卡片 UI（取消 active）
   document.querySelectorAll(".site-card").forEach((card) => {
-    const cardCode = card.dataset.code;
-    if (!dashboardState.selectedSites.includes(cardCode)) {
+    if (!dashboardState.selectedSites.includes(card.dataset.code)) {
       card.classList.remove("active");
     }
   });
@@ -218,7 +153,7 @@ window.removeSite = async function (code) {
 };
 
 /* ========================
-   抓資料 
+   抓資料
    ======================== */
 async function renderCompareCharts() {
   const token = getCookie("fongai_token");
@@ -254,13 +189,10 @@ function drawMultiLineChart(canvasId, groupedData, key) {
     B: "#ef4444",
     C: "#10b981",
   };
-  const colorMap = SITE_COLOR_MAP;
 
   const allDatesSet = new Set();
   groupedData.forEach((group) => {
-    group.data.forEach((d) => {
-      allDatesSet.add(d.Date);
-    });
+    group.data.forEach((d) => allDatesSet.add(d.Date));
   });
 
   const allDates = [...allDatesSet].sort((a, b) => new Date(a) - new Date(b));
@@ -272,15 +204,12 @@ function drawMultiLineChart(canvasId, groupedData, key) {
 
   const datasets = groupedData.map((group) => {
     const map = new Map();
-
-    group.data.forEach((d) => {
-      map.set(d.Date, d[key]);
-    });
+    group.data.forEach((d) => map.set(d.Date, d[key]));
 
     return {
       label: group.site,
       data: allDates.map((date) => map.get(date) ?? null),
-      borderColor: colorMap[group.code],
+      borderColor: SITE_COLOR_MAP[group.code],
       tension: 0.3,
       fill: false,
       spanGaps: true,
@@ -304,7 +233,7 @@ function drawMultiLineChart(canvasId, groupedData, key) {
 }
 
 /* ========================
-   比較模式畫圖入口
+   比較模式畫圖
    ======================== */
 window.drawCompareCharts = function (groupedData) {
   clearAllCharts();
@@ -320,17 +249,15 @@ window.drawCompareCharts = function (groupedData) {
 };
 
 /* ========================
-   單一模式（保留）
+   單一模式
    ======================== */
 window.renderAllCharts = function () {
-  if (!window.dashboardState) return;
-  if (!window.currentAssessments) return;
+  if (!window.dashboardState || !window.currentAssessments) return;
+
   removeNoDataOverlay();
 
-  if (dashboardState.view === "default") {
-    drawSitStandChartChartJS(currentAssessments);
-    drawBalanceChartChartJS(currentAssessments);
-    drawGaitChartChartJS(currentAssessments);
-    drawRiskChartChartJS(currentAssessments);
-  }
+  drawSitStandChartChartJS(currentAssessments);
+  drawBalanceChartChartJS(currentAssessments);
+  drawGaitChartChartJS(currentAssessments);
+  drawRiskChartChartJS(currentAssessments);
 };

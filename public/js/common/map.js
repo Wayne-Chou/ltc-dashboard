@@ -4,6 +4,10 @@
 window.mapElements = window.mapElements || [];
 
 function initMap() {
+  if (!window.google || !google.maps) {
+    console.warn("Google Maps 尚未載入，略過 initMap");
+    return;
+  }
   // --- 1. 清除地圖上現有的 Marker 和 Label ---
   if (window.mapElements.length > 0) {
     window.mapElements.forEach((item) => {

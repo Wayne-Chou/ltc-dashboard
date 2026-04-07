@@ -30,7 +30,7 @@
               <div class="icon-circle">
                 <i class="fa-solid fa-arrow-left"></i>
               </div>
-              <span data-lang="back"></span>
+              <span data-lang="back" data-i18n="back"></span>
             </button>
           </div>
           <div class="patient-title">
@@ -50,20 +50,32 @@
           <div class="headline-left">
             <div class="headline-badge" data-tone="neutral">
               <i class="fa-solid fa-circle-info"></i>
-              <span data-lang="headlineLoading"></span>
+              <span
+                data-lang="headlineLoading"
+                data-i18n="headlineLoading"
+              ></span>
             </div>
             <div class="headline-text">
               <div
                 class="headline-title"
                 data-lang="headlineDefaultTitle"
+                data-i18n="headlineDefaultTitle"
               ></div>
-              <div class="headline-desc" data-lang="headlineDefaultDesc"></div>
+              <div
+                class="headline-desc"
+                data-lang="headlineDefaultDesc"
+                data-i18n="headlineDefaultDesc"
+              ></div>
             </div>
           </div>
 
           <div class="headline-right">
             <div class="headline-meta">
-              <div class="meta-label" data-lang="compareRange"></div>
+              <div
+                class="meta-label"
+                data-lang="compareRange"
+                data-i18n="compareRange"
+              ></div>
               <div id="reportRange" class="meta-value">--</div>
             </div>
           </div>
@@ -73,7 +85,10 @@
             <div>
               <h2 class="panel-title">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <span data-lang="panelTrendSummary"></span>
+                <span
+                  data-lang="panelTrendSummary"
+                  data-i18n="panelTrendSummary"
+                ></span>
               </h2>
               <div class="panel-hint"></div>
             </div>
@@ -87,16 +102,21 @@
       <main class="report">
         <div class="layout">
           <div class="layout-left">
-            <!-- 表格 -->
-
             <section class="panel">
               <h2 class="panel-title">
                 <i class="fa-solid fa-table"></i>
-                <span data-lang="panelRecordList"></span>
+                <span
+                  data-lang="panelRecordList"
+                  data-i18n="panelRecordList"
+                ></span>
               </h2>
               <div class="panel-header">
                 <div>
-                  <div class="panel-hint" data-lang="panelRecordHint"></div>
+                  <div
+                    class="panel-hint"
+                    data-lang="panelRecordHint"
+                    data-i18n="panelRecordHint"
+                  ></div>
                 </div>
 
                 <div class="panel-actions">
@@ -104,11 +124,13 @@
                     id="checkAllBtn"
                     class="btn-soft"
                     data-lang="selectAll"
+                    data-i18n="selectAll"
                   ></button>
                   <button
                     id="uncheckAllBtn"
                     class="btn-soft secondary"
                     data-lang="unselectAll"
+                    data-i18n="unselectAll"
                   ></button>
                 </div>
               </div>
@@ -121,12 +143,14 @@
                       id="dateRange"
                       class="form-control flatpickr-input"
                       data-lang="dateRangePlaceholder"
+                      data-i18n-placeholder="dateRangePlaceholder"
                       readonly
                     />
                     <button
                       class="btn btn-outline-secondary"
                       id="clearBtn"
                       data-lang="clear"
+                      data-i18n="clear"
                     ></button>
                   </div>
                 </div>
@@ -135,30 +159,40 @@
             </section>
           </div>
 
-          <!-- ===== RIGHT：圖表 ===== -->
           <div class="layout-right">
             <section class="panel">
               <div class="panel-header">
                 <div>
                   <h2 class="panel-title">
                     <i class="fa-solid fa-chart-line"></i>
-                    <span data-lang="panelTrendChart"></span>
+                    <span
+                      data-lang="panelTrendChart"
+                      data-i18n="panelTrendChart"
+                    ></span>
                   </h2>
                 </div>
               </div>
 
               <div class="panel-body">
-                <!-- 坐站 -->
                 <div class="chart-card mb-4">
                   <div class="chart-head">
                     <div>
-                      <div class="chart-title" data-lang="sitStandTrend"></div>
-                      <div class="chart-sub" data-lang="suggestSit"></div>
+                      <div
+                        class="chart-title"
+                        data-lang="sitStandTrend"
+                        data-i18n="sitStandTrend"
+                      ></div>
+                      <div
+                        class="chart-sub"
+                        data-lang="suggestSit"
+                        data-i18n="suggestSit"
+                      ></div>
                     </div>
                     <button
                       class="download-chart"
                       data-target="sitStandChartCanvas"
                       data-lang="downloadImage"
+                      data-i18n="downloadImage"
                     >
                       <i class="fa-solid fa-download"></i>
                     </button>
@@ -168,17 +202,25 @@
                   </div>
                 </div>
 
-                <!-- 平衡 -->
                 <div class="chart-card mb-4">
                   <div class="chart-head">
                     <div>
-                      <div class="chart-title" data-lang="suggestBalance"></div>
-                      <div class="chart-sub" data-lang="suggestBalance"></div>
+                      <div
+                        class="chart-title"
+                        data-lang="suggestBalance"
+                        data-i18n="suggestBalance"
+                      ></div>
+                      <div
+                        class="chart-sub"
+                        data-lang="suggestBalance"
+                        data-i18n="suggestBalance"
+                      ></div>
                     </div>
                     <button
                       class="download-chart"
                       data-target="balanceChartCanvas"
                       data-lang="downloadImage"
+                      data-i18n="downloadImage"
                     >
                       <i class="fa-solid fa-download"></i>
                     </button>
@@ -188,17 +230,25 @@
                   </div>
                 </div>
 
-                <!-- 步行 -->
                 <div class="chart-card mb-4">
                   <div class="chart-head">
                     <div>
-                      <div class="chart-title" data-lang="gaitTrend"></div>
-                      <div class="chart-sub" data-lang="suggestGait"></div>
+                      <div
+                        class="chart-title"
+                        data-lang="gaitTrend"
+                        data-i18n="gaitTrend"
+                      ></div>
+                      <div
+                        class="chart-sub"
+                        data-lang="suggestGait"
+                        data-i18n="suggestGait"
+                      ></div>
                     </div>
                     <button
                       class="download-chart"
                       data-target="gaitChartCanvas"
                       data-lang="downloadImage"
+                      data-i18n="downloadImage"
                     >
                       <i class="fa-solid fa-download"></i>
                     </button>
@@ -208,16 +258,20 @@
                   </div>
                 </div>
 
-                <!-- 風險 -->
                 <div class="chart-card">
                   <div class="chart-head">
                     <div>
-                      <div class="chart-title" data-lang="aiFallRisk"></div>
+                      <div
+                        class="chart-title"
+                        data-lang="aiFallRisk"
+                        data-i18n="aiFallRisk"
+                      ></div>
                     </div>
                     <button
                       class="download-chart"
                       data-target="riskChartCanvas"
                       data-lang="downloadImage"
+                      data-i18n="downloadImage"
                     >
                       <i class="fa-solid fa-download"></i>
                     </button>
@@ -248,6 +302,7 @@
     <script src="/js/personDetail/renderTrendSummary.js"></script>
     <script src="/js/personDetail/table.js"></script>
     <script src="/js/personDetail/reportHeadline.js"></script>
+    <script src="/js/common/118n.js"></script>
     <script src="/js/personDetail/main.js"></script>
   </body>
 </html>

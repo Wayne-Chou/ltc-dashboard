@@ -177,7 +177,7 @@ function goBack() {
   if (returnUrl) {
     window.location.href = decodeURIComponent(returnUrl);
   } else {
-    window.location.href = "/dashboard/index.html";
+    window.location.href = "/ltc-dashboard/index.html";
   }
 }
 document.addEventListener("DOMContentLoaded", initPersonPage);
