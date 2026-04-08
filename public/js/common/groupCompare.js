@@ -79,7 +79,7 @@ function calcGroupSummary(assessments = []) {
    */
   const totalVisits = assessments.reduce(
     (sum, item) => sum + (item.Count || 0),
-    0
+    0,
   );
 
   /**
@@ -245,11 +245,11 @@ function renderGroupCompareResult(summaryA, summaryB) {
   container.innerHTML = `
     <div class="mb-3 d-flex justify-content-between flex-wrap gap-2 small">
       <div>${t("basePeriod")}｜${t("people")} ${summaryA.uniquePeople}｜${t(
-    "visits"
-  )} ${summaryA.totalVisits}</div>
+        "visits",
+      )} ${summaryA.totalVisits}</div>
       <div>${t("compPeriod")}｜${t("people")} ${summaryB.uniquePeople}｜${t(
-    "visits"
-  )} ${summaryB.totalVisits}</div>
+        "visits",
+      )} ${summaryB.totalVisits}</div>
     </div>
 
     <div class="table-responsive">
@@ -268,28 +268,28 @@ function renderGroupCompareResult(summaryA, summaryB) {
             summaryA.avgChair,
             summaryB.avgChair,
             " " + t("seconds"),
-            "lower"
+            "lower",
           )}
           ${row(
             t("avgBalanceScore"),
             summaryA.avgBalance,
             summaryB.avgBalance,
             " " + t("points"),
-            "higher"
+            "higher",
           )}
           ${row(
             t("avgGaitSpeed"),
             summaryA.avgGait,
             summaryB.avgGait,
             " cm/s",
-            "higher"
+            "higher",
           )}
           ${row(
             t("avgFallRisk"),
             summaryA.avgRisk,
             summaryB.avgRisk,
             " %",
-            "lower"
+            "lower",
           )}
         </tbody>
       </table>
@@ -340,7 +340,7 @@ function renderGroupCompare() {
         <h6 class="fw-bold text-danger">${t("dateOrderErrorTitle")}</h6>
         <p class="text-muted small">${t("dateOrderErrorDesc")}</p>
         <button class="btn btn-sm btn-outline-danger mt-2" onclick="window.fpGroupB.clear()">${t(
-          "reselectSecond"
+          "reselectSecond",
         )}</button>
       </div>
     `;
@@ -359,7 +359,7 @@ function renderGroupCompare() {
         <h6 class="fw-bold text-dark">${t("noDataTitle")}</h6>
         <p class="text-muted small">${t("noDataDesc").replace(
           "{missing}",
-          missingTerm
+          missingTerm,
         )}</p>
       </div>
     `;
@@ -405,10 +405,10 @@ function renderGroupCompareResultTable(summaryA, summaryB) {
       <div class="col-md-6">
         <div class="p-3 border rounded-3 bg-light">
           <div class="small text-muted mb-1">${t("baseline")}：${
-    summaryA.uniquePeople
-  } ${t("people")} / ${summaryA.totalVisits} ${t("visits")}</div>
+            summaryA.uniquePeople
+          } ${t("people")} / ${summaryA.totalVisits} ${t("visits")}</div>
           <div class="h5 fw-bold mb-0 text-dark">${t(
-            "avgFallRisk"
+            "avgFallRisk",
           )}：${summaryA.avgRisk.toFixed(1)}%</div>
         </div>
       </div>
@@ -417,11 +417,11 @@ function renderGroupCompareResultTable(summaryA, summaryB) {
           riskDiff <= 0 ? "border-success" : "border-danger"
         } bg-white">
           <div class="small text-muted mb-1">${t("comparison")}：${
-    summaryB.uniquePeople
-  } ${t("people")} / ${summaryB.totalVisits} ${t("visits")}</div>
+            summaryB.uniquePeople
+          } ${t("people")} / ${summaryB.totalVisits} ${t("visits")}</div>
           <div class="h5 fw-bold mb-0 ${riskTrendClass}">${riskTrendText} ${Math.abs(
-    riskDiff
-  )}%</div>
+            riskDiff,
+          )}%</div>
         </div>
       </div>
     </div>
@@ -442,28 +442,28 @@ function renderGroupCompareResultTable(summaryA, summaryB) {
             summaryA.avgChair,
             summaryB.avgChair,
             " " + t("seconds"),
-            "lower"
+            "lower",
           )}
           ${row(
             t("avgBalanceScore"),
             summaryA.avgBalance,
             summaryB.avgBalance,
             " " + t("points"),
-            "higher"
+            "higher",
           )}
           ${row(
             t("avgGaitSpeed"),
             summaryA.avgGait,
             summaryB.avgGait,
             " cm/s",
-            "higher"
+            "higher",
           )}
           ${row(
             t("avgFallRisk"),
             summaryA.avgRisk,
             summaryB.avgRisk,
             " %",
-            "lower"
+            "lower",
           )}
         </tbody>
       </table>
@@ -568,3 +568,4 @@ function initGroupCompare() {
   // 執行初始渲染
   renderGroupCompare();
 }
+window.initGroupCompare = initGroupCompare;

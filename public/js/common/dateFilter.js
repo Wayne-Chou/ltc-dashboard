@@ -144,3 +144,4 @@ function initDateFilter() {
     }
   });
 }
+window.initDateFilter = initDateFilter;

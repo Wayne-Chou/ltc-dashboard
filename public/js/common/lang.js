@@ -675,3 +675,4 @@ function t(key) {
 function tLocation(key) {
   return LANG[window.currentLang]?.locations?.[key] || key;
 }
+window.LANG = LANG;

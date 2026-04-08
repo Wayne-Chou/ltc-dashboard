@@ -64,7 +64,7 @@ function renderAssessmentTable(assessments) {
     const cardCol = document.createElement("div");
     cardCol.className = "col-12 col-md-6 col-lg-4 mb-3";
     cardCol.innerHTML = `
-      <div class="card h-100 selectable-card ${isSelected ? "border-primary shadow bg-light" : "border-light shadow-sm"}" 
+      <div class="card h-100 selectable-card ${isSelected ? "border-primary shadow bg-light" : "border-light shadow-sm"}"
             data-index="${globalIndex}" style="cursor:pointer; border-width:2px; transition:all 0.2s ease;">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -219,3 +219,5 @@ function syncUIBySelection(assessments) {
     }
   }
 }
+window.initTable = initTable;
+window.renderAssessmentTable = renderAssessmentTable;

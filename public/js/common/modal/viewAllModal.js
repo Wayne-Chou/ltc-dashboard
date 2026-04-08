@@ -21,7 +21,7 @@
 
   function renderAllInModal(filterRisk = null) {
     const modalPersonContainer = document.getElementById(
-      "modalPersonContainer"
+      "modalPersonContainer",
     );
     if (!modalPersonContainer) return;
 
@@ -68,7 +68,7 @@
 
   function bindModalMobileRiskDropdown() {
     const items = document.querySelectorAll(
-      "#modalFilterDropdownMobile .dropdown-item"
+      "#modalFilterDropdownMobile .dropdown-item",
     );
     if (!items.length) return;
 
@@ -80,7 +80,7 @@
 
         //（可選）如果你 modal 裡有顯示 dropdown 的按鈕文字，想同步可在這裡做
         const dropdownBtn = document.querySelector(
-          "#modalFilterDropdownMobileBtn"
+          "#modalFilterDropdownMobileBtn",
         );
         if (dropdownBtn) dropdownBtn.textContent = item.textContent.trim();
       });

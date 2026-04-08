@@ -1,4 +1,4 @@
-// 側邊欄收合功能
+// 側邊欄收合功能;
 function initSidebarToggle() {
   const sidebar = document.getElementById("mySidebar");
   const toggleBtn = document.getElementById("sidebarToggle");
@@ -18,3 +18,4 @@ function initSidebarToggle() {
     }
   });
 }
+window.initSidebarToggle = initSidebarToggle;

@@ -10,7 +10,7 @@ function initDownloadPdf() {
 
     btn.disabled = true;
     btn.innerHTML = `<i class="bi bi-hourglass-split me-1"></i> ${t(
-      "generatingPDF"
+      "generatingPDF",
     )}`;
 
     try {
@@ -47,7 +47,7 @@ function initDownloadPdf() {
       pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
 
       const fileName = `Dashboard_${new Date().toLocaleDateString(
-        "zh-TW"
+        "zh-TW",
       )}.pdf`;
       pdf.save(fileName);
     } catch (error) {
@@ -59,3 +59,4 @@ function initDownloadPdf() {
     }
   });
 }
+window.initDownloadPdf = initDownloadPdf;

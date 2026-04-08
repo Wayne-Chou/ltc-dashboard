@@ -84,7 +84,7 @@ function createLevelPersonCard(person, isAll = false, filterLevel = null) {
               <span class="small text-dark">${levelLabels[lvl] || lvl}</span>
             </div>
             <span class="small fw-semibold text-dark">${counts[lvl] || 0}</span>
-          </div>`
+          </div>`,
           )
           .join("")}
       </div>`;
@@ -130,11 +130,11 @@ function createLevelPersonCard(person, isAll = false, filterLevel = null) {
 
         <div class="p-2 text-center">
           <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(
-            person.Name
+            person.Name,
           )}</h4>
           <p class="small text-muted mb-0">${person.Age}${t(
-    "yearsOld"
-  )} | ${genderText}</p>
+            "yearsOld",
+          )} | ${genderText}</p>
           ${!isAll && filterLevel ? levelCountsHTML : ""}
         </div>
       </div>
@@ -218,7 +218,7 @@ function renderLevelCards(filter = null, options = {}, personsData = []) {
 
   if (!personsData || personsData.length === 0) {
     container.innerHTML = `<div class="col-12"><div class="alert alert-secondary text-center">${t(
-      "noMatchedPerson"
+      "noMatchedPerson",
     )}</div></div>`;
     updateLevelButtonsCounts([]);
     return;
@@ -226,7 +226,7 @@ function renderLevelCards(filter = null, options = {}, personsData = []) {
 
   const levelOrder = { A: 1, B: 2, C: 3, D: 4 };
   const allPersons = [...personsData].sort(
-    (a, b) => levelOrder[a.Level] - levelOrder[b.Level]
+    (a, b) => levelOrder[a.Level] - levelOrder[b.Level],
   );
 
   let filteredPersons = allPersons;
@@ -277,7 +277,7 @@ function renderLevelCards(filter = null, options = {}, personsData = []) {
             : t("overviewLevelText")
                 .replace(
                   "{level}",
-                  (t("vivifrailLevelLabel") || {})[filter] || filter
+                  (t("vivifrailLevelLabel") || {})[filter] || filter,
                 )
                 .replace("{people}", uniqueCount)
                 .replace("{records}", totalRecords)
@@ -293,8 +293,8 @@ function renderLevelCards(filter = null, options = {}, personsData = []) {
       createLevelPersonCard(
         p,
         !filter || filter === "all",
-        filter && filter !== "all" ? filter : null
-      )
+        filter && filter !== "all" ? filter : null,
+      ),
     )
     .join("");
 
@@ -307,7 +307,7 @@ function handleLevelFilter(filter, options = {}) {
   const allAssessments = window.lastRenderedAssessments || [];
   const selected = window.selected || [];
   const selectedAssessments = allAssessments.filter((_, i) =>
-    selected.includes(i)
+    selected.includes(i),
   );
   const dataToShow = selectedAssessments.length > 0 ? selectedAssessments : [];
 
@@ -331,7 +331,7 @@ function refreshLevelUI(assessments = []) {
   renderLevelCards(
     null,
     { container: document.getElementById("levelPersonContainer") },
-    allPersons
+    allPersons,
   );
 }
 
@@ -340,7 +340,9 @@ function initPersonCardLevel() {
   document
     .querySelectorAll(".level .levelFilterBtnsDesktop button")
     .forEach((btn) =>
-      btn.addEventListener("click", () => handleLevelFilter(btn.dataset.filter))
+      btn.addEventListener("click", () =>
+        handleLevelFilter(btn.dataset.filter),
+      ),
     );
 
   // 主畫面篩選（手機）
@@ -354,7 +356,7 @@ function initPersonCardLevel() {
 
         // 同步 dropdown 顯示文字
         const dropdownBtn = document.querySelector(
-          ".level .levelFilterDropdownMobile .dropdown-toggle"
+          ".level .levelFilterDropdownMobile .dropdown-toggle",
         );
         if (dropdownBtn) {
           const base =
@@ -370,14 +372,14 @@ function initPersonCardLevel() {
   // 查看全部（Level modal）
   const viewAllLevelBtn = document.getElementById("viewAllLevelBtn");
   const modalLevelPersonContainer = document.getElementById(
-    "modalLevelPersonContainer"
+    "modalLevelPersonContainer",
   );
 
   viewAllLevelBtn?.addEventListener("click", () => {
     const allAssessments = window.lastRenderedAssessments || [];
     const selected = window.selected || [];
     const selectedAssessments = allAssessments.filter((_, i) =>
-      selected.includes(i)
+      selected.includes(i),
     );
     const dataToShow =
       selectedAssessments.length > 0 ? selectedAssessments : [];
@@ -386,11 +388,11 @@ function initPersonCardLevel() {
     renderLevelCards(
       null,
       { container: modalLevelPersonContainer, isModal: true },
-      personsData
+      personsData,
     );
 
     const modal = new bootstrap.Modal(
-      document.getElementById("participantsLevelModal")
+      document.getElementById("participantsLevelModal"),
     );
     modal.show();
   });
@@ -403,7 +405,7 @@ function initPersonCardLevel() {
         const allAssessments = window.lastRenderedAssessments || [];
         const selected = window.selected || [];
         const selectedAssessments = allAssessments.filter((_, i) =>
-          selected.includes(i)
+          selected.includes(i),
         );
         const dataToShow =
           selectedAssessments.length > 0 ? selectedAssessments : [];
@@ -412,7 +414,7 @@ function initPersonCardLevel() {
         renderLevelCards(
           btn.dataset.filter,
           { container: modalLevelPersonContainer, isModal: true },
-          personsData
+          personsData,
         );
       });
     });
@@ -427,7 +429,7 @@ function initPersonCardLevel() {
         const allAssessments = window.lastRenderedAssessments || [];
         const selected = window.selected || [];
         const selectedAssessments = allAssessments.filter((_, i) =>
-          selected.includes(i)
+          selected.includes(i),
         );
         const dataToShow =
           selectedAssessments.length > 0 ? selectedAssessments : [];
@@ -436,7 +438,7 @@ function initPersonCardLevel() {
         renderLevelCards(
           item.dataset.filter,
           { container: modalLevelPersonContainer, isModal: true },
-          personsData
+          personsData,
         );
       });
     });
