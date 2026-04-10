@@ -3,8 +3,9 @@ import { resolve } from "path";
 
 export default defineConfig(({ mode }) => {
   return {
-    base: "/ltc-dashboard/",
+    base: mode === "dashboard" ? "/dashboard/" : "/ltc-dashboard/",
     build: {
+      outDir: mode === "dashboard" ? "dist-dashboard" : "dist-ltc",
       assetsInlineLimit: 0,
       rollupOptions: {
         input: {

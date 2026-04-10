@@ -1,13 +1,22 @@
-// js/common/personCardRisk.js
-// 依賴：utils.js（maskName, formatDate?）
-// 依賴：state.js（window.selected / window.lastRenderedAssessments）
-// 依賴：lang.js（t）
-// 依賴：mergeAllVIVIFRAIL / flattenData / getRiskCategory 需存在
+// src/js/common/personCardRisk.js
+import { t } from "./i18n.js";
+import {
+  maskName,
+  getRiskCategory,
+  flattenData,
+  mergeAllVIVIFRAIL,
+} from "./utils.js";
+import { lastRenderedAssessments, selected } from "./state.js";
 
-// =========================
-// 建立風險人員卡（保留你原本樣式）
-// =========================
-function createPersonCard(person, isAll = false, filterRisk = null) {
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`;
+};
+
+/**
+ * 建立風險人員卡 (SVG 表情圖)
+ */
+export function createPersonCard(person, isAll = false, filterRisk = null) {
   const genderText = person.Gender === 0 ? t("female") : t("male");
   const riskCategory = getRiskCategory(person.Risk);
 
@@ -33,7 +42,7 @@ function createPersonCard(person, isAll = false, filterRisk = null) {
 
   const style = riskStyles[riskCategory] || riskStyles.medium;
 
-  // ALL 模式統計
+  // ALL 模式統計 HTML
   let riskCountsHTML = "";
   if (isAll) {
     const riskLabels = ["high", "slightlyHigh", "medium", "slightlyLow", "low"];
@@ -42,29 +51,25 @@ function createPersonCard(person, isAll = false, filterRisk = null) {
         ${riskLabels
           .map(
             (key) => `
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <div class="d-flex align-items-center">
-                <span style="width:12px;height:12px;background:${
-                  riskStyles[key].border
-                };
-                            display:inline-block;border-radius:50%;margin-right:6px;"></span>
-                <span class="small text-dark">${riskStyles[key].label}</span>
-              </div>
-              <span class="small fw-semibold text-dark">${
-                person.riskCounts?.[key] || 0
-              }</span>
-            </div>`,
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <div class="d-flex align-items-center">
+              <span style="width:12px;height:12px;background:${riskStyles[key].border};display:inline-block;border-radius:50%;margin-right:6px;"></span>
+              <span class="small text-dark">${riskStyles[key].label}</span>
+            </div>
+            <span class="small fw-semibold text-dark">${person.riskCounts?.[key] || 0}</span>
+          </div>`,
           )
           .join("")}
       </div>`;
   }
 
-  // 單一風險人臉
+  // 表情 SVG
   let faceHTML = "";
   if (!isAll) {
-    let mouthPath = "M40 65 Q50 55 60 65";
-    if (riskCategory === "low") mouthPath = "M40 65 Q50 75 60 65";
-    else if (riskCategory === "slightlyLow") mouthPath = "M40 65 L60 65";
+    let mouthPath = "M40 65 Q50 55 60 65"; // 難過
+    if (riskCategory === "low")
+      mouthPath = "M40 65 Q50 75 60 65"; // 開心
+    else if (riskCategory === "slightlyLow") mouthPath = "M40 65 L60 65"; // 平直
 
     faceHTML = `
       <svg class="w-100" height="130" viewBox="0 0 100 100">
@@ -76,47 +81,26 @@ function createPersonCard(person, isAll = false, filterRisk = null) {
   }
 
   return `
-<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
-  <div class="person-card bg-white rounded shadow-sm h-100"
-       style="border:3px solid ${isAll ? "#000" : style.border};"
-       data-number="${person.Number}">
-    <div class="${isAll ? "d-flex flex-column" : "position-relative"}">
-      ${
-        !isAll
-          ? `<div class="position-absolute top-0 end-0 text-white small px-2 py-1 rounded-start"
-                 style="background-color:${style.border};">${style.label}</div>`
-          : ""
-      }
-      ${faceHTML}
-      ${isAll ? riskCountsHTML : ""}
-    </div>
-
-    <div class="p-2 text-center">
-      <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(
-        person.Name,
-      )}</h4>
-      <p class="small text-muted mb-0">${person.Age}${t(
-        "yearsOld",
-      )} | ${genderText}</p>
-      ${
-        person.Date
-          ? `<p class="small text-muted mb-0">鑑測日期：${formatDate(
-              person.Date,
-            )}</p>`
-          : ""
-      }
-    </div>
-  </div>
-</div>`;
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+      <div class="person-card bg-white rounded shadow-sm h-100" style="border:3px solid ${isAll ? "#000" : style.border};" data-number="${person.Number}">
+        <div class="${isAll ? "d-flex flex-column" : "position-relative"}">
+          ${!isAll ? `<div class="position-absolute top-0 end-0 text-white small px-2 py-1 rounded-start" style="background-color:${style.border};">${style.label}</div>` : ""}
+          ${faceHTML}
+          ${isAll ? riskCountsHTML : ""}
+        </div>
+        <div class="p-2 text-center">
+          <h4 class="fw-semibold text-dark mb-1 masked-name">${maskName(person.Name)}</h4>
+          <p class="small text-muted mb-0">${person.Age}${t("yearsOld")} | ${genderText}</p>
+          ${person.Date ? `<p class="small text-muted mb-0">鑑測日期：${formatDate(person.Date)}</p>` : ""}
+        </div>
+      </div>
+    </div>`;
 }
 
-// =========================
-// 更新風險按鈕括號（仿 Level：分 scope，不互相污染）
-// scope:
-// - 主畫面：document（只更新 .risk 區塊）
-// - 彈窗：modalEl（只更新彈窗內）
-// =========================
-function updateRiskButtonsCounts(allPersons = [], scope = document) {
+/**
+ * 更新過濾按鈕上的數字括號
+ */
+export function updateRiskButtonsCounts(allPersons = [], scope = document) {
   const counts = {
     all: allPersons.length,
     high: 0,
@@ -125,72 +109,62 @@ function updateRiskButtonsCounts(allPersons = [], scope = document) {
     slightlyLow: 0,
     low: 0,
   };
-
   (allPersons || []).forEach((p) => {
     const cat = getRiskCategory(p.Risk);
     if (counts[cat] !== undefined) counts[cat]++;
   });
 
   const setTextWithCount = (el, key) => {
-    const originalText = el.getAttribute("data-original-text");
-    if (originalText) el.textContent = `${originalText} (${counts[key] || 0})`;
-    else {
-      el.setAttribute("data-original-text", el.textContent.trim());
-      el.textContent = `${el.textContent.trim()} (${counts[key] || 0})`;
-    }
+    const originalText =
+      el.getAttribute("data-original-text") ||
+      el.textContent.replace(/\s*\(\d+\)\s*$/, "").trim();
+    if (!el.getAttribute("data-original-text"))
+      el.setAttribute("data-original-text", originalText);
+    el.textContent = `${originalText} (${counts[key] || 0})`;
   };
 
-  //  主畫面（scope 是 document 時，限定 .risk）
   if (scope === document) {
     document
       .querySelectorAll(".risk .filterBtnsDesktop button")
       .forEach((btn) => setTextWithCount(btn, btn.dataset.risk));
-
     document
       .querySelectorAll(".risk .filterDropdownMobile .dropdown-item")
       .forEach((item) => setTextWithCount(item, item.dataset.risk));
-
-    return; // 主畫面不要動到 modal
+  } else {
+    scope
+      .querySelectorAll("#modalFilterBtnsDesktop button")
+      .forEach((btn) => setTextWithCount(btn, btn.dataset.risk));
+    scope
+      .querySelectorAll("#modalFilterDropdownMobile .dropdown-item")
+      .forEach((item) => setTextWithCount(item, item.dataset.risk));
   }
-
-  //  彈窗（scope 是 modalEl 時，只更新彈窗內）
-  scope
-    .querySelectorAll("#modalFilterBtnsDesktop button")
-    .forEach((btn) => setTextWithCount(btn, btn.dataset.risk));
-
-  scope
-    .querySelectorAll("#modalFilterDropdownMobile .dropdown-item")
-    .forEach((item) => setTextWithCount(item, item.dataset.risk));
 }
 
-// =========================
-// 點擊人卡（跳 detail）
-// =========================
+/**
+ * 綁定點擊跳轉詳情頁
+ */
 function bindPersonCardClick() {
   document.querySelectorAll(".person-card").forEach((card) => {
     card.addEventListener("click", () => {
       const id = card.dataset.number;
-
       const regionId =
         new URLSearchParams(window.location.search).get("region") || "0";
-
       const returnUrl = encodeURIComponent(
         window.location.pathname + window.location.search,
       );
-
       window.location.href = `personDetail.html?id=${encodeURIComponent(id)}&region=${regionId}&returnUrl=${returnUrl}`;
     });
   });
 }
 
-// =========================
-// render 卡片
-// - personsData：flatten 後的人員陣列（含 Risk）
-// - options.scope:
-//    主畫面：document
-//    彈窗：modalEl
-// =========================
-function renderRiskCards(filterRisk = null, options = {}, personsData = []) {
+/**
+ * 渲染卡片核心邏輯
+ */
+export function renderRiskCards(
+  filterRisk = null,
+  options = {},
+  personsData = [],
+) {
   const container =
     options.container || document.getElementById("personContainer");
   const isModal = options.isModal || false;
@@ -199,27 +173,22 @@ function renderRiskCards(filterRisk = null, options = {}, personsData = []) {
   if (!container) return;
   container.innerHTML = "";
 
-  // counts 永遠用「全量」算
   const allPersons = Array.isArray(personsData) ? [...personsData] : [];
-
-  // filter 只影響 render，不影響 counts
   let filteredPersons = allPersons;
+
   if (filterRisk && filterRisk !== "all") {
     filteredPersons = filteredPersons.filter(
       (p) => getRiskCategory(p.Risk) === filterRisk,
     );
   }
 
-  //  0 人時：桌機/彈窗都顯示同樣 noMatchedPerson 樣式
-  if (!filteredPersons || filteredPersons.length === 0) {
-    container.innerHTML = `<div class="col-12"><div class="alert alert-secondary text-center">${t(
-      "noMatchedPerson",
-    )}</div></div>`;
-    updateRiskButtonsCounts(allPersons, scope); // counts 仍顯示全量
+  if (!filteredPersons.length) {
+    container.innerHTML = `<div class="col-12"><div class="alert alert-secondary text-center">${t("noMatchedPerson")}</div></div>`;
+    updateRiskButtonsCounts(allPersons, scope);
     return;
   }
 
-  // 合併同名：latest + riskCounts + mergedCount
+  // 合併重複的人名資料
   const mergedMap = {};
   filteredPersons.forEach((p) => {
     if (!mergedMap[p.Name]) {
@@ -235,18 +204,15 @@ function renderRiskCards(filterRisk = null, options = {}, personsData = []) {
         },
       };
     }
-
     const cat = getRiskCategory(p.Risk);
     mergedMap[p.Name].mergedCount++;
     mergedMap[p.Name].riskCounts[cat] =
       (mergedMap[p.Name].riskCounts[cat] || 0) + 1;
-
     if (
       !mergedMap[p.Name].latest.Date ||
       p.Date > mergedMap[p.Name].latest.Date
-    ) {
+    )
       mergedMap[p.Name].latest = p;
-    }
   });
 
   const mergedPersons = Object.values(mergedMap).map((v) => ({
@@ -254,90 +220,69 @@ function renderRiskCards(filterRisk = null, options = {}, personsData = []) {
     mergedCount: v.mergedCount,
     riskCounts: v.riskCounts,
   }));
-
-  const totalRecords = filteredPersons.length;
-  const uniqueCount = mergedPersons.length;
   const isAllMode = !filterRisk || filterRisk === "all";
 
-  // 統計文字
-  container.innerHTML = `
-    <div class="col-12 mb-2">
-      <div class="alert alert-info small py-2 px-3 mb-2">
-        ${
-          isAllMode
-            ? t("levelOverviewText")
-                .replace("{people}", uniqueCount)
-                .replace("{records}", totalRecords)
-            : t("levelSingleText")
-                .replace(
-                  "{levelName}",
-                  t("riskLabel")[filterRisk] || filterRisk,
-                )
-                .replace("{people}", uniqueCount)
-                .replace("{records}", totalRecords)
-        }
-      </div>
-    </div>`;
+  // 統計文字區塊
+  container.innerHTML = `<div class="col-12 mb-2"><div class="alert alert-info small py-2 px-3 mb-2">
+    ${
+      isAllMode
+        ? t("levelOverviewText")
+            .replace("{people}", mergedPersons.length)
+            .replace("{records}", filteredPersons.length)
+        : t("levelSingleText")
+            .replace("{levelName}", t("riskLabel")[filterRisk] || filterRisk)
+            .replace("{people}", mergedPersons.length)
+            .replace("{records}", filteredPersons.length)
+    }
+  </div></div>`;
 
-  // 主畫面限制 12 張
-  let renderPersons = mergedPersons;
-  if (!isModal) renderPersons = mergedPersons.slice(0, 12);
-
+  let renderPersons = isModal ? mergedPersons : mergedPersons.slice(0, 12);
   container.innerHTML += renderPersons
     .map((p) => createPersonCard(p, isAllMode, filterRisk))
     .join("");
 
   bindPersonCardClick();
-
-  // 只更新「各自 scope」的括號
   updateRiskButtonsCounts(allPersons, scope);
+  // ✅ 同步 active（主畫面）
+  if (!options.isModal) {
+    const btns = document.querySelectorAll(".risk .filterBtnsDesktop button");
+
+    btns.forEach((btn) => {
+      btn.classList.toggle(
+        "active",
+        btn.dataset.risk === (filterRisk || "all"),
+      );
+    });
+  }
 }
 
-// =========================
-// 取得目前 selection 的 flatten persons
-// =========================
+/**
+ * 從目前選擇的數據攤平 Risk Data
+ */
 function flattenRiskDataFromSelection() {
   const assessments = window.lastRenderedAssessments || [];
-  const selected = window.selected || [];
-
+  const selectedIdx = window.selected || [];
   const selectedAssessments =
-    selected.length > 0
-      ? assessments.filter((_, i) => selected.includes(i))
-      : assessments;
-
+    selectedIdx.length > 0
+      ? assessments.filter((_, i) => selectedIdx.includes(i))
+      : [];
   const merged = mergeAllVIVIFRAIL(selectedAssessments);
   return flattenData(merged);
 }
 
-// =========================
-// handleRiskFilter
-// =========================
-function handleRiskFilter(filterRisk, options = {}) {
+/**
+ * Filter 處理
+ */
+export function handleRiskFilter(filterRisk, options = {}) {
   const personsData = flattenRiskDataFromSelection();
   renderRiskCards(filterRisk, options, personsData);
 }
 
-// =========================
-// Modal 遮罩殘留修復：統一清理
-// =========================
-function ensureModalCleanup(modalEl) {
-  if (!modalEl || modalEl.__riskCleanupBound) return;
-  modalEl.__riskCleanupBound = true;
-
-  modalEl.addEventListener("hidden.bs.modal", () => {
-    // 保險：避免黑遮罩殘留
-    document.body.classList.remove("modal-open");
-    document.body.style.removeProperty("padding-right");
-
-    document.querySelectorAll(".modal-backdrop").forEach((bd) => bd.remove());
-  });
-}
-
-// =========================
-// 初始化 Risk（主桌/主機/Modal桌/Modal機/active）
-// =========================
-function initPersonCardRisk() {
-  // 主畫面桌機
+/**
+ * 初始化 Risk 相關功能
+ */
+export function initPersonCardRisk() {
+  // ===== 桌機按鈕 =====
   document
     .querySelectorAll(".risk .filterBtnsDesktop button")
     .forEach((btn) => {
@@ -346,163 +291,93 @@ function initPersonCardRisk() {
       );
     });
 
-  // 主畫面手機
+  // ===== 主畫面手機 dropdown =====
   document
     .querySelectorAll(".risk .filterDropdownMobile .dropdown-item")
     .forEach((item) => {
       item.addEventListener("click", (e) => {
         e.preventDefault();
+
+        const filter = item.dataset.risk;
+
         const dropdownBtn = document.querySelector(
           ".risk .filterDropdownMobile .dropdown-toggle",
         );
+
         if (dropdownBtn) {
-          const base =
-            item.getAttribute("data-original-text") ||
-            item.textContent.replace(/\s*\(\d+\)\s*$/, "").trim();
-          dropdownBtn.textContent = base;
+          const baseText = item.getAttribute("data-original-text");
+          dropdownBtn.textContent = baseText;
         }
-        handleRiskFilter(item.dataset.risk, { scope: document });
+
+        item.closest(".dropdown-menu")?.previousElementSibling?.click();
+
+        handleRiskFilter(filter, { scope: document });
       });
     });
 
-  // 查看全部（Risk modal）
-  const viewAllBtn = document.getElementById("viewAllBtn");
-  const modalEl = document.getElementById("participantsModal");
-  const modalPersonContainer = document.getElementById("modalPersonContainer");
-
-  if (modalEl) ensureModalCleanup(modalEl);
-
-  viewAllBtn?.addEventListener("click", () => {
-    const personsData = flattenRiskDataFromSelection();
-
-    renderRiskCards(
-      "all",
-      { container: modalPersonContainer, isModal: true, scope: modalEl },
-      personsData,
-    );
-
-    // 避免 new 多次造成 backdrop 問題
-    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-    modal.show();
-  });
-
-  // modal 桌機
-  modalEl?.querySelectorAll("#modalFilterBtnsDesktop button").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const personsData = flattenRiskDataFromSelection();
-      renderRiskCards(
-        btn.dataset.risk,
-        { container: modalPersonContainer, isModal: true, scope: modalEl },
-        personsData,
-      );
-    });
-  });
-
-  // modal 手機
-  modalEl
-    ?.querySelectorAll("#modalFilterDropdownMobile .dropdown-item")
+  // ===== Modal 手機 dropdown =====
+  document
+    .querySelectorAll("#modalFilterDropdownMobile .dropdown-item")
     .forEach((item) => {
       item.addEventListener("click", (e) => {
         e.preventDefault();
 
-        const dropdownBtn = modalEl.querySelector(
+        const filter = item.dataset.risk;
+        const modal = document.getElementById("participantsModal");
+
+        const dropdownBtn = modal?.querySelector(
           "#modalFilterDropdownMobile .dropdown-toggle",
         );
+
         if (dropdownBtn) {
-          const base =
-            item.getAttribute("data-original-text") ||
-            item.textContent.replace(/\s*\(\d+\)\s*$/, "").trim();
-          dropdownBtn.textContent = base;
+          const baseText = item.getAttribute("data-original-text");
+          dropdownBtn.textContent = baseText;
         }
 
+        item.closest(".dropdown-menu")?.previousElementSibling?.click();
+
         const personsData = flattenRiskDataFromSelection();
+
         renderRiskCards(
-          item.dataset.risk,
-          { container: modalPersonContainer, isModal: true, scope: modalEl },
+          filter,
+          {
+            container: document.getElementById("modalPersonContainer"),
+            isModal: true,
+            scope: modal,
+          },
           personsData,
         );
       });
     });
 
-  // active 樣式（桌機主 / 桌機 modal）
-  const desktopRiskContainers = [
-    document.querySelector(".risk .filterBtnsDesktop"),
-    modalEl?.querySelector("#modalFilterBtnsDesktop"),
-  ];
+  // ===== Modal 開啟 =====
+  const viewAllBtn = document.getElementById("viewAllBtn");
+  const modalEl = document.getElementById("participantsModal");
 
-  desktopRiskContainers.forEach((container) => {
-    if (!container) return;
-    container.querySelectorAll("button").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        container
-          .querySelectorAll("button")
-          .forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-      });
-    });
-  });
-
-  // 初次刷新（主畫面）
-  const personsData = flattenRiskDataFromSelection();
-  renderRiskCards(
-    "all",
-    { container: document.getElementById("personContainer"), scope: document },
-    personsData,
-  );
-}
-
-// =========================
-// risk/level 切換
-// =========================
-function initRiskModeUI() {
-  const riskModeBtn = document.getElementById("riskModeBtn");
-  const levelModeBtn = document.getElementById("levelModeBtn");
-  const riskContainer = document.getElementById("riskContainer");
-  const levelContainer = document.getElementById("levelContainer");
-
-  if (riskModeBtn && levelModeBtn && riskContainer && levelContainer) {
-    riskContainer.classList.remove("d-none");
-    levelContainer.classList.add("d-none");
-
-    riskModeBtn.addEventListener("click", () => {
-      riskContainer.classList.remove("d-none");
-      levelContainer.classList.add("d-none");
-      riskModeBtn.classList.add("active");
-      levelModeBtn.classList.remove("active");
-
+  if (modalEl) {
+    viewAllBtn?.addEventListener("click", () => {
       const personsData = flattenRiskDataFromSelection();
+
       renderRiskCards(
         "all",
         {
-          container: document.getElementById("personContainer"),
-          scope: document,
+          container: document.getElementById("modalPersonContainer"),
+          isModal: true,
+          scope: modalEl,
         },
         personsData,
       );
-    });
 
-    levelModeBtn.addEventListener("click", () => {
-      riskContainer.classList.add("d-none");
-      levelContainer.classList.remove("d-none");
-      levelModeBtn.classList.add("active");
-      riskModeBtn.classList.remove("active");
-
-      const all = window.lastRenderedAssessments || [];
-      const selected = window.selected || [];
-      const selectedAssessments = all.filter((_, i) => selected.includes(i));
-      window.refreshLevelUI?.(
-        selectedAssessments.length ? selectedAssessments : all,
-      );
+      bootstrap.Modal.getOrCreateInstance(modalEl).show();
     });
   }
+
+  // ===== 預設 =====
+  handleRiskFilter("all", { scope: document });
 }
 
-window.renderCards = function (allVIVIFRAIL, filterRisk = null, options = {}) {
-  const mergedOptions = { scope: options.scope || document, ...options };
-  renderRiskCards(filterRisk, mergedOptions, allVIVIFRAIL || []);
+window.renderCards = (allVIVIFRAIL, filterRisk = null, options = {}) => {
+  renderRiskCards(filterRisk, options, allVIVIFRAIL || []);
 };
-
-// export
 window.updateRiskButtonsCounts = updateRiskButtonsCounts;
 window.initPersonCardRisk = initPersonCardRisk;
-window.initRiskModeUI = initRiskModeUI;

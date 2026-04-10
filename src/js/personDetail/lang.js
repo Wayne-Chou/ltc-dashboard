@@ -1,4 +1,6 @@
-const LANG = {
+// src/js/personDetail/lang.js
+
+window.LANG = {
   zh: {
     alertNoData: "查無資料",
     back: "返回上一頁",
@@ -28,7 +30,6 @@ const LANG = {
     serialNumber: "編號",
     selectAll: "全選",
     unselectAll: "取消全選",
-
     male: "男",
     female: "女",
     riskLabel: {
@@ -90,7 +91,6 @@ const LANG = {
     headlineLoading: "載入分析中…",
     headlineDefaultTitle: "近期功能變化重點",
     headlineDefaultDesc: "系統自動比對最近兩筆評估結果，提供臨床判讀建議。",
-
     panelTrendSummary: "評估變化重點摘要",
     panelRecordList: "評估紀錄明細",
     panelRecordHint: "可勾選兩筆資料來比較趨勢摘要",
@@ -126,7 +126,6 @@ const LANG = {
     serialNumber: "serialNumber",
     selectAll: "Select All",
     unselectAll: "Unselect All",
-
     male: "Male",
     female: "Female",
     riskLabel: {
@@ -136,7 +135,6 @@ const LANG = {
       slightlyLow: "Slightly lower",
       low: "Low",
       unknown: "Unknown",
-      dates: "Date",
     },
     trendSummary: {
       noData: "At least two records are required to show trend changes.",
@@ -178,20 +176,18 @@ const LANG = {
         noData:
           "Please ensure that at least two valid assessment records are selected.",
       },
-      tableHint: {
-        empty:
-          "Please select assessment records to view trends and comparisons.",
-        single: "Only one record selected. Comparison is not available.",
-        multi:
-          "{count} records selected. Comparison will use the latest two ({d1}, {d2}).",
-        comparing: "Comparing assessment results from {d1} and {d2}.",
-      },
+    },
+    tableHint: {
+      empty: "Please select assessment records to view trends and comparisons.",
+      single: "Only one record selected. Comparison is not available.",
+      multi:
+        "{count} records selected. Comparison will use the latest two ({d1}, {d2}).",
+      comparing: "Comparing assessment results from {d1} and {d2}.",
     },
     headlineLoading: "Analyzing data…",
     headlineDefaultTitle: "Recent Functional Changes",
     headlineDefaultDesc:
       "The system automatically compares the two most recent assessments to support clinical interpretation.",
-
     panelTrendSummary: "Key Trend Summary",
     panelRecordList: "Assessment Records",
     panelRecordHint: "Select two records to compare trend changes",
@@ -204,7 +200,7 @@ const LANG = {
     Select: "選択",
     Date: "検査日",
     back: "戻る",
-    sitStand: "座立秒数",
+    sitStand: "座立秒數",
     balance: "バランス",
     balance1: "バランススコア - 並立",
     balance2: "バランススコア - 半並立",
@@ -228,7 +224,6 @@ const LANG = {
     serialNumber: "シリアルナンバー",
     selectAll: "全選択",
     unselectAll: "全選択解除",
-
     male: "男性",
     female: "女性",
     riskLabel: {
@@ -291,7 +286,6 @@ const LANG = {
     headlineDefaultTitle: "最近の機能変化の要点",
     headlineDefaultDesc:
       "直近2回の評価結果を自動比較し、臨床的な判断を支援します。",
-
     panelTrendSummary: "評価変化の重要ポイント",
     panelRecordList: "評価記録一覧",
     panelRecordHint: "2件の記録を選択して変化の傾向を比較できます",
@@ -328,7 +322,6 @@ const LANG = {
     serialNumber: "일련 번호",
     selectAll: "전체 선택",
     unselectAll: "전체 선택 해제",
-
     male: "남성",
     female: "여성",
     riskLabel: {
@@ -391,7 +384,6 @@ const LANG = {
     headlineDefaultTitle: "최근 기능 변화 요약",
     headlineDefaultDesc:
       "시스템이 최근 두 건의 평가 결과를 자동으로 비교하여 임상 판단을 지원합니다.",
-
     panelTrendSummary: "평가 변화 핵심 요약",
     panelRecordList: "평가 기록 상세",
     panelRecordHint: "두 개의 기록을 선택하여 변화 추세를 비교할 수 있습니다",
@@ -400,14 +392,20 @@ const LANG = {
       "차트를 통해 추세를 시각화하고 요약으로 빠른 판단을 돕습니다.",
   },
 };
-function t(key) {
-  return LANG[window.currentLang][key] || key;
+
+// 💥 修正後的 t 函式，增加全域對象檢查
+export function t(key) {
+  const currentLang = window.currentLang || "zh";
+  if (!window.LANG || !window.LANG[currentLang]) return key;
+  return window.LANG[currentLang][key] || key;
 }
+
+// 💥 掛載到 window
+window.t = t;
 
 window.applyLanguage = function () {
   document.querySelectorAll("[data-lang]").forEach((el) => {
     const key = el.getAttribute("data-lang");
-
     if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
       el.placeholder = t(key);
     } else {
@@ -418,14 +416,18 @@ window.applyLanguage = function () {
 
 // 性別文字對應
 window.genderText = function (g) {
-  if (g === 0) return t("female");
-  if (g === 1) return t("male");
-  return "Unknown";
+  // 修正 g 的型別相容性
+  const isMale = g === 1 || g === "1";
+  const isFemale = g === 0 || g === "0";
+  if (isMale) return t("male");
+  if (isFemale) return t("female");
+  return t("riskLabel")?.unknown || "Unknown";
 };
 
 // 風險中文對應
 window.getRiskLabel = function (risk) {
   const label = t("riskLabel");
+  if (typeof label === "string") return label; // 防呆
   if (risk > 50) return label.high;
   if (risk > 30) return label.slightlyHigh;
   if (risk > 17.5) return label.medium;

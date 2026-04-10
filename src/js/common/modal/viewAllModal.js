@@ -1,98 +1,118 @@
-// js/common/modal/viewAllModal.js
-// 依賴：state.js（getSelectedAssessments / currentAssessments / selected）
-// 依賴：personCardRisk.js（renderCards, flattenData, mergeAllVIVIFRAIL, getRiskCategory）
-// 依賴：lang.js（t）
-// 依賴：bootstrap（bootstrap.Modal）
+// src/js/common/modal/viewAllModal.js
+import { t } from "../lang.js";
+import { currentAssessments, selected } from "../state.js";
+import { flattenData, mergeAllVIVIFRAIL, getRiskCategory } from "../utils.js";
 
-(function () {
-  function getSelectedAssessmentsSafe() {
-    const assessments = window.currentAssessments || [];
-    const selected = window.selected || [];
-    return assessments.filter((_, i) => selected.includes(i));
-  }
+/**
+ * 安全取得目前勾選的檢測資料
+ */
+function getSelectedAssessmentsSafe() {
+  const assessments = window.currentAssessments || [];
+  const selectedIdx = window.selected || [];
+  return assessments.filter((_, i) => selectedIdx.includes(i));
+}
 
-  function openParticipantsModal() {
-    const modalEl = document.getElementById("participantsModal");
-    if (!modalEl) return;
+/**
+ * 開啟參與者彈窗
+ */
+function openParticipantsModal() {
+  const modalEl = document.getElementById("participantsModal");
+  if (!modalEl) return;
 
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
-  }
+  // 使用 Bootstrap 的靜態方法獲取或建立實例，避免重複建立導致的 Backdrop Bug
+  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  modal.show();
+}
 
-  function renderAllInModal(filterRisk = null) {
-    const modalPersonContainer = document.getElementById(
-      "modalPersonContainer",
-    );
-    if (!modalPersonContainer) return;
+/**
+ * 渲染彈窗內的人員卡片
+ */
+function renderAllInModal(filterRisk = null) {
+  const modalPersonContainer = document.getElementById("modalPersonContainer");
+  if (!modalPersonContainer) return;
 
-    const selectedAssessments = getSelectedAssessmentsSafe();
+  const selectedAssessments = getSelectedAssessmentsSafe();
 
-    const allParticipants = flattenData(mergeAllVIVIFRAIL(selectedAssessments));
+  // ✅ 只做資料整理，不做 filter
+  const allParticipants = flattenData(mergeAllVIVIFRAIL(selectedAssessments));
 
-    const filtered =
-      filterRisk && filterRisk !== "all"
-        ? allParticipants.filter((p) => getRiskCategory(p.Risk) === filterRisk)
-        : allParticipants;
-
-    renderCards(filtered, filterRisk, {
+  // ✅ 交給 renderRiskCards 處理 filter
+  if (typeof window.renderCards === "function") {
+    window.renderCards(allParticipants, filterRisk, {
       container: modalPersonContainer,
-      isModal: true, // 取消 12 張限制
+      isModal: true,
+      scope: document.getElementById("participantsModal"),
     });
   }
+}
 
-  function bindMainViewAllBtn() {
-    const viewAllBtn = document.getElementById("viewAllBtn");
-    if (!viewAllBtn) return;
+/**
+ * 綁定主畫面的「查看全部」按鈕
+ */
+function bindMainViewAllBtn() {
+  const viewAllBtn = document.getElementById("viewAllBtn");
+  if (!viewAllBtn) return;
 
-    viewAllBtn.addEventListener("click", () => {
-      renderAllInModal(null);
-      openParticipantsModal();
+  viewAllBtn.addEventListener("click", () => {
+    renderAllInModal(null);
+    openParticipantsModal();
+  });
+}
+
+/**
+ * 綁定彈窗內的桌機版風險過濾按鈕
+ */
+function bindModalDesktopRiskButtons() {
+  const btns = document.querySelectorAll("#modalFilterBtnsDesktop button");
+  if (!btns.length) return;
+
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const risk = btn.dataset.risk;
+      renderAllInModal(risk);
+
+      // 切換 active 樣式
+      btns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
     });
-  }
+  });
+}
 
-  function bindModalDesktopRiskButtons() {
-    const btns = document.querySelectorAll("#modalFilterBtnsDesktop button");
-    if (!btns.length) return;
+/**
+ * 綁定彈窗內的手機版下拉選單
+ */
+function bindModalMobileRiskDropdown() {
+  const items = document.querySelectorAll(
+    "#modalFilterDropdownMobile .dropdown-item",
+  );
+  if (!items.length) return;
 
-    btns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const risk = btn.dataset.risk; // all/high/...
-        renderAllInModal(risk);
+  items.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      const risk = item.dataset.risk;
+      renderAllInModal(risk);
 
-        // active 樣式
-        btns.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-      });
+      const dropdownBtn = document.querySelector(
+        "#modalFilterDropdownMobileBtn",
+      );
+      if (dropdownBtn) {
+        // 移除括號數字，只顯示純文字
+        const baseText = item.textContent.replace(/\s*\(\d+\)\s*$/, "").trim();
+        dropdownBtn.textContent = baseText;
+      }
     });
-  }
+  });
+}
 
-  function bindModalMobileRiskDropdown() {
-    const items = document.querySelectorAll(
-      "#modalFilterDropdownMobile .dropdown-item",
-    );
-    if (!items.length) return;
+/**
+ * 初始化 ViewAllModal 模組
+ */
+export function initViewAllModal() {
+  bindMainViewAllBtn();
+  bindModalDesktopRiskButtons();
+  bindModalMobileRiskDropdown();
+}
 
-    items.forEach((item) => {
-      item.addEventListener("click", (e) => {
-        e.preventDefault();
-        const risk = item.dataset.risk;
-        renderAllInModal(risk);
-
-        //（可選）如果你 modal 裡有顯示 dropdown 的按鈕文字，想同步可在這裡做
-        const dropdownBtn = document.querySelector(
-          "#modalFilterDropdownMobileBtn",
-        );
-        if (dropdownBtn) dropdownBtn.textContent = item.textContent.trim();
-      });
-    });
-  }
-
-  function initViewAllModal() {
-    bindMainViewAllBtn();
-    bindModalDesktopRiskButtons();
-    bindModalMobileRiskDropdown();
-  }
-
-  // export
-  window.initViewAllModal = initViewAllModal;
-})();
+// 掛載到 window 讓 main.js 能夠呼叫
+window.initViewAllModal = initViewAllModal;

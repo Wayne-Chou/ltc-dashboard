@@ -1,29 +1,50 @@
-// js/common/charts/balanceChart.js
-function drawBalanceChartChartJS(assessments) {
+// src/js/common/charts/balanceChart.js
+import { t } from "../lang.js";
+
+/**
+ * 繪製平均平衡得分趨勢圖
+ * @param {Array} assessments
+ */
+export function drawBalanceChartChartJS(assessments) {
   const canvas = document.getElementById("balanceChartCanvas");
   if (!canvas) return;
 
+  // 1. 處理無資料狀態
   if (!assessments || assessments.length === 0) {
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    if (window.balanceChartInstance) {
+      window.balanceChartInstance.destroy();
+      window.balanceChartInstance = null;
+    }
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     return;
   }
 
-  const sorted = [...assessments].sort((a, b) => a.Date - b.Date);
+  // 2. 資料準備與排序
+  const sorted = [...assessments].sort(
+    (a, b) => new Date(a.Date) - new Date(b.Date),
+  );
 
   let labels = sorted.map((d) => {
     const date = new Date(d.Date);
     return `${date.getMonth() + 1}/${date.getDate()}`;
   });
-
   let dataValues = sorted.map((d) => d.BalanceScore);
 
+  // 3. 補點邏輯 (防止單點時線條不顯示)
+  let offset = 0;
   if (labels.length === 1) {
     labels = ["", ...labels, ""];
     dataValues = [null, ...dataValues, null];
+    offset = 1;
   }
 
-  if (window.balanceChartInstance) window.balanceChartInstance.destroy();
+  // 4. 銷毀舊實例
+  if (window.balanceChartInstance) {
+    window.balanceChartInstance.destroy();
+  }
 
+  // 5. 建立新圖表 (藍色系)
   window.balanceChartInstance = new Chart(canvas, {
     type: "line",
     data: {
@@ -32,47 +53,38 @@ function drawBalanceChartChartJS(assessments) {
         {
           label: t("balanceScore"),
           data: dataValues,
-          borderColor: "#3b82f6",
-          backgroundColor: "rgba(59,130,246,0.3)",
+          borderColor: "#3b82f6", // 經典藍色
+          backgroundColor: "rgba(59,130,246,0.15)",
           fill: true,
           tension: 0.3,
-          pointRadius: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
           borderWidth: 3,
+          spanGaps: true,
         },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: { mode: "nearest", intersect: false },
+      interaction: {
+        mode: "nearest",
+        intersect: false,
+      },
       plugins: {
         legend: { display: false },
         tooltip: {
           callbacks: {
             label: function (context) {
               const value = context.parsed.y;
-              const dateObj = sorted[context.dataIndex]
-                ? new Date(sorted[context.dataIndex].Date)
-                : null;
-              const fullDate = dateObj
-                ? `${dateObj.getFullYear()}/${
-                    dateObj.getMonth() + 1
-                  }/${dateObj.getDate()}`
-                : labels[context.dataIndex];
+              if (value === null) return "";
+
+              const item = sorted[context.dataIndex - offset];
+              if (!item) return "";
+
+              const d = new Date(item.Date);
+              const fullDate = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
               return `${fullDate}：${value.toFixed(1)} ${t("points")}`;
-            },
-          },
-        },
-        annotation: {
-          annotations: {
-            baseline: {
-              type: "line",
-              yMin: 3.5,
-              yMax: 3.5,
-              borderColor: "#6b7280",
-              borderWidth: 2,
-              borderDash: [6, 6],
-              label: { display: true, content: "" },
             },
           },
         },
@@ -80,16 +92,22 @@ function drawBalanceChartChartJS(assessments) {
       scales: {
         x: {
           offset: true,
-          title: { display: true, text: t("dates") },
+          title: { display: true, text: t("dates"), font: { weight: "bold" } },
           ticks: { autoSkip: true, maxTicksLimit: 7 },
         },
         y: {
-          title: { display: true, text: t("balanceScore") },
-          beginAtZero: false,
+          title: { display: true, text: t("points"), font: { weight: "bold" } },
+          beginAtZero: true,
           min: 0,
-          max: 4,
+          max: 4, // 平衡分滿分為 4
+          ticks: {
+            stepSize: 1, // 因為是 0~4 分，間隔設為 1 較清楚
+          },
         },
       },
     },
   });
 }
+
+// 掛載到 window 供其他組件呼叫
+window.drawBalanceChartChartJS = drawBalanceChartChartJS;

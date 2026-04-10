@@ -1,27 +1,37 @@
-/* ========================
-   模式切換
-   ======================== */
-window.toggleCompareMode = function () {
+// src/js/common/charts/compareMode.js
+import { t } from "../lang.js";
+import { getCookie } from "../cookie.js";
+import { dashboardState, currentAssessments } from "../state.js";
+import { fetchSiteData, getTimeRange } from "../location.js";
+
+/**
+ * 切換 比較/一般 模式
+ */
+export function toggleCompareMode() {
   const isCompare = dashboardState.view === "compare";
 
+  // 切換狀態
   dashboardState.view = isCompare ? "default" : "compare";
 
   const btn = document.getElementById("compareBtn");
   if (btn) {
     const span = btn.querySelector("span");
-
     if (span) {
+      // 切換翻譯 Key
       span.dataset.i18n = isCompare ? "compareMode" : "backToDefault";
     }
   }
 
-  renderView(); // render 裡面會 applyI18n
-};
+  // 重新渲染整個視圖
+  if (typeof window.renderView === "function") {
+    window.renderView();
+  }
+}
 
-/* ========================
-   清除所有 Chart
-   ======================== */
-function clearAllCharts() {
+/**
+ * 清除所有 Chart.js 實例
+ */
+export function clearAllCharts() {
   const canvasIds = [
     "sitStandChartCanvas",
     "balanceChartCanvas",
@@ -35,39 +45,43 @@ function clearAllCharts() {
   });
 }
 
-/* ========================
-   渲染據點列表
-   ======================== */
-window.renderSiteSelector = function () {
+/**
+ * 渲染據點選擇器卡片 (比較模式專用)
+ */
+export function renderSiteSelector() {
   const container = document.getElementById("siteSelector");
   if (!container) return;
 
-  const sites = Object.values(locationMap);
+  // 從 window 取得 locationMap (由 location.js 初始化)
+  const sites = Object.values(window.locationMap || {});
 
   if (!sites.length) {
-    container.innerHTML = `<div class="text-muted">尚無據點資料</div>`;
+    container.innerHTML = `<div class="text-muted p-3">${t("alertNoData")}</div>`;
     return;
   }
 
   container.innerHTML = sites
-    .map(
-      (site) => `
-    <div class="col-6 col-md-3">
-      <div class="site-card"
-           data-code="${site.code}"
-           onclick="toggleSite('${site.code}', this)">
-        <div class="site-name">${site.name}</div>
-      </div>
-    </div>
-  `,
-    )
+    .map((site) => {
+      const isActive = dashboardState.selectedSites.includes(site.code)
+        ? "active"
+        : "";
+      return `
+        <div class="col-6 col-md-3">
+          <div class="site-card ${isActive}" 
+               data-code="${site.code}" 
+               onclick="toggleSite('${site.code}', this)">
+            <div class="site-name">${site.name}</div>
+          </div>
+        </div>
+      `;
+    })
     .join("");
-};
+}
 
-/* ========================
-   點擊據點
-   ======================== */
-window.toggleSite = async function (siteCode, el) {
+/**
+ * 點擊/切換據點選取狀態
+ */
+export async function toggleSite(siteCode, el) {
   const list = dashboardState.selectedSites;
 
   if (list.includes(siteCode)) {
@@ -75,7 +89,7 @@ window.toggleSite = async function (siteCode, el) {
     el.classList.remove("active");
   } else {
     if (list.length >= 3) {
-      alert("最多選擇3個據點");
+      alert(t("selectedSitesLimit") || "最多選擇3個據點");
       return;
     }
     dashboardState.selectedSites.push(siteCode);
@@ -86,115 +100,79 @@ window.toggleSite = async function (siteCode, el) {
 
   if (!dashboardState.selectedSites.length) {
     clearAllCharts();
-
-    requestAnimationFrame(() => {
-      initEmptyCharts();
-      drawNoDataChart();
-    });
-
+    window.drawNoDataChart?.();
     return;
   }
 
   await renderCompareCharts();
-};
+}
 
-/* ========================
-   已選據點（tag）
-   ======================== */
+/**
+ * 渲染已選擇的據點標籤 (Tags)
+ */
 function renderSelectedSites() {
   const container = document.getElementById("selectedSites");
   if (!container) return;
 
   if (!dashboardState.selectedSites.length) {
-    container.innerHTML = '<span class="text-muted small">尚未選擇據點</span>';
+    container.innerHTML = `<span class="text-muted small">${t("clickSiteToCompare")}</span>`;
     return;
   }
 
   container.innerHTML = dashboardState.selectedSites
     .map(
       (code) => `
-    <div class="selected-tag">
-      ${locationMap[code]?.name || code}
-      <span onclick="removeSite('${code}')">✕</span>
-    </div>
-  `,
+      <div class="selected-tag">
+        ${window.locationMap[code]?.name || code}
+        <span onclick="removeSite('${code}')">✕</span>
+      </div>
+    `,
     )
     .join("");
 }
 
-/* ========================
-   移除據點
-   ======================== */
-window.removeSite = async function (code) {
+/**
+ * 移除單一據點
+ */
+export async function removeSite(code) {
   dashboardState.selectedSites = dashboardState.selectedSites.filter(
     (s) => s !== code,
   );
-
   renderSelectedSites();
 
+  // 同步卡片樣式
   document.querySelectorAll(".site-card").forEach((card) => {
-    if (!dashboardState.selectedSites.includes(card.dataset.code)) {
-      card.classList.remove("active");
-    }
+    if (card.dataset.code === code) card.classList.remove("active");
   });
 
   if (!dashboardState.selectedSites.length) {
     clearAllCharts();
-
-    requestAnimationFrame(() => {
-      initEmptyCharts();
-      drawNoDataChart();
-    });
-
+    window.drawNoDataChart?.();
     return;
   }
 
   await renderCompareCharts();
-};
-
-/* ========================
-   抓資料
-   ======================== */
-async function renderCompareCharts() {
-  const token = getCookie("fongai_token");
-  const { startTime, endTime } = getTimeRange();
-
-  const grouped = await Promise.all(
-    dashboardState.selectedSites.map(async (code) => {
-      const data = await fetchSiteData(code, startTime, endTime, token);
-
-      return {
-        code,
-        site: locationMap[code]?.name || code,
-        data: data || [],
-      };
-    }),
-  );
-
-  drawCompareCharts(grouped);
 }
 
-/* ========================
-   多線圖
-   ======================== */
+/**
+ * 核心：繪製多線比較圖
+ */
 function drawMultiLineChart(canvasId, groupedData, key) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
 
+  // 銷毀舊圖
   const existingChart = Chart.getChart(canvasId);
   if (existingChart) existingChart.destroy();
 
-  const SITE_COLOR_MAP = {
-    A: "#3b82f6",
-    B: "#ef4444",
-    C: "#10b981",
-  };
+  // 據點顏色映射 (可擴充)
+  const COLORS = ["#3b82f6", "#ef4444", "#10b981", "#f59e0b"];
 
+  // 收集所有數據點的日期並排序，作為 X 軸
   const allDatesSet = new Set();
   groupedData.forEach((group) => {
     group.data.forEach((d) => allDatesSet.add(d.Date));
   });
-
   const allDates = [...allDatesSet].sort((a, b) => new Date(a) - new Date(b));
 
   const labels = allDates.map((d) => {
@@ -202,18 +180,19 @@ function drawMultiLineChart(canvasId, groupedData, key) {
     return `${date.getMonth() + 1}/${date.getDate()}`;
   });
 
-  const datasets = groupedData.map((group) => {
-    const map = new Map();
-    group.data.forEach((d) => map.set(d.Date, d[key]));
+  const datasets = groupedData.map((group, index) => {
+    const dataMap = new Map();
+    group.data.forEach((d) => dataMap.set(d.Date, d[key]));
 
     return {
       label: group.site,
-      data: allDates.map((date) => map.get(date) ?? null),
-      borderColor: SITE_COLOR_MAP[group.code],
+      data: allDates.map((date) => dataMap.get(date) ?? null),
+      borderColor: COLORS[index % COLORS.length],
+      backgroundColor: COLORS[index % COLORS.length] + "20",
       tension: 0.3,
       fill: false,
-      spanGaps: true,
-      pointRadius: 3,
+      spanGaps: true, // 重要：允許跨越缺失數據點
+      pointRadius: 4,
       borderWidth: 3,
     };
   });
@@ -224,40 +203,51 @@ function drawMultiLineChart(canvasId, groupedData, key) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: { mode: "nearest", intersect: false },
+      interaction: { mode: "index", intersect: false },
       plugins: {
-        legend: { display: true },
+        legend: { display: true, position: "top" },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}`,
+          },
+        },
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: false },
       },
     },
   });
 }
 
-/* ========================
-   比較模式畫圖
-   ======================== */
-window.drawCompareCharts = function (groupedData) {
-  clearAllCharts();
+/**
+ * 異步抓取多個場域資料並重繪圖表
+ */
+async function renderCompareCharts() {
+  const token = getCookie("fongai_token");
+  const { startTime, endTime } = getTimeRange();
 
-  requestAnimationFrame(() => {
-    removeNoDataOverlay();
+  // 同步並行抓取資料
+  const grouped = await Promise.all(
+    dashboardState.selectedSites.map(async (code) => {
+      const data = await fetchSiteData(code, startTime, endTime, token);
+      return {
+        code,
+        site: window.locationMap[code]?.name || code,
+        data: data || [],
+      };
+    }),
+  );
 
-    drawMultiLineChart("sitStandChartCanvas", groupedData, "ChairSecond");
-    drawMultiLineChart("balanceChartCanvas", groupedData, "BalanceScore");
-    drawMultiLineChart("gaitChartCanvas", groupedData, "GaitSpeed");
-    drawMultiLineChart("riskChartCanvas", groupedData, "RiskRate");
-  });
-};
+  window.removeNoDataOverlay?.();
+  drawMultiLineChart("sitStandChartCanvas", grouped, "ChairSecond");
+  drawMultiLineChart("balanceChartCanvas", grouped, "BalanceScore");
+  drawMultiLineChart("gaitChartCanvas", grouped, "GaitSpeed");
+  drawMultiLineChart("riskChartCanvas", grouped, "RiskRate");
+}
 
-/* ========================
-   單一模式
-   ======================== */
-window.renderAllCharts = function () {
-  if (!window.dashboardState || !window.currentAssessments) return;
-
-  removeNoDataOverlay();
-
-  drawSitStandChartChartJS(currentAssessments);
-  drawBalanceChartChartJS(currentAssessments);
-  drawGaitChartChartJS(currentAssessments);
-  drawRiskChartChartJS(currentAssessments);
-};
+// 導出至 window 以相容 HTML inline onclick
+window.toggleCompareMode = toggleCompareMode;
+window.toggleSite = toggleSite;
+window.removeSite = removeSite;
+window.renderSiteSelector = renderSiteSelector;

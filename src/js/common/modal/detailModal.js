@@ -1,429 +1,362 @@
-// js/common/modal/detailModal.js
-// 依賴：state.js（window.lastRenderedAssessments）
-// 依賴：table.js（.row-check checkbox、dataset.index）
-// 依賴：utils.js
-// 依賴：lang.js（t）
-// 依賴：bootstrap（bootstrap.Modal）
+// src/js/common/modal/detailModal.js
+import { t } from "../i18n.js";
+import { lastRenderedAssessments, selected, currentLang } from "../state.js";
 
-(function () {
-  function formatDateLocal(dateValue) {
-    const d = new Date(dateValue);
-    return `${d.getFullYear()}/${(d.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}/${d.getDate().toString().padStart(2, "0")}`;
-  }
+/**
+ * 取得目前表格中選取的檢測資料
+ */
+function getSelectedAssessments() {
+  const selectedIndexes = window.selected || [];
+  const list = window.lastRenderedAssessments || [];
+  return selectedIndexes.map((i) => list[i]).filter(Boolean);
+}
 
-  function getSelectedAssessments() {
-    const selectedIndexes = window.selected || [];
+/**
+ * 建立功能衰退區塊 (步行速度、起坐秒數)
+ */
+function buildDegenerateBlock(selected) {
+  let totalGaitSpeed = 0;
+  let totalChairSecond = 0;
+  const gaitNames = [];
+  const chairNames = [];
 
-    const list = window.lastRenderedAssessments || [];
+  const formatPerson = (p) => {
+    const gender =
+      p.Gender === 0 ? t("female") : p.Gender === 1 ? t("male") : t("unknown");
+    return `${p.Name || t("unknown")} (${p.Age || t("unknown")}${t("yearsOld")}, ${gender})`;
+  };
 
-    const results = selectedIndexes.map((i) => list[i]).filter(Boolean);
+  selected.forEach((item) => {
+    if (!item?.Degenerate) return;
 
-    // console.log("Modal 取得的選取資料內容:", results);
-    return results;
-  }
+    if (Array.isArray(item.Degenerate.GaitSpeed)) {
+      totalGaitSpeed += item.Degenerate.GaitSpeed.length;
+      item.Degenerate.GaitSpeed.forEach((p) => gaitNames.push(formatPerson(p)));
+    }
 
-  function buildDegenerateBlock(selected) {
-    let totalGaitSpeed = 0;
-    let totalChairSecond = 0;
-    const gaitNames = [];
-    const chairNames = [];
+    if (Array.isArray(item.Degenerate.ChairSecond)) {
+      totalChairSecond += item.Degenerate.ChairSecond.length;
+      item.Degenerate.ChairSecond.forEach((p) =>
+        chairNames.push(formatPerson(p)),
+      );
+    }
+  });
 
-    selected.forEach((item) => {
-      if (!item?.Degenerate) return;
+  const getListHtml = (names) =>
+    names.length
+      ? names.map((n) => `<li class="list-group-item small">${n}</li>`).join("")
+      : `<li class="list-group-item text-muted small">${t("alertNoData")}</li>`;
 
-      if (Array.isArray(item.Degenerate.GaitSpeed)) {
-        const list = item.Degenerate.GaitSpeed;
-        totalGaitSpeed += list.length;
-
-        list.forEach((p) => {
-          gaitNames.push(
-            `${p.Name || t("unknown")} (${p.Age || t("unknown")}${t(
-              "yearsOld",
-            )}, ${
-              p.Gender === 0
-                ? t("male")
-                : p.Gender === 1
-                  ? t("female")
-                  : t("unknown")
-            })`,
-          );
-        });
-      }
-
-      if (Array.isArray(item.Degenerate.ChairSecond)) {
-        const list = item.Degenerate.ChairSecond;
-        totalChairSecond += list.length;
-
-        list.forEach((p) => {
-          chairNames.push(
-            `${p.Name || t("unknown")} (${p.Age || t("unknown")}${t(
-              "yearsOld",
-            )}, ${
-              p.Gender === 0
-                ? t("male")
-                : p.Gender === 1
-                  ? t("female")
-                  : t("unknown")
-            })`,
-          );
-        });
-      }
-    });
-
-    return `
-      <div class="mb-4">
-        <h6 class="fw-bold">${t("degenerateWarning")}</h6>
-        <div class="row g-2">
-          <div class="col-12 col-md-6">
-            <div class="card">
-              <div class="card-header">${t(
-                "walkDecline",
-              )} (${totalGaitSpeed})</div>
-              <ul class="list-group list-group-flush">
-                ${
-                  gaitNames.length
-                    ? gaitNames
-                        .map((n) => `<li class="list-group-item">${n}</li>`)
-                        .join("")
-                    : `<li class="list-group-item text-muted">${t(
-                        "alertNoData",
-                      )}</li>`
-                }
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6">
-            <div class="card">
-              <div class="card-header">${t(
-                "sitStandIncrease",
-              )} (${totalChairSecond})</div>
-              <ul class="list-group list-group-flush">
-                ${
-                  chairNames.length
-                    ? chairNames
-                        .map((n) => `<li class="list-group-item">${n}</li>`)
-                        .join("")
-                    : `<li class="list-group-item text-muted">${t(
-                        "alertNoData",
-                      )}</li>`
-                }
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  function renderAllLevels(selected, monthContent) {
-    monthContent.innerHTML = "";
-
-    const levels = ["A", "B", "C"];
-    const levelTitles = {
-      A: t("vivifrailA"),
-      B: t("vivifrailB"),
-      C: t("vivifrailC"),
-    };
-    const levelColors = { A: "danger", B: "warning", C: "primary" };
-
-    let html = "";
-    levels.forEach((level) => {
-      const names = [];
-
-      selected.forEach((item) => {
-        if (item?.VIVIFRAIL?.[level]) {
-          item.VIVIFRAIL[level].forEach((person) => {
-            const ageText = person.Age
-              ? `${person.Age}${t("yearsOld")}`
-              : t("unknown");
-            const genderText =
-              person.Gender === 0
-                ? t("male")
-                : person.Gender === 1
-                  ? t("female")
-                  : t("unknown");
-            names.push(`${person.Name} (${ageText}, ${genderText})`);
-          });
-        }
-      });
-
-      html += `
-        <div class="col-12 col-md-4 mb-2">
-          <div class="card">
-            <div class="card-header bg-${levelColors[level]} text-white">
-              ${levelTitles[level]} (${names.length})
-            </div>
-            <ul class="list-group list-group-flush">
-              ${
-                names.length
-                  ? names
-                      .map((n) => `<li class="list-group-item">${n}</li>`)
-                      .join("")
-                  : `<li class="list-group-item text-muted">${t(
-                      "alertNoData",
-                    )}</li>`
-              }
+  return `
+    <div class="mb-4">
+      <h6 class="fw-bold mb-3"><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>${t("degenerateWarning")}</h6>
+      <div class="row g-2">
+        <div class="col-12 col-md-6">
+          <div class="card ">
+            <div class="card-header py-2 small fw-bold">${t("walkDecline")} (${totalGaitSpeed})</div>
+            <ul class="list-group list-group-flush" style="max-height: 200px; overflow-y: auto;">
+              ${getListHtml(gaitNames)}
             </ul>
           </div>
         </div>
-      `;
-    });
-
-    monthContent.innerHTML = `<div class="row g-2">${html}</div>`;
-  }
-
-  function renderMonth(selected, year, month, monthContent) {
-    monthContent.innerHTML = "";
-
-    const items = selected.filter((item) => {
-      if (!item?.Date) return false;
-      const d = new Date(item.Date);
-      if (month) {
-        return (
-          d.getFullYear() === parseInt(year, 10) && d.getMonth() + 1 === month
-        );
-      }
-      return d.getFullYear() === parseInt(year, 10);
-    });
-
-    if (!items.length) return;
-
-    const levels = ["A", "B", "C"];
-    const levelTitles = {
-      A: t("vivifrailA"),
-      B: t("vivifrailB"),
-      C: t("vivifrailC"),
-    };
-    const levelColors = { A: "danger", B: "warning", C: "primary" };
-
-    const groupedByDate = {};
-    items.forEach((item) => {
-      const dateKey = item.Date
-        ? new Date(item.Date).toLocaleDateString()
-        : t("unknown");
-      if (!groupedByDate[dateKey]) groupedByDate[dateKey] = [];
-      groupedByDate[dateKey].push(item);
-    });
-
-    Object.keys(groupedByDate)
-      .sort((a, b) => new Date(a) - new Date(b))
-      .forEach((date) => {
-        const dateItems = groupedByDate[date];
-
-        const dateHtml = `
-          <div class="mb-3 p-2 bg-light rounded">
-            <h6 class="fw-bold mb-2">${date}</h6>
-            <div class="row g-2">
-              ${levels
-                .map((level) => {
-                  const names = [];
-                  dateItems.forEach((item) => {
-                    if (item?.VIVIFRAIL?.[level]) {
-                      item.VIVIFRAIL[level].forEach((person) => {
-                        const ageText = person.Age
-                          ? `${person.Age}${t("yearsOld")}`
-                          : t("unknown");
-                        const genderText =
-                          person.Gender === 0
-                            ? t("male")
-                            : person.Gender === 1
-                              ? t("female")
-                              : t("unknown");
-                        names.push(
-                          `${person.Name} (${ageText}, ${genderText})`,
-                        );
-                      });
-                    }
-                  });
-
-                  return `
-                    <div class="col-12 col-md-4">
-                      <div class="card">
-                        <div class="card-header bg-${
-                          levelColors[level]
-                        } text-white">
-                          ${levelTitles[level]} (${names.length})
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          ${
-                            names.length
-                              ? names
-                                  .map(
-                                    (n) =>
-                                      `<li class="list-group-item">${n}</li>`,
-                                  )
-                                  .join("")
-                              : `<li class="list-group-item text-muted">${t(
-                                  "alertNoData",
-                                )}</li>`
-                          }
-                        </ul>
-                      </div>
-                    </div>
-                  `;
-                })
-                .join("")}
-            </div>
+        <div class="col-12 col-md-6">
+          <div class="card ">
+            <div class="card-header py-2 small fw-bold">${t("sitStandIncrease")} (${totalChairSecond})</div>
+            <ul class="list-group list-group-flush" style="max-height: 200px; overflow-y: auto;">
+              ${getListHtml(chairNames)}
+            </ul>
           </div>
-        `;
+        </div>
+      </div>
+    </div>`;
+}
 
-        monthContent.innerHTML += dateHtml;
-      });
-  }
+/**
+ * 渲染特定年份的所有等級清單
+ */
+function renderAllLevels(selected, monthContent) {
+  const levels = ["A", "B", "C"];
+  const levelTitles = {
+    A: t("vivifrailA"),
+    B: t("vivifrailB"),
+    C: t("vivifrailC"),
+  };
+  const levelColors = { A: "danger", B: "warning", C: "primary" };
 
-  function renderMonthButtons(
-    selected,
-    year,
-    monthButtonsContainer,
-    monthContent,
-  ) {
-    monthButtonsContainer.innerHTML = "";
-
-    // 全部
-    const allBtn = document.createElement("button");
-    allBtn.className = "btn btn-outline-secondary btn-sm active";
-    allBtn.textContent = t("all");
-    monthButtonsContainer.appendChild(allBtn);
-
-    allBtn.addEventListener("click", () => {
-      renderAllLevels(selected, monthContent);
-      monthButtonsContainer
-        .querySelectorAll("button")
-        .forEach((b) => b.classList.remove("active"));
-      allBtn.classList.add("active");
-    });
-
-    // 每月是否有資料
-    const monthsWithData = new Set();
+  let html = "";
+  levels.forEach((level) => {
+    const names = [];
     selected.forEach((item) => {
-      if (!item?.Date) return;
-      const d = new Date(item.Date);
-      if (d.getFullYear() === parseInt(year, 10))
-        monthsWithData.add(d.getMonth() + 1);
+      if (item?.VIVIFRAIL?.[level]) {
+        item.VIVIFRAIL[level].forEach((p) => {
+          const gender =
+            p.Gender === 0
+              ? t("female")
+              : p.Gender === 1
+                ? t("male")
+                : t("unknown");
+          names.push(`${p.Name} (${p.Age || "?"}${t("yearsOld")}, ${gender})`);
+        });
+      }
     });
 
-    const monthNamesEN = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
-    for (let m = 1; m <= 12; m++) {
-      const btn = document.createElement("button");
-
-      if (monthsWithData.has(m)) {
-        btn.className = "btn btn-outline-primary btn-sm";
-        btn.addEventListener("click", () => {
-          renderMonth(selected, year, m, monthContent);
-          monthButtonsContainer
-            .querySelectorAll("button")
-            .forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-        });
-      } else {
-        btn.className = "btn btn-outline-secondary btn-sm disabled";
-        btn.disabled = true;
-      }
-
-      btn.textContent =
-        window.currentLang === "en"
-          ? monthNamesEN[m - 1]
-          : `${m} ${t("month")}`;
-      monthButtonsContainer.appendChild(btn);
-    }
-
-    // 預設顯示全部
-    renderAllLevels(selected, monthContent);
-  }
-
-  function initDetailModal() {
-    const viewDetailsBtn = document.getElementById("viewDetailsBtn");
-    if (!viewDetailsBtn) return;
-
-    viewDetailsBtn.addEventListener("click", () => {
-      const selected = getSelectedAssessments();
-      const modalEl = document.getElementById("detailsModal");
-      const modalBody = document.querySelector("#detailsModal .modal-body");
-      if (!modalEl || !modalBody) return;
-
-      modalBody.innerHTML = "";
-
-      if (!selected.length) {
-        modalBody.innerHTML = `<div class="text-center text-muted">${t(
-          "alertNoData",
-        )}</div>`;
-      } else {
-        // 功能衰退統計
-        modalBody.innerHTML += buildDegenerateBlock(selected);
-
-        // 年份下拉 + 標題
-        modalBody.innerHTML += `<div class="mb-2 fw-bold">${t(
-          "highRiskGroup",
-        )}</div>`;
-
-        const yearsSet = new Set();
-        selected.forEach((item) => {
-          if (item?.Date) {
-            yearsSet.add(new Date(item.Date).getFullYear());
-          }
-        });
-        const years = Array.from(yearsSet).sort((a, b) => b - a);
-        const defaultYear = years[0];
-        modalBody.innerHTML += `
-          <div class="mb-2">
-            <select id="yearSelect" class="form-select form-select-sm w-auto">
-              ${years
-                .map(
-                  (y) =>
-                    `<option value="${y}" ${
-                      y === defaultYear ? "selected" : ""
-                    }>${y}</option>`,
-                )
-                .join("")}
-            </select>
+    html += `
+      <div class="col-12 col-md-4 mb-2">
+        <div class="card ">
+          <div class="card-header py-2 small fw-bold bg-${levelColors[level]} text-white">
+            ${levelTitles[level]} (${names.length})
           </div>
-          <div id="monthButtons" class="mb-3 d-flex flex-wrap gap-1"></div>
-          <div id="monthContent" class="row"></div>
-        `;
+          <ul class="list-group list-group-flush small">
+            ${names.length ? names.map((n) => `<li class="list-group-item">${n}</li>`).join("") : `<li class="list-group-item text-muted">${t("alertNoData")}</li>`}
+          </ul>
+        </div>
+      </div>`;
+  });
+  monthContent.innerHTML = `<div class="row g-2">${html}</div>`;
+}
 
-        const monthButtonsContainer = modalBody.querySelector("#monthButtons");
-        const monthContent = modalBody.querySelector("#monthContent");
-        const yearSelect = modalBody.querySelector("#yearSelect");
+/**
+ * 渲染按月份分組的詳細內容
+ */
+function renderMonth(selected, year, month, monthContent) {
+  monthContent.innerHTML = "";
+  const items = selected.filter((item) => {
+    if (!item?.Date) return false;
+    const d = new Date(item.Date);
+    return d.getFullYear() === year && d.getMonth() + 1 === month;
+  });
 
-        renderMonthButtons(
-          selected,
-          parseInt(yearSelect.value, 10),
-          monthButtonsContainer,
-          monthContent,
-        );
+  if (!items.length) return;
 
-        yearSelect.addEventListener("change", (e) => {
-          renderMonthButtons(
-            selected,
-            parseInt(e.target.value, 10),
-            monthButtonsContainer,
-            monthContent,
-          );
-        });
-      }
+  const levelColors = { A: "danger", B: "warning", C: "primary" };
+  const levelTitles = {
+    A: t("vivifrailA"),
+    B: t("vivifrailB"),
+    C: t("vivifrailC"),
+  };
 
-      const modal = new bootstrap.Modal(modalEl);
-      modal.show();
+  items.forEach((dateItem) => {
+    const dateStr = new Date(dateItem.Date).toLocaleDateString();
+    let rowHtml = `<div class="mb-4 p-2 bg-light rounded"><h6 class="fw-bold small mb-2">${dateStr}</h6><div class="row g-2">`;
+
+    ["A", "B", "C"].forEach((level) => {
+      const names = (dateItem.VIVIFRAIL?.[level] || []).map((p) => {
+        const gender =
+          p.Gender === 0
+            ? t("male")
+            : p.Gender === 1
+              ? t("female")
+              : t("unknown");
+        return `${p.Name} (${p.Age || "?"}${t("yearsOld")}, ${gender})`;
+      });
+
+      rowHtml += `
+        <div class="col-12 col-md-4">
+          <div class="card">
+            <div class="card-header py-1 x-small bg-${levelColors[level]} text-white">${levelTitles[level]} (${names.length})</div>
+            <ul class="list-group list-group-flush x-small">
+              ${names.length ? names.map((n) => `<li class="list-group-item">${n}</li>`).join("") : `<li class="list-group-item text-muted">${t("alertNoData")}</li>`}
+            </ul>
+          </div>
+        </div>`;
     });
+    rowHtml += `</div></div>`;
+    monthContent.innerHTML += rowHtml;
+  });
+}
+
+/**
+ * 建立月份按鈕
+ */
+function renderMonthButtons(
+  selected,
+  year,
+  monthButtonsContainer,
+  monthContent,
+) {
+  monthButtonsContainer.innerHTML = "";
+  const monthsWithData = new Set();
+  selected.forEach((item) => {
+    if (item?.Date) {
+      const d = new Date(item.Date);
+      if (d.getFullYear() === year) monthsWithData.add(d.getMonth() + 1);
+    }
+  });
+
+  const allBtn = document.createElement("button");
+  allBtn.className = "btn btn-outline-secondary btn-sm active";
+  allBtn.textContent = t("all");
+  allBtn.onclick = () => {
+    renderAllLevels(
+      selected.filter((i) => new Date(i.Date).getFullYear() === year),
+      monthContent,
+    );
+    monthButtonsContainer
+      .querySelectorAll("button")
+      .forEach((b) => b.classList.remove("active"));
+    allBtn.classList.add("active");
+  };
+  monthButtonsContainer.appendChild(allBtn);
+
+  const monthNamesEN = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  for (let m = 1; m <= 12; m++) {
+    const btn = document.createElement("button");
+    const hasData = monthsWithData.has(m);
+    btn.className = `btn btn-sm ${hasData ? "btn-outline-primary" : "btn-outline-secondary disabled"}`;
+    btn.disabled = !hasData;
+    btn.textContent =
+      window.currentLang === "en" ? monthNamesEN[m - 1] : `${m}${t("month")}`;
+
+    if (hasData) {
+      btn.onclick = () => {
+        renderMonth(selected, year, m, monthContent);
+        monthButtonsContainer
+          .querySelectorAll("button")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      };
+    }
+    monthButtonsContainer.appendChild(btn);
+  }
+  allBtn.click(); // 預設顯示該年全部
+}
+
+/**
+ * 初始化彈窗
+ */
+export function initDetailModal() {
+  const viewDetailsBtn = document.getElementById("viewDetailsBtn");
+  const modalEl = document.getElementById("detailsModal");
+  if (!viewDetailsBtn || !modalEl) return;
+
+  viewDetailsBtn.addEventListener("click", () => {
+    renderDetailModalContent();
+    // const selectedData = getSelectedAssessments();
+    // const modalBody = modalEl.querySelector(".modal-body");
+    // if (!modalBody) return;
+
+    // if (!selectedData.length) {
+    //   modalBody.innerHTML = `<div class="p-5 text-center text-muted">${t("alertNoData")}</div>`;
+    // } else {
+    //   modalBody.innerHTML = buildDegenerateBlock(selectedData);
+    //   modalBody.innerHTML += `<hr><div class="mb-3 fw-bold"><i class="bi bi-people-fill me-2"></i>${t("highRiskGroup")}</div>`;
+
+    //   const years = [
+    //     ...new Set(
+    //       selectedData.map((i) =>
+    //         i.Date ? new Date(i.Date).getFullYear() : null,
+    //       ),
+    //     ),
+    //   ]
+    //     .filter(Boolean)
+    //     .sort((a, b) => b - a);
+
+    //   modalBody.innerHTML += `
+    //     <div class="d-flex align-items-center gap-2 mb-3">
+    //       <select id="yearSelect" class="form-select form-select-sm w-auto">
+    //         ${years.map((y) => `<option value="${y}">${y}</option>`).join("")}
+    //       </select>
+    //       <div id="monthButtons" class="d-flex flex-wrap gap-1"></div>
+    //     </div>
+    //     <div id="monthContent" class="mt-2"></div>`;
+
+    //   const yearSelect = modalBody.querySelector("#yearSelect");
+    //   const monthButtons = modalBody.querySelector("#monthButtons");
+    //   const monthContent = modalBody.querySelector("#monthContent");
+
+    //   yearSelect.onchange = (e) =>
+    //     renderMonthButtons(
+    //       selectedData,
+    //       parseInt(e.target.value),
+    //       monthButtons,
+    //       monthContent,
+    //     );
+    //   renderMonthButtons(
+    //     selectedData,
+    //     parseInt(yearSelect.value),
+    //     monthButtons,
+    //     monthContent,
+    //   );
+    // }
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.show();
+  });
+}
+function renderDetailModalContent() {
+  const modalEl = document.getElementById("detailsModal");
+  if (!modalEl) return;
+
+  const selectedData = (window.selected || [])
+    .map((i) => window.lastRenderedAssessments?.[i])
+    .filter(Boolean);
+
+  const modalBody = modalEl.querySelector(".modal-body");
+  if (!modalBody) return;
+
+  if (!selectedData.length) {
+    modalBody.innerHTML = `<div class="p-5 text-center text-muted">${t("alertNoData")}</div>`;
+    return;
   }
 
-  // export
-  window.initDetailModal = initDetailModal;
-})();
+  modalBody.innerHTML = buildDegenerateBlock(selectedData);
+  modalBody.innerHTML += `<hr><div class="mb-3 fw-bold">
+    <i class="bi bi-people-fill me-2"></i>${t("highRiskGroup")}
+  </div>`;
+
+  const years = [
+    ...new Set(
+      selectedData.map((i) => (i.Date ? new Date(i.Date).getFullYear() : null)),
+    ),
+  ]
+    .filter(Boolean)
+    .sort((a, b) => b - a);
+
+  modalBody.innerHTML += `
+    <div class="d-flex align-items-center gap-2 mb-3">
+      <select id="yearSelect" class="form-select form-select-sm w-auto">
+        ${years.map((y) => `<option value="${y}">${y}</option>`).join("")}
+      </select>
+      <div id="monthButtons" class="d-flex flex-wrap gap-1"></div>
+    </div>
+    <div id="monthContent" class="mt-2"></div>`;
+
+  const yearSelect = modalBody.querySelector("#yearSelect");
+  const monthButtons = modalBody.querySelector("#monthButtons");
+  const monthContent = modalBody.querySelector("#monthContent");
+
+  yearSelect.onchange = (e) =>
+    renderMonthButtons(
+      selectedData,
+      parseInt(e.target.value),
+      monthButtons,
+      monthContent,
+    );
+
+  renderMonthButtons(
+    selectedData,
+    parseInt(yearSelect.value),
+    monthButtons,
+    monthContent,
+  );
+}
+
+// 掛出去
+window.renderDetailModalContent = renderDetailModalContent;
+window.initDetailModal = initDetailModal;
+window.buildDegenerateBlock = buildDegenerateBlock;
+window.renderMonthButtons = renderMonthButtons;

@@ -1,5 +1,7 @@
-// 語系
-const LANG = {
+// src/js/common/lang.js
+
+// 1. 語系字典數據
+export const LANG = {
   zh: {
     backToDefault: "返回一般模式",
     groupComparison: "群體比較分析",
@@ -81,7 +83,7 @@ const LANG = {
     ageLabel: "年齡",
     riskLevel: "等級",
     dates: "日期",
-    degenerateWarning: "功能衰退警示 (較前次檢測衰退超過10%)",
+
     highRiskGroup: "高風險族群",
     all: "全部",
     month: "月",
@@ -669,10 +671,58 @@ const LANG = {
   },
 };
 
-function t(key) {
-  return LANG[window.currentLang][key] || key;
+// 2. 獲取當前語言
+export let currentLang =
+  localStorage.getItem("lang") ||
+  (navigator.language.startsWith("en")
+    ? "en"
+    : navigator.language.startsWith("ja")
+      ? "ja"
+      : "zh");
+
+// 3. 工具函數：取得巢狀字典值
+function getNestedValue(obj, path) {
+  if (!obj || !path) return null;
+  return path.split(".").reduce((acc, key) => acc && acc[key], obj);
 }
-function tLocation(key) {
-  return LANG[window.currentLang]?.locations?.[key] || key;
+
+// 4. 翻譯函數
+export function t(key) {
+  const langDict = LANG[currentLang] || LANG["zh"];
+  return getNestedValue(langDict, key) ?? key;
 }
-window.LANG = LANG;
+
+export function tLocation(key) {
+  return LANG[currentLang]?.locations?.[key] || key;
+}
+
+// 5. 應用多語系到 DOM
+export function applyI18n() {
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  document.querySelectorAll("[data-i18n-aria-label]").forEach((el) => {
+    el.setAttribute("aria-label", t(el.dataset.i18nAriaLabel));
+  });
+}
+
+// 6. 切換語言
+export function switchLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem("lang", lang);
+
+  applyI18n();
+
+  // 觸發全域重繪（Vite 模式下，如果 renderView 已掛載到 window）
+  if (typeof window.renderView === "function") {
+    window.renderView();
+  }
+}
+
+// 7. 為了讓 HTML 內部的 onclick="switchLanguage('en')" 正常運作
+window.switchLanguage = switchLanguage;
+window.currentLang = currentLang;
+window.t = t;

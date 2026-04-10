@@ -1,4 +1,6 @@
-window.LANG = {
+// src/js/login/lang.js
+
+export const LANG_DATA = {
   zh: {
     mainTitle: "建豐健康科技儀表板",
     loginTitle: "登入",
@@ -9,9 +11,7 @@ window.LANG = {
     verifying: "驗證中...",
     err401: "帳號或密碼錯誤，請重新輸入",
     errServer: "伺服器回應錯誤",
-    errNetwork: "無法連線至伺服器，請確保 CORS 與 ModHeader 外掛已開啟",
-    labelAccount: "帳號",
-    labelPassword: "密碼",
+    errNetwork: "無法連線至伺服器，請確保網路正常",
     tokenExpired: "登入逾時，請重新登入",
     labelRemember: "記住帳號",
   },
@@ -25,10 +25,7 @@ window.LANG = {
     verifying: "Verifying...",
     err401: "Invalid username or password",
     errServer: "Server Error",
-    errNetwork:
-      "Connection failed. Please check CORS and ModHeader extensions.",
-    labelAccount: "Username",
-    labelPassword: "Password",
+    errNetwork: "Connection failed. Please check your network.",
     tokenExpired: "Session expired, please login again",
     labelRemember: "Remember username",
   },
@@ -42,9 +39,7 @@ window.LANG = {
     verifying: "検証中...",
     err401: "アカウントまたはパスワードが正しくありません",
     errServer: "サーバーエラー",
-    errNetwork: "サーバーに接続できません。CORSとModHeaderを確認してください。",
-    labelAccount: "アカウント",
-    labelPassword: "パスワード",
+    errNetwork: "サーバーに接続できません。",
     tokenExpired: "セッションが切れました。再度ログインしてください",
     labelRemember: "ユーザー名を記憶する",
   },
@@ -58,9 +53,7 @@ window.LANG = {
     verifying: "확인 중...",
     err401: "계정 또는 비밀번호가 잘못되었습니다",
     errServer: "서버 오류",
-    errNetwork: "서버에 연결할 수 없습니다. CORS 및 ModHeader를 확인하세요.",
-    labelAccount: "계정",
-    labelPassword: "비밀번호",
+    errNetwork: "서버에 연결할 수 없습니다.",
     tokenExpired: "세션이 만료되었습니다. 다시 로그인하세요",
     labelRemember: "아이디 저장",
   },

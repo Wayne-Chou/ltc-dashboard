@@ -1,15 +1,23 @@
-// logout.js
-function initLogoutButton() {
+// src/js/common/logout.js
+import { getCookie } from "./cookie.js";
+import { BASE_URL } from "./config.js"; // 確保 config.js 裡面有 export BASE_URL
+
+/**
+ * 初始化登出按鈕
+ */
+export function initLogoutButton() {
   const logoutBtn = document.getElementById("logoutBtn");
   if (!logoutBtn) return;
 
   logoutBtn.addEventListener("click", async () => {
-    const token =
-      typeof getCookie === "function" ? getCookie("fongai_token") : null;
+    const token = getCookie("fongai_token");
 
     try {
       if (token) {
-        await fetch(`${BASE_URL}/dashboard/logout`, {
+        // 直接使用 import 的 BASE_URL
+        const url = `${BASE_URL}/dashboard/logout`;
+
+        await fetch(url, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -27,3 +35,6 @@ function initLogoutButton() {
     }
   });
 }
+
+// 掛載到 window 確保 main.js 能呼叫
+window.initLogoutButton = initLogoutButton;

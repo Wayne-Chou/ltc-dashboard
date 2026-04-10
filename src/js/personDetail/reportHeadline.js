@@ -1,9 +1,20 @@
-// js/personDetail/reportHeadline.js
+// src/js/personDetail/reportHeadline.js
+
+/**
+ * reportHeadline.js
+ * 負責渲染報告最上方的「臨床狀態」與「重要摘要」。
+ * Vite 修正：
+ * 1. 確保從 window.LANG 存取語系資料。
+ * 2. 移除 IIFE (立即執行函式) 的限制，直接導出功能或掛載到 window。
+ * 3. 增加對 window.filteredAssessments 的安全存取。
+ */
+
 (function () {
   const $ = (id) => document.getElementById(id);
 
   function fmtDate(ts) {
     try {
+      if (!ts) return "--";
       return new Date(ts).toLocaleDateString();
     } catch {
       return "--";
@@ -16,18 +27,19 @@
     let delta = ((curr - prev) / Math.abs(prev)) * 100;
 
     // 若 higherIsBetter=false，代表越小越好（例如坐站秒數）
-    // 在這裡統一語意：delta > 0 一律代表「改善」
+    // 這裡維持原本邏輯：delta > 0 代表數值增加
     if (higherIsBetter === false) {
-      delta = -delta;
+      delta = -delta; // 讓「數值減少」變成「delta 為正」代表改善
     }
-
-    // 退化與改善的語意在 render 部分處理
     return delta;
   }
 
   function pickLatestTwo(arr) {
+    // 💥 修正：確保 Date 轉換正確
     const valid = (arr || []).filter((x) => x && x.Date != null);
-    valid.sort((a, b) => Number(a.Date) - Number(b.Date));
+    valid.sort(
+      (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime(),
+    );
     if (valid.length < 2) return null;
     return [valid[valid.length - 2], valid[valid.length - 1]];
   }
@@ -36,8 +48,12 @@
     const root = $("reportHeadline");
     if (!root) return;
 
-    const lang = LANG[window.currentLang]?.headline;
-    if (!lang) return;
+    // 💥 修正：明確從 window.LANG 抓取
+    const lang = window.LANG?.[window.currentLang || "zh"]?.headline;
+    if (!lang) {
+      console.warn("Headline language pack not found");
+      return;
+    }
 
     const badge = root.querySelector(".headline-badge");
     const t = root.querySelector(".headline-title");
@@ -50,27 +66,23 @@
           tone === "ok"
             ? "fa-circle-check"
             : tone === "warn"
-            ? "fa-triangle-exclamation"
-            : tone === "bad"
-            ? "fa-circle-xmark"
-            : "fa-circle-info"
+              ? "fa-triangle-exclamation"
+              : tone === "bad"
+                ? "fa-circle-xmark"
+                : "fa-circle-info"
         }"></i>
-        <span>${lang.status[statusKey]}</span>
+        <span>${lang.status[statusKey] || statusKey}</span>
       `;
     }
 
-    if (t) t.textContent = lang.title[titleKey];
-    if (d) d.textContent = lang.desc[descKey];
+    if (t) t.textContent = lang.title[titleKey] || titleKey;
+    if (d) d.textContent = lang.desc[descKey] || descKey;
 
-    // 右側只保留「比較區間」
     const range = $("reportRange");
     if (range) range.textContent = rangeText;
-
-    // 不再有任何「整體判讀」欄位
   }
 
   function buildFromTwo(prev, curr) {
-    // 指標：坐站（越低越好）、平衡（越高越好）、步速（越高越好）、風險（越低越好）
     const sit = pctChange(prev.ChairSecond, curr.ChairSecond, false);
     const bal = pctChange(prev.BalanceScore, curr.BalanceScore, true);
     const gait = pctChange(prev.GaitSpeed, curr.GaitSpeed, true);
@@ -78,7 +90,6 @@
 
     const issues = [];
 
-    // 坐站：delta < 0 = 退化
     if (sit != null)
       issues.push({
         key: "sitStand",
@@ -87,7 +98,6 @@
         titleKey: sit < 0 ? "sitStandSlow" : "sitStandFast",
       });
 
-    // 平衡：delta < 0 = 退化
     if (bal != null)
       issues.push({
         key: "balance",
@@ -96,7 +106,6 @@
         titleKey: bal < 0 ? "balanceDown" : "balanceUp",
       });
 
-    // 步速：delta < 0 = 退化
     if (gait != null)
       issues.push({
         key: "gait",
@@ -105,7 +114,6 @@
         titleKey: gait < 0 ? "gaitDown" : "gaitUp",
       });
 
-    // 風險：delta < 0 = 退化（更危險）
     if (risk != null)
       issues.push({
         key: "risk",
@@ -114,7 +122,6 @@
         titleKey: risk < 0 ? "riskUp" : "riskDown",
       });
 
-    // 找出最需要注意的項目（以「bad=true」優先，再看幅度）
     issues.sort((a, b) => {
       if (a.bad !== b.bad) return a.bad ? -1 : 1;
       return b.sev - a.sev;
@@ -123,7 +130,6 @@
     const top = issues[0];
     const rangeText = `${fmtDate(prev.Date)} → ${fmtDate(curr.Date)}`;
 
-    // 如果資料不足
     if (!top) {
       return {
         tone: "neutral",
@@ -155,6 +161,7 @@
   }
 
   function tryRender() {
+    // 💥 修正：從全域 window 獲取
     const data = window.filteredAssessments;
     const pair = pickLatestTwo(data);
 
@@ -166,13 +173,23 @@
     return true;
   }
 
-  // 等待 main.js fetch 完畢後才會有 window.filteredAssessments
+  // 💥 導出到 window 讓 main.js 之後可以手動呼叫
+  window.updateHeadlineUI = function (customData) {
+    if (customData) {
+      // 如果傳入單一資料，通常是為了重置或特定顯示，
+      // 但此組件邏輯是比對最近兩筆，故這裡重新跑 tryRender
+    }
+    return tryRender();
+  };
+
+  // 等待 main.js fetch 完畢
   let tries = 0;
   const timer = setInterval(() => {
     tries += 1;
     if (tryRender() || tries > 40) clearInterval(timer);
   }, 150);
 
+  // 監聽更新事件
   window.addEventListener("trend:updated", () => {
     tryRender();
   });

@@ -1,6 +1,9 @@
-// js/common/utils.js
+// src/js/common/utils.js
 
-function getRiskCategory(risk) {
+/**
+ * 根據風險數值取得分類
+ */
+export function getRiskCategory(risk) {
   if (risk > 50) return "high";
   if (risk > 30) return "slightlyHigh";
   if (risk > 17.5) return "medium";
@@ -8,7 +11,10 @@ function getRiskCategory(risk) {
   return "low";
 }
 
-function flattenData(VIVIFRAIL) {
+/**
+ * 攤平 VIVIFRAIL 數據並按風險等級排序
+ */
+export function flattenData(VIVIFRAIL) {
   const result = [];
 
   Object.values(VIVIFRAIL).forEach((group) => {
@@ -25,7 +31,10 @@ function flattenData(VIVIFRAIL) {
   return result;
 }
 
-function maskName(name) {
+/**
+ * 姓名遮罩處理
+ */
+export function maskName(name) {
   if (!name) return "匿名";
   const len = name.length;
 
@@ -42,12 +51,15 @@ function maskName(name) {
   }
 }
 
-function mergeAllVIVIFRAIL(assessments) {
+/**
+ * 合併所有檢測資料中的 VIVIFRAIL 等級
+ */
+export function mergeAllVIVIFRAIL(assessments) {
   const merged = { A: [], B: [], C: [], D: [] };
 
   assessments.forEach((item) => {
     ["A", "B", "C", "D"].forEach((level) => {
-      if (item.VIVIFRAIL[level]) {
+      if (item.VIVIFRAIL && item.VIVIFRAIL[level]) {
         merged[level] = merged[level].concat(item.VIVIFRAIL[level]);
       }
     });
@@ -56,7 +68,10 @@ function mergeAllVIVIFRAIL(assessments) {
   return merged;
 }
 
-function flattenLevelData(assessments) {
+/**
+ * 依等級攤平所有人資料
+ */
+export function flattenLevelData(assessments) {
   const levels = ["A", "B", "C", "D"];
   const result = [];
 
@@ -72,3 +87,9 @@ function flattenLevelData(assessments) {
 
   return result;
 }
+
+// --- 過渡期掛載到 window ---
+window.getRiskCategory = getRiskCategory;
+window.maskName = maskName;
+window.flattenData = flattenData;
+window.flattenLevelData = flattenLevelData;

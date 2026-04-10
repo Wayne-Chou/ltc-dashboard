@@ -1,19 +1,27 @@
-// main.js
+// --- 1. 引入必要零件 ---
+import { dashboardState } from "./state.js";
+import { applyI18n } from "./i18n.js";
+import { initLogoutButton } from "./logout.js";
+import { initLocationPage } from "./location.js";
+import { initTable } from "./table.js";
+import { initSidebarToggle } from "./initSidebar.js";
+import { initDownloadPdf } from "./downloadPdf.js";
+import { initDateFilter } from "./dateFilter.js";
+import { initGroupCompare } from "./groupCompare.js";
+import { initPersonCardRisk } from "./personCardRisk.js";
+import { initPersonCardLevel } from "./personCardLevel.js";
+import { initRiskModeUI } from "./riskStats.js";
+import { initDownloadChart } from "./downloadChart.js";
+import { initDetailModal } from "./modal/detailModal.js";
+import { initViewAllModal } from "./modal/viewAllModal.js";
+import { initSortModeSwitch } from "./sortModeSwitch.js";
+import { initMap } from "./map.js";
+import "./charts/renderCharts.js";
+// 如果有需要從其他檔案引入的比較模式函數，請在此 import
+// import { renderSelectedSites, renderSiteSelector, initEmptyCharts, drawNoDataChart } from './compareUtils.js';
 
-window.renderView = function () {
-  const container = document.getElementById("appView");
+// --- 2. 視圖渲染函數 ---
 
-  if (!container) return;
-
-  if (dashboardState.view === "compare") {
-    container.innerHTML = renderCompareView();
-    initCompareView();
-  } else {
-    container.innerHTML = renderDefaultView();
-    initDefaultView();
-  }
-  applyI18n();
-};
 function renderCompareView() {
   return `
     <div class="bg-white p-4 rounded shadow-sm mb-4">
@@ -21,151 +29,75 @@ function renderCompareView() {
         <i class="bi bi-intersect me-2"></i>
         群體比較
       </h5>
-
       <div class="mb-3">
-        <div class="small text-muted mb-2">
-          已選擇據點（最多3個）
-        </div>
+        <div class="small text-muted mb-2">已選擇據點（最多3個）</div>
         <div id="selectedSites" class="d-flex flex-wrap gap-2"></div>
       </div>
-
-      <div class="mb-3 text-muted small">
-        👉 點擊下方據點開始比較
-      </div>
-
+     
       <div id="siteSelector" class="row g-2"></div>
     </div>
 
-    <!-- ⭐ 完全比照 default 的 card 結構 -->
     <div class="row g-4">
-
-      <!-- 坐站 -->
       <div class="col-12 col-md-6">
         <div class="card shadow-sm h-100">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-              <h5 class="fw-semibold text-dark mb-0">
-                平均坐站秒數
-              </h5>
-              <button
-                class="btn btn-sm btn-outline-primary download-chart"
-                data-target="sitStandChartCanvas"
-              >
-                <i class="fa fa-download me-1"></i>
-                下載圖檔
+              <h5 class="fw-semibold text-dark mb-0">平均坐站秒數</h5>
+              <button class="btn btn-sm btn-outline-primary download-chart" data-target="sitStandChartCanvas">
+                <i class="fa fa-download me-1"></i>下載圖檔
               </button>
             </div>
-
-            <div class="text-muted small mb-2">
-              建議小於12秒
-            </div>
-
-            <div
-              class="chart-container"
-              style="position: relative; height: 300px; width: 100%"
-            >
-              <canvas id="sitStandChartCanvas"></canvas>
-            </div>
+            <div class="text-muted small mb-2">建議小於12秒</div>
+            <div class="chart-container" style="position: relative; height: 300px; width: 100%"><canvas id="sitStandChartCanvas"></canvas></div>
           </div>
         </div>
       </div>
-
-      <!-- 平衡 -->
       <div class="col-12 col-md-6">
         <div class="card shadow-sm h-100">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-              <h5 class="fw-semibold text-dark mb-0">
-                平均平衡測驗得分
-              </h5>
-              <button
-                class="btn btn-sm btn-outline-primary download-chart"
-                data-target="balanceChartCanvas"
-              >
-                <i class="fa fa-download me-1"></i>
-                下載圖檔
+              <h5 class="fw-semibold text-dark mb-0">平均平衡測驗得分</h5>
+              <button class="btn btn-sm btn-outline-primary download-chart" data-target="balanceChartCanvas">
+                <i class="fa fa-download me-1"></i>下載圖檔
               </button>
             </div>
-
-            <div class="text-muted small mb-2">
-              建議大於3.5分
-            </div>
-
-            <div
-              class="chart-container"
-              style="height: 300px; width: 100%"
-            >
-              <canvas id="balanceChartCanvas"></canvas>
-            </div>
+            <div class="text-muted small mb-2">建議大於3.5分</div>
+            <div class="chart-container" style="height: 300px; width: 100%"><canvas id="balanceChartCanvas"></canvas></div>
           </div>
         </div>
       </div>
-
-      <!-- 步行 -->
       <div class="col-12 col-md-6">
         <div class="card shadow-sm h-100">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-              <h5 class="fw-semibold text-dark mb-0">
-                平均步行速度趨勢
-              </h5>
-              <button
-                class="btn btn-sm btn-outline-primary download-chart"
-                data-target="gaitChartCanvas"
-              >
-                <i class="fa fa-download me-1"></i>
-                下載圖檔
+              <h5 class="fw-semibold text-dark mb-0">平均步行速度趨勢</h5>
+              <button class="btn btn-sm btn-outline-primary download-chart" data-target="gaitChartCanvas">
+                <i class="fa fa-download me-1"></i>下載圖檔
               </button>
             </div>
-
-            <div class="text-muted small mb-2">
-              建議大於等於100cm/s
-            </div>
-
-            <div
-              class="chart-container"
-              style="height: 300px; width: 100%"
-            >
-              <canvas id="gaitChartCanvas"></canvas>
-            </div>
+            <div class="text-muted small mb-2">建議大於等於100cm/s</div>
+            <div class="chart-container" style="height: 300px; width: 100%"><canvas id="gaitChartCanvas"></canvas></div>
           </div>
         </div>
       </div>
-
-      <!-- 風險 -->
       <div class="col-12 col-md-6">
         <div class="card shadow-sm h-100">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-              <h5 class="fw-semibold text-dark mb-0">
-                平均AI跌倒風險機率
-              </h5>
-              <button
-                class="btn btn-sm btn-outline-primary download-chart"
-                data-target="riskChartCanvas"
-              >
-                <i class="fa fa-download me-1"></i>
-                下載圖檔
+              <h5 class="fw-semibold text-dark mb-0">平均AI跌倒風險機率</h5>
+              <button class="btn btn-sm btn-outline-primary download-chart" data-target="riskChartCanvas">
+                <i class="fa fa-download me-1"></i>下載圖檔
               </button>
             </div>
-
-            <div class="text-muted small mb-2" style="opacity: 0">
-              placeholder
-            </div>
-
-            <div
-              class="chart-container"
-              style="height: 300px; width: 100%"
-            >
-              <canvas id="riskChartCanvas"></canvas>
-            </div>
+            <div class="text-muted small mb-2" style="opacity: 0">placeholder</div>
+            <div class="chart-container" style="height: 300px; width: 100%"><canvas id="riskChartCanvas"></canvas></div>
           </div>
         </div>
       </div>
-
     </div>
   `;
 }
+
 function renderDefaultView() {
   return `
      <!-- 檢測摘要 -->
@@ -1600,18 +1532,33 @@ function renderDefaultView() {
           </div>
   `;
 }
-function initCompareView() {
-  // 重置資料
-  dashboardState.selectedSites = [];
+document.addEventListener("DOMContentLoaded", () => {
+  window.renderView();
 
-  // 渲染 UI（現在 DOM 已經存在了）
-  renderSelectedSites();
-  renderSiteSelector();
+  const btn = document.getElementById("compareBtn");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      window.toggleCompareMode();
+    });
+  }
+});
+// --- 3. 初始化視圖函數 ---
 
-  // 初始化圖表
-  initEmptyCharts();
-  drawNoDataChart();
-}
+window.renderView = function () {
+  const container = document.getElementById("appView");
+  if (!container) return;
+
+  if (dashboardState.view === "compare") {
+    container.innerHTML = renderCompareView();
+    renderSiteSelector();
+    // initCompareView();
+  } else {
+    container.innerHTML = renderDefaultView();
+    initDefaultView();
+  }
+  applyI18n();
+};
+
 function initDefaultView() {
   initLogoutButton();
   initLocationPage();
@@ -1628,6 +1575,8 @@ function initDefaultView() {
   initViewAllModal();
   initSortModeSwitch();
 }
-document.addEventListener("DOMContentLoaded", async () => {
+
+// --- 4. 監聽 DOM 載入 ---
+document.addEventListener("DOMContentLoaded", () => {
   window.renderView();
 });

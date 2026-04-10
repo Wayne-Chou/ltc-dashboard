@@ -1,8 +1,173 @@
-// import "./lang.js";
-const BASE_URL = "https://service.fongai.co/WebAPI/api";
+// src/js/login/login.js
+import { BASE_URL } from "../common/config.js";
+import { LANG_DATA } from "./lang.js";
+
+/**
+ * Cookie 輔助工具
+ */
+const CookieHelper = {
+  get(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+    return null;
+  },
+  set(name, value, minutes = 30) {
+    const d = new Date();
+    d.setTime(d.getTime() + minutes * 60 * 1000);
+    const expires = "expires=" + d.toUTCString();
+    document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
+  },
+  delete(name) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+  },
+};
+
+// 當前頁面狀態
+let currentLang = "zh";
+let currentErrorKey = null;
+
 document.addEventListener("DOMContentLoaded", () => {
-  async function validateOnLoginPage() {
-    const token = getCookie("fongai_token");
+  // --- UI 元件綁定 ---
+  const ui = {
+    mainTitle: document.getElementById("mainTitle"),
+    loginTitle: document.getElementById("loginTitle"),
+    loginBtnText: document.getElementById("loginBtnText"),
+    loginBtn: document.getElementById("loginBtn"),
+    langTitle: document.getElementById("langTitle"),
+    langSelect: document.getElementById("languageSelect"),
+    loginForm: document.getElementById("loginForm"),
+    usernameInput: document.getElementById("username"),
+    passwordInput: document.getElementById("password"),
+    loginAlert: document.getElementById("loginAlert"),
+    togglePassword: document.getElementById("togglePassword"),
+    eyeIcon: document.getElementById("eyeIcon"),
+    rememberCheckbox: document.getElementById("rememberMe"),
+    labelRemember: document.getElementById("labelRemember"),
+    labelAcc: document.getElementById("labelAccount"),
+    labelPass: document.getElementById("labelPassword"),
+  };
+
+  // --- 初始化作業 ---
+
+  // 1. 檢查是否有逾時跳回的參數
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("reason") === "expired") {
+    currentErrorKey = "tokenExpired";
+    ui.loginAlert.className = "alert alert-warning d-block";
+  }
+
+  // 2. 檢查記住帳號
+  const savedUsername = localStorage.getItem("savedUsername");
+  if (savedUsername) {
+    ui.usernameInput.value = savedUsername;
+    ui.rememberCheckbox.checked = true;
+  }
+
+  // 3. 檢查現有 Token 有效性 (自動登入)
+  validateCurrentToken();
+
+  // 4. 初次文字渲染
+  updateTexts();
+
+  // --- 事件監聽 ---
+
+  // 語系切換
+  ui.langSelect.addEventListener("change", (e) => {
+    currentLang = e.target.value;
+    updateTexts();
+  });
+
+  // 密碼顯示切換
+  ui.togglePassword.addEventListener("click", () => {
+    const isPass = ui.passwordInput.type === "password";
+    ui.passwordInput.type = isPass ? "text" : "password";
+    ui.eyeIcon.classList.replace(
+      isPass ? "bi-eye-slash" : "bi-eye",
+      isPass ? "bi-eye" : "bi-eye-slash",
+    );
+  });
+
+  // 登入提交
+  ui.loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const t = LANG_DATA[currentLang];
+
+    // 重置狀態
+    ui.loginAlert.className = "alert d-none";
+    currentErrorKey = null;
+    ui.loginBtn.disabled = true;
+    const originalBtnText = ui.loginBtnText.textContent;
+    ui.loginBtnText.textContent = t.verifying;
+
+    try {
+      const response = await fetch(`${BASE_URL}/dashboard/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          account: ui.usernameInput.value.trim(),
+          password: ui.passwordInput.value,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.Data) {
+          CookieHelper.set("fongai_token", result.Data, 30);
+        }
+
+        // 記住帳號邏輯
+        if (ui.rememberCheckbox.checked) {
+          localStorage.setItem("savedUsername", ui.usernameInput.value.trim());
+        } else {
+          localStorage.removeItem("savedUsername");
+        }
+
+        performRedirect();
+      } else if (response.status === 401) {
+        CookieHelper.delete("fongai_token");
+        ui.loginAlert.className = "alert alert-warning d-block";
+        ui.loginAlert.textContent = t.err401;
+      } else {
+        ui.loginAlert.className = "alert alert-danger d-block";
+        ui.loginAlert.textContent = `${t.errServer} (${response.status})`;
+      }
+    } catch (error) {
+      ui.loginAlert.className = "alert alert-danger d-block";
+      ui.loginAlert.textContent = t.errNetwork;
+    } finally {
+      ui.loginBtn.disabled = false;
+      ui.loginBtnText.textContent = originalBtnText;
+    }
+  });
+
+  /**
+   * 更新畫面上的多語系文字
+   */
+  function updateTexts() {
+    const t = LANG_DATA[currentLang];
+    if (!t) return;
+
+    ui.mainTitle.textContent = t.mainTitle;
+    ui.loginTitle.textContent = t.loginTitle;
+    ui.loginBtnText.textContent = t.loginBtn;
+    ui.langTitle.textContent = t.langTitle;
+    ui.labelAcc.textContent = t.labelAccount;
+    ui.labelPass.textContent = t.labelPassword;
+    ui.labelRemember.textContent = t.labelRemember;
+    ui.langSelect.value = currentLang;
+
+    // 如果當前有顯示錯誤提示，同步更新其語言
+    if (currentErrorKey && !ui.loginAlert.classList.contains("d-none")) {
+      ui.loginAlert.textContent = t[currentErrorKey];
+    }
+  }
+
+  /**
+   * 驗證當前 Token 是否有效，有效則自動跳轉
+   */
+  async function validateCurrentToken() {
+    const token = CookieHelper.get("fongai_token");
     if (!token) return;
 
     try {
@@ -15,197 +180,23 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (res.status === 200) {
-        // token 還有效去儀錶板
-        const params = new URLSearchParams(window.location.search);
-        const redirect = params.get("redirect");
-
-        if (redirect) {
-          window.location.replace(decodeURIComponent(redirect));
-        } else {
-          window.location.replace("index.html");
-        }
-      }
-
-      if (res.status === 401) {
-        // token 已無效 → 清掉，留在 login
-        deleteCookie("fongai_token");
-        return;
+        performRedirect();
+      } else {
+        CookieHelper.delete("fongai_token");
       }
     } catch (e) {
-      // validate 失敗時，留在 login
-      console.warn("validate failed:", e);
-    }
-  }
-  validateOnLoginPage();
-  // --- 1. 自動跳轉檢查 (僅檢查 Cookie) ---
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-    return null;
-  }
-
-  // 如果已有 token 且網址不是因為逾時跳回來的，才自動跳轉 index
-  const urlParams = new URLSearchParams(window.location.search);
-  const reason = urlParams.get("reason");
-
-  // if (getCookie("fongai_token") && reason !== "expired") {
-  //   window.location.replace("index.html");
-  //   return;
-  // }
-
-  // --- 2. UI 元件定義 ---
-  const langSelect = document.getElementById("languageSelect");
-  const mainTitle = document.getElementById("mainTitle");
-  const loginTitle = document.getElementById("loginTitle");
-  const loginBtnText = document.getElementById("loginBtnText");
-  const loginBtn = document.getElementById("loginBtn");
-  const langTitle = document.getElementById("langTitle");
-  const loginForm = document.getElementById("loginForm");
-  const usernameInput = document.getElementById("username");
-  const passwordInput = document.getElementById("password");
-  const loginAlert = document.getElementById("loginAlert");
-  const togglePassword = document.querySelector("#togglePassword");
-  const eyeIcon = document.querySelector("#eyeIcon");
-  const rememberCheckbox = document.getElementById("rememberMe");
-  const savedUsername = localStorage.getItem("savedUsername");
-
-  if (savedUsername) {
-    usernameInput.value = savedUsername;
-    rememberCheckbox.checked = true;
-  }
-  togglePassword.addEventListener("click", function () {
-    const type =
-      passwordInput.getAttribute("type") === "password" ? "text" : "password";
-    passwordInput.setAttribute("type", type);
-
-    if (type === "password") {
-      eyeIcon.classList.replace("bi-eye", "bi-eye-slash");
-    } else {
-      eyeIcon.classList.replace("bi-eye-slash", "bi-eye");
-    }
-  });
-  const labelAcc = document.getElementById("labelAccount");
-  const labelPass = document.getElementById("labelPassword");
-
-  let currentErrorKey = null;
-
-  if (reason === "expired") {
-    currentErrorKey = "tokenExpired";
-    if (loginAlert) {
-      loginAlert.className = "alert alert-warning d-block";
+      console.warn("Token validation failed:", e);
     }
   }
 
-  // --- 3. 工具函式：設定 30 分鐘過期的 Cookie ---
-  function setCookie(name, value, minutes = 30) {
-    const d = new Date();
-    d.setTime(d.getTime() + minutes * 60 * 1000);
-    const expires = "expires=" + d.toUTCString();
-    document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax`;
+  /**
+   * 執行頁面跳轉
+   */
+  function performRedirect() {
+    const redirect = new URLSearchParams(window.location.search).get(
+      "redirect",
+    );
+    const targetUrl = redirect ? decodeURIComponent(redirect) : "index.html";
+    window.location.replace(targetUrl);
   }
-
-  // --- 4. 多語系更新邏輯 ---
-  function updateTexts() {
-    const current = window.currentLang || "zh";
-    const t = window.LANG[current];
-    const labelRemember = document.getElementById("labelRemember");
-    if (labelRemember) labelRemember.textContent = t.labelRemember;
-    if (!t) return;
-
-    if (mainTitle) mainTitle.textContent = t.mainTitle;
-    if (loginTitle) loginTitle.textContent = t.loginTitle;
-    if (loginBtnText) loginBtnText.textContent = t.loginBtn;
-    if (langTitle) langTitle.textContent = t.langTitle;
-
-    if (labelAcc) labelAcc.textContent = t.labelAccount;
-    if (labelPass) labelPass.textContent = t.labelPassword;
-
-    if (usernameInput) usernameInput.placeholder = "";
-    if (passwordInput) passwordInput.placeholder = "";
-
-    if (langSelect) langSelect.value = current;
-
-    // 確保逾時訊息或錯誤訊息能根據語言變換文字
-    if (currentErrorKey && !loginAlert.classList.contains("d-none")) {
-      loginAlert.textContent = t[currentErrorKey];
-    }
-  }
-
-  updateTexts();
-
-  if (langSelect) {
-    langSelect.addEventListener("change", (e) => {
-      window.currentLang = e.target.value;
-      updateTexts();
-    });
-  }
-
-  // --- 5. 登入表單提交 ---
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const current = window.currentLang || "zh";
-    const t = window.LANG[current];
-
-    loginAlert.className = "alert d-none";
-    currentErrorKey = null;
-
-    loginBtn.disabled = true;
-    const originalBtnText = loginBtnText.textContent;
-    loginBtnText.textContent = t.verifying;
-
-    try {
-      const response = await fetch(`${BASE_URL}/dashboard/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          account: usernameInput.value.trim(),
-          password: passwordInput.value,
-        }),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        if (result.Data) {
-          setCookie("fongai_token", result.Data, 30);
-        }
-        // ===== 記住帳號 =====
-        if (rememberCheckbox.checked) {
-          localStorage.setItem("savedUsername", usernameInput.value.trim());
-        } else {
-          localStorage.removeItem("savedUsername");
-        }
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirect = urlParams.get("redirect");
-
-        if (redirect) {
-          window.location.replace(decodeURIComponent(redirect));
-        } else {
-          window.location.replace("index.html");
-        }
-      } else if (response.status === 401) {
-        deleteCookie("fongai_token");
-        currentErrorKey = "err401";
-        loginAlert.className = "alert alert-warning d-block";
-        loginAlert.textContent = t.err401;
-      } else {
-        currentErrorKey = "errServer";
-        loginAlert.className = "alert alert-danger d-block";
-        loginAlert.textContent = `${t.errServer} (${response.status})`;
-      }
-    } catch (error) {
-      currentErrorKey = "errNetwork";
-      loginAlert.className = "alert alert-danger d-block";
-      loginAlert.textContent = t.errNetwork;
-    } finally {
-      loginBtn.disabled = false;
-      loginBtnText.textContent = originalBtnText;
-    }
-  });
 });
-
-// 刪除cookie
-
-function deleteCookie(name) {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-}

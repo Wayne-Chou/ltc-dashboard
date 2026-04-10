@@ -1,10 +1,38 @@
-// js/common/dateFilter.js
-// 依賴：state.js（window.currentAssessments / window.selected）、table.js（renderAssessmentTable）
-// 依賴：riskStats.js（updateDegenerateAndLevels / resetDegenerateAndLevels）
-// 依賴：personCardRisk.js（mergeAllVIVIFRAIL / flattenData / renderCards / updateRiskButtonsCounts）
-// 依賴：location.js（updateOnLocationChange）
-// 依賴：charts/*.js（drawSitStandChartChartJS / drawBalanceChartChartJS / drawGaitChartChartJS / drawRiskChartChartJS / drawNoDataChart / removeNoDataOverlay）
-function getFlatpickrLocale(lang) {
+// src/js/common/dateFilter.js
+import { renderAssessmentTable } from "./table.js";
+import {
+  renderRisk,
+  resetDegenerateAndLevels,
+  updateLatestCountDate,
+  updateTotalCountAndStartDate,
+} from "./riskStats.js";
+import { refreshLevelUI } from "./personCardLevel.js";
+import { renderLevelCards } from "./personCardLevel.js";
+/**
+ * 統一清除所有 Chart
+ */
+function resetAllCharts() {
+  [
+    "balanceChartCanvas",
+    "gaitChartCanvas",
+    "riskChartCanvas",
+    "sitStandChartCanvas",
+  ].forEach((id) => {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+
+    const chart = Chart.getChart(canvas);
+    if (chart) chart.destroy();
+
+    canvas.width = canvas.width;
+  });
+}
+
+/**
+ * 取得 Flatpickr 語系
+ */
+export function getFlatpickrLocale(lang) {
+  if (typeof flatpickr === "undefined") return "default";
   switch (lang) {
     case "zh":
       return flatpickr.l10ns["zh_tw"] || flatpickr.l10ns.default;
@@ -12,40 +40,38 @@ function getFlatpickrLocale(lang) {
       return flatpickr.l10ns.ja;
     case "ko":
       return flatpickr.l10ns.ko;
-    case "en":
     default:
       return flatpickr.l10ns.default;
   }
 }
 
-function initDateFilter() {
-  // 沒有 dateRange 就不做
+/**
+ * 初始化日期篩選
+ */
+export function initDateFilter() {
   const dateRangeEl = document.getElementById("dateRange");
   if (!dateRangeEl || typeof flatpickr === "undefined") return;
-
-  const assessmentTableBody = document.getElementById("assessmentTableBody");
-  const personContainer = document.getElementById("personContainer");
 
   const filterBtnsDesktop = document.querySelector(".filterBtnsDesktop");
   const filterDropdownMobile = document.querySelector(".filterDropdownMobile");
   const paginationContainer = document.getElementById(
     "tablePaginationContainer",
   );
-
   const viewAllBtn = document.getElementById("viewAllBtn");
   const checkAllBtn = document.getElementById("checkAllBtn");
   const uncheckAllBtn = document.getElementById("uncheckAllBtn");
   const sortModeSwitch = document.querySelector(".sortModeSwitch");
 
-  //  清除時要回到「目前地區」的全量資料
-  function getBaseData() {
-    return window.currentAssessments || [];
-  }
-
+  const getBaseData = () => window.currentAssessments || [];
+  uncheckAllBtn?.addEventListener("click", () => {
+    resetAllCharts();
+    window.removeNoDataOverlay?.();
+    window.drawNoDataChart?.();
+  });
   const fp = flatpickr("#dateRange", {
     mode: "range",
     dateFormat: "Y-m-d",
-    locale: getFlatpickrLocale(window.currentLang),
+    locale: getFlatpickrLocale(window.currentLang || "zh"),
     onChange: function (selectedDates) {
       if (selectedDates.length === 2) {
         filterByDate(selectedDates[0], selectedDates[1]);
@@ -53,95 +79,107 @@ function initDateFilter() {
     },
   });
 
-  function hideFiltersUI() {
-    filterBtnsDesktop?.classList.add("hidden-by-filter");
-    filterDropdownMobile?.classList.add("hidden-by-filter");
-    viewAllBtn?.classList.add("hidden-by-filter");
-    checkAllBtn?.classList.add("hidden-by-filter");
-    uncheckAllBtn?.classList.add("hidden-by-filter");
-    paginationContainer?.classList.add("hidden-by-filter");
-    sortModeSwitch?.classList.add("hidden-by-filter");
+  function toggleFiltersUI(show) {
+    const action = show ? "remove" : "add";
+    const elements = [
+      filterBtnsDesktop,
+      filterDropdownMobile,
+      viewAllBtn,
+      checkAllBtn,
+      uncheckAllBtn,
+      paginationContainer,
+      sortModeSwitch,
+    ];
+    elements.forEach((el) => el?.classList[action]("hidden-by-filter"));
   }
 
-  function showFiltersUI() {
-    filterBtnsDesktop?.classList.remove("hidden-by-filter");
-    filterDropdownMobile?.classList.remove("hidden-by-filter");
-    viewAllBtn?.classList.remove("hidden-by-filter");
-    checkAllBtn?.classList.remove("hidden-by-filter");
-    uncheckAllBtn?.classList.remove("hidden-by-filter");
-    paginationContainer?.classList.remove("hidden-by-filter");
-    sortModeSwitch?.classList.remove("hidden-by-filter");
-  }
-
-  // 日期篩選
+  /**
+   * 日期篩選
+   */
   function filterByDate(startDate, endDate) {
     const source = getBaseData();
 
+    const start = new Date(startDate).setHours(0, 0, 0, 0);
+    const end = new Date(endDate).setHours(23, 59, 59, 999);
+
     const filtered = source.filter((item) => {
-      const d = new Date(item.Date);
-      return d >= startDate && d <= endDate;
+      const d = new Date(item.Date).getTime();
+      return d >= start && d <= end;
     });
 
     window.currentPage = 1;
     window.selected = filtered.map((_, i) => i);
     window.checkAllAcrossPages = true;
 
-    if (!filtered || filtered.length === 0) {
+    if (filtered.length === 0) {
+      resetAllCharts();
+      window.removeNoDataOverlay?.();
+      window.drawNoDataChart?.();
       renderAssessmentTable([]);
 
-      // 清空統計 / 等級 / 風險等
-      updateRiskButtonsCounts?.([]);
+      window.renderCards?.([], "all", {});
+
+      resetDegenerateAndLevels?.();
       renderRisk?.([]);
       resetDegenerateAndLevels?.();
       refreshLevelUI?.([]);
 
-      // 圖表顯示無資料
-      clearAllCharts?.();
-      drawNoDataChart?.();
+      window.drawNoDataChart?.();
+
       updateLatestCountDate?.([]);
       updateTotalCountAndStartDate?.([]);
 
-      hideFiltersUI();
+      toggleFiltersUI(false);
       return;
     }
 
-    showFiltersUI();
+    toggleFiltersUI(true);
 
     renderAssessmentTable(filtered);
-    removeNoDataOverlay?.();
-    drawSitStandChartChartJS?.(filtered);
-    drawBalanceChartChartJS?.(filtered);
-    drawGaitChartChartJS?.(filtered);
-    drawRiskChartChartJS?.(filtered);
+
+    resetAllCharts(); // 🔥 一定要先清
+
+    window.removeNoDataOverlay?.();
+
+    window.drawSitStandChartChartJS?.(filtered);
+    window.drawBalanceChartChartJS?.(filtered);
+    window.drawGaitChartChartJS?.(filtered);
+    window.drawRiskChartChartJS?.(filtered);
   }
 
-  // 清除按鈕
+  /**
+   * 清除按鈕
+   */
   const clearBtn = document.getElementById("clearBtn");
+
   clearBtn?.addEventListener("click", () => {
     if (!fp.selectedDates || fp.selectedDates.length === 0) return;
 
     fp.clear();
-
     const data = getBaseData();
 
     if (data.length > 0) {
-      showFiltersUI();
+      toggleFiltersUI(true);
 
       window.currentPage = 1;
       window.selected = data.map((_, i) => i);
       window.checkAllAcrossPages = true;
 
       renderAssessmentTable(data);
-
       updateLatestCountDate?.(data);
       updateTotalCountAndStartDate?.(data);
-      removeNoDataOverlay?.();
 
-      drawSitStandChartChartJS?.(data);
-      drawBalanceChartChartJS?.(data);
-      drawGaitChartChartJS?.(data);
-      drawRiskChartChartJS?.(data);
+      resetAllCharts();
+
+      window.removeNoDataOverlay?.();
+
+      window.drawSitStandChartChartJS?.(data);
+      window.drawBalanceChartChartJS?.(data);
+      window.drawGaitChartChartJS?.(data);
+      window.drawRiskChartChartJS?.(data);
     }
   });
 }
+
+// 保持相容
 window.initDateFilter = initDateFilter;

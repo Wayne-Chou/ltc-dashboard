@@ -153,16 +153,12 @@
                     登出
                   </button>
                 </div>
-                <div class="compareBtn">
-                  <button
-                    class="btn btn-outline-primary"
-                    onclick="toggleCompareMode()"
-                    id="compareBtn"
-                  >
+                <!-- <div class="compareBtn">
+                  <button class="btn btn-outline-primary" id="compareBtn">
                     <i class="bi bi-intersect me-1"></i>
                     <span data-i18n="compareMode">群體比較模式</span>
                   </button>
-                </div>
+                </div> -->
               </div>
             </header>
             <nav
@@ -287,46 +283,19 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
-<script src="./js/common/config.js"></script>
-<script src="./js/common/lang.js"></script>
-<script src="./js/common/cookie.js"></script>
-<script src="./js/common/map.js"></script>
-<script src="./js/common/utils.js"></script>
-<script src="./js/common/state.js"></script>
+
 <!-- 圖表js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
-<script src="./js/common/riskStats.js"></script>
-<script src="./js/common/personCardRisk.js"></script>
-<script src="./js/common/personCardLevel.js"></script>
-<script src="./js/common/charts/sitStandChart.js"></script>
-<script src="./js/common/charts/balanceChart.js"></script>
-<script src="./js/common/charts/gaitChart.js"></script>
-<script src="./js/common/charts/riskChart.js"></script>
-<script src="./js/common/charts/noDataChart.js"></script>
-<script src="./js/common/charts/renderCharts.js"></script>
-<script src="./js/common/downloadChart.js"></script>
 
-<script src="./js/common/downloadPdf.js"></script>
-<script src="./js/common/location.js"></script>
-<script src="./js/common/table.js"></script>
-<script src="./js/common/dateFilter.js"></script>
-<script src="./js/common/groupCompare.js"></script>
-<script src="./js/common/modal/detailModal.js"></script>
-<script src="./js/common/modal/viewAllModal.js"></script>
-<script src="./js/common/sortModeSwitch.js"></script>
-<script src="./js/common/initSidebar.js"></script>
-<script src="./js/common/logout.js"></script>
-<script src="./js/common/i18n.js"></script>
-<script src="./js/common/main.js"></script>
-
+<script type="module" src="/src/js/common/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- pdf下載 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACfOxn7DJ9gdcb-XBx-R2X5pbHWeskzUg&callback=initMap"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACfOxn7DJ9gdcb-XBx-R2X5pbHWeskzUg"
   async
   defer
 ></script>
