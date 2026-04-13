@@ -264,13 +264,6 @@ body {
   box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06) !important;
 }
 
-/* =========================================
-   Group Compare Section 
-   ========================================= */
-
-#groupCompareSection .bg-white {
-  border-radius: 14px;
-}
 
 /* =========================================
    Scrollbar
@@ -696,4 +689,238 @@ body {
 
   pointer-events: auto;
   z-index: 10;
+}
+
+/* 群體比較樣式 */
+.compare-summary-container {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.compare-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.compare-summary-header .title {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.compare-summary-header .basis {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+}
+
+.winner-card {
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  color: white;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.winner-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.winner-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.winner-text .main {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.winner-text .sub {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.compare-ranking {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ranking-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.ranking-badge .rank {
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.ranking-badge .score {
+  background: #0d6efd;
+  color: white;
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.metric-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.25s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+}
+
+.metric-card.is-active {
+  border: 1px solid #dbeafe;
+}
+
+.metric-card.is-tie {
+  background: #f8fafc;
+  opacity: 0.9;
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.metric-header .icon {
+  width: 38px;
+  height: 38px;
+  background: #eef2ff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f46e5;
+  font-size: 16px;
+}
+
+.metric-header .label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.metric-body {
+  margin-bottom: 10px;
+}
+
+.metric-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric-site {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 600;
+}
+
+.metric-badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-weight: 700;
+}
+
+.metric-badge.neutral {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.metric-value {
+  font-size: 34px;
+  font-weight: 900;
+  color: #020617;
+  margin: 6px 0;
+}
+
+.metric-compare {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.metric-footer {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.metric-footer strong {
+  color: #111827;
+  font-weight: 700;
+}
+
+.metric-card.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  text-align: center;
+  border: 1px dashed #cbd5f5;
+  background: #f8fafc;
+}
+
+.metric-empty-icon {
+  font-size: 22px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+}
+
+.metric-empty-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.metric-empty-desc {
+  font-size: 12px;
+  color: #64748b;
 }
