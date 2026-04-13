@@ -4,11 +4,13 @@
  * 1️⃣ 將趨勢百分比渲染到 #trendSummary 容器。
  * 2️⃣ 自動根據「越高越好」或「越低越好」判斷顏色（good/critical）。
  * 3️⃣ 支援多國語系切換。
- * * Vite 修正：
- * - 使用 export 導出函式。
- * - 使用 window.renderTrendSummary 進行全域掛載。
- * - 增加對全域變數 (window.LANG, window.currentLang) 的安全存取。
  **********************************************************************/
+
+import { LANG } from "./lang.js";
+
+function detailLangKey() {
+  return localStorage.getItem("lang") || "zh";
+}
 
 /**
  * 將趨勢百分比渲染到 #trendSummary
@@ -19,9 +21,8 @@ export function renderTrendSummary(trend, selectedDates = null) {
   const container = document.getElementById("trendSummary");
   if (!container) return;
 
-  // 💥 修正：從 window 獲取全域變數，並加上防呆檢查
-  const currentLang = window.currentLang || "zh";
-  const langPack = window.LANG?.[currentLang]?.trendSummary;
+  const currentLang = detailLangKey();
+  const langPack = LANG[currentLang]?.trendSummary;
 
   // 如果資料不足
   if (!trend || !langPack) {
@@ -121,8 +122,5 @@ export function renderTrendSummary(trend, selectedDates = null) {
 }
 
 /**
- * 💥 重要：全域掛載
- * 確保在 Vite 模組環境下，main.js 或 table.js
- * 能夠透過 window.renderTrendSummary 呼叫到此函式。
+ * 函式改以 ESM export 提供，供其他模組 import 使用。
  */
-window.renderTrendSummary = renderTrendSummary;

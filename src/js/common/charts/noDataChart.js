@@ -1,5 +1,5 @@
 // src/js/common/charts/noDataChart.js
-import { t } from "../lang.js";
+import { t } from "../locale.js";
 
 /**
  * 初始化空白畫布 (清空所有現有繪圖)
@@ -81,8 +81,3 @@ export function removeNoDataOverlay() {
     overlay.remove();
   });
 }
-
-// 導出至 window 以相容其他模組的舊式呼叫
-window.initEmptyCharts = initEmptyCharts;
-window.drawNoDataChart = drawNoDataChart;
-window.removeNoDataOverlay = removeNoDataOverlay;

@@ -1,9 +1,9 @@
 // src/js/common/location.js
-import { t } from "./i18n.js";
+import { t } from "./locale.js";
 import { getCookie } from "./cookie.js";
-import { initMap } from "./map.js";
 import { renderAssessmentTable } from "./table.js";
 import { BASE_URL } from "./config.js";
+import { setCurrentAssessments } from "./state.js";
 
 // ✅ 新增：直接 import chart（重點）
 import { drawSitStandChartChartJS } from "./charts/sitStandChart.js";
@@ -18,7 +18,13 @@ import { drawNoDataChart, removeNoDataOverlay } from "./charts/noDataChart.js";
    私有變數
    ======================== */
 let locationMap = {};
+/** 僅在場域總表載入完成後 getLocationMap() 才回傳資料 */
+let locationMapReady = false;
 let siteStatsMap = {};
+
+export function getLocationMap() {
+  return locationMapReady ? locationMap : undefined;
+}
 
 /* ========================
    工具函數
@@ -43,8 +49,8 @@ export async function initLocationPage() {
 
   const token = getCookie("fongai_token");
   if (!token) {
-    const currentUrl = window.location.pathname + window.location.search;
-    window.location.replace(
+    const currentUrl = globalThis.location.pathname + globalThis.location.search;
+    globalThis.location.replace(
       `login.html?redirect=${encodeURIComponent(currentUrl)}`,
     );
     return;
@@ -70,6 +76,7 @@ export async function initLocationPage() {
     const sites = result.Data || [];
 
     // 建立快取
+    locationMapReady = false;
     locationMap = {};
     siteStatsMap = {};
     sites.forEach((site) => {
@@ -85,7 +92,7 @@ export async function initLocationPage() {
       siteStatsMap[site.Code] = { Count: site.Count, Times: site.Times };
     });
 
-    window.locationMap = locationMap;
+    locationMapReady = true;
 
     renderDropdownUI();
 
@@ -96,9 +103,10 @@ export async function initLocationPage() {
     if (locationList)
       locationList.textContent = sites.map((s) => s.Name).join("、");
 
+    const { initMap } = await import("./map.js");
     initMap();
 
-    const params = new URL(window.location).searchParams;
+    const params = new URL(globalThis.location).searchParams;
     const regionParam = params.get("region");
 
     if (regionParam && regionParam !== "0" && locationMap[regionParam]) {
@@ -247,9 +255,9 @@ export async function loadLocationDataByCode(code, regionId) {
 }
 
 function handleUnauthorized() {
-  const currentUrl = window.location.pathname + window.location.search;
+  const currentUrl = globalThis.location.pathname + globalThis.location.search;
   deleteCookie("fongai_token");
-  window.location.replace(
+  globalThis.location.replace(
     `login.html?reason=expired&redirect=${encodeURIComponent(currentUrl)}`,
   );
 }
@@ -275,7 +283,7 @@ function updateHideOnAll(regionId) {
    ======================== */
 function applyAssessments(assessments) {
   const dataArray = Array.isArray(assessments) ? assessments : [];
-  window.currentAssessments = dataArray;
+  setCurrentAssessments(dataArray);
 
   removeNoDataOverlay?.();
 
@@ -304,12 +312,8 @@ function hideGlobalLoading() {
 }
 
 function updateUrlParam(id) {
-  const url = new URL(window.location);
+  const url = new URL(globalThis.location);
   url.searchParams.set("region", id);
-  window.history.replaceState({}, "", url);
+  globalThis.history.replaceState({}, "", url);
 }
 
-// 保留舊 API
-window.initLocationPage = initLocationPage;
-window.loadLocationDataById = loadLocationDataById;
-window.loadLocationDataByCode = loadLocationDataByCode;

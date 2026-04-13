@@ -1,6 +1,7 @@
-// --- 1. 引入必要零件 ---
+﻿// --- 1. 引入必要零件 ---
 import { dashboardState } from "./state.js";
 import { applyI18n } from "./i18n.js";
+import { initCookieConsent } from "./cookie.js";
 import { initLogoutButton } from "./logout.js";
 import { initLocationPage } from "./location.js";
 import { initTable } from "./table.js";
@@ -15,8 +16,12 @@ import { initDownloadChart } from "./downloadChart.js";
 import { initDetailModal } from "./modal/detailModal.js";
 import { initViewAllModal } from "./modal/viewAllModal.js";
 import { initSortModeSwitch } from "./sortModeSwitch.js";
-import { initMap } from "./map.js";
-import "./charts/renderCharts.js";
+import {
+  renderSiteSelector,
+  toggleCompareMode,
+  initCompareModeClickDelegation,
+} from "./charts/renderCharts.js";
+import { registerRenderView, renderView } from "./viewBridge.js";
 // 如果有需要從其他檔案引入的比較模式函數，請在此 import
 // import { renderSelectedSites, renderSiteSelector, initEmptyCharts, drawNoDataChart } from './compareUtils.js';
 
@@ -1532,32 +1537,23 @@ function renderDefaultView() {
           </div>
   `;
 }
-document.addEventListener("DOMContentLoaded", () => {
-  window.renderView();
-
-  const btn = document.getElementById("compareBtn");
-  if (btn) {
-    btn.addEventListener("click", () => {
-      window.toggleCompareMode();
-    });
-  }
-});
 // --- 3. 初始化視圖函數 ---
 
-window.renderView = function () {
+function renderDashboardView() {
   const container = document.getElementById("appView");
   if (!container) return;
 
   if (dashboardState.view === "compare") {
     container.innerHTML = renderCompareView();
     renderSiteSelector();
-    // initCompareView();
   } else {
     container.innerHTML = renderDefaultView();
     initDefaultView();
   }
   applyI18n();
-};
+}
+
+registerRenderView(renderDashboardView);
 
 function initDefaultView() {
   initLogoutButton();
@@ -1578,5 +1574,14 @@ function initDefaultView() {
 
 // --- 4. 監聽 DOM 載入 ---
 document.addEventListener("DOMContentLoaded", () => {
-  window.renderView();
+  initCookieConsent();
+  initCompareModeClickDelegation();
+  renderView();
+
+  const btn = document.getElementById("compareBtn");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      toggleCompareMode();
+    });
+  }
 });

@@ -1,5 +1,7 @@
 // src/js/common/charts/riskChart.js
-import { t } from "../lang.js";
+import { t } from "../locale.js";
+
+let riskChartInstance = null;
 
 /**
  * 繪製平均 AI 跌倒風險趨勢圖
@@ -9,12 +11,13 @@ export function drawRiskChartChartJS(assessments) {
   const canvas = document.getElementById("riskChartCanvas");
   if (!canvas) return;
 
+  if (riskChartInstance) {
+    riskChartInstance.destroy();
+    riskChartInstance = null;
+  }
+
   // 1. 處理無資料狀態
   if (!assessments || assessments.length === 0) {
-    if (window.riskChartInstance) {
-      window.riskChartInstance.destroy();
-      window.riskChartInstance = null;
-    }
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     return;
@@ -39,13 +42,8 @@ export function drawRiskChartChartJS(assessments) {
     offset = 1;
   }
 
-  // 4. 銷毀舊實例
-  if (window.riskChartInstance) {
-    window.riskChartInstance.destroy();
-  }
-
-  // 5. 建立新圖表 (紅色系代表風險警告)
-  window.riskChartInstance = new Chart(canvas, {
+  // 4. 建立新圖表 (紅色系代表風險警告)
+  riskChartInstance = new Chart(canvas, {
     type: "line",
     data: {
       labels,
@@ -112,6 +110,3 @@ export function drawRiskChartChartJS(assessments) {
     },
   });
 }
-
-// 掛載到 window 供其他模組呼叫
-window.drawRiskChartChartJS = drawRiskChartChartJS;

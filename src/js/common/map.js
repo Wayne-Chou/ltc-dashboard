@@ -1,5 +1,6 @@
 // src/js/common/map.js
-import { t } from "./i18n.js";
+import { t, tLocation } from "./locale.js";
+import { getLocationMap } from "./location.js";
 
 // 用來存放所有的 marker 和 label，切換語系時才能清空
 let mapElements = [];
@@ -83,8 +84,7 @@ export function initMap() {
   // --- 3. 畫 Marker 和 Label ---
   const bounds = new google.maps.LatLngBounds();
 
-  // 取得全域據點資料 (由 location.js 注入)
-  const locData = window.locationMap;
+  const locData = getLocationMap();
   if (!locData) {
     console.log("[Map] 尚無據點資料可顯示");
     return;
@@ -94,10 +94,7 @@ export function initMap() {
     const position = new google.maps.LatLng(loc.lat, loc.lng);
 
     // 翻譯據點名稱
-    const translatedName =
-      typeof window.tLocation === "function"
-        ? window.tLocation(loc.name)
-        : loc.name;
+    const translatedName = tLocation(loc.name) || loc.name;
 
     const marker = new google.maps.Marker({
       position: position,
@@ -128,12 +125,8 @@ export function initMap() {
 // 🛠️ 核心修正：掛載與自動執行補救
 // ================================================================
 
-// 1. 導出至全域，供 Google Maps HTML callback 呼叫
-window.initMap = initMap;
-window.mapElements = mapElements;
-
 /**
- * 2. 補救機制：
+ * 補救機制：
  * 雖然 HTML 裡寫了 callback=initMap，但如果 API 載入太快，
  * 當時這個模組還沒執行完，Google Maps 就會報 "initMap is not a function"。
  * 下面這段程式會在模組載入完後檢查，如果 google 已存在，就手動跑一次。
@@ -141,5 +134,3 @@ window.mapElements = mapElements;
 if (typeof google !== "undefined" && google.maps) {
   initMap();
 }
-// 特別掛載 Google Map 需要的 callback
-window.initMap = initMap;

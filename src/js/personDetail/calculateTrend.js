@@ -8,7 +8,7 @@
  *
  * Vite 修正：
  * - 加入 export 供模組引入。
- * - 加入 window.calculateTrend 供全域呼叫。
+ * - calculateTrend 僅供模組內與 import 使用。
  **********************************************************************/
 
 /**
@@ -76,9 +76,4 @@ export function calculateTrend(assessments) {
   return trendResult;
 }
 
-/**
- * 💥 重要：全域掛載
- * 解決 Vite 模組隔離問題，確保 charts.js 或其他非模組檔案
- * 透過 window.calculateTrend() 就能抓到這個函式。
- */
-window.calculateTrend = calculateTrend;
+

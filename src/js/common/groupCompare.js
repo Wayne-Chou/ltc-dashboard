@@ -1,12 +1,15 @@
 // src/js/common/groupCompare.js
-import { t } from "./lang.js";
-import { currentLang, currentAssessments, groupCompareState } from "./state.js";
+import { t } from "./locale.js";
+import { currentAssessments, groupCompareState } from "./state.js";
+
+let fpGroupA = null;
+let fpGroupB = null;
 
 /**
  * 依日期區間過濾資料
  */
 export function getAssessmentsByRange(start, end) {
-  const source = window.currentAssessments || [];
+  const source = currentAssessments || [];
   if (!start || !end) return [];
   const s = new Date(start).setHours(0, 0, 0, 0);
   const e = new Date(end).setHours(23, 59, 59, 999);
@@ -72,7 +75,7 @@ function diffPercent(a, b) {
  * 核心渲染邏輯：根據狀態顯示 placeholder 或結果表格
  */
 export function renderGroupCompare() {
-  const st = window.groupCompareState;
+  const st = groupCompareState;
   const container = document.getElementById("groupCompareResult");
   if (!container) return;
 
@@ -198,19 +201,19 @@ export function initGroupCompare() {
 
   toggle.addEventListener("change", () => {
     const enabled = toggle.checked;
-    window.groupCompareState.enabled = enabled;
+    groupCompareState.enabled = enabled;
     inputA.disabled = !enabled;
     inputB.disabled = !enabled;
 
     if (!enabled) {
-      if (window.fpGroupA) window.fpGroupA.clear();
-      if (window.fpGroupB) window.fpGroupB.clear();
-      window.groupCompareState.groupA = {
+      if (fpGroupA) fpGroupA.clear();
+      if (fpGroupB) fpGroupB.clear();
+      groupCompareState.groupA = {
         start: null,
         end: null,
         assessments: [],
       };
-      window.groupCompareState.groupB = {
+      groupCompareState.groupB = {
         start: null,
         end: null,
         assessments: [],
@@ -231,17 +234,16 @@ export function initGroupCompare() {
           end,
           assessments: getAssessmentsByRange(start, end),
         };
-        if (isA) window.groupCompareState.groupA = data;
-        else window.groupCompareState.groupB = data;
+        if (isA) groupCompareState.groupA = data;
+        else groupCompareState.groupB = data;
         renderGroupCompare();
       }
     },
   };
 
-  window.fpGroupA = flatpickr(inputA, fpConfig);
-  window.fpGroupB = flatpickr(inputB, fpConfig);
+  fpGroupA = flatpickr(inputA, fpConfig);
+  fpGroupB = flatpickr(inputB, fpConfig);
 
   renderGroupCompare();
 }
 
-window.initGroupCompare = initGroupCompare;

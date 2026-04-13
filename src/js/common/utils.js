@@ -87,9 +87,3 @@ export function flattenLevelData(assessments) {
 
   return result;
 }
-
-// --- 過渡期掛載到 window ---
-window.getRiskCategory = getRiskCategory;
-window.maskName = maskName;
-window.flattenData = flattenData;
-window.flattenLevelData = flattenLevelData;

@@ -1,5 +1,7 @@
 // src/js/common/charts/balanceChart.js
-import { t } from "../lang.js";
+import { t } from "../locale.js";
+
+let balanceChartInstance = null;
 
 /**
  * 繪製平均平衡得分趨勢圖
@@ -9,12 +11,14 @@ export function drawBalanceChartChartJS(assessments) {
   const canvas = document.getElementById("balanceChartCanvas");
   if (!canvas) return;
 
+  // 統一釋放舊 Chart 實例（只在此處 destroy，避免重複與殘留參考）
+  if (balanceChartInstance) {
+    balanceChartInstance.destroy();
+    balanceChartInstance = null;
+  }
+
   // 1. 處理無資料狀態
   if (!assessments || assessments.length === 0) {
-    if (window.balanceChartInstance) {
-      window.balanceChartInstance.destroy();
-      window.balanceChartInstance = null;
-    }
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     return;
@@ -39,13 +43,8 @@ export function drawBalanceChartChartJS(assessments) {
     offset = 1;
   }
 
-  // 4. 銷毀舊實例
-  if (window.balanceChartInstance) {
-    window.balanceChartInstance.destroy();
-  }
-
-  // 5. 建立新圖表 (藍色系)
-  window.balanceChartInstance = new Chart(canvas, {
+  // 4. 建立新圖表 (藍色系) — 全函式僅此處 new Chart 一次
+  balanceChartInstance = new Chart(canvas, {
     type: "line",
     data: {
       labels,
@@ -108,6 +107,3 @@ export function drawBalanceChartChartJS(assessments) {
     },
   });
 }
-
-// 掛載到 window 供其他組件呼叫
-window.drawBalanceChartChartJS = drawBalanceChartChartJS;

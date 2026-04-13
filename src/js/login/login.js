@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- 初始化作業 ---
 
   // 1. 檢查是否有逾時跳回的參數
-  const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(globalThis.location.search);
   if (urlParams.get("reason") === "expired") {
     currentErrorKey = "tokenExpired";
     ui.loginAlert.className = "alert alert-warning d-block";
@@ -193,10 +193,10 @@ document.addEventListener("DOMContentLoaded", () => {
    * 執行頁面跳轉
    */
   function performRedirect() {
-    const redirect = new URLSearchParams(window.location.search).get(
+    const redirect = new URLSearchParams(globalThis.location.search).get(
       "redirect",
     );
     const targetUrl = redirect ? decodeURIComponent(redirect) : "index.html";
-    window.location.replace(targetUrl);
+    globalThis.location.replace(targetUrl);
   }
 });

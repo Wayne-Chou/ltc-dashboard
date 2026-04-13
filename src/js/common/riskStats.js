@@ -1,5 +1,5 @@
 // src/js/common/riskStats.js
-import { t } from "./i18n.js";
+import { t } from "./locale.js";
 
 /**
  * 更新風險等級數字與進度條 (A/B/C/D 四級)
@@ -217,8 +217,3 @@ export function initRiskModeUI() {
   // 這裡可以放一些初始化的 DOM 監聽
 }
 
-// 為了相容其他還沒改完的 JS，掛載到 window
-window.renderRisk = renderRisk;
-window.updateLatestCountDate = updateLatestCountDate;
-window.updateDegenerateAndLevels = updateDegenerateAndLevels;
-window.updateTotalCountAndStartDate = updateTotalCountAndStartDate;

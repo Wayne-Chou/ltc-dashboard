@@ -1,5 +1,5 @@
 // src/js/common/downloadPdf.js
-import { t } from "./lang.js";
+import { t } from "./locale.js";
 import html2canvas from "html2canvas"; // 靜態匯入
 import { jsPDF } from "jspdf";
 /**
@@ -18,27 +18,18 @@ export function initDownloadPdf() {
     btn.innerHTML = `<i class="bi bi-hourglass-split me-1"></i> ${t("generatingPDF")}`;
 
     try {
-      // 確保 html2canvas 存在 (若透過 CDN 引入，它在 window 下)
-      const h2c = window.html2canvas || (await import("html2canvas")).default;
-
-      const canvas = await h2c(page, {
+      const canvas = await html2canvas(page, {
         scale: 2, // 提高解析度
         useCORS: true, // 允許跨域圖片（例如地圖）
         logging: false,
-        scrollY: -window.scrollY, // 修復捲動偏移 Bug
+        scrollY: -globalThis.scrollY, // 修復捲動偏移 Bug
         windowWidth: document.documentElement.scrollWidth,
         windowHeight: document.documentElement.scrollHeight,
       });
 
       const imgData = canvas.toDataURL("image/png");
 
-      // 處理 jsPDF 引入
-      const jspdfObj = window.jspdf ? window.jspdf.jsPDF : null;
-      if (!jspdfObj) {
-        throw new Error("找不到 jsPDF 函式庫，請檢查是否已正確引入。");
-      }
-
-      const pdf = new jspdfObj("p", "mm", "a4");
+      const pdf = new jsPDF("p", "mm", "a4");
 
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
@@ -73,6 +64,3 @@ export function initDownloadPdf() {
     }
   });
 }
-
-// 為了讓 main.js 能順利呼叫
-window.initDownloadPdf = initDownloadPdf;

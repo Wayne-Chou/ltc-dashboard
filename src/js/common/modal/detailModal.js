@@ -1,13 +1,13 @@
 // src/js/common/modal/detailModal.js
-import { t } from "../i18n.js";
-import { lastRenderedAssessments, selected, currentLang } from "../state.js";
+import { t, currentLang } from "../locale.js";
+import { lastRenderedAssessments, selected } from "../state.js";
 
 /**
  * 取得目前表格中選取的檢測資料
  */
 function getSelectedAssessments() {
-  const selectedIndexes = window.selected || [];
-  const list = window.lastRenderedAssessments || [];
+  const selectedIndexes = selected || [];
+  const list = lastRenderedAssessments || [];
   return selectedIndexes.map((i) => list[i]).filter(Boolean);
 }
 
@@ -219,7 +219,7 @@ function renderMonthButtons(
     btn.className = `btn btn-sm ${hasData ? "btn-outline-primary" : "btn-outline-secondary disabled"}`;
     btn.disabled = !hasData;
     btn.textContent =
-      window.currentLang === "en" ? monthNamesEN[m - 1] : `${m}${t("month")}`;
+      currentLang === "en" ? monthNamesEN[m - 1] : `${m}${t("month")}`;
 
     if (hasData) {
       btn.onclick = () => {
@@ -297,12 +297,12 @@ export function initDetailModal() {
     modal.show();
   });
 }
-function renderDetailModalContent() {
+export function renderDetailModalContent() {
   const modalEl = document.getElementById("detailsModal");
   if (!modalEl) return;
 
-  const selectedData = (window.selected || [])
-    .map((i) => window.lastRenderedAssessments?.[i])
+  const selectedData = (selected || [])
+    .map((i) => lastRenderedAssessments?.[i])
     .filter(Boolean);
 
   const modalBody = modalEl.querySelector(".modal-body");
@@ -355,8 +355,3 @@ function renderDetailModalContent() {
   );
 }
 
-// 掛出去
-window.renderDetailModalContent = renderDetailModalContent;
-window.initDetailModal = initDetailModal;
-window.buildDegenerateBlock = buildDegenerateBlock;
-window.renderMonthButtons = renderMonthButtons;

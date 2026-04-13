@@ -39,7 +39,7 @@
           // 3. 執行跳轉：如果沒有 token 且目前不在登入頁
           if (!token && !location.pathname.includes("login.html")) {
             // 使用 replace 而不是 href，這樣使用者點擊「回上一頁」時不會又被彈回來
-            window.location.replace("login.html");
+            location.replace("login.html");
           }
         }
       })();
@@ -70,13 +70,9 @@
                   >
                     AI動態骨架防跌群體儀表板
                   </h1>
-                  <!-- <h2 class="custom-subtitle h5 h4-md h3-lg mb-0">香柏樹</h2> -->
+                 
                 </div>
-                <div class="text-end">
-                  <!-- <p class="text-secondary mb-0">
-                更新日期：<span class="fw-semibold">2025/07/15</span>
-              </p> -->
-                </div>
+                
               </div>
               <div class="dropdown mt-3 d-flex justify-content-between">
                 <button
@@ -115,7 +111,8 @@
                       <li>
                         <button
                           class="dropdown-item"
-                          onclick="switchLanguage('zh')"
+                          type="button"
+                          data-switch-lang="zh"
                           data-i18n="langZh"
                         >
                           繁體中文
@@ -124,7 +121,8 @@
                       <li>
                         <button
                           class="dropdown-item"
-                          onclick="switchLanguage('en')"
+                          type="button"
+                          data-switch-lang="en"
                           data-i18n="langEn"
                         >
                           ENGLISH
@@ -133,7 +131,8 @@
                       <li>
                         <button
                           class="dropdown-item"
-                          onclick="switchLanguage('ja')"
+                          type="button"
+                          data-switch-lang="ja"
                           data-i18n="langJa"
                         >
                           日本語
@@ -141,9 +140,7 @@
                       </li>
                     </ul>
                   </div>
-                  <!-- <button id="downloadBtn" class="btn btn-primary">
-                <i class="bi bi-download me-1"></i>下載
-              </button> -->
+                 
                   <button
                     id="logoutBtn"
                     class="btn btn-primary"
@@ -153,12 +150,12 @@
                     登出
                   </button>
                 </div>
-                <!-- <div class="compareBtn">
+                <div class="compareBtn">
                   <button class="btn btn-outline-primary" id="compareBtn">
                     <i class="bi bi-intersect me-1"></i>
                     <span data-i18n="compareMode">群體比較模式</span>
                   </button>
-                </div> -->
+                </div>
               </div>
             </header>
             <nav

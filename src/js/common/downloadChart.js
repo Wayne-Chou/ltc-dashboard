@@ -50,6 +50,3 @@ export function initDownloadChart() {
     document.body.removeChild(link);
   }
 }
-
-// 導出至 window 以相容原本的呼叫方式
-window.initDownloadChart = initDownloadChart;

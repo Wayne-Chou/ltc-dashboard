@@ -1,9 +1,16 @@
 // src/js/personDetail/charts.js
 import { t } from "./lang.js";
+import { calculateTrend } from "./calculateTrend.js";
+import { renderTrendSummary } from "./renderTrendSummary.js";
+
+let sitStandChartInstance = null;
+let balanceChartInstance = null;
+let gaitChartInstance = null;
+let riskChartInstance = null;
 
 // 註冊插件 (確保 Chart.js 已在 HTML 載入)
-if (window.Chart) {
-  Chart.register(window["chartjs-plugin-annotation"]);
+if (globalThis.Chart) {
+  Chart.register(globalThis["chartjs-plugin-annotation"]);
 }
 
 // ===== 1. 坐站秒數趨勢圖 =====
@@ -40,9 +47,9 @@ export function drawSitStandChartChartJS(assessments) {
   let yMax = maxValue + (maxValue - minValue) * 0.2;
   if (yMax - yMin < 5) yMax = yMin + 5;
 
-  if (window.sitStandChartInstance) window.sitStandChartInstance.destroy();
+  if (sitStandChartInstance) sitStandChartInstance.destroy();
 
-  window.sitStandChartInstance = new Chart(canvas, {
+  sitStandChartInstance = new Chart(canvas, {
     type: "line",
     data: {
       labels,
@@ -105,9 +112,9 @@ export function drawBalanceChartChartJS(assessments) {
     dataValues = [null, ...dataValues, null];
   }
 
-  if (window.balanceChartInstance) window.balanceChartInstance.destroy();
+  if (balanceChartInstance) balanceChartInstance.destroy();
 
-  window.balanceChartInstance = new Chart(canvas, {
+  balanceChartInstance = new Chart(canvas, {
     type: "line",
     data: {
       labels,
@@ -158,9 +165,9 @@ export function drawGaitChartChartJS(assessments) {
     dataValues = [null, ...dataValues, null];
   }
 
-  if (window.gaitChartInstance) window.gaitChartInstance.destroy();
+  if (gaitChartInstance) gaitChartInstance.destroy();
 
-  window.gaitChartInstance = new Chart(canvas, {
+  gaitChartInstance = new Chart(canvas, {
     type: "line",
     data: {
       labels,
@@ -209,9 +216,9 @@ export function drawRiskChartChartJS(assessments) {
     dataValues = [null, ...dataValues, null];
   }
 
-  if (window.riskChartInstance) window.riskChartInstance.destroy();
+  if (riskChartInstance) riskChartInstance.destroy();
 
-  window.riskChartInstance = new Chart(canvas, {
+  riskChartInstance = new Chart(canvas, {
     type: "line",
     data: {
       labels,
@@ -262,14 +269,8 @@ function resetCanvas(canvas) {
   canvas.width = canvas.width; // 強制重置
 }
 
-// ===== 5. 全域掛載與事件 =====
-window.drawSitStandChartChartJS = drawSitStandChartChartJS;
-window.drawBalanceChartChartJS = drawBalanceChartChartJS;
-window.drawGaitChartChartJS = drawGaitChartChartJS;
-window.drawRiskChartChartJS = drawRiskChartChartJS;
-window.drawNoDataChart = drawNoDataChart;
-
-window.drawAllCharts = function (assessments) {
+// ===== 5. 圖表整合呼叫 =====
+export function drawAllCharts(assessments) {
   if (!assessments || assessments.length === 0) {
     drawNoDataChart();
     return;
@@ -280,11 +281,9 @@ window.drawAllCharts = function (assessments) {
   drawRiskChartChartJS(assessments);
 
   // 呼叫趨勢摘要
-  if (window.calculateTrend && window.renderTrendSummary) {
-    const trend = window.calculateTrend(assessments);
-    window.renderTrendSummary(trend);
-  }
-};
+  const trend = calculateTrend(assessments);
+  renderTrendSummary(trend);
+}
 
 // 處理下載按鈕 (事件代理)
 document.addEventListener("click", (e) => {
@@ -308,9 +307,3 @@ document.addEventListener("click", (e) => {
   link.click();
 });
 
-// 初始載入
-document.addEventListener("DOMContentLoaded", () => {
-  if (window.filteredAssessments) {
-    window.drawAllCharts(window.filteredAssessments);
-  }
-});

@@ -1,6 +1,6 @@
 // src/js/personDetail/lang.js
 
-window.LANG = {
+export const LANG = {
   zh: {
     alertNoData: "查無資料",
     back: "返回上一頁",
@@ -393,17 +393,17 @@ window.LANG = {
   },
 };
 
-// 💥 修正後的 t 函式，增加全域對象檢查
-export function t(key) {
-  const currentLang = window.currentLang || "zh";
-  if (!window.LANG || !window.LANG[currentLang]) return key;
-  return window.LANG[currentLang][key] || key;
+function detailLangKey() {
+  return localStorage.getItem("lang") || "zh";
 }
 
-// 💥 掛載到 window
-window.t = t;
+export function t(key) {
+  const lg = detailLangKey();
+  if (!LANG[lg]) return key;
+  return LANG[lg][key] ?? key;
+}
 
-window.applyLanguage = function () {
+export function applyLanguage() {
   document.querySelectorAll("[data-lang]").forEach((el) => {
     const key = el.getAttribute("data-lang");
     if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
@@ -412,25 +412,22 @@ window.applyLanguage = function () {
       el.textContent = t(key);
     }
   });
-};
+}
 
-// 性別文字對應
-window.genderText = function (g) {
-  // 修正 g 的型別相容性
+export function genderText(g) {
   const isMale = g === 1 || g === "1";
   const isFemale = g === 0 || g === "0";
   if (isMale) return t("male");
   if (isFemale) return t("female");
   return t("riskLabel")?.unknown || "Unknown";
-};
+}
 
-// 風險中文對應
-window.getRiskLabel = function (risk) {
+export function getRiskLabelFromLang(risk) {
   const label = t("riskLabel");
-  if (typeof label === "string") return label; // 防呆
+  if (typeof label === "string") return label;
   if (risk > 50) return label.high;
   if (risk > 30) return label.slightlyHigh;
   if (risk > 17.5) return label.medium;
   if (risk > 5) return label.slightlyLow;
   return label.low;
-};
+}

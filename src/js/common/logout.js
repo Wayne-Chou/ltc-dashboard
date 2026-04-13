@@ -31,10 +31,7 @@ export function initLogoutButton() {
       // 清除 token 並導回登入頁
       document.cookie =
         "fongai_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-      window.location.replace("login.html");
+      globalThis.location.replace("login.html");
     }
   });
 }
-
-// 掛載到 window 確保 main.js 能呼叫
-window.initLogoutButton = initLogoutButton;

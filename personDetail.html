@@ -26,7 +26,11 @@
       <header class="patient-header">
         <div class="patient-header-top">
           <div class="back-action">
-            <button type="button" class="custom-back-btn" onclick="goBack()">
+            <button
+              type="button"
+              class="custom-back-btn"
+              id="personDetailBackBtn"
+            >
               <div class="icon-circle">
                 <i class="fa-solid fa-arrow-left"></i>
               </div>
@@ -294,18 +298,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
-    <script type="module" src="src/js/common/config.js"></script>
-    <script type="module" src="src/js/personDetail/url.js"></script>
-    <script type="module" src="src/js/personDetail/lang.js"></script>
-    <script type="module" src="src/js/personDetail/charts.js"></script>
-    <script type="module" src="src/js/personDetail/calculateTrend.js"></script>
-    <script
-      type="module"
-      src="src/js/personDetail/renderTrendSummary.js"
-    ></script>
-    <script type="module" src="src/js/personDetail/table.js"></script>
-    <script type="module" src="src/js/personDetail/reportHeadline.js"></script>
-    <script type="module" src="src/js/common/i18n.js"></script>
-    <script type="module" src="src/js/personDetail/main.js"></script>
+    <script type="module" src="/src/js/personDetail/main.js"></script>
   </body>
 </html>

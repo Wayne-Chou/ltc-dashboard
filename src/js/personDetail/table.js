@@ -2,6 +2,17 @@
 
 // 💥 引入 t 函式 (假設來自 lang.js)
 import { t } from "./lang.js";
+import {
+  drawSitStandChartChartJS,
+  drawBalanceChartChartJS,
+  drawGaitChartChartJS,
+  drawRiskChartChartJS,
+  drawNoDataChart,
+} from "./charts.js";
+import { calculateTrend } from "./calculateTrend.js";
+import { renderTrendSummary } from "./renderTrendSummary.js";
+
+let isRenderingCharts = false;
 
 // ========================
 // 資料轉換
@@ -28,9 +39,9 @@ export function convertToAssessments(datas) {
 // ========================
 export function resetAllCharts() {
   // 💥 修正：相容 Chart.js 不同版本的實例銷毀方式
-  if (window.Chart) {
+  if (globalThis.Chart) {
     // 遍歷所有已知的 Chart 實例並銷毀
-    const instances = window.Chart.instances || {};
+    const instances = globalThis.Chart.instances || {};
     Object.values(instances).forEach((chart) => {
       try {
         if (chart) chart.destroy();
@@ -50,8 +61,8 @@ export function resetAllCharts() {
     if (!canvas) return;
 
     // 💥 雙重保險：如果個別畫布還有實例，直接透過 canvas 找出來殺掉
-    if (window.Chart) {
-      const individualChart = window.Chart.getChart(canvas);
+    if (globalThis.Chart) {
+      const individualChart = globalThis.Chart.getChart(canvas);
       if (individualChart) individualChart.destroy();
     }
 
@@ -62,9 +73,6 @@ export function resetAllCharts() {
     canvas.width = canvas.width;
   });
 }
-
-// 將函式掛載到 window
-window.resetAllCharts = resetAllCharts;
 
 // ========================
 // Table 渲染
@@ -102,10 +110,8 @@ export function renderTable(datas) {
     const b2 = d.SPPB?.Balancetest?.balance2?.Score ?? "-";
     const b3 = d.SPPB?.Balancetest?.balance3?.Score ?? "-";
 
-    const riskLabel = d.Risk != null ? window.getRiskLabel(d.Risk) : "-";
-    const riskColor = window.getRiskColor
-      ? window.getRiskColor(d.Risk)
-      : "inherit";
+    const riskLabel = d.Risk != null ? getRiskLabel(d.Risk) : "-";
+    const riskColor = getRiskColor(d.Risk);
 
     html += `
       <label class="record-item">
@@ -139,8 +145,6 @@ export function renderTable(datas) {
   container.innerHTML = html;
 }
 
-window.renderTable = renderTable;
-
 // ========================
 // Checkbox + Chart 邏輯
 // ========================
@@ -152,8 +156,8 @@ export function setupCheckboxes(datas) {
   const getRowChecks = () => document.querySelectorAll(".row-check");
 
   function updateCharts() {
-    if (window.isRenderingCharts) return;
-    window.isRenderingCharts = true;
+    if (isRenderingCharts) return;
+    isRenderingCharts = true;
 
     try {
       const checks = getRowChecks();
@@ -166,9 +170,9 @@ export function setupCheckboxes(datas) {
       // --- 無資料狀態 ---
       if (selectedDatas.length === 0) {
         resetAllCharts();
-        window.removeNoDataOverlay?.();
-        window.drawNoDataChart?.();
-        if (window.renderTrendSummary) window.renderTrendSummary(null);
+        globalThis.removeNoDataOverlay?.();
+        drawNoDataChart();
+        renderTrendSummary(null);
         updateCompareHint([], []);
         return;
       }
@@ -178,13 +182,13 @@ export function setupCheckboxes(datas) {
       const allAssessments = convertToAssessments(selectedDatas);
 
       resetAllCharts();
-      window.removeNoDataOverlay?.();
+      globalThis.removeNoDataOverlay?.();
 
       // 💥 修正處：將 assessments 全部改為 allAssessments
-      window.drawSitStandChartChartJS?.(allAssessments);
-      window.drawBalanceChartChartJS?.(allAssessments); // 這裡之前報錯
-      window.drawGaitChartChartJS?.(allAssessments);
-      window.drawRiskChartChartJS?.(allAssessments);
+      drawSitStandChartChartJS(allAssessments);
+      drawBalanceChartChartJS(allAssessments); // 這裡之前報錯
+      drawGaitChartChartJS(allAssessments);
+      drawRiskChartChartJS(allAssessments);
 
       const compareDatas = [...selectedDatas]
         .filter((d) => d?.Date)
@@ -192,26 +196,23 @@ export function setupCheckboxes(datas) {
         .slice(-2); // 取得最後兩筆（最新兩筆）
 
       if (compareDatas.length < 2) {
-        if (window.renderTrendSummary) window.renderTrendSummary(null);
+        renderTrendSummary(null);
       } else {
         const compareAssessments = convertToAssessments(compareDatas);
-        if (window.renderTrendSummary && window.calculateTrend) {
-          window.renderTrendSummary(window.calculateTrend(compareAssessments));
-        }
+        renderTrendSummary(calculateTrend(compareAssessments));
       }
 
       updateCompareHint(selectedDatas, compareDatas);
     } catch (e) {
       console.error("updateCharts error:", e);
     } finally {
-      window.isRenderingCharts = false;
+      isRenderingCharts = false;
     }
   }
 
   function updateCompareHint(selectedDatas, compareDatas) {
     if (!hint) return;
-    const currentLang = window.currentLang || "zh";
-    const hintLang = window.LANG?.[currentLang]?.tableHint;
+    const hintLang = t("tableHint");
     if (!hintLang) return;
 
     function format(str, vars) {
@@ -265,16 +266,24 @@ export function setupCheckboxes(datas) {
   updateCharts();
 }
 
-window.setupCheckboxes = setupCheckboxes;
-
 // ========================
 // 顏色與標籤輔助
 // ========================
-window.getRiskColor = function (risk) {
+export function getRiskColor(risk) {
   if (risk == null) return "inherit";
   if (risk > 50) return "#dc3545";
   if (risk > 30) return "#fd7e14";
   if (risk > 17.5) return "#ffc107";
   if (risk > 5) return "#28a745";
   return "#198754";
-};
+}
+
+export function getRiskLabel(risk) {
+  const label = t("riskLabel");
+  if (typeof label === "string") return label;
+  if (risk > 50) return label.high;
+  if (risk > 30) return label.slightlyHigh;
+  if (risk > 17.5) return label.medium;
+  if (risk > 5) return label.slightlyLow;
+  return label.low;
+}

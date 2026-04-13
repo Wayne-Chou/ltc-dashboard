@@ -1,5 +1,5 @@
 // src/js/common/cookie.js
-import { switchLanguage, currentLang } from "./lang.js";
+import { switchLanguage, currentLang } from "./i18n.js";
 
 // ======== Cookie 基本操作 ========
 
@@ -59,7 +59,3 @@ export function initCookieConsent() {
     consentBox.style.display = "none";
   });
 }
-
-// 為了讓 main.js 初始化時能執行
-window.initCookieConsent = initCookieConsent;
-window.getCookie = getCookie;

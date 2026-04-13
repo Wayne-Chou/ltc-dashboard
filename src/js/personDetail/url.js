@@ -1,21 +1,23 @@
 // /js/common/url.js
+import { getLocationMap } from "../common/location.js";
+import { BASE_URL } from "../common/config.js";
 
 // 取得網址參數函式
-window.getPersonParams = function () {
-  const urlParams = new URLSearchParams(window.location.search);
+export function getPersonParams() {
+  const urlParams = new URLSearchParams(globalThis.location.search);
   const id = urlParams.get("id");
   const regionParam = urlParams.get("region") || "0";
 
   let regionCode = null;
   if (regionParam !== "0") {
-    regionCode = window.locationMap?.[regionParam]?.code || regionParam;
+    regionCode = getLocationMap()?.[regionParam]?.code || regionParam;
   }
 
   return { id, regionCode };
-};
+}
 
 // API 請求函式
-window.fetchPersonDetailData = async function (no, code) {
+export async function fetchPersonDetailData(no, code) {
   const getSafeToken = () => {
     if (typeof getCookie === "function") return getCookie("fongai_token");
 
@@ -26,16 +28,14 @@ window.fetchPersonDetailData = async function (no, code) {
   };
 
   const token = getSafeToken();
-  const { BASE_URL } = window.APP_CONFIG || {
-    BASE_URL: "https://service.fongai.co/WebAPI/api",
-  };
 
   if (!token) {
     // console.error("Token 遺失，嘗試跳轉登入頁");
-    const currentPath = window.location.pathname + window.location.search;
+    const currentPath =
+      globalThis.location.pathname + globalThis.location.search;
 
     // 改用 URL 帶參數跳轉，使用 encodeURIComponent 確保特殊符號不會出錯
-    window.location.replace(
+    globalThis.location.replace(
       `login.html?redirect=${encodeURIComponent(currentPath)}`,
     );
     return null;
@@ -61,10 +61,11 @@ window.fetchPersonDetailData = async function (no, code) {
 
     if (!response.ok) {
       if (response.status === 401) {
-        const currentPath = window.location.pathname + window.location.search;
+        const currentPath =
+          globalThis.location.pathname + globalThis.location.search;
         deleteCookie("fongai_token");
 
-        window.location.replace(
+        globalThis.location.replace(
           `login.html?redirect=${encodeURIComponent(currentPath)}`,
         );
       }
@@ -78,7 +79,7 @@ window.fetchPersonDetailData = async function (no, code) {
     console.error("API 請求異常:", err);
     return null;
   }
-};
+}
 
 // 刪除cookie
 

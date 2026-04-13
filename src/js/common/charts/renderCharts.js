@@ -1,8 +1,12 @@
 // src/js/common/charts/compareMode.js
-import { t } from "../lang.js";
+import { t } from "../locale.js";
 import { getCookie } from "../cookie.js";
 import { dashboardState, currentAssessments } from "../state.js";
-import { fetchSiteData, getTimeRange } from "../location.js";
+import { fetchSiteData, getLocationMap, getTimeRange } from "../location.js";
+import { drawNoDataChart, removeNoDataOverlay } from "./noDataChart.js";
+import { renderView } from "../viewBridge.js";
+
+let compareClickDelegationBound = false;
 
 /**
  * 切換 比較/一般 模式
@@ -22,10 +26,24 @@ export function toggleCompareMode() {
     }
   }
 
-  // 重新渲染整個視圖
-  if (typeof window.renderView === "function") {
-    window.renderView();
-  }
+  renderView();
+}
+
+/** 比較模式：取代 HTML onclick，僅綁定一次 */
+export function initCompareModeClickDelegation() {
+  if (compareClickDelegationBound) return;
+  compareClickDelegationBound = true;
+  document.addEventListener("click", (e) => {
+    const siteCard = e.target.closest("#siteSelector .site-card[data-code]");
+    if (siteCard) {
+      void toggleSite(siteCard.dataset.code, siteCard);
+      return;
+    }
+    const removeEl = e.target.closest("#selectedSites [data-remove-site]");
+    if (removeEl?.dataset.removeSite != null) {
+      void removeSite(removeEl.dataset.removeSite);
+    }
+  });
 }
 
 /**
@@ -52,8 +70,7 @@ export function renderSiteSelector() {
   const container = document.getElementById("siteSelector");
   if (!container) return;
 
-  // 從 window 取得 locationMap (由 location.js 初始化)
-  const sites = Object.values(window.locationMap || {});
+  const sites = Object.values(getLocationMap() || {});
 
   if (!sites.length) {
     container.innerHTML = `<div class="text-muted p-3">${t("alertNoData")}</div>`;
@@ -68,8 +85,7 @@ export function renderSiteSelector() {
       return `
         <div class="col-6 col-md-3">
           <div class="site-card ${isActive}" 
-               data-code="${site.code}" 
-               onclick="toggleSite('${site.code}', this)">
+               data-code="${site.code}">
             <div class="site-name">${site.name}</div>
           </div>
         </div>
@@ -100,7 +116,7 @@ export async function toggleSite(siteCode, el) {
 
   if (!dashboardState.selectedSites.length) {
     clearAllCharts();
-    window.drawNoDataChart?.();
+    drawNoDataChart();
     return;
   }
 
@@ -123,8 +139,8 @@ function renderSelectedSites() {
     .map(
       (code) => `
       <div class="selected-tag">
-        ${window.locationMap[code]?.name || code}
-        <span onclick="removeSite('${code}')">✕</span>
+        ${getLocationMap()?.[code]?.name || code}
+        <span role="button" tabindex="0" data-remove-site="${code}">✕</span>
       </div>
     `,
     )
@@ -147,7 +163,7 @@ export async function removeSite(code) {
 
   if (!dashboardState.selectedSites.length) {
     clearAllCharts();
-    window.drawNoDataChart?.();
+    drawNoDataChart();
     return;
   }
 
@@ -233,21 +249,16 @@ async function renderCompareCharts() {
       const data = await fetchSiteData(code, startTime, endTime, token);
       return {
         code,
-        site: window.locationMap[code]?.name || code,
+        site: getLocationMap()?.[code]?.name || code,
         data: data || [],
       };
     }),
   );
 
-  window.removeNoDataOverlay?.();
+  removeNoDataOverlay();
   drawMultiLineChart("sitStandChartCanvas", grouped, "ChairSecond");
   drawMultiLineChart("balanceChartCanvas", grouped, "BalanceScore");
   drawMultiLineChart("gaitChartCanvas", grouped, "GaitSpeed");
   drawMultiLineChart("riskChartCanvas", grouped, "RiskRate");
 }
 
-// 導出至 window 以相容 HTML inline onclick
-window.toggleCompareMode = toggleCompareMode;
-window.toggleSite = toggleSite;
-window.removeSite = removeSite;
-window.renderSiteSelector = renderSiteSelector;

@@ -1,7 +1,11 @@
 // src/js/common/personCardLevel.js
-import { t } from "./i18n.js";
+import { t } from "./locale.js";
 import { maskName, flattenLevelData } from "./utils.js";
-import { lastRenderedAssessments, selected } from "./state.js";
+import {
+  lastRenderedAssessments,
+  selected,
+  setLastLevelPersons,
+} from "./state.js";
 
 /**
  * 建立 Level 人員卡片 (SVG 表情圖)
@@ -92,6 +96,23 @@ export function createLevelPersonCard(
         </div>
       </div>
     </div>`;
+}
+
+function bindLevelPersonCardClick() {
+  document.querySelectorAll(".person-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const id = card.dataset.number;
+
+      const regionId =
+        new URLSearchParams(globalThis.location.search).get("region") || "0";
+
+      const returnUrl = encodeURIComponent(
+        globalThis.location.pathname + globalThis.location.search,
+      );
+
+      globalThis.location.href = `personDetail.html?id=${encodeURIComponent(id)}&region=${regionId}&returnUrl=${returnUrl}`;
+    });
+  });
 }
 
 /**
@@ -213,8 +234,7 @@ export function renderLevelCards(
     )
     .join("");
 
-  if (typeof window.bindPersonCardClick === "function")
-    window.bindPersonCardClick();
+  bindLevelPersonCardClick();
   updateLevelButtonsCounts(allPersons);
   // ✅ 同步 active（主畫面）
   if (!options.isModal) {
@@ -245,7 +265,7 @@ export function refreshLevelUI(assessments = []) {
         </div>
       </div>
     `;
-    window.lastLevelPersons = [];
+    setLastLevelPersons([]);
     updateLevelButtonsCounts([]);
     return;
   }
@@ -255,7 +275,7 @@ export function refreshLevelUI(assessments = []) {
   const levelOrder = { A: 1, B: 2, C: 3, D: 4 };
   allPersons.sort((a, b) => levelOrder[a.Level] - levelOrder[b.Level]);
 
-  window.lastLevelPersons = allPersons;
+  setLastLevelPersons(allPersons);
 
   renderLevelCards(null, { container }, allPersons);
 }
@@ -298,8 +318,8 @@ export function initPersonCardLevel() {
         }
 
         // ✅ 渲染資料
-        const allAssessments = window.lastRenderedAssessments || [];
-        const selectedIdx = window.selected || [];
+        const allAssessments = lastRenderedAssessments || [];
+        const selectedIdx = selected || [];
 
         const data = selectedIdx.length
           ? allAssessments.filter((_, i) => selectedIdx.includes(i))
@@ -313,8 +333,8 @@ export function initPersonCardLevel() {
   const modalEl = document.getElementById("participantsLevelModal");
   if (viewAllLevelBtn && modalEl) {
     viewAllLevelBtn.addEventListener("click", () => {
-      const allAssessments = window.lastRenderedAssessments || [];
-      const selectedIdx = window.selected || [];
+      const allAssessments = lastRenderedAssessments || [];
+      const selectedIdx = selected || [];
       const data = selectedIdx.length
         ? allAssessments.filter((_, i) => selectedIdx.includes(i))
         : [];
@@ -336,8 +356,8 @@ export function initPersonCardLevel() {
       btn.addEventListener("click", () => {
         const filter = btn.dataset.filter;
 
-        const allAssessments = window.lastRenderedAssessments || [];
-        const selectedIdx = window.selected || [];
+        const allAssessments = lastRenderedAssessments || [];
+        const selectedIdx = selected || [];
 
         const data = selectedIdx.length
           ? allAssessments.filter((_, i) => selectedIdx.includes(i))
@@ -371,8 +391,8 @@ export function initPersonCardLevel() {
 
     const filter = item.dataset.filter;
 
-    const allAssessments = window.lastRenderedAssessments || [];
-    const selectedIdx = window.selected || [];
+    const allAssessments = lastRenderedAssessments || [];
+    const selectedIdx = selected || [];
 
     const data = selectedIdx.length
       ? allAssessments.filter((_, i) => selectedIdx.includes(i))
@@ -401,6 +421,3 @@ export function initPersonCardLevel() {
   });
 }
 
-// 導出至 window
-window.refreshLevelUI = refreshLevelUI;
-window.initPersonCardLevel = initPersonCardLevel;

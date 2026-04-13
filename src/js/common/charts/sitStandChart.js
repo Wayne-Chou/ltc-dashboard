@@ -1,16 +1,19 @@
 // src/js/common/charts/sitStandChart.js
-import { t } from "../lang.js";
+import { t } from "../locale.js";
 
-// 假設 Chart.js 是透過 CDN 引入，我們直接使用 window.Chart
-// 如果你是用 npm install chart.js，則需要：import Chart from 'chart.js/auto';
+// Chart.js 與 annotation 由 index.html CDN 載入為全域
 
 /**
  * 註冊 Annotation 插件
  * 在 Vite 模式下，如果插件是透過 CDN 加載，通常已經在全域
  */
-if (window.Chart && window["chartjs-plugin-annotation"]) {
-  Chart.register(window["chartjs-plugin-annotation"]);
+const ChartGlobal = globalThis.Chart;
+const AnnotationPlugin = globalThis["chartjs-plugin-annotation"];
+if (ChartGlobal && AnnotationPlugin) {
+  ChartGlobal.register(AnnotationPlugin);
 }
+
+let sitStandChartInstance = null;
 
 /**
  * 繪製坐站平均秒數趨勢圖
@@ -22,9 +25,9 @@ export function drawSitStandChartChartJS(assessments) {
 
   // 1. 處理無資料狀態
   if (!assessments || assessments.length === 0) {
-    if (window.sitStandChartInstance) {
-      window.sitStandChartInstance.destroy();
-      window.sitStandChartInstance = null;
+    if (sitStandChartInstance) {
+      sitStandChartInstance.destroy();
+      sitStandChartInstance = null;
     }
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -60,12 +63,12 @@ export function drawSitStandChartChartJS(assessments) {
   if (yMax - yMin < 5) yMax = yMin + 5;
 
   // 5. 銷毀舊實例
-  if (window.sitStandChartInstance) {
-    window.sitStandChartInstance.destroy();
+  if (sitStandChartInstance) {
+    sitStandChartInstance.destroy();
   }
 
   // 6. 建立新圖表
-  window.sitStandChartInstance = new Chart(canvas, {
+  sitStandChartInstance = new Chart(canvas, {
     type: "line",
     data: {
       labels,
@@ -130,6 +133,3 @@ export function drawSitStandChartChartJS(assessments) {
     },
   });
 }
-
-// 掛載到 window 以供 location.js 調用
-window.drawSitStandChartChartJS = drawSitStandChartChartJS;

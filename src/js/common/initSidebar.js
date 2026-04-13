@@ -29,6 +29,3 @@ export function initSidebarToggle() {
     }
   }
 }
-
-// 導出至 window，讓 main.js 呼叫或 HTML inline script 使用
-window.initSidebarToggle = initSidebarToggle;

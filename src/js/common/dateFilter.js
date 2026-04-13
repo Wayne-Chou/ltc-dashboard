@@ -1,5 +1,12 @@
 // src/js/common/dateFilter.js
 import { renderAssessmentTable } from "./table.js";
+import { currentLang } from "./locale.js";
+import {
+  currentAssessments,
+  setCurrentPage,
+  setSelected,
+  setCheckAllAcrossPages,
+} from "./state.js";
 import {
   renderRisk,
   resetDegenerateAndLevels,
@@ -8,6 +15,12 @@ import {
 } from "./riskStats.js";
 import { refreshLevelUI } from "./personCardLevel.js";
 import { renderLevelCards } from "./personCardLevel.js";
+import { drawNoDataChart, removeNoDataOverlay } from "./charts/noDataChart.js";
+import { drawSitStandChartChartJS } from "./charts/sitStandChart.js";
+import { drawBalanceChartChartJS } from "./charts/balanceChart.js";
+import { drawGaitChartChartJS } from "./charts/gaitChart.js";
+import { drawRiskChartChartJS } from "./charts/riskChart.js";
+import { renderCards } from "./personCardRisk.js";
 /**
  * 統一清除所有 Chart
  */
@@ -62,16 +75,16 @@ export function initDateFilter() {
   const uncheckAllBtn = document.getElementById("uncheckAllBtn");
   const sortModeSwitch = document.querySelector(".sortModeSwitch");
 
-  const getBaseData = () => window.currentAssessments || [];
+  const getBaseData = () => currentAssessments || [];
   uncheckAllBtn?.addEventListener("click", () => {
     resetAllCharts();
-    window.removeNoDataOverlay?.();
-    window.drawNoDataChart?.();
+    removeNoDataOverlay();
+    drawNoDataChart();
   });
   const fp = flatpickr("#dateRange", {
     mode: "range",
     dateFormat: "Y-m-d",
-    locale: getFlatpickrLocale(window.currentLang || "zh"),
+    locale: getFlatpickrLocale(currentLang || "zh"),
     onChange: function (selectedDates) {
       if (selectedDates.length === 2) {
         filterByDate(selectedDates[0], selectedDates[1]);
@@ -107,24 +120,24 @@ export function initDateFilter() {
       return d >= start && d <= end;
     });
 
-    window.currentPage = 1;
-    window.selected = filtered.map((_, i) => i);
-    window.checkAllAcrossPages = true;
+    setCurrentPage(1);
+    setSelected(filtered.map((_, i) => i));
+    setCheckAllAcrossPages(true);
 
     if (filtered.length === 0) {
       resetAllCharts();
-      window.removeNoDataOverlay?.();
-      window.drawNoDataChart?.();
+      removeNoDataOverlay();
+      drawNoDataChart();
       renderAssessmentTable([]);
 
-      window.renderCards?.([], "all", {});
+      renderCards([], "all", {});
 
       resetDegenerateAndLevels?.();
       renderRisk?.([]);
       resetDegenerateAndLevels?.();
       refreshLevelUI?.([]);
 
-      window.drawNoDataChart?.();
+      drawNoDataChart();
 
       updateLatestCountDate?.([]);
       updateTotalCountAndStartDate?.([]);
@@ -139,12 +152,12 @@ export function initDateFilter() {
 
     resetAllCharts(); // 🔥 一定要先清
 
-    window.removeNoDataOverlay?.();
+    removeNoDataOverlay();
 
-    window.drawSitStandChartChartJS?.(filtered);
-    window.drawBalanceChartChartJS?.(filtered);
-    window.drawGaitChartChartJS?.(filtered);
-    window.drawRiskChartChartJS?.(filtered);
+    drawSitStandChartChartJS(filtered);
+    drawBalanceChartChartJS(filtered);
+    drawGaitChartChartJS(filtered);
+    drawRiskChartChartJS(filtered);
   }
 
   /**
@@ -161,9 +174,9 @@ export function initDateFilter() {
     if (data.length > 0) {
       toggleFiltersUI(true);
 
-      window.currentPage = 1;
-      window.selected = data.map((_, i) => i);
-      window.checkAllAcrossPages = true;
+      setCurrentPage(1);
+      setSelected(data.map((_, i) => i));
+      setCheckAllAcrossPages(true);
 
       renderAssessmentTable(data);
       updateLatestCountDate?.(data);
@@ -171,15 +184,13 @@ export function initDateFilter() {
 
       resetAllCharts();
 
-      window.removeNoDataOverlay?.();
+      removeNoDataOverlay();
 
-      window.drawSitStandChartChartJS?.(data);
-      window.drawBalanceChartChartJS?.(data);
-      window.drawGaitChartChartJS?.(data);
-      window.drawRiskChartChartJS?.(data);
+      drawSitStandChartChartJS(data);
+      drawBalanceChartChartJS(data);
+      drawGaitChartChartJS(data);
+      drawRiskChartChartJS(data);
     }
   });
 }
 
-// 保持相容
-window.initDateFilter = initDateFilter;

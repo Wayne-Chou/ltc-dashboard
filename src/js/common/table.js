@@ -1,35 +1,42 @@
 // src/js/common/table.js
-import { t } from "./i18n.js";
+import { t, currentLang } from "./locale.js";
 import {
   currentPage,
   pageSize,
   selected,
   lastRenderedAssessments,
-  checkAllAcrossPages,
+  setCurrentPage,
+  setSelected,
+  setLastRenderedAssessments,
+  setCheckAllAcrossPages,
 } from "./state.js";
 import { mergeAllVIVIFRAIL, flattenData } from "./utils.js";
+import { drawNoDataChart, removeNoDataOverlay } from "./charts/noDataChart.js";
+import { drawSitStandChartChartJS } from "./charts/sitStandChart.js";
+import { drawBalanceChartChartJS } from "./charts/balanceChart.js";
+import { drawGaitChartChartJS } from "./charts/gaitChart.js";
+import { drawRiskChartChartJS } from "./charts/riskChart.js";
+import {
+  renderRisk,
+  updateLatestCountDate,
+  updateDegenerateAndLevels,
+  updateTotalCountAndStartDate,
+} from "./riskStats.js";
+import { updateRiskButtonsCounts, renderRiskCards } from "./personCardRisk.js";
 
-// 輔助函數：因為 state.js 匯出的是值，直接修改 currentPage 會報錯
-// 我們需要透過 window 修改，或在 state.js 提供 setter
-const setState = (key, value) => {
-  window[key] = value;
-};
+let hasInitSelected = false;
 
 /**
  * 初始化表格參數
  */
 export function initTable(assessments) {
-  setState("currentPage", 1);
-  setState("pageSize", 9);
+  setCurrentPage(1);
 
-  if (!Array.isArray(window.selected)) setState("selected", []);
+  if (!Array.isArray(selected)) setSelected([]);
 
   if (assessments && assessments.length > 0) {
-    setState(
-      "selected",
-      assessments.map((_, i) => i),
-    );
-    setState("checkAllAcrossPages", true);
+    setSelected(assessments.map((_, i) => i));
+    setCheckAllAcrossPages(true);
   }
 
   initCheckAllButtons();
@@ -39,21 +46,22 @@ export function initTable(assessments) {
  * 核心渲染函數 (卡片式)
  */
 export function renderAssessmentTable(assessments) {
-  setState("lastRenderedAssessments", assessments);
+  const prevRendered = lastRenderedAssessments;
+  if (assessments !== prevRendered) {
+    setCurrentPage(1);
+  }
+  setLastRenderedAssessments(assessments);
 
   // 初始勾選邏輯
   if (
     assessments &&
     assessments.length > 0 &&
-    window.selected.length === 0 &&
-    !window.hasInitSelected
+    selected.length === 0 &&
+    !hasInitSelected
   ) {
-    setState(
-      "selected",
-      assessments.map((_, i) => i),
-    );
-    setState("checkAllAcrossPages", true);
-    window.hasInitSelected = true;
+    setSelected(assessments.map((_, i) => i));
+    setCheckAllAcrossPages(true);
+    hasInitSelected = true;
   }
 
   const container = document.getElementById("assessmentCardsContainer");
@@ -70,17 +78,17 @@ export function renderAssessmentTable(assessments) {
 
   // 排序與分頁邏輯
   const sorted = [...assessments].sort((a, b) => b.Date - a.Date);
-  const totalPages = Math.ceil(sorted.length / window.pageSize);
+  const totalPages = Math.max(1, Math.ceil(assessments.length / pageSize));
 
-  if (window.currentPage > totalPages) setState("currentPage", totalPages);
-  if (window.currentPage < 1) setState("currentPage", 1);
+  if (currentPage > totalPages) setCurrentPage(totalPages);
+  if (currentPage < 1) setCurrentPage(1);
 
-  const start = (window.currentPage - 1) * window.pageSize;
-  const pageData = sorted.slice(start, start + window.pageSize);
+  const start = (currentPage - 1) * pageSize;
+  const pageData = sorted.slice(start, start + pageSize);
 
   pageData.forEach((item) => {
     const globalIndex = assessments.indexOf(item);
-    const isSelected = window.selected.includes(globalIndex);
+    const isSelected = selected.includes(globalIndex);
 
     const participantText = t("participantCount").replace(
       "{count}",
@@ -136,14 +144,14 @@ export function renderAssessmentTable(assessments) {
  * 處理選取切換
  */
 export function toggleSelection(idx, assessments) {
-  let newSelected = [...window.selected];
+  let newSelected = [...selected];
   if (newSelected.includes(idx)) {
     newSelected = newSelected.filter((i) => i !== idx);
   } else {
     newSelected.push(idx);
   }
-  setState("selected", newSelected);
-  setState("checkAllAcrossPages", newSelected.length === assessments.length);
+  setSelected(newSelected);
+  setCheckAllAcrossPages(newSelected.length === assessments.length);
   renderAssessmentTable(assessments);
 }
 
@@ -157,24 +165,24 @@ export function renderPagination(totalPages, assessments) {
   const prev = document.createElement("button");
   prev.className = "btn btn-sm btn-outline-primary px-3";
   prev.textContent = t("prevPage");
-  prev.disabled = window.currentPage === 1;
+  prev.disabled = currentPage === 1;
   prev.onclick = (e) => {
     e.stopPropagation();
-    setState("currentPage", window.currentPage - 1);
+    setCurrentPage(currentPage - 1);
     renderAssessmentTable(assessments);
   };
 
   const info = document.createElement("span");
   info.className = "small text-muted fw-bold";
-  info.textContent = `${t("page")} ${window.currentPage} ${t("total")} ${totalPages} ${window.currentLang === "zh" ? "頁" : ""}`;
+  info.textContent = `${t("page")} ${currentPage} ${t("total")} ${totalPages} ${currentLang === "zh" ? "頁" : ""}`;
 
   const next = document.createElement("button");
   next.className = "btn btn-sm btn-outline-primary px-3";
   next.textContent = t("nextPage");
-  next.disabled = window.currentPage === totalPages;
+  next.disabled = currentPage === totalPages;
   next.onclick = (e) => {
     e.stopPropagation();
-    setState("currentPage", window.currentPage + 1);
+    setCurrentPage(currentPage + 1);
     renderAssessmentTable(assessments);
   };
 
@@ -190,20 +198,17 @@ export function initCheckAllButtons() {
 
   if (btnAll) {
     btnAll.onclick = () => {
-      const list = window.lastRenderedAssessments || [];
-      setState(
-        "selected",
-        list.map((_, i) => i),
-      );
+      const list = lastRenderedAssessments || [];
+      setSelected(list.map((_, i) => i));
       renderAssessmentTable(list);
     };
   }
 
   if (btnNone) {
     btnNone.onclick = () => {
-      const list = window.lastRenderedAssessments || [];
-      setState("selected", []);
-      window.hasInitSelected = true;
+      const list = lastRenderedAssessments || [];
+      setSelected([]);
+      hasInitSelected = true;
       renderAssessmentTable(list);
     };
   }
@@ -214,28 +219,20 @@ export function initCheckAllButtons() {
  */
 export function syncUIBySelection(assessments) {
   const selectedAssessments = assessments.filter((_, i) =>
-    window.selected.includes(i),
+    selected.includes(i),
   );
 
-  // 呼叫其他模組函數 (透過 window)
-  if (typeof window.updateRiskButtonsCounts === "function")
-    window.updateRiskButtonsCounts(selectedAssessments);
-  if (typeof window.renderRisk === "function")
-    window.renderRisk(selectedAssessments);
-  if (typeof window.updateDegenerateAndLevels === "function")
-    window.updateDegenerateAndLevels(selectedAssessments);
-  if (typeof window.updateLatestCountDate === "function")
-    window.updateLatestCountDate(selectedAssessments);
-  if (typeof window.updateTotalCountAndStartDate === "function")
-    window.updateTotalCountAndStartDate(selectedAssessments);
+  updateRiskButtonsCounts(selectedAssessments);
+  renderRisk(selectedAssessments);
+  updateDegenerateAndLevels(selectedAssessments);
+  updateLatestCountDate(selectedAssessments);
+  updateTotalCountAndStartDate(selectedAssessments);
 
-  if (typeof window.renderCards === "function") {
-    if (!selectedAssessments.length) {
-      window.renderCards([], "all");
-    } else {
-      const mergedV = mergeAllVIVIFRAIL(selectedAssessments);
-      window.renderCards(flattenData(mergedV));
-    }
+  if (!selectedAssessments.length) {
+    renderRiskCards("all", {}, []);
+  } else {
+    const mergedV = mergeAllVIVIFRAIL(selectedAssessments);
+    renderRiskCards(null, {}, flattenData(mergedV));
   }
 
   if (!selectedAssessments.length) {
@@ -259,20 +256,14 @@ export function syncUIBySelection(assessments) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
 
-    window.removeNoDataOverlay?.();
-    window.drawNoDataChart?.();
+    removeNoDataOverlay();
+    drawNoDataChart();
   } else {
-    if (typeof window.drawSitStandChartChartJS === "function") {
-      window.removeNoDataOverlay?.();
+    removeNoDataOverlay();
 
-      window.drawSitStandChartChartJS(selectedAssessments);
-      window.drawBalanceChartChartJS(selectedAssessments);
-      window.drawGaitChartChartJS(selectedAssessments);
-      window.drawRiskChartChartJS(selectedAssessments);
-    }
+    drawSitStandChartChartJS(selectedAssessments);
+    drawBalanceChartChartJS(selectedAssessments);
+    drawGaitChartChartJS(selectedAssessments);
+    drawRiskChartChartJS(selectedAssessments);
   }
 }
-
-// 導出至 window 以相容 HTML 或舊 JS
-window.initTable = initTable;
-window.renderAssessmentTable = renderAssessmentTable;

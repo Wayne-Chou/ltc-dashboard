@@ -1,5 +1,7 @@
 // src/js/common/charts/gaitChart.js
-import { t } from "../lang.js";
+import { t } from "../locale.js";
+
+let gaitChartInstance = null;
 
 /**
  * 繪製平均步行速度趨勢圖 (Gait Speed)
@@ -9,12 +11,13 @@ export function drawGaitChartChartJS(assessments) {
   const canvas = document.getElementById("gaitChartCanvas");
   if (!canvas) return;
 
+  if (gaitChartInstance) {
+    gaitChartInstance.destroy();
+    gaitChartInstance = null;
+  }
+
   // 1. 處理無資料
   if (!assessments || assessments.length === 0) {
-    if (window.gaitChartInstance) {
-      window.gaitChartInstance.destroy();
-      window.gaitChartInstance = null;
-    }
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     return;
@@ -52,13 +55,8 @@ export function drawGaitChartChartJS(assessments) {
   if (yMin < 0) yMin = 0;
   if (yMax - yMin < 10) yMax = yMin + 10;
 
-  // 5. 銷毀舊圖表實例
-  if (window.gaitChartInstance) {
-    window.gaitChartInstance.destroy();
-  }
-
-  // 6. 建立圖表 (黃/橘色系)
-  window.gaitChartInstance = new Chart(canvas, {
+  // 5. 建立圖表 (黃/橘色系)
+  gaitChartInstance = new Chart(canvas, {
     type: "line",
     data: {
       labels,
@@ -115,6 +113,3 @@ export function drawGaitChartChartJS(assessments) {
     },
   });
 }
-
-// 掛載到 window 供其他組件呼叫
-window.drawGaitChartChartJS = drawGaitChartChartJS;

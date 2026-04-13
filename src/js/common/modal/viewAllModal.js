@@ -1,15 +1,16 @@
 // src/js/common/modal/viewAllModal.js
-import { t } from "../lang.js";
-import { currentAssessments, selected } from "../state.js";
+import { t } from "../locale.js";
+import { lastRenderedAssessments, selected } from "../state.js";
 import { flattenData, mergeAllVIVIFRAIL, getRiskCategory } from "../utils.js";
+import { renderCards } from "../personCardRisk.js";
 
 /**
  * 安全取得目前勾選的檢測資料
  */
 function getSelectedAssessmentsSafe() {
-  const assessments = window.currentAssessments || [];
-  const selectedIdx = window.selected || [];
-  return assessments.filter((_, i) => selectedIdx.includes(i));
+  const list = lastRenderedAssessments || [];
+  const selectedIdx = selected || [];
+  return list.filter((_, i) => selectedIdx.includes(i));
 }
 
 /**
@@ -36,14 +37,11 @@ function renderAllInModal(filterRisk = null) {
   // ✅ 只做資料整理，不做 filter
   const allParticipants = flattenData(mergeAllVIVIFRAIL(selectedAssessments));
 
-  // ✅ 交給 renderRiskCards 處理 filter
-  if (typeof window.renderCards === "function") {
-    window.renderCards(allParticipants, filterRisk, {
-      container: modalPersonContainer,
-      isModal: true,
-      scope: document.getElementById("participantsModal"),
-    });
-  }
+  renderCards(allParticipants, filterRisk, {
+    container: modalPersonContainer,
+    isModal: true,
+    scope: document.getElementById("participantsModal"),
+  });
 }
 
 /**
@@ -114,5 +112,3 @@ export function initViewAllModal() {
   bindModalMobileRiskDropdown();
 }
 
-// 掛載到 window 讓 main.js 能夠呼叫
-window.initViewAllModal = initViewAllModal;

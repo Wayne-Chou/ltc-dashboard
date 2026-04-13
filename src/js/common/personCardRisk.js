@@ -1,5 +1,5 @@
 // src/js/common/personCardRisk.js
-import { t } from "./i18n.js";
+import { t } from "./locale.js";
 import {
   maskName,
   getRiskCategory,
@@ -148,11 +148,11 @@ function bindPersonCardClick() {
     card.addEventListener("click", () => {
       const id = card.dataset.number;
       const regionId =
-        new URLSearchParams(window.location.search).get("region") || "0";
+        new URLSearchParams(globalThis.location.search).get("region") || "0";
       const returnUrl = encodeURIComponent(
-        window.location.pathname + window.location.search,
+        globalThis.location.pathname + globalThis.location.search,
       );
-      window.location.href = `personDetail.html?id=${encodeURIComponent(id)}&region=${regionId}&returnUrl=${returnUrl}`;
+      globalThis.location.href = `personDetail.html?id=${encodeURIComponent(id)}&region=${regionId}&returnUrl=${returnUrl}`;
     });
   });
 }
@@ -260,8 +260,8 @@ export function renderRiskCards(
  * 從目前選擇的數據攤平 Risk Data
  */
 function flattenRiskDataFromSelection() {
-  const assessments = window.lastRenderedAssessments || [];
-  const selectedIdx = window.selected || [];
+  const assessments = lastRenderedAssessments || [];
+  const selectedIdx = selected || [];
   const selectedAssessments =
     selectedIdx.length > 0
       ? assessments.filter((_, i) => selectedIdx.includes(i))
@@ -376,8 +376,7 @@ export function initPersonCardRisk() {
   handleRiskFilter("all", { scope: document });
 }
 
-window.renderCards = (allVIVIFRAIL, filterRisk = null, options = {}) => {
+/** 與舊 renderCards 相同簽名，供 modal / dateFilter / i18n 等 import 使用 */
+export function renderCards(allVIVIFRAIL, filterRisk = null, options = {}) {
   renderRiskCards(filterRisk, options, allVIVIFRAIL || []);
-};
-window.updateRiskButtonsCounts = updateRiskButtonsCounts;
-window.initPersonCardRisk = initPersonCardRisk;
+}
