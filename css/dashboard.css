@@ -712,7 +712,7 @@ body {
   font-size: 16px;
 }
 
-.compare-summary-header .basis {
+/* .compare-summary-header .basis {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -723,7 +723,7 @@ body {
   padding: 6px 12px;
   border-radius: 999px;
   border: 1px solid #e2e8f0;
-}
+} */
 
 .compare-controls {
   display: grid;

@@ -627,6 +627,7 @@ async function renderCompareCharts() {
           site.end,
           site.timeMode,
         );
+        // console.log("API送出時間 👉", new Date(start), new Date(end));
         const data = await fetchSiteData(site.code, start, end, token);
       
         return {
@@ -702,15 +703,44 @@ function getMetricValue(data, key, timeMode) {
   if (!Array.isArray(data) || !data.length) return null;
 
   if (timeMode === "single") {
+     // 單日模式：
+    // 只取「最後一筆資料」作為結果
+    //
+    // 範例：
+    // data = [
+    //   { ChairSecond: 10 },
+    //   { ChairSecond: 12 },
+    //   { ChairSecond: 8 }
+    // ]
+    //
+    // → 取最後一筆 = 8
+    
     const value = Number(data[data.length - 1][key]);
     return Number.isFinite(value) ? value : null;
   }
 
   if (timeMode === "range") {
+    // 區間平均模式：
+    // 將時間區間內所有資料的數值取出後，計算「簡單平均」
+    //
+    // 計算公式：
+    // 平均值 = (所有數值加總) / (資料筆數)
+    //
+    // 範例 ：
+    // data = [
+    //   { ChairSecond: 10 },
+    //   { ChairSecond: 12 },
+    //   { ChairSecond: 8 }
+    // ]
+    //
+    // values = [10, 12, 8]
+    // 平均 = (10 + 12 + 8) / 3 = 10
+    //
+   
     const values = data
       .map((d) => Number(d[key]))
       .filter((v) => Number.isFinite(v));
-
+      // console.table(values);
     if (!values.length) return null;
     return values.reduce((a, b) => a + b, 0) / values.length;
   }
@@ -720,12 +750,12 @@ function getMetricValue(data, key, timeMode) {
 
 function renderCompareSummary(groupedData) {
  
-  const basisEl = document.getElementById("compareSummaryBasis");
+ 
   const winnerEl = document.getElementById("compareSummaryWinner");
   const rankingEl = document.getElementById("compareRanking");
   const contentEl = document.getElementById("compareSummaryContent");
   const compareResultTitleEl = document.getElementById("compareModeResultTitle");
-  if (!basisEl || !winnerEl || !rankingEl || !contentEl) return;
+  if (!winnerEl || !rankingEl || !contentEl) return;
 
   const resetCompareResultTitle = () => {
     if (compareResultTitleEl) compareResultTitleEl.textContent = "A vs B 比較結果";
@@ -752,10 +782,7 @@ function renderCompareSummary(groupedData) {
   `;
 
   if (!groupedData || dashboardState.selectedSites.length === 0) {
-    basisEl.innerHTML = `
-      <i class="fa-solid fa-circle-info"></i>
-      尚未選擇據點
-    `;
+   
     winnerEl.innerHTML = `
       <div class="winner-inner">
         <div class="winner-icon">
@@ -779,7 +806,7 @@ function renderCompareSummary(groupedData) {
       (g) => !Array.isArray(g.data) || g.data.length === 0,
     );
   if (allSitesNoData) {
-    basisEl.innerHTML = `⚠️ 此時間區間無資料`;
+    
     winnerEl.innerHTML = `
       <div class="winner-inner">
         <div class="winner-icon">
@@ -818,10 +845,7 @@ function renderCompareSummary(groupedData) {
     .filter(Boolean);
 
   if (dashboardState.selectedSites.length === 0) {
-    basisEl.innerHTML = `
-      <i class="fa-solid fa-circle-info"></i>
-      尚未選擇據點
-    `;
+  
     winnerEl.innerHTML = `
       <div class="winner-inner">
         <div class="winner-icon">
@@ -840,10 +864,7 @@ function renderCompareSummary(groupedData) {
   }
 
   if (dashboardState.selectedSites.length === 1) {
-    basisEl.innerHTML = `
-      <i class="fa-solid fa-circle-info"></i>
-      無法進行比較（至少需2個據點）
-    `;
+  
     winnerEl.innerHTML = `
       <div class="winner-inner">
         <div class="winner-icon">
@@ -869,15 +890,7 @@ function renderCompareSummary(groupedData) {
   if (compareResultTitleEl) {
     compareResultTitleEl.textContent = `${siteLabel0} vs ${siteLabel1} 比較結果`;
   }
-  basisEl.innerHTML = `
-    <i class="fa-solid fa-sliders"></i>
-    ${siteLabel0} / ${siteLabel1} 各自時間區間比較
-    ${
-      isDifferentTime
-        ? '<span class="ms-2 text-warning"><i class="fa-solid fa-triangle-exclamation"></i> 時間不同</span>'
-        : ""
-    }
-  `;
+
 
   const METRICS = [
     {
