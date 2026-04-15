@@ -31,8 +31,10 @@ export function initEmptyCharts() {
 
 /**
  * 在圖表容器上覆蓋「查無資料」的提示遮罩
+ * @param {string} [message] 自訂提示文字；未傳入則使用 i18n alertNoData
  */
-export function drawNoDataChart() {
+export function drawNoDataChart(message) {
+  const label = message != null && String(message).trim() !== "" ? message : t("alertNoData");
   const chartIds = [
     "sitStandChartCanvas",
     "balanceChartCanvas",
@@ -65,7 +67,7 @@ export function drawNoDataChart() {
     overlay.innerHTML = `
       <div class="text-center">
         <i class="bi bi-database-exclamation d-block mb-2 h4"></i>
-        <span>${t("alertNoData")}</span>
+        <span>${label}</span>
       </div>
     `;
 

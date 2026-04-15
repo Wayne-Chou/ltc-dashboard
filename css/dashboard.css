@@ -725,6 +725,41 @@ body {
   border: 1px solid #e2e8f0;
 }
 
+.compare-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.compare-control {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.compare-control-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e40af;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.compare-mode-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 4px 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .winner-card {
   background: linear-gradient(135deg, #1e40af, #2563eb);
   color: white;
@@ -780,6 +815,9 @@ body {
 .ranking-badge .rank {
   font-weight: 700;
   color: #0d6efd;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .ranking-badge .score {
@@ -788,6 +826,9 @@ body {
   border-radius: 6px;
   padding: 1px 6px;
   font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .compare-grid {
@@ -880,6 +921,45 @@ body {
   margin: 6px 0;
 }
 
+.metric-values-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.metric-value-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.metric-value-row strong {
+  font-size: 16px;
+  color: #020617;
+}
+
+.metric-value-row em {
+  font-style: normal;
+  font-size: 11px;
+  color: #64748b;
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 2px 6px;
+}
+
+.metric-time {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+  margin-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .metric-compare {
   font-size: 13px;
   color: #4b5563;
@@ -889,6 +969,9 @@ body {
   margin-top: 12px;
   font-size: 13px;
   color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .metric-footer strong {
@@ -923,4 +1006,38 @@ body {
 .metric-empty-desc {
   font-size: 12px;
   color: #64748b;
+}
+
+/* Compare mode: flatpickr date group (new classes only) */
+.compare-date-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.compare-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.compare-quick-btn {
+  padding: 2px 8px;
+  font-size: 11px;
+  line-height: 1.4;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background: #fff;
+  color: #475569;
+  cursor: pointer;
+}
+
+.compare-quick-btn:hover {
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+.compare-quick-btn-clear {
+  margin-left: auto;
 }
