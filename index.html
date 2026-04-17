@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI動態骨架防跌群體儀表板 - 建豐健康科技</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -24,6 +27,7 @@
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
     <link rel="stylesheet" href="./css/dashboard.css" />
+    <link rel="icon" href="/img/favicon.ico" />
     <script>
       (function () {
         // 1. 環境判斷：只在 GitHub Pages 執行（或是你指定的測試網址）
@@ -71,9 +75,7 @@
                   >
                     AI動態骨架防跌群體儀表板
                   </h1>
-                 
                 </div>
-                
               </div>
               <div class="dropdown mt-3 d-flex justify-content-between">
                 <button
@@ -141,7 +143,7 @@
                       </li>
                     </ul>
                   </div>
-                 
+
                   <button
                     id="logoutBtn"
                     class="btn btn-primary"
@@ -290,9 +292,7 @@
                     >人</span
                   >
                 </div>
-                <p id="startDateText" class="small mt-2 text-blue">
-                  尚無資料
-                </p>
+                <p id="startDateText" class="small mt-2 text-blue">尚無資料</p>
               </div>
             </div>
 
@@ -368,7 +368,6 @@
           </div>
         </div>
 
-
         <!-- 風險分級統計區塊 -->
         <div class="mb-4 hide-on-all compare-hide">
           <h5
@@ -432,19 +431,14 @@
                     <span data-i18n="unitPeople">人</span>
                   </li>
                   <li>
-                    <span data-i18n="sitStandDeclineLabel"
-                      >起坐速度衰退：</span
-                    >
+                    <span data-i18n="sitStandDeclineLabel">起坐速度衰退：</span>
                     <span class="val">0</span>
                     <span data-i18n="unitPeople">人</span>
                   </li>
                 </ul>
               </div>
               <div class="col-md-6">
-                <p
-                  class="fw-semibold text-warn mb-1"
-                  data-i18n="highRiskGroup"
-                >
+                <p class="fw-semibold text-warn mb-1" data-i18n="highRiskGroup">
                   高風險族群
                 </p>
                 <ul id="levelList" class="ms-4 text-secondary">
@@ -615,9 +609,7 @@
                   background-color: #f3e9fa;
                 "
               >
-                <div
-                  class="d-flex justify-content-between align-items-center"
-                >
+                <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <h6
                       class="fw-bold mb-0 text-purple"
@@ -650,9 +642,7 @@
                   background-color: #e8f8fc;
                 "
               >
-                <div
-                  class="d-flex justify-content-between align-items-center"
-                >
+                <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <h6
                       class="fw-bold mb-0 text-info"
@@ -661,10 +651,7 @@
                       起坐秒數增加
                     </h6>
                   </div>
-                  <div
-                    class="fs-3 fw-bold text-info"
-                    id="degenerateChairTotal"
-                  >
+                  <div class="fs-3 fw-bold text-info" id="degenerateChairTotal">
                     0
                   </div>
                 </div>
@@ -679,9 +666,7 @@
           <div class="row g-3 mt-4">
             <div class="col-md-3">
               <div class="risk-box risk-red p-3">
-                <div
-                  class="d-flex justify-content-between align-items-center"
-                >
+                <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <h6 class="fw-bold text-danger mb-0" data-i18n="levelA">
                       A 級
@@ -700,9 +685,7 @@
 
             <div class="col-md-3">
               <div class="risk-box risk-yellow p-3">
-                <div
-                  class="d-flex justify-content-between align-items-center"
-                >
+                <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <h6 class="fw-bold text-warn mb-0" data-i18n="levelB">
                       B 級
@@ -721,9 +704,7 @@
 
             <div class="col-md-3">
               <div class="risk-box risk-blue p-3">
-                <div
-                  class="d-flex justify-content-between align-items-center"
-                >
+                <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <h6 class="fw-bold text-primary mb-0" data-i18n="levelC">
                       C 級
@@ -742,9 +723,7 @@
 
             <div class="col-md-3">
               <div class="risk-box risk-green p-3">
-                <div
-                  class="d-flex justify-content-between align-items-center"
-                >
+                <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <h6 class="fw-bold text-success mb-0" data-i18n="levelD">
                       D 級
@@ -1593,7 +1572,7 @@
           <div id="map"></div>
         </div>
       </template>
-      
+
       <template id="compare-view">
         <div class="bg-white p-4 rounded shadow-sm mb-4">
           <h5 class="fw-bold mb-3">
@@ -1604,7 +1583,7 @@
             <div class="small text-muted mb-2">已選擇據點（最多2個）</div>
             <div id="selectedSites" class="d-flex flex-wrap gap-2"></div>
           </div>
-         
+
           <div id="siteSelector" class="row g-2"></div>
         </div>
 
@@ -1622,19 +1601,27 @@
           <div id="compareRanking" class="compare-ranking"></div>
           <div id="compareSummaryContent" class="compare-grid"></div>
         </div>
-    
+
         <div class="row g-4">
           <div class="col-12 col-md-6">
             <div class="card shadow-sm h-100">
               <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                   <h5 class="fw-semibold text-dark mb-0">平均坐站秒數</h5>
-                  <button class="btn btn-sm btn-outline-primary download-chart" data-target="sitStandChartCanvas">
+                  <button
+                    class="btn btn-sm btn-outline-primary download-chart"
+                    data-target="sitStandChartCanvas"
+                  >
                     <i class="fa fa-download me-1"></i>下載圖檔
                   </button>
                 </div>
                 <div class="text-muted small mb-2">建議小於12秒</div>
-                <div class="chart-container" style="position: relative; height: 300px; width: 100%"><canvas id="sitStandChartCanvas"></canvas></div>
+                <div
+                  class="chart-container"
+                  style="position: relative; height: 300px; width: 100%"
+                >
+                  <canvas id="sitStandChartCanvas"></canvas>
+                </div>
               </div>
             </div>
           </div>
@@ -1643,12 +1630,17 @@
               <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                   <h5 class="fw-semibold text-dark mb-0">平均平衡測驗得分</h5>
-                  <button class="btn btn-sm btn-outline-primary download-chart" data-target="balanceChartCanvas">
+                  <button
+                    class="btn btn-sm btn-outline-primary download-chart"
+                    data-target="balanceChartCanvas"
+                  >
                     <i class="fa fa-download me-1"></i>下載圖檔
                   </button>
                 </div>
                 <div class="text-muted small mb-2">建議大於3.5分</div>
-                <div class="chart-container" style="height: 300px; width: 100%"><canvas id="balanceChartCanvas"></canvas></div>
+                <div class="chart-container" style="height: 300px; width: 100%">
+                  <canvas id="balanceChartCanvas"></canvas>
+                </div>
               </div>
             </div>
           </div>
@@ -1657,12 +1649,17 @@
               <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                   <h5 class="fw-semibold text-dark mb-0">平均步行速度趨勢</h5>
-                  <button class="btn btn-sm btn-outline-primary download-chart" data-target="gaitChartCanvas">
+                  <button
+                    class="btn btn-sm btn-outline-primary download-chart"
+                    data-target="gaitChartCanvas"
+                  >
                     <i class="fa fa-download me-1"></i>下載圖檔
                   </button>
                 </div>
                 <div class="text-muted small mb-2">建議大於等於100cm/s</div>
-                <div class="chart-container" style="height: 300px; width: 100%"><canvas id="gaitChartCanvas"></canvas></div>
+                <div class="chart-container" style="height: 300px; width: 100%">
+                  <canvas id="gaitChartCanvas"></canvas>
+                </div>
               </div>
             </div>
           </div>
@@ -1671,12 +1668,19 @@
               <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                   <h5 class="fw-semibold text-dark mb-0">平均AI跌倒風險機率</h5>
-                  <button class="btn btn-sm btn-outline-primary download-chart" data-target="riskChartCanvas">
+                  <button
+                    class="btn btn-sm btn-outline-primary download-chart"
+                    data-target="riskChartCanvas"
+                  >
                     <i class="fa fa-download me-1"></i>下載圖檔
                   </button>
                 </div>
-                <div class="text-muted small mb-2" style="opacity: 0">placeholder</div>
-                <div class="chart-container" style="height: 300px; width: 100%"><canvas id="riskChartCanvas"></canvas></div>
+                <div class="text-muted small mb-2" style="opacity: 0">
+                  placeholder
+                </div>
+                <div class="chart-container" style="height: 300px; width: 100%">
+                  <canvas id="riskChartCanvas"></canvas>
+                </div>
               </div>
             </div>
           </div>
