@@ -530,7 +530,8 @@ export async function removeSite(index) {
 /**
  * 核心：繪製多線比較圖
  */
-function drawMultiLineChart(canvasId, groupedData, key) {
+function drawMultiLineChart(canvasId, groupedData, key, options = {}) {
+  const { unit = "", format = (v) => v.toFixed(1) } = options;
   function formatLocalDate(ts) {
     const d = new Date(ts);
     return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
@@ -587,13 +588,27 @@ function drawMultiLineChart(canvasId, groupedData, key) {
               const ts = allDates[items[0].dataIndex];
               return formatLocalDate(ts);
             },
-            label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}`,
+            label: (ctx) => {
+              const value = ctx.parsed.y;
+              if (value == null) return "";
+              return `${ctx.dataset.label}: ${format(value)} ${unit}`;
+            },
           },
         },
       },
       scales: {
         x: { grid: { display: false } },
-        y: { beginAtZero: false },
+        y: {
+          beginAtZero: false,
+          title: {
+            display: true,
+            text: unit,
+            font: { weight: "bold" },
+          },
+          ticks: {
+            callback: (value) => `${format(value)}${unit}`,
+          },
+        },
       },
     },
   });
@@ -653,10 +668,21 @@ async function renderCompareCharts() {
       return;
     }
 
-    drawMultiLineChart("sitStandChartCanvas", grouped, "ChairSecond");
-    drawMultiLineChart("balanceChartCanvas", grouped, "BalanceScore");
-    drawMultiLineChart("gaitChartCanvas", grouped, "GaitSpeed");
-    drawMultiLineChart("riskChartCanvas", grouped, "RiskRate");
+    drawMultiLineChart("sitStandChartCanvas", grouped, "ChairSecond", {
+      unit: "秒",
+    });
+
+    drawMultiLineChart("balanceChartCanvas", grouped, "BalanceScore", {
+      unit: "分",
+    });
+
+    drawMultiLineChart("gaitChartCanvas", grouped, "GaitSpeed", {
+      unit: "cm/s",
+    });
+
+    drawMultiLineChart("riskChartCanvas", grouped, "RiskRate", {
+      unit: "%",
+    });
     renderCompareSummary(grouped);
   } finally {
     document.body.classList.remove("is-loading");
@@ -919,8 +945,8 @@ function renderCompareSummary(groupedData) {
     },
     {
       key: "risk",
-      label: "AI風險",
-      unit: "",
+      label: "AI風險機率",
+      unit: "%",
       better: "min",
     },
   ];
