@@ -5,7 +5,7 @@ import { renderAssessmentTable } from "./table.js";
 import { BASE_URL } from "./config.js";
 import { setCurrentAssessments } from "./state.js";
 
-// ✅ 新增：直接 import chart（重點）
+
 import { drawSitStandChartChartJS } from "./charts/sitStandChart.js";
 import { drawBalanceChartChartJS } from "./charts/balanceChart.js";
 import { drawRiskChartChartJS } from "./charts/riskChart.js";
@@ -73,6 +73,7 @@ export async function initLocationPage() {
     if (!response.ok) throw new Error("無法取得場域總表");
 
     const result = await response.json();
+    
     const sites = result.Data || [];
 
     // 建立快取
@@ -278,9 +279,7 @@ function updateHideOnAll(regionId) {
   }
 }
 
-/* ========================
-   ⭐ 核心修正點在這
-   ======================== */
+
 function applyAssessments(assessments) {
   const dataArray = Array.isArray(assessments) ? assessments : [];
   setCurrentAssessments(dataArray);
@@ -295,7 +294,7 @@ function applyAssessments(assessments) {
 
   renderAssessmentTable(dataArray);
 
-  // ✅ 直接呼叫（不走 window）
+ 
   drawSitStandChartChartJS(dataArray);
   drawBalanceChartChartJS(dataArray);
   drawRiskChartChartJS(dataArray);
