@@ -152,23 +152,30 @@ function formatDateForCompare(date) {
 }
 
 function toTimestampRange(start, end, mode) {
-  let s = new Date(start);
-  let e = new Date(end);
+  const s = new Date(start);
+  const e = new Date(end || start);
+  void mode;
 
-  if (mode === "single") {
-    s.setHours(0, 0, 0, 0);
-    e.setHours(23, 59, 59, 999);
-    s = new Date(s.getTime() - 12 * 60 * 60 * 1000);
-    e = new Date(e.getTime() + 12 * 60 * 60 * 1000);
-  } else {
-    // range 模式也確保是整天
-    s.setHours(0, 0, 0, 0);
-    e.setHours(23, 59, 59, 999);
-  }
+  // 用 UTC，避免 local time 轉 timestamp 被後端當 UTC 解讀
+  const startUTC = Date.UTC(
+    s.getFullYear(),
+    s.getMonth(),
+    s.getDate(),
+    0, 0, 0,
+  );
+
+  const endUTC = Date.UTC(
+    e.getFullYear(),
+    e.getMonth(),
+    e.getDate() + 1,
+    0, 0, 0,
+  );
+
+ 
 
   return {
-    start: s.getTime(),
-    end: e.getTime(),
+    start: startUTC,
+    end: endUTC,
   };
 }
 
@@ -179,6 +186,25 @@ function destroyCompareFlatpickr(container) {
     .forEach((el) => {
       if (el._flatpickr) el._flatpickr.destroy();
     });
+}
+
+async function getAvailableDateRange(siteCode) {
+  const token = getCookie("fongai_token");
+  const { startTime, endTime } = getTimeRange();
+  const data = await fetchSiteData(siteCode, startTime, endTime, token);
+  const enabledDates = (data || [])
+    .map((d) => formatDateForCompare(new Date(d.Date)))
+    .filter(Boolean);
+  const sortedDates = [...enabledDates].sort(
+    (a, b) => new Date(a) - new Date(b),
+  );
+  const minDate = sortedDates.length ? sortedDates[0] : null;
+  const maxDate = sortedDates.length ? sortedDates[sortedDates.length - 1] : null;
+
+  return {
+    minDate,
+    maxDate,
+  };
 }
 
 function initCompareFlatpickr() {
@@ -204,24 +230,41 @@ function initCompareFlatpickr() {
       defaultDate = [a, b];
     }
 
-    fp(el, {
-      mode: "range",
-      dateFormat: "Y-m-d",
-      locale,
-      defaultDate,
-      onChange: (selectedDates) => {
-        if (selectedDates.length === 2) {
-          dashboardState.selectedSites[idx].start = formatDateForCompare(
-            selectedDates[0],
-          );
-          dashboardState.selectedSites[idx].end = formatDateForCompare(
-            selectedDates[1],
-          );
-          renderSelectedSites();
-          void renderCompareCharts();
-        }
-      },
-    });
+   
+
+    // ===== 新功能：只能選有資料日期 =====
+    (async () => {
+      const site = dashboardState.selectedSites[idx];
+      if (!site) return;
+
+      const { minDate, maxDate } = await getAvailableDateRange(site.code);
+      if (defaultDate && Array.isArray(defaultDate)) {
+        const [d1, d2] = defaultDate;
+
+        if (minDate && d1 < minDate) defaultDate[0] = minDate;
+        if (maxDate && d2 > maxDate) defaultDate[1] = maxDate;
+      }
+
+      fp(el, {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        locale,
+        defaultDate,
+        minDate,
+        maxDate,
+        onChange: (selectedDates) => {
+          if (selectedDates.length === 2) {
+            dashboardState.selectedSites[idx].start = formatDateForCompare(
+              selectedDates[0],
+            );
+            dashboardState.selectedSites[idx].end = formatDateForCompare(
+              selectedDates[1],
+            );
+            void renderCompareCharts();
+          }
+        },
+      });
+    })();
   });
 
   root.querySelectorAll("[data-flatpickr-single]").forEach((el) => {
@@ -229,36 +272,62 @@ function initCompareFlatpickr() {
     const site = dashboardState.selectedSites[idx];
     if (!site) return;
 
-    fp(el, {
-      mode: "single",
-      dateFormat: "Y-m-d",
-      locale,
-      defaultDate: site.end || site.start || null,
-      onChange: (selectedDates) => {
-        if (selectedDates[0]) {
-          const date = formatDateForCompare(selectedDates[0]);
-          dashboardState.selectedSites[idx].start = date;
-          dashboardState.selectedSites[idx].end = date;
-          renderSelectedSites();
-          void renderCompareCharts();
-        }
-      },
-    });
+   
+
+    // ===== 只能選有資料日期 =====
+    (async () => {
+      const site = dashboardState.selectedSites[idx];
+      if (!site) return;
+
+      const { minDate, maxDate } = await getAvailableDateRange(site.code);
+
+      fp(el, {
+        mode: "single",
+        dateFormat: "Y-m-d",
+        locale,
+        defaultDate: site.end || site.start || null,
+        minDate,
+        maxDate,
+        onChange: (selectedDates) => {
+          if (selectedDates[0]) {
+            const date = formatDateForCompare(selectedDates[0]);
+            dashboardState.selectedSites[idx].start = date;
+            dashboardState.selectedSites[idx].end = date;
+            void renderCompareCharts();
+          }
+        },
+      });
+    })();
   });
 }
 
-function getDefaultSiteRange() {
-  const { startTime, endTime } = getTimeRange();
-  return { start: startTime, end: endTime };
-}
 
-function makeSelectedSite(code) {
-  const { start, end } = getDefaultSiteRange();
+async function makeSelectedSite(code) {
+  const token = getCookie("fongai_token");
+  const { startTime, endTime } = getTimeRange();
+
+ 
+
+  const data = await fetchSiteData(code, startTime, endTime, token);
+
+ 
+
+  if (!Array.isArray(data) || data.length === 0) {
+   
+    return { code, timeMode: "range", start: "", end: "" };
+  }
+
+  const dates = data
+    .map((d) => new Date(d.Date))
+    .filter((d) => Number.isFinite(d.getTime()))
+    .sort((a, b) => a - b);
+
+
   return {
     code,
     timeMode: "range",
-    start,
-    end,
+    start: formatDateForCompare(dates[0]),
+    end: formatDateForCompare(dates[dates.length - 1]),
   };
 }
 
@@ -266,6 +335,14 @@ function makeSelectedSite(code) {
 function renderCompareControls() {
   const container = document.getElementById("compareControls");
   if (!container) return;
+  const formatDisplayDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  };
 
   destroyCompareFlatpickr(container);
 
@@ -279,8 +356,13 @@ function renderCompareControls() {
     .map((item, idx) => {
       const siteName = getLocationMap()?.[item.code]?.name || item.code;
       const rangeValue =
-        item.start && item.end ? `${item.start} ~ ${item.end}` : "";
-      const singleValue = item.end || item.start || "";
+        item.start && item.end
+          ? `${formatDisplayDate(item.start)} ~ ${formatDisplayDate(item.end)}`
+          : "";
+      const singleValue =
+        item.end || item.start
+          ? formatDisplayDate(item.end || item.start)
+          : "";
       const rangeHidden = item.timeMode === "range" ? "" : "d-none";
       const singleHidden = item.timeMode === "single" ? "" : "d-none";
       return `
@@ -436,7 +518,7 @@ export async function toggleSite(siteCode, el) {
       alert(t("selectedSitesLimit") || "最多選擇2個據點");
       return;
     }
-    dashboardState.selectedSites.push(makeSelectedSite(siteCode));
+    dashboardState.selectedSites.push(await makeSelectedSite(siteCode));
     el.classList.add("active");
   }
 
@@ -642,9 +724,12 @@ async function renderCompareCharts() {
           site.end,
           site.timeMode,
         );
+      
+        
         // console.log("API送出時間 👉", new Date(start), new Date(end));
         const data = await fetchSiteData(site.code, start, end, token);
-      
+       
+       
         return {
           code: site.code,
           site: getLocationMap()?.[site.code]?.name || site.code,
@@ -689,42 +774,33 @@ async function renderCompareCharts() {
   }
 }
 
-/**
- * Compare 模式初始化：先顯示據點，再確保有預設資料
- */
+
 export async function initCompareMode() {
   document.body.classList.add("is-loading");
   try {
-    renderSiteSelector();
+    {
+      const defaultCodes = await autoSelectDefaultSites(2);
 
-    const tagContainer = document.getElementById("selectedSites");
-    if (!tagContainer) return;
+      dashboardState.selectedSites = await Promise.all(
+        defaultCodes.map((code) => makeSelectedSite(code)),
+      );
+    }
 
     trimCompareSelectedSitesToMax();
 
-    if (dashboardState.selectedSites.length) {
-      renderSelectedSites();
-      renderCompareControls();
-
-      if (dashboardState.selectedSites.length >= 2) {
-        await renderCompareCharts();
-      } else {
-        clearAllCharts();
-        drawNoDataChart();
-      }
-
-      return;
-    }
-
-    renderSelectedSites();
+   
     renderCompareControls();
-    clearAllCharts();
-    drawNoDataChart();
+
+    if (dashboardState.selectedSites.length >= 2) {
+      await renderCompareCharts();
+    } else {
+      clearAllCharts();
+      drawNoDataChart();
+    }
   } finally {
     document.body.classList.remove("is-loading");
   }
 }
-
 function getMetricValue(data, key, timeMode) {
   if (!Array.isArray(data) || !data.length) return null;
 
@@ -851,7 +927,7 @@ function renderCompareSummary(groupedData) {
   }
 
   const rows = groupedData
-    .map((group) => {
+    .map((group, index) => {
       const chair = getMetricValue(group.data, "ChairSecond", group.timeMode);
       const balance = getMetricValue(group.data, "BalanceScore", group.timeMode);
       const gait = getMetricValue(group.data, "GaitSpeed", group.timeMode);
@@ -859,6 +935,7 @@ function renderCompareSummary(groupedData) {
 
       return {
         site: group.site,
+        id: `${group.code}-${index}`,
         timeMode: group.timeMode,
         start: group.start,
         end: group.end,
@@ -911,10 +988,14 @@ function renderCompareSummary(groupedData) {
   const isDifferentTime = groupedData.some(
     (g, _, arr) => g.start !== arr[0].start || g.end !== arr[0].end,
   );
+  const isSameSite =
+    groupedData.length === 2 && groupedData[0].code === groupedData[1].code;
   const siteLabel0 = rows[0]?.site || "A";
   const siteLabel1 = rows[1]?.site || "B";
   if (compareResultTitleEl) {
-    compareResultTitleEl.textContent = `${siteLabel0} vs ${siteLabel1} 比較結果`;
+    compareResultTitleEl.textContent = isSameSite
+      ? "同據點不同時間區間比較結果"
+      : `${siteLabel0} vs ${siteLabel1} 比較結果`;
   }
 
 
@@ -951,33 +1032,58 @@ function renderCompareSummary(groupedData) {
     },
   ];
 
-  const scoreMap = {};
-  METRICS.forEach((metric) => {
-    const valid = rows.filter((r) => r[metric.key] != null);
-    if (valid.length < 2) return;
+  if (isSameSite) {
+    rankingEl.innerHTML = "";
+    winnerEl.innerHTML = `
+    <div class="winner-inner">
+      <div class="winner-icon">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <div class="winner-text">
+        <div class="main">${siteLabel0} 前後區間表現比較</div>
+        <div class="sub">已依不同時間區間進行分析</div>
+      </div>
+    </div>
+  `;
+  } else {
+    const scoreMap = {};
+    METRICS.forEach((metric) => {
+      const valid = rows.filter((r) => r[metric.key] != null);
+      if (valid.length < 2) return;
 
-    const sorted = [...valid].sort((a, b) =>
-      metric.better === "min"
-        ? a[metric.key] - b[metric.key]
-        : b[metric.key] - a[metric.key],
-    );
+      const sorted = [...valid].sort((a, b) =>
+        metric.better === "min"
+          ? a[metric.key] - b[metric.key]
+          : b[metric.key] - a[metric.key],
+      );
 
-    const best = sorted[0];
-    const worst = sorted[sorted.length - 1];
-    const diff = Math.abs(best[metric.key] - worst[metric.key]);
+      const best = sorted[0];
+      const worst = sorted[sorted.length - 1];
+      const diff = Math.abs(best[metric.key] - worst[metric.key]);
 
-    if (diff === 0) return;
-    scoreMap[best.site] = (scoreMap[best.site] || 0) + 1;
-  });
+      if (diff === 0) return;
+      // scoreMap[best.site] = (scoreMap[best.site] || 0) + 1;
+      scoreMap[best.id] = (scoreMap[best.id] || 0) + 1;
+    });
 
-  const winnerEntries = Object.entries(scoreMap).sort((a, b) => b[1] - a[1]);
-  let winnerText = "各據點表現接近，目前沒有明確表現最佳者";
-  if (winnerEntries.length) {
-    const [topSite, score] = winnerEntries[0];
-    winnerText =
-      score === 1 ? `${topSite} 目前在單一指標表現最佳` : `${topSite} 目前在多項指標領先`;
-  }
-  winnerEl.innerHTML = `
+    const winnerEntries = Object.entries(scoreMap)
+      .map(([id, score]) => {
+        const row = rows.find((r) => r.id === id);
+        return {
+          id,
+          site: row?.site,
+          score,
+        };
+      })
+      .sort((a, b) => b.score - a.score);
+    let winnerText = "各據點表現接近，目前沒有明確表現最佳者";
+    if (winnerEntries.length) {
+      const topSite = winnerEntries[0].site;
+      const score = winnerEntries[0].score;
+      winnerText =
+        score === 1 ? `${topSite} 目前在單一指標表現最佳` : `${topSite} 目前在多項指標領先`;
+    }
+    winnerEl.innerHTML = `
     <div class="winner-inner">
       <div class="winner-icon">
         <i class="fa-solid ${winnerEntries.length ? "fa-trophy" : "fa-handshake"}"></i>
@@ -988,13 +1094,13 @@ function renderCompareSummary(groupedData) {
       </div>
     </div>
   `;
-  if (winnerEntries.length <= 1) {
-    rankingEl.innerHTML = "";
-  } else {
-    rankingEl.innerHTML = winnerEntries
-      .map(
-        ([site, score], index) =>
-          `<div class="ranking-badge">
+    if (winnerEntries.length <= 1) {
+      rankingEl.innerHTML = "";
+    } else {
+      rankingEl.innerHTML = winnerEntries
+        .map(
+          ({ site, score }, index) =>
+            `<div class="ranking-badge">
             <span class="rank">
               <i class="fa-solid ${index === 0 ? "fa-trophy" : "fa-medal"}"></i>
               #${index + 1}
@@ -1002,8 +1108,9 @@ function renderCompareSummary(groupedData) {
             <span class="name">${site}</span>
             <span class="score"><i class="fa-solid fa-crown"></i> ${score} 項領先</span>
           </div>`,
-      )
-      .join("");
+        )
+        .join("");
+    }
   }
 
   const ICON_MAP = {
