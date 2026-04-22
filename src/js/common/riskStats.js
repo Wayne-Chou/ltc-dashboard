@@ -212,8 +212,4 @@ export function updateTotalCountAndStartDate(assessments) {
   }
 }
 
-// 初始化 UI（用於 main.js 呼叫）
-export function initRiskModeUI() {
-  // 這裡可以放一些初始化的 DOM 監聽
-}
 

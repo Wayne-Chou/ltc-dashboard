@@ -153,12 +153,12 @@
                     登出
                   </button>
                 </div>
-                <div class="compareBtn">
+                <!-- <div class="compareBtn">
                   <button class="btn btn-outline-primary" id="compareBtn">
                     <i class="bi bi-intersect me-1"></i>
                     <span data-i18n="compareMode">群體比較模式</span>
                   </button>
-                </div>
+                </div> -->
               </div>
             </header>
             <nav
@@ -974,6 +974,7 @@
                 type="button"
                 class="btn btn-danger flex-fill risk-high-danger text-white"
                 data-risk="high"
+                data-i18n="riskLabel.high"
               >
                 危險
               </button>
@@ -981,7 +982,7 @@
                 type="button"
                 class="btn btn-warning flex-fill risk-high text-white"
                 data-risk="slightlyHigh"
-                data-i18n="riskHighDanger"
+                data-i18n="riskLabel.slightlyHigh"
               >
                 高
               </button>
@@ -989,7 +990,7 @@
                 type="button"
                 class="btn btn-primary flex-fill risk-medium text-white"
                 data-risk="medium"
-                data-i18n="riskHigh"
+                data-i18n="riskLabel.medium"
               >
                 中
               </button>
@@ -997,7 +998,7 @@
                 type="button"
                 class="btn btn-info flex-fill risk-slightly-low text-white"
                 data-risk="slightlyLow"
-                data-i18n="riskSlightlyLow"
+                data-i18n="riskLabel.slightlyLow"
               >
                 稍低
               </button>
@@ -1005,7 +1006,7 @@
                 type="button"
                 class="btn btn-success flex-fill risk-low text-white"
                 data-risk="low"
-                data-i18n="riskLow"
+                data-i18n="riskLabel.low"
               >
                 低
               </button>
@@ -1137,7 +1138,7 @@
                         type="button"
                         class="btn btn-danger flex-fill risk-high-danger text-white"
                         data-risk="high"
-                        data-i18n="riskHighDanger"
+                        data-i18n="riskLabel.high"
                       >
                         危險
                       </button>
@@ -1145,7 +1146,7 @@
                         type="button"
                         class="btn btn-warning flex-fill risk-high text-white"
                         data-risk="slightlyHigh"
-                        data-i18n="riskHigh"
+                        data-i18n="riskLabel.slightlyHigh"
                       >
                         高
                       </button>
@@ -1153,7 +1154,7 @@
                         type="button"
                         class="btn btn-primary flex-fill risk-medium text-white"
                         data-risk="medium"
-                        data-118n="riskMedium"
+                        data-i18n="riskLabel.medium"
                       >
                         中
                       </button>
@@ -1161,7 +1162,7 @@
                         type="button"
                         class="btn btn-info flex-fill risk-slightly-low text-white"
                         data-risk="slightlyLow"
-                        data-i18n="riskSlightlyLow"
+                        data-i18n="riskLabel.slightlyLow"
                       >
                         稍低
                       </button>
@@ -1169,7 +1170,7 @@
                         type="button"
                         class="btn btn-success flex-fill risk-low text-white"
                         data-risk="low"
-                        data-i18n="riskLow"
+                        data-i18n="riskLabel.low"
                       >
                         低
                       </button>
@@ -1579,15 +1580,12 @@
             <i class="bi bi-intersect me-2"></i>
             群體比較
           </h5>
-          <div class="text-muted small">
-            分析據點在各項指標的表現差異
-          </div>
+          <div class="text-muted small">分析據點在各項指標的表現差異</div>
         </div>
 
         <div class="compare-summary-container" id="compareSummary">
           <div class="compare-summary-header">
             <div class="title">比較結果分析</div>
-            
           </div>
           <div id="compareControls" class="compare-controls"></div>
           <div class="compare-mode-title">

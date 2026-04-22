@@ -25,8 +25,11 @@ import { renderAssessmentTable } from "./table.js";
 import { renderDetailModalContent } from "./modal/detailModal.js";
 
 function runInitMap() {
-  import("./map.js")
-    .then((m) => m.initMap())
+  Promise.all([import("./loadGoogleMaps.js"), import("./map.js")])
+    .then(async ([mapsLoader, mapModule]) => {
+      await mapsLoader.loadGoogleMaps();
+      await mapModule.initMap();
+    })
     .catch(() => {});
 }
 

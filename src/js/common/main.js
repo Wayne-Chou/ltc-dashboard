@@ -11,7 +11,7 @@ import { initDateFilter } from "./dateFilter.js";
 
 import { initPersonCardRisk } from "./personCardRisk.js";
 import { initPersonCardLevel } from "./personCardLevel.js";
-import { initRiskModeUI } from "./riskStats.js";
+
 import { initDownloadChart } from "./downloadChart.js";
 import { initDetailModal } from "./modal/detailModal.js";
 import { initViewAllModal } from "./modal/viewAllModal.js";
@@ -24,25 +24,7 @@ import {
 import { registerRenderView, renderView } from "./viewBridge.js";
 import { getTemplate } from "./template.js";
 
-function loadGoogleMaps() {
-  return new Promise((resolve) => {
-    // 如果已經載過，就直接 resolve（避免重複載入）
-    if (window.google && window.google.maps) {
-      resolve();
-      return;
-    }
 
-    const script = document.createElement("script");
-    script.src =
-      "https://maps.googleapis.com/maps/api/js?key=AIzaSyACfOxn7DJ9gdcb-XBx-R2X5pbHWeskzUg";
-    script.async = true;
-    script.defer = true;
-
-    script.onload = resolve;
-
-    document.head.appendChild(script);
-  });
-}
 
 // --- 2. 視圖渲染函數 ---
 
@@ -76,7 +58,7 @@ registerRenderView(renderDashboardView);
 async function initDefaultView() {
   initLogoutButton();
 
-  await loadGoogleMaps(); 
+ 
 
   initLocationPage(); 
   initTable();
@@ -86,7 +68,7 @@ async function initDefaultView() {
 
   initPersonCardRisk();
   initPersonCardLevel();
-  initRiskModeUI();
+  
   initDownloadChart();
   initDetailModal();
   initViewAllModal();

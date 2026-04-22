@@ -185,6 +185,15 @@ export function renderRiskCards(
   if (!filteredPersons.length) {
     container.innerHTML = `<div class="col-12"><div class="alert alert-secondary text-center">${t("noMatchedPerson")}</div></div>`;
     updateRiskButtonsCounts(allPersons, scope);
+    if (!options.isModal) {
+      const btns = document.querySelectorAll(".risk .filterBtnsDesktop button");
+      btns.forEach((btn) => {
+        btn.classList.toggle(
+          "active",
+          btn.dataset.risk === (filterRisk || "all"),
+        );
+      });
+    }
     return;
   }
 
