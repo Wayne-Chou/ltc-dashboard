@@ -1,5 +1,4 @@
 // src/js/common/charts/compareMode.js
-import { t } from "../locale.js";
 import { getCookie } from "../cookie.js";
 import { dashboardState, currentAssessments } from "../state.js";
 import { fetchSiteData, getLocationMap, getTimeRange } from "../location.js";
@@ -11,9 +10,10 @@ let compareClickDelegationBound = false;
 
 /** 比較模式允許同時選取的據點上限（A/B 兩筆）。 */
 const COMPARE_SELECTED_SITES_MAX = 2;
+const dateRangeCache = new Map();
 
 /**
- * 將 `dashboardState.selectedSites` 截成至多 {@link COMPARE_SELECTED_SITES_MAX} 筆，並同步 `.site-card` 的 active 狀態。
+ * 將 `dashboardState.selectedSites` 截成至多 {@link COMPARE_SELECTED_SITES_MAX} 筆。
  */
 function trimCompareSelectedSitesToMax() {
   if (dashboardState.selectedSites.length > COMPARE_SELECTED_SITES_MAX) {
@@ -22,13 +22,6 @@ function trimCompareSelectedSitesToMax() {
       COMPARE_SELECTED_SITES_MAX,
     );
   }
-  const codes = new Set(
-    dashboardState.selectedSites.map((s) => s?.code).filter(Boolean),
-  );
-  document.querySelectorAll(".site-card").forEach((card) => {
-    const code = card.dataset.code;
-    if (code && !codes.has(code)) card.classList.remove("active");
-  });
 }
 
 /**
@@ -61,18 +54,6 @@ export function initCompareModeClickDelegation() {
   if (compareClickDelegationBound) return;
   compareClickDelegationBound = true;
   document.addEventListener("click", (e) => {
-    const siteCard = e.target.closest("#siteSelector .site-card[data-code]");
-    if (siteCard) {
-      void toggleSite(siteCard.dataset.code, siteCard);
-      return;
-    }
-    const removeEl = e.target.closest("#selectedSites [data-remove-site]");
-    if (removeEl?.dataset.removeSite != null) {
-      const code = removeEl.dataset.removeSite;
-      if (code) void removeSiteByCode(code);
-      return;
-    }
-
     const quick = e.target.closest("#compareControls [data-quick]");
     if (quick) {
       const idx = Number(quick.dataset.compareIndex);
@@ -98,8 +79,6 @@ export function initCompareModeClickDelegation() {
       dashboardState.selectedSites[idx].timeMode = "range";
       dashboardState.selectedSites[idx].start = formatDateForCompare(start);
       dashboardState.selectedSites[idx].end = formatDateForCompare(end);
-      renderSelectedSites();
-      renderSiteSelector();
       renderCompareControls();
       void renderCompareCharts();
       return;
@@ -111,14 +90,27 @@ export function initCompareModeClickDelegation() {
       if (!Number.isFinite(idx) || !dashboardState.selectedSites[idx]) return;
       dashboardState.selectedSites[idx].start = "";
       dashboardState.selectedSites[idx].end = "";
-      renderSelectedSites();
-      renderSiteSelector();
       renderCompareControls();
       void renderCompareCharts();
       return;
     }
   });
-  document.addEventListener("change", (e) => {
+  document.addEventListener("change", async (e) => {
+    const siteSelect = e.target.closest("[data-compare-site]");
+    if (siteSelect) {
+      const idx = Number(siteSelect.dataset.compareIndex);
+      if (!Number.isFinite(idx)) return;
+
+      const code = siteSelect.value;
+      const newSite = await makeSelectedSite(code);
+
+      dashboardState.selectedSites[idx] = newSite;
+
+      renderCompareControls();
+      await renderCompareCharts();
+      return;
+    }
+
     const control = e.target.closest("#compareControls [data-compare-index]");
     if (!control) return;
     const idx = Number(control.dataset.compareIndex);
@@ -128,7 +120,6 @@ export function initCompareModeClickDelegation() {
     if (!field) return;
     const next = { ...dashboardState.selectedSites[idx] };
 
-    if (field === "code") next.code = e.target.value;
     if (field === "timeMode") next.timeMode = e.target.value;
 
     if (next.timeMode === "single") {
@@ -137,8 +128,6 @@ export function initCompareModeClickDelegation() {
     }
 
     dashboardState.selectedSites[idx] = next;
-    renderSelectedSites();
-    renderSiteSelector();
     renderCompareControls();
     void renderCompareCharts();
   });
@@ -207,97 +196,76 @@ async function getAvailableDateRange(siteCode) {
   };
 }
 
-function initCompareFlatpickr() {
+async function getCachedDateRange(siteCode) {
+  if (dateRangeCache.has(siteCode)) {
+    return dateRangeCache.get(siteCode);
+  }
+  const result = await getAvailableDateRange(siteCode);
+  dateRangeCache.set(siteCode, result);
+  return result;
+}
+
+async function initFlatpickr(el, site, mode) {
   const fp = typeof window !== "undefined" ? window.flatpickr : null;
   if (typeof fp !== "function") return;
 
+  const locale = fp.l10ns?.zh_tw || fp.l10ns?.zh;
+  const { minDate, maxDate } = await getCachedDateRange(site.code);
+
+  let config = {
+    dateFormat: "Y-m-d",
+    locale,
+    minDate,
+    maxDate,
+  };
+
+  if (mode === "range") {
+    config.mode = "range";
+    config.defaultDate =
+      site.start && site.end ? [site.start, site.end] : null;
+
+    config.onChange = (dates) => {
+      if (dates.length === 2) {
+        site.start = formatDateForCompare(dates[0]);
+        site.end = formatDateForCompare(dates[1]);
+        void renderCompareCharts();
+      }
+    };
+  }
+
+  if (mode === "single") {
+    config.mode = "single";
+    config.defaultDate = site.end || site.start || null;
+
+    config.onChange = (dates) => {
+      if (dates[0]) {
+        const d = formatDateForCompare(dates[0]);
+        site.start = d;
+        site.end = d;
+        void renderCompareCharts();
+      }
+    };
+  }
+
+  fp(el, config);
+}
+
+function initCompareFlatpickr() {
   const root = document.getElementById("compareControls");
   if (!root) return;
-
-  const locale = fp.l10ns?.zh_tw || fp.l10ns?.zh;
 
   root.querySelectorAll("[data-flatpickr-range]").forEach((el) => {
     const idx = Number(el.dataset.compareIndex);
     const site = dashboardState.selectedSites[idx];
     if (!site) return;
-
-    let defaultDate = null;
-    if (site.start && site.end) {
-      defaultDate = [site.start, site.end];
-    } else if (site.start || site.end) {
-      const a = site.start || site.end;
-      const b = site.end || site.start;
-      defaultDate = [a, b];
-    }
-
-   
-
-    // ===== 新功能：只能選有資料日期 =====
-    (async () => {
-      const site = dashboardState.selectedSites[idx];
-      if (!site) return;
-
-      const { minDate, maxDate } = await getAvailableDateRange(site.code);
-      if (defaultDate && Array.isArray(defaultDate)) {
-        const [d1, d2] = defaultDate;
-
-        if (minDate && d1 < minDate) defaultDate[0] = minDate;
-        if (maxDate && d2 > maxDate) defaultDate[1] = maxDate;
-      }
-
-      fp(el, {
-        mode: "range",
-        dateFormat: "Y-m-d",
-        locale,
-        defaultDate,
-        minDate,
-        maxDate,
-        onChange: (selectedDates) => {
-          if (selectedDates.length === 2) {
-            dashboardState.selectedSites[idx].start = formatDateForCompare(
-              selectedDates[0],
-            );
-            dashboardState.selectedSites[idx].end = formatDateForCompare(
-              selectedDates[1],
-            );
-            void renderCompareCharts();
-          }
-        },
-      });
-    })();
+    void initFlatpickr(el, site, "range");
   });
 
   root.querySelectorAll("[data-flatpickr-single]").forEach((el) => {
     const idx = Number(el.dataset.compareIndex);
     const site = dashboardState.selectedSites[idx];
     if (!site) return;
-
-   
-
-    // ===== 只能選有資料日期 =====
-    (async () => {
-      const site = dashboardState.selectedSites[idx];
-      if (!site) return;
-
-      const { minDate, maxDate } = await getAvailableDateRange(site.code);
-
-      fp(el, {
-        mode: "single",
-        dateFormat: "Y-m-d",
-        locale,
-        defaultDate: site.end || site.start || null,
-        minDate,
-        maxDate,
-        onChange: (selectedDates) => {
-          if (selectedDates[0]) {
-            const date = formatDateForCompare(selectedDates[0]);
-            dashboardState.selectedSites[idx].start = date;
-            dashboardState.selectedSites[idx].end = date;
-            void renderCompareCharts();
-          }
-        },
-      });
-    })();
+    void initFlatpickr(el, site, "single");
   });
 }
 
@@ -346,15 +314,19 @@ function renderCompareControls() {
 
   destroyCompareFlatpickr(container);
 
-  const sites = Object.values(getLocationMap() || {});
-  const siteOptions = sites
-    .map((site) => `<option value="${site.code}">${site.name}</option>`)
-    .join("");
-
   container.innerHTML = dashboardState.selectedSites
     .slice(0, COMPARE_SELECTED_SITES_MAX)
     .map((item, idx) => {
       const siteName = getLocationMap()?.[item.code]?.name || item.code;
+      const siteOptions = Object.entries(getLocationMap() || {})
+        .map(
+          ([code, site]) => `
+            <option value="${code}" ${code === item.code ? "selected" : ""}>
+              ${site.name}
+            </option>
+          `,
+        )
+        .join("");
       const rangeValue =
         item.start && item.end
           ? `${formatDisplayDate(item.start)} ~ ${formatDisplayDate(item.end)}`
@@ -368,7 +340,11 @@ function renderCompareControls() {
       return `
         <div class="compare-control" data-compare-index="${idx}">
           <div class="compare-control-label"><i class="fa-solid fa-circle"></i> ${siteName}</div>
-          <select class="form-select form-select-sm" data-compare-field="code">
+          <select
+            class="form-select form-select-sm"
+            data-compare-site
+            data-compare-index="${idx}"
+          >
             ${siteOptions}
           </select>
           <select class="form-select form-select-sm" data-compare-field="timeMode">
@@ -413,9 +389,7 @@ function renderCompareControls() {
   dashboardState.selectedSites.slice(0, COMPARE_SELECTED_SITES_MAX).forEach((item, idx) => {
     const row = container.querySelector(`[data-compare-index="${idx}"]`);
     if (!row) return;
-    const codeEl = row.querySelector('[data-compare-field="code"]');
     const modeEl = row.querySelector('[data-compare-field="timeMode"]');
-    if (codeEl) codeEl.value = item.code;
     if (modeEl) modeEl.value = item.timeMode;
   });
 
@@ -437,39 +411,6 @@ export function clearAllCharts() {
     const chart = Chart.getChart(id);
     if (chart) chart.destroy();
   });
-}
-
-/**
- * 渲染據點選擇器卡片 (比較模式專用)
- */
-export function renderSiteSelector() {
-  const container = document.getElementById("siteSelector");
-  if (!container) return;
-
-  const sites = Object.values(getLocationMap() || {});
-
-  if (!sites.length) {
-    container.innerHTML = `<div class="text-muted p-3">${t("alertNoData")}</div>`;
-    return;
-  }
-
-  container.innerHTML = sites
-    .map((site) => {
-      const isActive = dashboardState.selectedSites.some(
-        (selectedSite) => selectedSite.code === site.code,
-      )
-        ? "active"
-        : "";
-      return `
-        <div class="col-6 col-md-3">
-          <div class="site-card ${isActive}" 
-               data-code="${site.code}">
-            <div class="site-name">${site.name}</div>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
 }
 
 /**
@@ -501,112 +442,6 @@ export async function autoSelectDefaultSites(limit = 2) {
     .slice(0, limit)
     .filter((s) => s.count > 0)
     .map((s) => s.code);
-}
-
-/**
- * 點擊/切換據點選取狀態
- */
-export async function toggleSite(siteCode, el) {
-  const list = dashboardState.selectedSites;
-  const idx = list.findIndex((s) => s.code === siteCode);
-
-  if (idx !== -1) {
-    dashboardState.selectedSites = list.filter((s) => s.code !== siteCode);
-    el.classList.remove("active");
-  } else {
-    if (list.length >= COMPARE_SELECTED_SITES_MAX) {
-      alert(t("selectedSitesLimit") || "最多選擇2個據點");
-      return;
-    }
-    dashboardState.selectedSites.push(await makeSelectedSite(siteCode));
-    el.classList.add("active");
-  }
-
-  trimCompareSelectedSitesToMax();
-
-  renderSelectedSites();
-  renderCompareControls();
-
-  if (!dashboardState.selectedSites.length) {
-    clearAllCharts();
-    drawNoDataChart();
-    return;
-  }
-
-  await renderCompareCharts();
-}
-
-/**
- * 渲染已選擇的據點標籤 (Tags)
- */
-function renderSelectedSites() {
-  const container = document.getElementById("selectedSites");
-  if (!container) return;
-
-  if (!dashboardState.selectedSites.length) {
-    container.innerHTML = `<span class="text-muted small">${t("clickSiteToCompare")}</span>`;
-    return;
-  }
-
-  container.innerHTML = dashboardState.selectedSites
-    .slice(0, COMPARE_SELECTED_SITES_MAX)
-    .map(
-      (selectedSite) => `
-      <div class="selected-tag">
-        ${getLocationMap()?.[selectedSite.code]?.name || selectedSite.code}
-        <span role="button" tabindex="0" data-remove-site="${selectedSite.code}">✕</span>
-      </div>
-    `,
-    )
-    .join("");
-}
-
-async function removeSiteByCode(code) {
-  dashboardState.selectedSites = dashboardState.selectedSites.filter(
-    (s) => s.code !== code,
-  );
-
-  renderSelectedSites();
-  renderCompareControls();
-
-  document.querySelectorAll(".site-card").forEach((card) => {
-    if (card.dataset.code === code) {
-      card.classList.remove("active");
-    }
-  });
-
-  if (!dashboardState.selectedSites.length) {
-    clearAllCharts();
-    drawNoDataChart();
-    return;
-  }
-
-  await renderCompareCharts();
-}
-
-/**
- * 移除單一據點
- */
-export async function removeSite(index) {
-  const removedCode = dashboardState.selectedSites[index]?.code;
-  dashboardState.selectedSites = dashboardState.selectedSites.filter(
-    (_, i) => i !== index,
-  );
-  renderSelectedSites();
-  renderCompareControls();
-
-  // 同步卡片樣式
-  document.querySelectorAll(".site-card").forEach((card) => {
-    if (card.dataset.code === removedCode) card.classList.remove("active");
-  });
-
-  if (!dashboardState.selectedSites.length) {
-    clearAllCharts();
-    drawNoDataChart();
-    return;
-  }
-
-  await renderCompareCharts();
 }
 
 /**
@@ -781,9 +616,19 @@ export async function initCompareMode() {
     {
       const defaultCodes = await autoSelectDefaultSites(2);
 
-      dashboardState.selectedSites = await Promise.all(
-        defaultCodes.map((code) => makeSelectedSite(code)),
-      );
+      // ✅ 如果只有一個據點 → 自動自己比自己
+      if (defaultCodes.length === 1) {
+        const site = await makeSelectedSite(defaultCodes[0]);
+
+        dashboardState.selectedSites = [
+          { ...site },
+          { ...site },
+        ];
+      } else {
+        dashboardState.selectedSites = await Promise.all(
+          defaultCodes.map((code) => makeSelectedSite(code)),
+        );
+      }
     }
 
     trimCompareSelectedSitesToMax();
@@ -863,16 +708,6 @@ function renderCompareSummary(groupedData) {
     if (compareResultTitleEl) compareResultTitleEl.textContent = "A vs B 比較結果";
   };
 
-  const emptyCardHtml = `
-    <div class="metric-card empty">
-      <div class="metric-empty-icon">
-        <i class="fa-solid fa-chart-line"></i>
-      </div>
-      <div class="metric-empty-title">尚無比較資料</div>
-      <div class="metric-empty-desc">請選擇更多據點以產生比較分析</div>
-    </div>
-  `;
-
   const emptyRangeCardHtml = `
     <div class="metric-card empty">
       <div class="metric-empty-icon">
@@ -883,21 +718,20 @@ function renderCompareSummary(groupedData) {
     </div>
   `;
 
-  if (!groupedData || dashboardState.selectedSites.length === 0) {
-   
+  if (!groupedData) {
     winnerEl.innerHTML = `
       <div class="winner-inner">
         <div class="winner-icon">
-          <i class="fa-solid fa-circle-info"></i>
+          <i class="fa-solid fa-calendar-xmark"></i>
         </div>
         <div class="winner-text">
-          <div class="main">尚未選擇據點</div>
-          <div class="sub">請先選擇據點進行比較</div>
+          <div class="main">所選日期區間無資料，請調整日期</div>
+          <div class="sub">目前查無此區間的指標資料</div>
         </div>
       </div>
     `;
     rankingEl.innerHTML = "";
-    contentEl.innerHTML = emptyCardHtml;
+    contentEl.innerHTML = emptyRangeCardHtml;
     resetCompareResultTitle();
     return;
   }
@@ -946,44 +780,6 @@ function renderCompareSummary(groupedData) {
       };
     })
     .filter(Boolean);
-
-  if (dashboardState.selectedSites.length === 0) {
-  
-    winnerEl.innerHTML = `
-      <div class="winner-inner">
-        <div class="winner-icon">
-          <i class="fa-solid fa-circle-info"></i>
-        </div>
-        <div class="winner-text">
-          <div class="main">尚未選擇據點</div>
-          <div class="sub">請先選擇據點進行比較</div>
-        </div>
-      </div>
-    `;
-    rankingEl.innerHTML = "";
-    contentEl.innerHTML = emptyCardHtml;
-    resetCompareResultTitle();
-    return;
-  }
-
-  if (dashboardState.selectedSites.length === 1) {
-  
-    winnerEl.innerHTML = `
-      <div class="winner-inner">
-        <div class="winner-icon">
-          <i class="fa-solid fa-circle-info"></i>
-        </div>
-        <div class="winner-text">
-          <div class="main">目前僅選擇 1 個據點</div>
-          <div class="sub">請至少選擇 2 個據點進行比較</div>
-        </div>
-      </div>
-    `;
-    rankingEl.innerHTML = "";
-    contentEl.innerHTML = emptyCardHtml;
-    resetCompareResultTitle();
-    return;
-  }
 
   const isDifferentTime = groupedData.some(
     (g, _, arr) => g.start !== arr[0].start || g.end !== arr[0].end,
@@ -1034,17 +830,29 @@ function renderCompareSummary(groupedData) {
 
   if (isSameSite) {
     rankingEl.innerHTML = "";
+
+    const getModeLabel = (row) => {
+      return row.timeMode === "single" ? "單日" : "區間";
+    };
+
+    const rangeText = (row) =>
+      row.timeMode === "single"
+        ? new Date(row.end).toLocaleDateString("zh-TW")
+        : `${new Date(row.start).toLocaleDateString("zh-TW")}～${new Date(row.end).toLocaleDateString("zh-TW")}`;
+
     winnerEl.innerHTML = `
-    <div class="winner-inner">
-      <div class="winner-icon">
-        <i class="fa-solid fa-chart-line"></i>
+      <div class="winner-inner">
+        <div class="winner-icon">
+          <i class="fa-solid fa-code-compare"></i>
+        </div>
+        <div class="winner-text">
+          <div class="main">${rows[0].site} 同據點時間比較</div>
+          <div class="sub">
+            ${getModeLabel(rows[0])}A：${rangeText(rows[0])} ｜ ${getModeLabel(rows[1])}B：${rangeText(rows[1])}
+          </div>
+        </div>
       </div>
-      <div class="winner-text">
-        <div class="main">${siteLabel0} 前後區間表現比較</div>
-        <div class="sub">已依不同時間區間進行分析</div>
-      </div>
-    </div>
-  `;
+    `;
   } else {
     const scoreMap = {};
     METRICS.forEach((metric) => {
@@ -1121,19 +929,34 @@ function renderCompareSummary(groupedData) {
   };
 
   const metricCards = METRICS.map((metric) => {
-    const valid = rows.filter((row) => row[metric.key] != null);
-    if (valid.length < 2) return "";
+    const A = rows[0];
+    const B = rows[1];
 
-    const sorted = [...valid].sort((a, b) =>
+    const AValue = A[metric.key];
+    const BValue = B[metric.key];
+
+    if (AValue == null || BValue == null) return "";
+
+    const round = (v) => Math.round(v * 10) / 10;
+    const ADisplay = round(AValue);
+    const BDisplay = round(BValue);
+
+    const isABetter =
       metric.better === "min"
-        ? a[metric.key] - b[metric.key]
-        : b[metric.key] - a[metric.key],
-    );
+        ? AValue < BValue
+        : AValue > BValue;
 
-    const best = sorted[0];
-    const worst = sorted[sorted.length - 1];
-    const diff = Math.abs(worst[metric.key] - best[metric.key]);
+    const best = isABetter ? A : B;
+    const worst = isABetter ? B : A;
+    const diff = Math.abs(ADisplay - BDisplay);
+    const worstValue = Math.abs(worst[metric.key]);
+    const percent = worstValue === 0 ? 0 : (diff / worstValue) * 100;
     const isTie = diff === 0;
+    const AClass = isTie ? "" : isABetter ? "is-better" : "is-worse";
+    const BClass = isTie ? "" : isABetter ? "is-worse" : "is-better";
+    const getModeLabel = (row) => {
+      return row.timeMode === "single" ? "單日" : "區間";
+    };
     const unitText = metric.unit ? ` ${metric.unit}` : "";
     const formatTimeText = (row) =>
       row.timeMode === "single"
@@ -1151,42 +974,66 @@ function renderCompareSummary(groupedData) {
         <div class="metric-body">
           <div class="metric-top">
             <div class="metric-site">
-              ${isTie ? "表現相同" : best.site}
+              ${isTie
+                ? "表現相同"
+                : isSameSite
+                ? (isABetter
+                ? `${getModeLabel(A)}A 較佳`
+                : `${getModeLabel(B)}B 較佳`)
+                : (isABetter
+                ? `${A.site} 較佳`
+                : `${B.site} 較佳`)
+              }
             </div>
             ${
-              !isTie
+              isSameSite
+                ? `<div class="metric-badge neutral">${getModeLabel(A)} vs ${getModeLabel(B)}</div>`
+                : !isTie
                 ? `<div class="metric-badge">最佳</div>`
                 : `<div class="metric-badge neutral">平手</div>`
             }
           </div>
 
           <div class="metric-values-list">
-            <div class="metric-value-row">
-              <span>${best.site}</span>
-              <strong>${best[metric.key].toFixed(1)}${unitText}</strong>
-              <em>${modeLabel(best)}</em>
+            <div class="metric-value-row ${AClass}">
+              <span>${isSameSite ? `${getModeLabel(A)}A` : A.site}</span>
+              <strong>${AValue.toFixed(1)}${unitText}</strong>
+              <em>${modeLabel(A)}</em>
             </div>
-            <div class="metric-value-row">
-              <span>${worst.site}</span>
-              <strong>${worst[metric.key].toFixed(1)}${unitText}</strong>
-              <em>${modeLabel(worst)}</em>
+            <div class="metric-value-row ${BClass}">
+              <span>${isSameSite ? `${getModeLabel(B)}B` : B.site}</span>
+              <strong>${BValue.toFixed(1)}${unitText}</strong>
+              <em>${modeLabel(B)}</em>
             </div>
           </div>
 
           <div class="metric-time">
             <i class="fa-solid fa-calendar-days"></i>
-            ${best.site}：${formatTimeText(best)}
+            ${isSameSite ? `${getModeLabel(best)}A` : best.site}：${formatTimeText(best)}
           </div>
           <div class="metric-time">
             <i class="fa-solid fa-calendar-days"></i>
-            ${worst.site}：${formatTimeText(worst)}
+            ${isSameSite ? `${getModeLabel(worst)}B` : worst.site}：${formatTimeText(worst)}
           </div>
-          <div class="metric-compare">${isTie ? "雙方數值相同" : `相較 ${worst.site} 更佳`}</div>
+          <div class="metric-compare">${
+            isTie
+              ? "雙方數值相同"
+              : isSameSite
+              ? (isABetter
+              ? `${getModeLabel(A)}A 表現優於 ${getModeLabel(B)}B`
+              : `${getModeLabel(B)}B 表現優於 ${getModeLabel(A)}A`)
+              : (isABetter
+              ? `${A.site} 表現優於 ${B.site}`
+              : `${B.site} 表現優於 ${A.site}`)
+          }</div>
         </div>
 
         <div class="metric-footer">
-          <i class="fa-solid fa-arrows-left-right"></i>
-          差距 <strong>${diff.toFixed(1)}${unitText}</strong>
+          <div class="metric-diff">
+            <span class="diff-value">
+              ${isTie ? "無差異" : `差距 ${diff.toFixed(1)}${unitText}`}
+            </span>
+          </div>
         </div>
       </div>
     `;

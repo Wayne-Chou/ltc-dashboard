@@ -712,18 +712,7 @@ body {
   font-size: 16px;
 }
 
-/* .compare-summary-header .basis {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #334155;
-  background: #f1f5f9;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid #e2e8f0;
-} */
+
 
 .compare-controls {
   display: grid;
@@ -761,11 +750,12 @@ body {
 }
 
 .winner-card {
-  background: linear-gradient(135deg, #1e40af, #2563eb);
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
   color: white;
-  border-radius: 18px;
-  padding: 22px;
+  border-radius: 20px;
+  padding: 24px;
   margin-bottom: 20px;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
 }
 
 .winner-inner {
@@ -786,8 +776,8 @@ body {
 }
 
 .winner-text .main {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
 }
 
 .winner-text .sub {
@@ -797,38 +787,62 @@ body {
 
 .compare-ranking {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 20px;
+  margin: 12px 0;
 }
 
 .ranking-badge {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: #f8fafc;
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: 12px;
-  border: 1px solid #e2e8f0;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.ranking-badge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.ranking-badge:hover::before {
+  opacity: 1;
 }
 
 .ranking-badge .rank {
-  font-weight: 700;
-  color: #0d6efd;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.ranking-badge .name {
+  font-weight: 600;
+  color: #1f2937;
 }
 
 .ranking-badge .score {
-  background: #0d6efd;
-  color: white;
-  border-radius: 6px;
-  padding: 1px 6px;
-  font-size: 11px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.ranking-badge:first-child {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #fef9c3, #fde68a);
+  border: 1px solid #facc15;
+}
+
+.ranking-badge:first-child .rank {
+  color: #ca8a04;
 }
 
 .compare-grid {
@@ -838,51 +852,61 @@ body {
 }
 
 .metric-card {
-  background: #ffffff;
+  position: relative;
+  overflow: hidden;
   border-radius: 16px;
-  padding: 20px;
+  padding: 16px;
+  background: #ffffff;
   border: 1px solid #e5e7eb;
-  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
 }
 
+
 .metric-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 .metric-card.is-active {
-  border: 1px solid #dbeafe;
+  border-left: 4px solid #22c55e;
 }
 
 .metric-card.is-tie {
-  background: #f8fafc;
-  opacity: 0.9;
+  border-left: 4px solid #9ca3af;
+}
+
+.metric-card.is-worse {
+  border-left: 4px solid #ef4444;
+}
+
+
+
+.metric-card.is-tie::after {
+  background: #9ca3af;
+}
+
+.metric-card.is-worse::after {
+  background: linear-gradient(90deg, #ef4444, #f87171);
 }
 
 .metric-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .metric-header .icon {
-  width: 38px;
-  height: 38px;
-  background: #eef2ff;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #4f46e5;
   font-size: 16px;
+  color: #3b82f6;
 }
 
 .metric-header .label {
-  font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: #111827;
 }
+
 
 .metric-body {
   margin-bottom: 10px;
@@ -892,91 +916,124 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 8px;
 }
 
 .metric-site {
-  font-size: 14px;
-  color: #374151;
   font-weight: 600;
+  font-size: 14px;
 }
 
 .metric-badge {
-  font-size: 11px;
-  padding: 3px 8px;
+  font-size: 12px;
+  padding: 2px 8px;
   border-radius: 999px;
-  background: #dcfce7;
-  color: #166534;
-  font-weight: 700;
+  background: #dbeafe;
+  color: #2563eb;
 }
 
 .metric-badge.neutral {
-  background: #f1f5f9;
-  color: #475569;
-}
-
-.metric-value {
-  font-size: 34px;
-  font-weight: 900;
-  color: #020617;
-  margin: 6px 0;
+  background: #f3f4f6;
+  color: #6b7280;
 }
 
 .metric-values-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 6px;
+  margin-top: 8px;
 }
 
 .metric-value-row {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
-  gap: 8px;
+  display: flex;
+  justify-content: space-between;
   font-size: 13px;
+  margin-bottom: 4px;
 }
 
 .metric-value-row strong {
-  font-size: 16px;
-  color: #020617;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.metric-value-row.is-better strong {
+  color: #16a34a;
+}
+
+.metric-value-row.is-worse strong {
+  color: #9ca3af;
 }
 
 .metric-value-row em {
   font-style: normal;
-  font-size: 11px;
-  color: #64748b;
-  background: #f1f5f9;
-  border-radius: 999px;
-  padding: 2px 6px;
 }
 
 .metric-time {
   font-size: 12px;
-  color: #64748b;
-  margin-top: 2px;
-  margin-bottom: 4px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  color: #6b7280;
+  margin-top: 4px;
 }
 
 .metric-compare {
-  font-size: 13px;
-  color: #4b5563;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  font-size: 12px;
+  font-weight: 500;
 }
 
+.metric-card.is-active .metric-compare {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.metric-card.is-tie .metric-compare {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.metric-card.is-worse .metric-compare {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+
 .metric-footer {
-  margin-top: 12px;
+  margin-top: 10px;
   font-size: 13px;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-weight: 600;
 }
 
 .metric-footer strong {
   color: #111827;
   font-weight: 700;
+}
+
+.metric-diff {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.diff-arrow {
+  font-size: 14px;
+}
+
+.diff-arrow.up {
+  color: #16a34a;
+}
+
+.diff-arrow.down {
+  color: #dc2626;
+}
+
+.diff-arrow.neutral {
+  color: #6b7280;
+}
+
+.diff-percent {
+  font-size: 12px;
+  color: #6b7280;
 }
 
 .metric-card.empty {
@@ -1006,6 +1063,109 @@ body {
 .metric-empty-desc {
   font-size: 12px;
   color: #64748b;
+}
+
+.metric-name {
+  font-size: 12px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metric-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.metric-value span {
+  font-size: 12px;
+  margin-left: 2px;
+}
+
+.metric-sub {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.metric-result {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.metric-meta {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.metric-diff {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.metric-rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.rank-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.rank-item.is-better {
+  background: #dcfce7;
+}
+
+.rank-item.is-worse {
+  opacity: 0.6;
+}
+
+.rank-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.rank-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rank-meta {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.rank-right {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.metric-bar {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
 }
 
 /* Compare mode: flatpickr date group (new classes only) */
