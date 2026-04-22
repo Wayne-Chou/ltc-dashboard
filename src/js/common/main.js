@@ -23,8 +23,26 @@ import {
 } from "./charts/renderCharts.js";
 import { registerRenderView, renderView } from "./viewBridge.js";
 import { getTemplate } from "./template.js";
-// 如果有需要從其他檔案引入的比較模式函數，請在此 import
-// import { renderSelectedSites, renderSiteSelector, initEmptyCharts, drawNoDataChart } from './compareUtils.js';
+
+function loadGoogleMaps() {
+  return new Promise((resolve) => {
+    // 如果已經載過，就直接 resolve（避免重複載入）
+    if (window.google && window.google.maps) {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src =
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyACfOxn7DJ9gdcb-XBx-R2X5pbHWeskzUg";
+    script.async = true;
+    script.defer = true;
+
+    script.onload = resolve;
+
+    document.head.appendChild(script);
+  });
+}
 
 // --- 2. 視圖渲染函數 ---
 
@@ -55,14 +73,17 @@ function renderDashboardView() {
 
 registerRenderView(renderDashboardView);
 
-function initDefaultView() {
+async function initDefaultView() {
   initLogoutButton();
-  initLocationPage();
+
+  await loadGoogleMaps(); 
+
+  initLocationPage(); 
   initTable();
   initSidebarToggle();
   initDownloadPdf();
   initDateFilter();
- 
+
   initPersonCardRisk();
   initPersonCardLevel();
   initRiskModeUI();

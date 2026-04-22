@@ -127,6 +127,6 @@ class LabelOverlay extends google.maps.OverlayView {
  * 當時這個模組還沒執行完，Google Maps 就會報 "initMap is not a function"。
  * 下面這段程式會在模組載入完後檢查，如果 google 已存在，就手動跑一次。
  */
-if (typeof google !== "undefined" && google.maps) {
-  initMap();
-}
+// if (typeof google !== "undefined" && google.maps) {
+//   initMap();
+// }
