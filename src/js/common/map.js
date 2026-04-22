@@ -5,6 +5,26 @@ import { getLocationMap } from "./location.js";
 // 用來存放所有的 marker 和 label，切換語系時才能清空
 let mapElements = [];
 
+
+/**
+ * 初始化地圖
+ */
+export function initMap() {
+  const mapElement = document.getElementById("map");
+
+  // 檢查 google 是否存在，防止 API 尚未載入就執行
+  if (!mapElement || typeof google === "undefined") {
+    console.warn("[Map] Google Maps API 尚未載入完成");
+    return;
+  }
+
+  // --- 1. 清除地圖上現有的 Marker 和 Label ---
+  if (mapElements.length > 0) {
+    mapElements.forEach((item) => {
+      if (item.setMap) item.setMap(null);
+    });
+    mapElements = [];
+  }
 /**
  * 自定義標籤類別 (LabelOverlay)
  */
@@ -51,26 +71,6 @@ class LabelOverlay extends google.maps.OverlayView {
     }
   }
 }
-
-/**
- * 初始化地圖
- */
-export function initMap() {
-  const mapElement = document.getElementById("map");
-
-  // 檢查 google 是否存在，防止 API 尚未載入就執行
-  if (!mapElement || typeof google === "undefined") {
-    console.warn("[Map] Google Maps API 尚未載入完成");
-    return;
-  }
-
-  // --- 1. 清除地圖上現有的 Marker 和 Label ---
-  if (mapElements.length > 0) {
-    mapElements.forEach((item) => {
-      if (item.setMap) item.setMap(null);
-    });
-    mapElements = [];
-  }
 
   // --- 2. 初始化地圖實體 ---
   const map = new google.maps.Map(mapElement, {
