@@ -54,46 +54,68 @@ export function initCompareModeClickDelegation() {
   if (compareClickDelegationBound) return;
   compareClickDelegationBound = true;
   document.addEventListener("click", (e) => {
-    const quick = e.target.closest("#compareControls [data-quick]");
-    if (quick) {
-      const idx = Number(quick.dataset.compareIndex);
-      if (!Number.isFinite(idx) || !dashboardState.selectedSites[idx]) return;
-      const type = quick.dataset.quick;
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      let start;
-      let end = new Date(today);
-
-      if (type === "7") {
-        start = new Date(today);
-        start.setDate(today.getDate() - 7);
-      } else if (type === "30") {
-        start = new Date(today);
-        start.setDate(today.getDate() - 30);
-      } else if (type === "year") {
-        start = new Date(today.getFullYear(), 0, 1);
-      } else {
-        return;
-      }
-
-      dashboardState.selectedSites[idx].timeMode = "range";
-      dashboardState.selectedSites[idx].start = formatDateForCompare(start);
-      dashboardState.selectedSites[idx].end = formatDateForCompare(end);
-      renderCompareControls();
-      void renderCompareCharts();
-      return;
-    }
-
     const clearBtn = e.target.closest("#compareControls [data-clear]");
     if (clearBtn) {
       const idx = Number(clearBtn.dataset.compareIndex);
       if (!Number.isFinite(idx) || !dashboardState.selectedSites[idx]) return;
       dashboardState.selectedSites[idx].start = "";
       dashboardState.selectedSites[idx].end = "";
+      const site = dashboardState.selectedSites[idx];
+      site.selectedDates = [];
       renderCompareControls();
       void renderCompareCharts();
       return;
     }
+
+    const quickBtn = e.target.closest("#compareControls [data-quick]");
+    if (quickBtn) {
+      const idx = Number(quickBtn.dataset.compareIndex);
+      const type = quickBtn.dataset.quick;
+
+      const site = dashboardState.selectedSites[idx];
+      if (!site) return;
+
+     
+
+      const today = new Date();
+      let start;
+      let end;
+
+      if (type === "30d") {
+        end = today;
+        start = new Date();
+        start.setDate(today.getDate() - 29);
+      }
+
+      if (type === "6m") {
+        end = today;
+        start = new Date();
+        start.setMonth(today.getMonth() - 6);
+        start.setDate(1);
+      }
+
+      if (type === "year") {
+        const year = today.getFullYear();
+        start = new Date(year, 0, 1); // 1/1
+        end = today;
+      }
+
+      site.timeMode = "range";
+      site.start = formatDateForCompare(start);
+      site.end = formatDateForCompare(end);
+      site.selectedDates = [];
+
+    
+
+      renderCompareControls();
+      
+
+      void renderCompareCharts();
+      
+
+      return;
+    }
+
   });
   document.addEventListener("change", async (e) => {
     const siteSelect = e.target.closest("[data-compare-site]");
@@ -120,7 +142,13 @@ export function initCompareModeClickDelegation() {
     if (!field) return;
     const next = { ...dashboardState.selectedSites[idx] };
 
-    if (field === "timeMode") next.timeMode = e.target.value;
+    if (field === "timeMode") {
+      if (next.__forceRange) {
+        next.__forceRange = false;
+      } else {
+        next.timeMode = e.target.value;
+      }
+    }
 
     if (next.timeMode === "single") {
       next.start = next.end || next.start;
@@ -138,6 +166,21 @@ function formatDateForCompare(date) {
   const m = String(date.getMonth() + 1).padStart(2, "0");
   const d = String(date.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
+}
+
+function filterByDates(data, selectedDates) {
+  if (!Array.isArray(data)) return [];
+  if (!Array.isArray(selectedDates) || selectedDates.length === 0) return data;
+
+  const set = new Set(selectedDates);
+
+  return data.filter((d) => {
+    const date = new Date(d.Date);
+    if (!Number.isFinite(date.getTime())) return false;
+
+    const key = formatDateForCompare(date);
+    return set.has(key);
+  });
 }
 
 function toTimestampRange(start, end, mode) {
@@ -171,7 +214,7 @@ function toTimestampRange(start, end, mode) {
 function destroyCompareFlatpickr(container) {
   if (!container) return;
   container
-    .querySelectorAll("[data-flatpickr-range], [data-flatpickr-single]")
+    .querySelectorAll("[data-flatpickr-range], [data-flatpickr-single], [data-flatpickr-multiple]")
     .forEach((el) => {
       if (el._flatpickr) el._flatpickr.destroy();
     });
@@ -217,19 +260,22 @@ async function initFlatpickr(el, site, mode) {
     locale,
     minDate,
     maxDate,
+    rangeSeparator: " ~ ",
   };
 
   if (mode === "range") {
     config.mode = "range";
-    config.defaultDate =
-      site.start && site.end ? [site.start, site.end] : null;
 
     config.onChange = (dates) => {
-      if (dates.length === 2) {
-        site.start = formatDateForCompare(dates[0]);
-        site.end = formatDateForCompare(dates[1]);
-        void renderCompareCharts();
-      }
+      // 防止初始化或錯誤觸發（只選到一個日期時不處理）
+      if (!Array.isArray(dates) || dates.length !== 2) return;
+
+      site.start = formatDateForCompare(dates[0]);
+      site.end = formatDateForCompare(dates[1]);
+
+     
+
+      void renderCompareCharts();
     };
   }
 
@@ -247,7 +293,36 @@ async function initFlatpickr(el, site, mode) {
     };
   }
 
-  fp(el, config);
+  if (mode === "multiple") {
+    config.mode = "multiple";
+    config.defaultDate = Array.isArray(site.selectedDates)
+      ? site.selectedDates
+      : null;
+
+    config.onChange = (dates) => {
+      site.selectedDates = dates.map((d) => formatDateForCompare(d));
+      void renderCompareCharts();
+    };
+  }
+
+  const instance = fp(el, config);
+
+  if (mode === "range" && site.start && site.end) {
+    
+
+   
+    instance.setDate([site.start, site.end], false);
+
+    
+    const display = `${site.start} ~ ${site.end}`;
+    instance.input.value = display;
+
+    setTimeout(() => {
+      if (instance && site.start && site.end) {
+        instance.input.value = `${site.start} ~ ${site.end}`;
+      }
+    }, 0);
+  }
 }
 
 function initCompareFlatpickr() {
@@ -266,6 +341,13 @@ function initCompareFlatpickr() {
     const site = dashboardState.selectedSites[idx];
     if (!site) return;
     void initFlatpickr(el, site, "single");
+  });
+
+  root.querySelectorAll("[data-flatpickr-multiple]").forEach((el) => {
+    const idx = Number(el.dataset.compareIndex);
+    const site = dashboardState.selectedSites[idx];
+    if (!site) return;
+    void initFlatpickr(el, site, "multiple");
   });
 }
 
@@ -335,8 +417,12 @@ function renderCompareControls() {
         item.end || item.start
           ? formatDisplayDate(item.end || item.start)
           : "";
+      const multipleValue = Array.isArray(item.selectedDates)
+        ? item.selectedDates.join(", ")
+        : "";
       const rangeHidden = item.timeMode === "range" ? "" : "d-none";
       const singleHidden = item.timeMode === "single" ? "" : "d-none";
+      const multipleHidden = item.timeMode === "multiple" ? "" : "d-none";
       return `
         <div class="compare-control" data-compare-index="${idx}">
           <div class="compare-control-label"><i class="fa-solid fa-circle"></i> ${siteName}</div>
@@ -350,6 +436,7 @@ function renderCompareControls() {
           <select class="form-select form-select-sm" data-compare-field="timeMode">
             <option value="range">區間</option>
             <option value="single">單日</option>
+            <option value="multiple">多日期</option>
           </select>
           <div class="compare-date-group">
             <div class="compare-date-range-wrap ${rangeHidden}">
@@ -374,10 +461,42 @@ function renderCompareControls() {
                 readonly
               />
             </div>
+            <div class="compare-date-multiple-wrap ${multipleHidden}">
+              <input
+                type="text"
+                class="form-control form-control-sm compare-flatpickr-input"
+                data-flatpickr-multiple
+                data-compare-index="${idx}"
+                value="${multipleValue}"
+                placeholder="選擇多個日期"
+                readonly
+              />
+            </div>
             <div class="compare-quick-actions">
-              <button type="button" class="compare-quick-btn" data-quick="7" data-compare-index="${idx}">7天</button>
-              <button type="button" class="compare-quick-btn" data-quick="30" data-compare-index="${idx}">30天</button>
-              <button type="button" class="compare-quick-btn" data-quick="year" data-compare-index="${idx}">今年</button>
+              <button 
+                type="button" 
+                class="compare-quick-btn" 
+                data-quick="year" 
+                data-compare-index="${idx}"
+              >
+                <i class="fa-solid fa-calendar"></i> 今年
+              </button>
+              <button 
+                type="button" 
+                class="compare-quick-btn" 
+                data-quick="6m" 
+                data-compare-index="${idx}"
+              >
+                <i class="fa-solid fa-calendar-week"></i> 最近半年
+              </button>
+              <button 
+                type="button" 
+                class="compare-quick-btn" 
+                data-quick="30d" 
+                data-compare-index="${idx}"
+              >
+                <i class="fa-solid fa-calendar-days"></i> 最近1個月
+              </button>
               <button type="button" class="compare-quick-btn compare-quick-btn-clear" data-clear data-compare-index="${idx}">清除</button>
             </div>
           </div>
@@ -554,15 +673,27 @@ async function renderCompareCharts() {
         .slice(0, COMPARE_SELECTED_SITES_MAX)
         .filter((site) => site?.code)
         .map(async (site) => {
-        const { start, end } = toTimestampRange(
-          site.start,
-          site.end,
+        let start = site.start;
+        let end = site.end;
+
+        if (site.timeMode === "multiple" && site.selectedDates?.length) {
+          const sorted = [...site.selectedDates].sort();
+          start = sorted[0];
+          end = sorted[sorted.length - 1];
+        }
+
+        const { start: tsStart, end: tsEnd } = toTimestampRange(
+          start,
+          end,
           site.timeMode,
         );
       
         
         // console.log("API送出時間 👉", new Date(start), new Date(end));
-        const data = await fetchSiteData(site.code, start, end, token);
+        let data = await fetchSiteData(site.code, tsStart, tsEnd, token);
+        if (site.timeMode === "multiple") {
+          data = filterByDates(data, site.selectedDates);
+        }
        
        
         return {
@@ -570,6 +701,7 @@ async function renderCompareCharts() {
           site: getLocationMap()?.[site.code]?.name || site.code,
           data: data || [],
           timeMode: site.timeMode,
+          selectedDates: site.selectedDates,
           start: site.start,
           end: site.end,
         };
@@ -692,7 +824,40 @@ function getMetricValue(data, key, timeMode) {
     return values.reduce((a, b) => a + b, 0) / values.length;
   }
 
+  if (timeMode === "multiple") {
+    const values = data
+      .map((d) => Number(d[key]))
+      .filter((v) => Number.isFinite(v));
+
+    if (!values.length) return null;
+
+    return values.reduce((a, b) => a + b, 0) / values.length;
+  }
+
   return null;
+}
+
+function getTimeDisplay(row) {
+  if (row.timeMode === "single") {
+    return {
+      label: "單日資料",
+      text: new Date(row.end).toLocaleDateString("zh-TW"),
+    };
+  }
+
+  if (row.timeMode === "multiple") {
+    return {
+      label: "多日平均",
+      text: row.selectedDates
+        ?.map((d) => new Date(d).toLocaleDateString("zh-TW"))
+        .join("、") || "",
+    };
+  }
+
+  return {
+    label: "區間平均",
+    text: `${new Date(row.start).toLocaleDateString("zh-TW")}～${new Date(row.end).toLocaleDateString("zh-TW")}`,
+  };
 }
 
 function renderCompareSummary(groupedData) {
@@ -771,6 +936,7 @@ function renderCompareSummary(groupedData) {
         site: group.site,
         id: `${group.code}-${index}`,
         timeMode: group.timeMode,
+        selectedDates: group.selectedDates,
         start: group.start,
         end: group.end,
         chair,
@@ -831,14 +997,8 @@ function renderCompareSummary(groupedData) {
   if (isSameSite) {
     rankingEl.innerHTML = "";
 
-    const getModeLabel = (row) => {
-      return row.timeMode === "single" ? "單日" : "區間";
-    };
-
-    const rangeText = (row) =>
-      row.timeMode === "single"
-        ? new Date(row.end).toLocaleDateString("zh-TW")
-        : `${new Date(row.start).toLocaleDateString("zh-TW")}～${new Date(row.end).toLocaleDateString("zh-TW")}`;
+    const ADisplayInfo = getTimeDisplay(rows[0]);
+    const BDisplayInfo = getTimeDisplay(rows[1]);
 
     winnerEl.innerHTML = `
       <div class="winner-inner">
@@ -848,7 +1008,7 @@ function renderCompareSummary(groupedData) {
         <div class="winner-text">
           <div class="main">${rows[0].site} 同據點時間比較</div>
           <div class="sub">
-            ${getModeLabel(rows[0])}A：${rangeText(rows[0])} ｜ ${getModeLabel(rows[1])}B：${rangeText(rows[1])}
+            ${ADisplayInfo.label}A：${ADisplayInfo.text} ｜ ${BDisplayInfo.label}B：${BDisplayInfo.text}
           </div>
         </div>
       </div>
@@ -954,15 +1114,9 @@ function renderCompareSummary(groupedData) {
     const isTie = diff === 0;
     const AClass = isTie ? "" : isABetter ? "is-better" : "is-worse";
     const BClass = isTie ? "" : isABetter ? "is-worse" : "is-better";
-    const getModeLabel = (row) => {
-      return row.timeMode === "single" ? "單日" : "區間";
-    };
+    const ADisplayInfo = getTimeDisplay(A);
+    const BDisplayInfo = getTimeDisplay(B);
     const unitText = metric.unit ? ` ${metric.unit}` : "";
-    const formatTimeText = (row) =>
-      row.timeMode === "single"
-        ? new Date(row.end).toLocaleDateString("zh-TW")
-        : `${new Date(row.start).toLocaleDateString("zh-TW")}～${new Date(row.end).toLocaleDateString("zh-TW")}`;
-    const modeLabel = (row) => (row.timeMode === "range" ? "區間平均" : "單日資料");
 
     return `
       <div class="metric-card ${isTie ? "is-tie" : "is-active"}">
@@ -978,8 +1132,8 @@ function renderCompareSummary(groupedData) {
                 ? "表現相同"
                 : isSameSite
                 ? (isABetter
-                ? `${getModeLabel(A)}A 較佳`
-                : `${getModeLabel(B)}B 較佳`)
+                ? `${ADisplayInfo.label}A 較佳`
+                : `${BDisplayInfo.label}B 較佳`)
                 : (isABetter
                 ? `${A.site} 較佳`
                 : `${B.site} 較佳`)
@@ -987,7 +1141,7 @@ function renderCompareSummary(groupedData) {
             </div>
             ${
               isSameSite
-                ? `<div class="metric-badge neutral">${getModeLabel(A)} vs ${getModeLabel(B)}</div>`
+                ? `<div class="metric-badge neutral">${ADisplayInfo.label} vs ${BDisplayInfo.label}</div>`
                 : !isTie
                 ? `<div class="metric-badge">最佳</div>`
                 : `<div class="metric-badge neutral">平手</div>`
@@ -996,32 +1150,32 @@ function renderCompareSummary(groupedData) {
 
           <div class="metric-values-list">
             <div class="metric-value-row ${AClass}">
-              <span>${isSameSite ? `${getModeLabel(A)}A` : A.site}</span>
+              <span>${isSameSite ? `${ADisplayInfo.label}A` : A.site}</span>
               <strong>${AValue.toFixed(1)}${unitText}</strong>
-              <em>${modeLabel(A)}</em>
+              <em>${ADisplayInfo.label}</em>
             </div>
             <div class="metric-value-row ${BClass}">
-              <span>${isSameSite ? `${getModeLabel(B)}B` : B.site}</span>
+              <span>${isSameSite ? `${BDisplayInfo.label}B` : B.site}</span>
               <strong>${BValue.toFixed(1)}${unitText}</strong>
-              <em>${modeLabel(B)}</em>
+              <em>${BDisplayInfo.label}</em>
             </div>
           </div>
 
           <div class="metric-time">
             <i class="fa-solid fa-calendar-days"></i>
-            ${isSameSite ? `${getModeLabel(best)}A` : best.site}：${formatTimeText(best)}
+            ${isSameSite ? `${getTimeDisplay(best).label}A` : best.site}：${getTimeDisplay(best).text}
           </div>
           <div class="metric-time">
             <i class="fa-solid fa-calendar-days"></i>
-            ${isSameSite ? `${getModeLabel(worst)}B` : worst.site}：${formatTimeText(worst)}
+            ${isSameSite ? `${getTimeDisplay(worst).label}B` : worst.site}：${getTimeDisplay(worst).text}
           </div>
           <div class="metric-compare">${
             isTie
               ? "雙方數值相同"
               : isSameSite
               ? (isABetter
-              ? `${getModeLabel(A)}A 表現優於 ${getModeLabel(B)}B`
-              : `${getModeLabel(B)}B 表現優於 ${getModeLabel(A)}A`)
+              ? `${ADisplayInfo.label}A 表現優於 ${BDisplayInfo.label}B`
+              : `${BDisplayInfo.label}B 表現優於 ${ADisplayInfo.label}A`)
               : (isABetter
               ? `${A.site} 表現優於 ${B.site}`
               : `${B.site} 表現優於 ${A.site}`)

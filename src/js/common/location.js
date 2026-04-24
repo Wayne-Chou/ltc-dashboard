@@ -73,7 +73,7 @@ export async function initLocationPage() {
     if (!response.ok) throw new Error("無法取得場域總表");
 
     const result = await response.json();
-    console.log("🔥 /dashboard/sites API 回傳:", result);
+    // console.log("🔥 /dashboard/sites API 回傳:", result);
     const sites = result.Data || [];
 
     // 建立快取
@@ -81,7 +81,7 @@ export async function initLocationPage() {
     locationMap = {};
     siteStatsMap = {};
     sites.forEach((site) => {
-      console.log("🔥 siteStatsMap:", siteStatsMap);
+      // console.log("🔥 siteStatsMap:", siteStatsMap);
       const data = {
         name: site.Name,
         code: site.Code,
@@ -201,7 +201,7 @@ export async function loadLocationDataById(regionId, forceFetch = false) {
     totalTimes = 0;
 
   Object.values(siteStatsMap).forEach((s) => {
-    console.log("🔥 totalPeople:", totalPeople);
+    // console.log("🔥 totalPeople:", totalPeople);
     totalPeople += s.Count;
     totalTimes += s.Times;
   });
@@ -210,7 +210,7 @@ export async function loadLocationDataById(regionId, forceFetch = false) {
   const latestCountEl = document.getElementById("latestCount");
 
   if (totalCountEl) totalCountEl.textContent = totalPeople;
-  console.log("🔥 寫入 UI totalCount:", totalPeople);
+  // console.log("🔥 寫入 UI totalCount:", totalPeople);
   if (latestCountEl) latestCountEl.textContent = totalTimes;
 
   applyAssessments([]);
