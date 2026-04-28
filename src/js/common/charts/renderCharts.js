@@ -154,7 +154,15 @@ export function initCompareModeClickDelegation() {
       next.start = next.end || next.start;
       next.end = next.end || next.start;
     }
-
+    if (next.timeMode === "multiple") {
+      const lastDate = next.end || next.start;
+    
+      if (lastDate) {
+        next.selectedDates = [lastDate];
+        next.start = lastDate;
+        next.end = lastDate;
+      }
+    }
     dashboardState.selectedSites[idx] = next;
     renderCompareControls();
     void renderCompareCharts();
@@ -436,7 +444,7 @@ function renderCompareControls() {
           <select class="form-select form-select-sm" data-compare-field="timeMode">
             <option value="range">區間</option>
             <option value="single">單日</option>
-            <option value="multiple">多日期</option>
+            <option value="multiple">自選日期</option>
           </select>
           <div class="compare-date-group">
             <div class="compare-date-range-wrap ${rangeHidden}">
@@ -570,7 +578,10 @@ function drawMultiLineChart(canvasId, groupedData, key, options = {}) {
   const { unit = "", format = (v) => v.toFixed(1) } = options;
   function formatLocalDate(ts) {
     const d = new Date(ts);
-    return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}/${m}/${day}`;
   }
 
   const canvas = document.getElementById(canvasId);
@@ -581,7 +592,7 @@ function drawMultiLineChart(canvasId, groupedData, key, options = {}) {
   if (existingChart) existingChart.destroy();
 
   // 據點顏色映射 (可擴充)
-  const COLORS = ["#3b82f6", "#ef4444", "#10b981", "#f59e0b"];
+  const COLORS = ["#3b82f6", "#ef4444", ];
 
   // 收集所有數據點的日期並排序，作為 X 軸
   const allDatesSet = new Set();
@@ -591,8 +602,44 @@ function drawMultiLineChart(canvasId, groupedData, key, options = {}) {
   const allDates = [...allDatesSet].sort((a, b) => new Date(a) - new Date(b));
 
   const labels = allDates.map(formatLocalDate);
-
+  
   const datasets = groupedData.map((group, index) => {
+     //  只有 multiple 才做「合併成一點」
+     if (group.timeMode === "multiple") {
+
+      const values = group.data
+        .map((d) => Number(d[key]))
+        .filter((v) => Number.isFinite(v));
+    
+      const avg =
+        values.length > 0
+          ? values.reduce((a, b) => a + b, 0) / values.length
+          : null;
+    
+      // const targetDate = group.start; 
+      const dates = group.selectedDates || [];
+
+      const avgTime =
+        dates.reduce((sum, d) => sum + new Date(d).getTime(), 0) / dates.length;
+
+      const targetDate = formatDateForCompare(new Date(avgTime));
+    
+      return {
+        label: group.site + "（自選日期平均）",
+    
+        data: avg != null
+        ? [{
+            x: group.site,  
+            y: avg
+          }]
+        : [],
+    
+        borderColor: COLORS[index % COLORS.length],
+        backgroundColor: COLORS[index % COLORS.length],
+        pointRadius: 6,
+        showLine: false,
+      };
+    }
     const dataMap = new Map();
     group.data.forEach((d) => dataMap.set(d.Date, d[key]));
 
@@ -621,19 +668,38 @@ function drawMultiLineChart(canvasId, groupedData, key, options = {}) {
         tooltip: {
           callbacks: {
             title: (items) => {
-              const ts = allDates[items[0].dataIndex];
-              return formatLocalDate(ts);
+              const dataset = items[0].dataset;
+
+              if (dataset.label.includes("自選日期")) {
+                return ""; 
+              }
+
+              return items[0].label;
             },
             label: (ctx) => {
               const value = ctx.parsed.y;
               if (value == null) return "";
-              return `${ctx.dataset.label}: ${format(value)} ${unit}`;
+            
+              const dataset = ctx.dataset;
+            
+              if (dataset.label.includes("自選日期")) {
+                return `${dataset.label}: ${format(value)} ${unit}`;
+              }
+            
+              return `${dataset.label}: ${format(value)} ${unit}`;
             },
           },
         },
       },
       scales: {
-        x: { grid: { display: false } },
+        x: {
+          type: "category",
+          grid: { display: false },
+        
+          ticks: {
+            display: !groupedData.every(g => g.timeMode === "multiple"),
+          },
+        },
         y: {
           beginAtZero: false,
           title: {
@@ -650,6 +716,51 @@ function drawMultiLineChart(canvasId, groupedData, key, options = {}) {
   });
 }
 
+function getChartHintText(sites) {
+  const modes = new Set(sites.map(s => s.timeMode));
+
+  // 👉 不同模式
+  if (modes.size > 1) {
+    return "各據點依不同時間模式呈現，請留意比較基準";
+  }
+
+  const mode = sites[0]?.timeMode;
+
+  switch (mode) {
+    case "single":
+      return "圖表顯示單日數據";
+
+    case "range":
+      return "圖表顯示每日變化，摘要為區間平均";
+
+    case "multiple":
+      return "圖表顯示選取日期之平均結果";
+
+    default:
+      return "";
+  }
+}
+function updateChartHint() {
+  const el = document.getElementById("chartHint");
+  if (!el) return;
+
+  const sites = dashboardState.selectedSites || [];
+
+  if (!sites.length) {
+    el.style.display = "none";
+    return;
+  }
+
+  const text = getChartHintText(sites); 
+
+  if (!text) {
+    el.style.display = "none";
+    return;
+  }
+
+  el.textContent = text;
+  el.style.display = "block";
+}
 /**
  * 異步抓取多個場域資料並重繪圖表
  */
@@ -736,6 +847,7 @@ async function renderCompareCharts() {
       unit: "%",
     });
     renderCompareSummary(grouped);
+    updateChartHint();
   } finally {
     document.body.classList.remove("is-loading");
   }
@@ -780,41 +892,35 @@ export async function initCompareMode() {
 }
 function getMetricValue(data, key, timeMode) {
   if (!Array.isArray(data) || !data.length) return null;
-
+  if (timeMode === "range" || timeMode === "multiple") {
+    const values = data
+      .map((d) => Number(d[key]))
+      .filter((v) => Number.isFinite(v));
+  
+    if (!values.length) return null;
+  
+    const sum = values.reduce((a, b) => a + b, 0);
+    const avg = sum / values.length;
+  
+  
+    // console.group(`📊 平均計算 (${key})`);
+    // console.log("原始資料:", data);
+    // console.log("取值後:", values);
+    // console.log("加總:", sum);
+    // console.log("筆數:", values.length);
+    // console.log("平均:", avg);
+    // console.groupEnd();
+  
+    return avg;
+  }
   if (timeMode === "single") {
-     // 單日模式：
-    // 只取「最後一筆資料」作為結果
-    //
-    // 範例：
-    // data = [
-    //   { ChairSecond: 10 },
-    //   { ChairSecond: 12 },
-    //   { ChairSecond: 8 }
-    // ]
-    //
-    // → 取最後一筆 = 8
     
     const value = Number(data[data.length - 1][key]);
     return Number.isFinite(value) ? value : null;
   }
 
   if (timeMode === "range") {
-    // 區間平均模式：
-    // 將時間區間內所有資料的數值取出後，計算「簡單平均」
-    //
-    // 計算公式：
-    // 平均值 = (所有數值加總) / (資料筆數)
-    //
-    // 範例 ：
-    // data = [
-    //   { ChairSecond: 10 },
-    //   { ChairSecond: 12 },
-    //   { ChairSecond: 8 }
-    // ]
-    //
-    // values = [10, 12, 8]
-    // 平均 = (10 + 12 + 8) / 3 = 10
-    //
+   
    
     const values = data
       .map((d) => Number(d[key]))
@@ -847,7 +953,7 @@ function getTimeDisplay(row) {
 
   if (row.timeMode === "multiple") {
     return {
-      label: "多日平均",
+      label: "自選日期",
       text: row.selectedDates
         ?.map((d) => new Date(d).toLocaleDateString("zh-TW"))
         .join("、") || "",
