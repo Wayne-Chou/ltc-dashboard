@@ -1201,3 +1201,31 @@ body {
 .compare-quick-btn-clear {
   margin-left: auto;
 }
+
+.dates-panel {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8fafc;
+  border-radius: 10px;
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  max-height: 150px;
+  overflow-y: auto;
+  animation: fadeIn 0.2s ease;
+}
+
+.dates-col {
+  flex: 1;
+}
+
+.dates-col .title {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #64748b;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

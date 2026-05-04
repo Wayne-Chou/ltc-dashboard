@@ -54,6 +54,48 @@ export function initCompareModeClickDelegation() {
   if (compareClickDelegationBound) return;
   compareClickDelegationBound = true;
   document.addEventListener("click", (e) => {
+    const viewBtn = e.target.closest(".view-dates-btn");
+    if (viewBtn) {
+      const wrapper = viewBtn.closest(".metric-card");
+      if (!wrapper) return;
+
+      let panel = wrapper.querySelector(".dates-panel");
+
+      // toggle（如果已存在 → 收合）
+      if (panel) {
+        panel.remove();
+        viewBtn.innerHTML = `<i class="fa-solid fa-calendar"></i> 查看日期`;
+        return;
+      }
+
+      const a = viewBtn.dataset.datesA?.split(",") || [];
+      const b = viewBtn.dataset.datesB?.split(",") || [];
+
+      const format = (list) =>
+        list
+          .filter(Boolean)
+          .map((d) => `<div>${new Date(d).toLocaleDateString("zh-TW")}</div>`)
+          .join("");
+
+      panel = document.createElement("div");
+      panel.className = "dates-panel";
+      panel.innerHTML = `
+        <div class="dates-col">
+          <div class="title">A</div>
+          ${format(a)}
+        </div>
+        <div class="dates-col">
+          <div class="title">B</div>
+          ${format(b)}
+        </div>
+      `;
+
+      wrapper.appendChild(panel);
+      viewBtn.innerHTML = `<i class="fa-solid fa-chevron-up"></i> 收合日期`;
+
+      return;
+    }
+
     const clearBtn = e.target.closest("#compareControls [data-clear]");
     if (clearBtn) {
       const idx = Number(clearBtn.dataset.compareIndex);
@@ -244,6 +286,7 @@ async function getAvailableDateRange(siteCode) {
   return {
     minDate,
     maxDate,
+    enabledDates,
   };
 }
 
@@ -261,7 +304,7 @@ async function initFlatpickr(el, site, mode) {
   if (typeof fp !== "function") return;
 
   const locale = fp.l10ns?.zh_tw || fp.l10ns?.zh;
-  const { minDate, maxDate } = await getCachedDateRange(site.code);
+  const { minDate, maxDate, enabledDates } = await getCachedDateRange(site.code);
 
   let config = {
     dateFormat: "Y-m-d",
@@ -299,6 +342,7 @@ async function initFlatpickr(el, site, mode) {
         void renderCompareCharts();
       }
     };
+    config.enable = enabledDates;
   }
 
   if (mode === "multiple") {
@@ -311,6 +355,7 @@ async function initFlatpickr(el, site, mode) {
       site.selectedDates = dates.map((d) => formatDateForCompare(d));
       void renderCompareCharts();
     };
+    config.enable = enabledDates;
   }
 
   const instance = fp(el, config);
@@ -719,7 +764,7 @@ function drawMultiLineChart(canvasId, groupedData, key, options = {}) {
 function getChartHintText(sites) {
   const modes = new Set(sites.map(s => s.timeMode));
 
-  // 👉 不同模式
+  // 不同模式
   if (modes.size > 1) {
     return "各據點依不同時間模式呈現，請留意比較基準";
   }
@@ -966,6 +1011,29 @@ function getTimeDisplay(row) {
   };
 }
 
+function getShortDateText(row) {
+  if (!row) return "";
+
+  if (row.timeMode === "multiple") {
+    const dates = (row.selectedDates || [])
+      .map((d) => new Date(d).toLocaleDateString("zh-TW"));
+
+    if (dates.length === 0) return "";
+
+    if (dates.length === 1) return dates[0];
+
+    if (dates.length === 2) return dates.join("、");
+
+    return `${dates[0]}、${dates[1]} +${dates.length - 2}`;
+  }
+
+  if (row.timeMode === "single") {
+    return new Date(row.end).toLocaleDateString("zh-TW");
+  }
+
+  return `${new Date(row.start).toLocaleDateString("zh-TW")}～${new Date(row.end).toLocaleDateString("zh-TW")}`;
+}
+
 function renderCompareSummary(groupedData) {
  
  
@@ -976,7 +1044,7 @@ function renderCompareSummary(groupedData) {
   if (!winnerEl || !rankingEl || !contentEl) return;
 
   const resetCompareResultTitle = () => {
-    if (compareResultTitleEl) compareResultTitleEl.textContent = "A vs B 比較結果";
+    if (compareResultTitleEl) compareResultTitleEl.textContent = "比較結果";
   };
 
   const emptyRangeCardHtml = `
@@ -1062,7 +1130,7 @@ function renderCompareSummary(groupedData) {
   const siteLabel1 = rows[1]?.site || "B";
   if (compareResultTitleEl) {
     compareResultTitleEl.textContent = isSameSite
-      ? "同據點不同時間區間比較結果"
+      ? "比較結果"
       : `${siteLabel0} vs ${siteLabel1} 比較結果`;
   }
 
@@ -1102,9 +1170,8 @@ function renderCompareSummary(groupedData) {
 
   if (isSameSite) {
     rankingEl.innerHTML = "";
-
-    const ADisplayInfo = getTimeDisplay(rows[0]);
-    const BDisplayInfo = getTimeDisplay(rows[1]);
+    const A = rows[0];
+    const B = rows[1];
 
     winnerEl.innerHTML = `
       <div class="winner-inner">
@@ -1114,7 +1181,7 @@ function renderCompareSummary(groupedData) {
         <div class="winner-text">
           <div class="main">${rows[0].site} 同據點時間比較</div>
           <div class="sub">
-            ${ADisplayInfo.label}A：${ADisplayInfo.text} ｜ ${BDisplayInfo.label}B：${BDisplayInfo.text}
+            ${getShortDateText(A)} 與 ${getShortDateText(B)}
           </div>
         </div>
       </div>
@@ -1238,8 +1305,8 @@ function renderCompareSummary(groupedData) {
                 ? "表現相同"
                 : isSameSite
                 ? (isABetter
-                ? `${ADisplayInfo.label}A 較佳`
-                : `${BDisplayInfo.label}B 較佳`)
+                ? `${getShortDateText(A)} 較佳`
+                : `${getShortDateText(B)} 較佳`)
                 : (isABetter
                 ? `${A.site} 較佳`
                 : `${B.site} 較佳`)
@@ -1247,7 +1314,7 @@ function renderCompareSummary(groupedData) {
             </div>
             ${
               isSameSite
-                ? `<div class="metric-badge neutral">${ADisplayInfo.label} vs ${BDisplayInfo.label}</div>`
+                ? ""
                 : !isTie
                 ? `<div class="metric-badge">最佳</div>`
                 : `<div class="metric-badge neutral">平手</div>`
@@ -1256,12 +1323,12 @@ function renderCompareSummary(groupedData) {
 
           <div class="metric-values-list">
             <div class="metric-value-row ${AClass}">
-              <span>${isSameSite ? `${ADisplayInfo.label}A` : A.site}</span>
+              <span title="${A.selectedDates?.join(", ") || ""}">${isSameSite ? getShortDateText(A) : A.site}</span>
               <strong>${AValue.toFixed(1)}${unitText}</strong>
               <em>${ADisplayInfo.label}</em>
             </div>
             <div class="metric-value-row ${BClass}">
-              <span>${isSameSite ? `${BDisplayInfo.label}B` : B.site}</span>
+              <span title="${B.selectedDates?.join(", ") || ""}">${isSameSite ? getShortDateText(B) : B.site}</span>
               <strong>${BValue.toFixed(1)}${unitText}</strong>
               <em>${BDisplayInfo.label}</em>
             </div>
@@ -1269,19 +1336,19 @@ function renderCompareSummary(groupedData) {
 
           <div class="metric-time">
             <i class="fa-solid fa-calendar-days"></i>
-            ${isSameSite ? `${getTimeDisplay(best).label}A` : best.site}：${getTimeDisplay(best).text}
+            ${isSameSite ? getShortDateText(best) : `${best.site}：${getShortDateText(best)}`}
           </div>
           <div class="metric-time">
             <i class="fa-solid fa-calendar-days"></i>
-            ${isSameSite ? `${getTimeDisplay(worst).label}B` : worst.site}：${getTimeDisplay(worst).text}
+            ${isSameSite ? getShortDateText(worst) : `${worst.site}：${getShortDateText(worst)}`}
           </div>
           <div class="metric-compare">${
             isTie
               ? "雙方數值相同"
               : isSameSite
               ? (isABetter
-              ? `${ADisplayInfo.label}A 表現優於 ${BDisplayInfo.label}B`
-              : `${BDisplayInfo.label}B 表現優於 ${ADisplayInfo.label}A`)
+              ? `${getShortDateText(A)} 表現優於 ${getShortDateText(B)}`
+              : `${getShortDateText(B)} 表現優於 ${getShortDateText(A)}`)
               : (isABetter
               ? `${A.site} 表現優於 ${B.site}`
               : `${B.site} 表現優於 ${A.site}`)
@@ -1289,6 +1356,20 @@ function renderCompareSummary(groupedData) {
         </div>
 
         <div class="metric-footer">
+          ${
+            (A.selectedDates?.length || 0) > 1 ||
+            (B.selectedDates?.length || 0) > 1
+              ? `
+              <button 
+                class="btn btn-sm btn-outline-secondary view-dates-btn"
+                data-dates-a="${(A.selectedDates || []).join(",")}"
+                data-dates-b="${(B.selectedDates || []).join(",")}"
+              >
+                <i class="fa-solid fa-calendar"></i> 查看日期
+              </button>
+            `
+              : ""
+          }
           <div class="metric-diff">
             <span class="diff-value">
               ${isTie ? "無差異" : `差距 ${diff.toFixed(1)}${unitText}`}
