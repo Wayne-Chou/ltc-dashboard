@@ -20,7 +20,7 @@ import {
   initCompareMode,
   toggleCompareMode,
   initCompareModeClickDelegation,
-} from "./charts/renderCharts.js";
+} from "./charts/compareMode.js";
 import { registerRenderView, renderView } from "./viewBridge.js";
 import { getTemplate } from "./template.js";
 
